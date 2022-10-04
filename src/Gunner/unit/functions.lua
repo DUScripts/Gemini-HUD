@@ -174,7 +174,6 @@ function whitelist(friendly_IDs)
  
        weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. ammoType2 .. ' ' .. ammoType1 .. '"')
        weaponData = weaponData:gsub('"constructId":"(%d+(%d%d%d))","name":"(.?.?.?.?).-"', '"constructId":"%1","name":"%2 - %3"')
-       --weaponData = weaponData:gsub('"cycleAnimationRemainingTime":(.-),', '"cycleAnimationRemainingTime":'.. animationTime - 0.01 ..',')
        if self.system.updateData(weaponDataID, weaponData) ~= 1 then
           self.system.print('update error')
        end
