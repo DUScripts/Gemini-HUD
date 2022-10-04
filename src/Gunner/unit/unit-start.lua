@@ -183,11 +183,11 @@ local function main()
                if radar.hasMatchingTransponder(v) == 0 and not whitelist[v] and size ~= "" and radar.getConstructDistance(v) < 600000 then --do not show far targets during warp and server lag
                   local name = radar.getConstructName(v)
                   if radar.isConstructAbandoned(v) == 0 then
-                     local msg1 = 'NEW TARGET: '..name..' - '..v..' - Size: '..size..' - Time: '..t_radarEnter[v].time1..'\n'..t_radarEnter[v].pos1..''
-                     table.insert(loglist, msg1)
+                     local msg = 'NEW TARGET: '..name..' - '..v..' - Size: '..size..' - Time: '..t_radarEnter[v].time1..'\n'..t_radarEnter[v].pos1..''
+                     table.insert(loglist, msg)
                   else
-                     local msg1 = 'NEW TARGET (abandoned): '..name..' - '..v..' - Size: '..size..' - Time: '..t_radarEnter[v].time1..'\n'..t_radarEnter[v].pos1..''
-                     table.insert(loglist, msg1)
+                     local msg = 'NEW TARGET (abandoned): '..name..' - '..v..' - Size: '..size..' - Time: '..t_radarEnter[v].time1..'\n'..t_radarEnter[v].pos1..''
+                     table.insert(loglist, msg)
                   end
                end
                t_radarEnter[v] = nil
