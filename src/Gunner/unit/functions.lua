@@ -193,7 +193,7 @@ function whitelist(friendly_IDs)
     return self
  end
  
- function GlovalVars()
+ function GlobalVars()
     buttonSpace = false
     buttonC = false
     atmovar = alse
