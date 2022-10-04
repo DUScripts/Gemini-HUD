@@ -52,7 +52,7 @@ function whitelist(friendly_IDs)
        if self.onlyIdentified and self.radar.isConstructIdentified(conructID) == 0 then
           goto continue1
        end
-       if not CFCS_Gunner_Module_Radar_Mode then
+       if not GHUD_Gunner_Module_Radar_Mode then
           resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. string.format("%03d", conructID%1000) .. ' - %1"') --cut construct IDs
        else
           resultList[#resultList+1] = str:gsub('"name":"(.?.?.?.?).-"', '"name":"----------------------- %1 - ' .. string.format("%03d", conructID%1000) .. '"') --2nd gunner mode
