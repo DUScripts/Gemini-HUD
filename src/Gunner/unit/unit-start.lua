@@ -13,7 +13,7 @@
 --  IvanGrozny for Echoes widget, 3D space map, icons from his "Epic HUD"
 --  Chelobek for target vector widget
 
--- Gemini HUD is the rebirth of the GHUD HUD (Custom Fire Control System)
+-- Gemini HUD is the rebirth of the CFCS HUD (Custom Fire Control System)
 -- Author: GeminiX (aka SneakySnake, DU Pirate)
 
 --Gunner Module
