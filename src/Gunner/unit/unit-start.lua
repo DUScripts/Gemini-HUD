@@ -115,7 +115,7 @@ mRadar = mRadar:new(system, radar, whitelist) --radar widget
 
 system.showScreen(1)
 
-hudVars() --load main vars and constants
+GlobalVars() --load main vars and constants
 
 unit.setTimer("radar",0.2)
 
