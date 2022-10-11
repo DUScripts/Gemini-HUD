@@ -8,7 +8,7 @@ function whitelist(friendly_IDs)
  function defaultRadar()
    sizeState = 6
    defaultSize = 'ALL'
-   if radar.friendlyMode == true then madara.friendlyMode = false end
+   if mRadar.friendlyMode == true then mRadar.friendlyMode = false end
  end
 
  --radar widget
