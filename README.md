@@ -20,4 +20,7 @@ Many thanks to:<br/>
 =======
  ![example](https://github.com/Crusader93/Gemini-HUD/blob/main/images/unknown1.png)<br/>
  ![example](https://github.com/Crusader93/Gemini-HUD/blob/main/images/unknown2.png)
+<<<<<<< HEAD
+>>>>>>> dcec6e5b67ba786343e40a5290778330510b4fda
+=======
 >>>>>>> dcec6e5b67ba786343e40a5290778330510b4fda
