@@ -61,7 +61,7 @@ function checkWhitelist()
          if isIDFiltered and self.idFilter[ID%1000] ~= true then
             goto continue1
          end
-            resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. string.format("%03d", ID%1000) .. ' - %1"') --cut construct IDs
+            resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. string.format("%03d", ID%1000) .. ' - %1"')
          ::continue1::
          end
         if defaultSize ~= 'ALL' and size == defaultSize then --sorted
@@ -71,7 +71,7 @@ function checkWhitelist()
            if isIDFiltered and self.idFilter[ID%1000] ~= true then
               goto continue2
            end
-              resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. string.format("%03d", ID%1000) .. ' - %1"') --cut construct IDs
+              resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. string.format("%03d", ID%1000) .. ' - %1"')
            ::continue2::
          end
       end
@@ -79,8 +79,8 @@ function checkWhitelist()
     local filterMsg = (isIDFiltered and ''..focus..' - FOCUS - ' or '') .. (self.friendlyMode and ''..sizestr..' - Friends' or ''..sizestr..' - Enemies')
     --local postData = data:match('"elementId":".+') --deprecated
     local postData = data:match('"currentTargetId":".+')
-    postData = postData:gsub('"errorMessage":""', '"errorMessage":"' .. filterMsg .. '"')
-    data = '{"constructsList":[' .. table.concat(resultList, ",") .. "]," .. postData
+    postData = postData:gsub('"errorMessage":""', '"errorMessage":"' .. filterMsg .. '"') --filter data
+    data = '{"constructsList":[' .. table.concat(resultList, ",") .. "]," .. postData --completed global json radar data
     self.system.updateData(self.dataID, data)
  end
  
