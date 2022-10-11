@@ -5,13 +5,13 @@ function checkWhitelist()
     return set
  end
 
+ --radar widget
  function defaultRadar()
    sizeState = 6
    defaultSize = 'ALL'
    if mRadar.friendlyMode == true then mRadar.friendlyMode = false end
  end
 
- --radar widget
  function mRadar:createWidget()
     self.dataID = self.system.createData(self.radar.getData())
     radarPanel = self.system.createWidgetPanel('')
