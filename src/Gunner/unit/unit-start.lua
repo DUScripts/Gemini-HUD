@@ -65,9 +65,6 @@ GHUD_AlliesY = 0 --export: set to 0 if playing in fullscreen mode
 GHUD_SelectedY = 50 --export:
 GHUD_SelectedX = 37.4 --export:
 GHUD_SelectedTextY = 12 --export:
---sounds path
-GHUD_message_enter = "enter.mp3" --export:
-GHUD_message_leave = "leave.mp3" --export:
 GHUD_Windowed_Mode = false --export: adds 2 to the height GHUD_AlliesY
 collectgarbages = true --export:
 
