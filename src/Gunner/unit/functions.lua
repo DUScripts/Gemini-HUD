@@ -62,7 +62,7 @@ function checkWhitelist()
             goto continue1
          end
             resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. string.format("%03d", ID%1000) .. ' - %1"')
-         ::continue1::
+            ::continue1::
          end
         if defaultSize ~= 'ALL' and size == defaultSize then --sorted
            if (self.friendList[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode then
@@ -72,7 +72,7 @@ function checkWhitelist()
               goto continue2
            end
               resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. string.format("%03d", ID%1000) .. ' - %1"')
-           ::continue2::
+              ::continue2::
          end
       end
     end
