@@ -4,7 +4,13 @@ function whitelist(friendly_IDs)
     for _, l in ipairs(whitelist) do set[l] = true end
     return set
  end
- 
+
+ function defaultRadar()
+   sizeState = 6
+   defaultSize = 'ALL'
+   if radar.friendlyMode == true then madara.friendlyMode = false end
+ end
+
  --radar widget
  function mRadar:createWidget()
     self.dataID = self.system.createData(self.radar.getData())
@@ -70,7 +76,7 @@ function whitelist(friendly_IDs)
          end
       end
     end
-    local filterMsg = (isIDFiltered and 'FOCUS ' or '') .. (self.friendlyMode and ''..sizestr..' - Friends' or ''..sizestr..' - Enemies')
+    local filterMsg = (isIDFiltered and ''..focus..' - FOCUS - ' or '') .. (self.friendlyMode and ''..sizestr..' - Friends' or ''..sizestr..' - Enemies')
     --local postData = data:match('"elementId":".+') --deprecated
     local postData = data:match('"currentTargetId":".+')
     postData = postData:gsub('"errorMessage":""', '"errorMessage":"' .. filterMsg .. '"')
@@ -93,6 +99,8 @@ function whitelist(friendly_IDs)
  --pvp focus mode
  function mRadar:onTextInput(text)
     self:clearIDFilter()
+    focus = text:sub(-3)
+    defaultRadar()
     for id in text:gmatch('%D(%d%d%d)') do
        self:addIDFilter(tonumber(id))
     end
@@ -206,6 +214,12 @@ function whitelist(friendly_IDs)
  end
  
  function GlobalVars()
+    mRadar = {}
+    mWeapons = {}
+    size = {'XL','L','M','S','XS'}
+    defaultSize = 'ALL'
+    sizeState = 6
+    focus = ''
     buttonSpace = false
     buttonC = false
     atmovar = alse
@@ -234,8 +248,6 @@ function whitelist(friendly_IDs)
     conID = core.getConstructId()
     system.print(''..shipName..': '..conID..'')
     conID = (""..conID..""):sub(-3)
-    shipINFO = '**'..conID..' - '..shipName..' - NEW TARGET:**'
-    shipINFO1 = '**'..conID..' - '..shipName..'**'
  end
  
  --local time

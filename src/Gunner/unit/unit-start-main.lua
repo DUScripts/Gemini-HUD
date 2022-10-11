@@ -22,8 +22,7 @@ HUD_version = '1.0.0'
 friendly_IDs = {} -- put IDs here 34141,231231,31231 etc
 whitelist = whitelist(friendly_IDs) --load IDs
 
-mRadar = {}
-mWeapons = {}
+GlobalVars() --load main vars and constants
 
 --radar widget coroutine
 local pauseAfter = 1000
@@ -114,9 +113,6 @@ mWeapons = mWeapons:new(system, weapon, GHUD_Weapons_Panels) --weapon widgets
 mRadar = mRadar:new(system, radar, whitelist) --radar widget
 
 system.showScreen(1)
-
-GlobalVars() --load main vars and constants
-
 unit.setTimer("radar",0.2)
 
 --main gunner function (2 radars required)
