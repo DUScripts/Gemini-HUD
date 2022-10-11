@@ -38,7 +38,6 @@ local timed = false
 
 --LUA parameters
 GHUD_Weapons_Panels = 3 --export:
-GHUD_Gunner_Module_Radar_Mode = false --export:
 GHUD_log_stats = true --export: Send target statistics to LUA channel
 --GHUD_Old_Weapon_Widgets = false --export:
 GHUD_Angular_Radial = false --export: Show angular and radial speed

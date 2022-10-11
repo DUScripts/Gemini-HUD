@@ -110,10 +110,6 @@ function checkWhitelist()
     self.friendlyMode = not self.friendlyMode
  end
  
- --function mRadar:toggleOnlyIdentified() -- locked mode
-    --self.onlyIdentified = not self.onlyIdentified
- --end
- 
  function mRadar:new(sys, radar, friendList)
     local mRadar = {}
     setmetatable(mRadar, self)
@@ -179,6 +175,8 @@ function checkWhitelist()
           ammoType1 = "KI"
        elseif ammoName:match("Thermic") then
           ammoType1 = "TH"
+       --elseif ammoName:match("stasis string ammo name") then
+          --ammoType1 = "Stasis"   
        end
  
        local ammoType2 = ""
@@ -191,7 +189,12 @@ function checkWhitelist()
        elseif ammoName:match("Defense") then
           ammoType2 = "Def"
        end
- 
+       
+       --if ammoType1 == "Statis" then
+       --weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. ammoType1 .. '"')
+       --else
+       --weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. ammoType2 .. ' ' .. ammoType1 .. '"')
+       --end
        weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. ammoType2 .. ' ' .. ammoType1 .. '"')
        weaponData = weaponData:gsub('"constructId":"(%d+(%d%d%d))","name":"(.?.?.?.?).-"', '"constructId":"%1","name":"%2 - %3"')
        if self.system.updateData(weaponDataID, weaponData) ~= 1 then
