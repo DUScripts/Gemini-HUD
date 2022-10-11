@@ -20,7 +20,7 @@
 HUD_version = '1.0.0'
 
 friendly_IDs = {} -- put IDs here 34141,231231,31231 etc
-whitelist = whitelist(friendly_IDs) --load IDs
+whitelist = checkWhitelist() --load IDs
 
 GlobalVars() --load main vars and constants
 

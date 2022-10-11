@@ -1,4 +1,4 @@
-function whitelist(friendly_IDs)
+function checkWhitelist()
     local whitelist = friendly_IDs
     local set = {}
     for _, l in ipairs(whitelist) do set[l] = true end
