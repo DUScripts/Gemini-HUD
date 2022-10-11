@@ -38,7 +38,6 @@ function checkWhitelist()
  end
  
  function mRadar:updateStep()
-    local sizestr = defaultSize
     local resultList = {}
     local data = radar.getData()
     local constructList = data:gmatch('({"constructId":".-%b{}.-})')
@@ -76,7 +75,7 @@ function checkWhitelist()
          end
       end
     end
-    local filterMsg = (isIDFiltered and ''..focus..' - FOCUS - ' or '') .. (self.friendlyMode and ''..sizestr..' - Friends' or ''..sizestr..' - Enemies')
+    local filterMsg = (isIDFiltered and ''..focus..' - FOCUS - ' or '') .. (self.friendlyMode and ''..defaultSize..' - Friends' or ''..sizestr..' - Enemies')
     --local postData = data:match('"elementId":".+') --deprecated
     local postData = data:match('"currentTargetId":".+')
     postData = postData:gsub('"errorMessage":""', '"errorMessage":"' .. filterMsg .. '"') --filter data
