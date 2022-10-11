@@ -80,7 +80,7 @@ function checkWhitelist()
     --local postData = data:match('"elementId":".+') --deprecated
     local postData = data:match('"currentTargetId":".+')
     postData = postData:gsub('"errorMessage":""', '"errorMessage":"' .. filterMsg .. '"') --filter data
-    data = '{"constructsList":[' .. table.concat(resultList, ",") .. "]," .. postData --completed global json radar data
+    data = '{"constructsList":[' .. table.concat(resultList, ",") .. "]," .. postData --completed json radar data
     self.system.updateData(self.dataID, data)
  end
  
