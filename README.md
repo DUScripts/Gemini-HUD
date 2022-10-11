@@ -14,5 +14,5 @@ Many thanks to:<br/>
  Middings for brake distance function<br/>
  IvanGrozny for Echoes widget, 3D space map, icons from his "Epic HUD"<br/>
  Chelobek for target vector widget<br/>
- ![example1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/uknown1.png)<br/>
- ![example2](https://github.com/Crusader93/Gemini-HUD/blob/master/images/uknown2.png)<br/>
+ ![example1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/unknown1.png)<br/>
+ ![example2](https://github.com/Crusader93/Gemini-HUD/blob/master/images/unknown2.png)<br/>
