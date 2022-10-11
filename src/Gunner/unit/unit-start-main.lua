@@ -2,14 +2,12 @@
 
 -- Many thanks to:
 --  W1zard for weapon and radar widgets
---  for closest pipe functions
---  for target detection help
+--  tiramon for closest pipe functions
+--  SeM for the help with the coroutines
 --  JayleBreak for planetref functions
---  Aranol for closest pos functions
---  for radar funtion help and trilaterate
---  Sawafa
+--  Aranol for closest pos functions and 2D planet radar
 --  Mistery for vector functions
---  Middings
+--  Middings for brake distance function
 --  IvanGrozny for Echoes widget, 3D space map, icons from his "Epic HUD"
 --  Chelobek for target vector widget
 
@@ -39,7 +37,6 @@ local timed = false
 --LUA parameters
 GHUD_Weapons_Panels = 3 --export:
 GHUD_log_stats = true --export: Send target statistics to LUA channel
---GHUD_Old_Weapon_Widgets = false --export:
 GHUD_Angular_Radial = false --export: Show angular and radial speed
 GHUD_ShowAllies = true --export: Show allies
 GHUD_ShowEcho = true --export: Show targets echo
@@ -114,7 +111,7 @@ mRadar = mRadar:new(system, radar, whitelist) --radar widget
 system.showScreen(1)
 unit.setTimer("radar",0.2)
 
---main gunner function (2 radars required)
+--main gunner function
 local function main()
    local id = ""
    while true do
