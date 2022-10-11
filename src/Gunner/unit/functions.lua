@@ -43,6 +43,7 @@ function whitelist(friendly_IDs)
        if i%pauseAfter==0 then
           coroutine.yield()
        end
+<<<<<<< HEAD
        local ID = tonumber(str:match('"constructId":"([%d]*)"'))
        local size = radar.getConstructCoreSize(ID)
        local locked = radar.isConstructIdentified(ID)
@@ -69,6 +70,8 @@ function whitelist(friendly_IDs)
            ::continue2::
          end
       end
+=======
+>>>>>>> dbd4efbe8b1f2bd5c12c9f8b4b11d32c5bbada1c
     end
     local filterMsg = (isIDFiltered and 'FOCUS ' or '') .. (self.friendlyMode and ''..sizestr..' - Friends' or ''..sizestr..' - Enemies')
     --local postData = data:match('"elementId":".+') --deprecated

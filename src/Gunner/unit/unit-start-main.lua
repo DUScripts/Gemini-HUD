@@ -119,7 +119,7 @@ GlobalVars() --load main vars and constants
 
 unit.setTimer("radar",0.2)
 
---main gunner HUD function (2 radars required)
+--main gunner function (2 radars required)
 local function main()
    local id = ""
    while true do
