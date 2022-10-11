@@ -32,6 +32,7 @@ function whitelist(friendly_IDs)
  end
  
  function mRadar:updateStep()
+    local sizestr = defaultSize
     local resultList = {}
     local data = mRadar.radar.getData()
     local constructList = data:gmatch('({"constructId":".-%b{}.-})')
@@ -42,25 +43,36 @@ function whitelist(friendly_IDs)
        if i%pauseAfter==0 then
           coroutine.yield()
        end
-       local conructID = tonumber(str:match('"constructId":"([%d]*)"'))
-       if (self.friendList[conructID]==true or self.radar.hasMatchingTransponder(conructID)==1) ~= self.friendlyMode then
-          goto continue1
-       end
-       if not self.onlyIdentified and isIDFiltered and self.idFilter[conructID%1000] ~= true then
-          goto continue1
-       end
-       if self.onlyIdentified and self.radar.isConstructIdentified(conructID) == 0 then
-          goto continue1
-       end
-       if not CFCS_Gunner_Module_Radar_Mode then
-          resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. string.format("%03d", conructID%1000) .. ' - %1"') --cut construct IDs
-       else
-          resultList[#resultList+1] = str:gsub('"name":"(.?.?.?.?).-"', '"name":"----------------------- %1 - ' .. string.format("%03d", conructID%1000) .. '"') --2nd gunner mode
-       end
-       ::continue1::
+       local ID = tonumber(str:match('"constructId":"([%d]*)"'))
+       local size = radar.getConstructCoreSize(ID)
+       local locked = radar.isConstructIdentified(ID)
+       local alive = radar.isConstructAbandoned(ID)
+       if locked == 1 or alive == 0 then --show only locked or alive targets
+         if defaultSize == 'ALL' then --default mode
+         if (self.friendList[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode then
+            goto continue1
+         end
+         if isIDFiltered and self.idFilter[ID%1000] ~= true then
+            goto continue1
+         end
+            resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. string.format("%03d", ID%1000) .. ' - %1"') --cut construct IDs
+         ::continue1::
+         end
+        if defaultSize ~= 'ALL' and size == defaultSize then --sorted
+           if (self.friendList[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode then
+              goto continue2
+           end
+           if isIDFiltered and self.idFilter[ID%1000] ~= true then
+              goto continue2
+           end
+              resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. string.format("%03d", ID%1000) .. ' - %1"') --cut construct IDs
+           ::continue2::
+         end
+      end
     end
-    local filterMsg = (isIDFiltered and 'FOCUS ' or '') .. (self.friendlyMode and 'Friends' or 'Enemies') .. (self.onlyIdentified and ' - LOCKED' or '')
-    local postData = data:match('"elementId":".+')
+    local filterMsg = (isIDFiltered and 'FOCUS ' or '') .. (self.friendlyMode and ''..sizestr..' - Friends' or ''..sizestr..' - Enemies')
+    --local postData = data:match('"elementId":".+') --deprecated
+    local postData = data:match('"currentTargetId":".+')
     postData = postData:gsub('"errorMessage":""', '"errorMessage":"' .. filterMsg .. '"')
     data = '{"constructsList":[' .. table.concat(resultList, ",") .. "]," .. postData
     self.system.updateData(self.dataID, data)
@@ -90,9 +102,9 @@ function whitelist(friendly_IDs)
     self.friendlyMode = not self.friendlyMode
  end
  
- function mRadar:toggleOnlyIdentified()
-    self.onlyIdentified = not self.onlyIdentified
- end
+ --function mRadar:toggleOnlyIdentified() -- locked mode
+    --self.onlyIdentified = not self.onlyIdentified
+ --end
  
  function mRadar:new(sys, radar, friendList)
     local mRadar = {}
@@ -111,7 +123,7 @@ function whitelist(friendly_IDs)
  function mRadar:stopC()
     self:clearIDFilter(self.system.print("FOCUS MODE DEACTIVATED"))
  end
- 
+ ----------------------------------------------------------------------------------
  --weapon widgets
  function mWeapons:createWidgets()
     if not (type(self.weapons) == 'table' and #self.weapons > 0) then
