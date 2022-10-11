@@ -40,7 +40,7 @@ function checkWhitelist()
  function mRadar:updateStep()
     local sizestr = defaultSize
     local resultList = {}
-    local data = mRadar.radar.getData()
+    local data = radar.getData()
     local constructList = data:gmatch('({"constructId":".-%b{}.-})')
     local isIDFiltered = next(self.idFilter) ~= nil
     local i = 0
