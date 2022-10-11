@@ -52,7 +52,8 @@ function checkWhitelist()
        local size = radar.getConstructCoreSize(ID)
        local locked = radar.isConstructIdentified(ID)
        local alive = radar.isConstructAbandoned(ID)
-       if locked == 1 or alive == 0 then --show only locked or alive targets
+       local selectedTarget = radar.getTargetId(ID)
+       if locked == 1 or alive == 0 or selectedTarget == ID then --show only locked or alive or selected targets
          if defaultSize == 'ALL' then --default mode
          if (self.friendList[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode then
             goto continue1
