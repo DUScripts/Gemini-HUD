@@ -9,3 +9,7 @@ onMissed:
 lastMissTime = system.getArkTime()
 missOpacity = 1
 miss = true
+
+onDestroyed:
+dHint = 'Target has been destroyed!'
+

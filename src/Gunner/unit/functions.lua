@@ -222,6 +222,7 @@ function checkWhitelist()
     damage = 0
     missOpacity = 1
     hitOpacity = 1
+    dHint = ''
     mRadar = {}
     mWeapons = {}
     size = {'XL','L','M','S','XS'}
