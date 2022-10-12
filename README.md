@@ -22,6 +22,6 @@ ETH/BEP20: 0x90b865B1e05950826D521B4a0F95597d80b23180<br/>
 BTC: 18HJbJBNeWs4ZZPYQ1hpjYt3BLb8VoiwXA<br/>
 TRX: TTEiRTWftQXJCu4h31KZThNZpXhPZjVRMp<br/>
 <br/>
-![example1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/1.png)<br/>
+![example1](https://github.com/Crusader93/Gemini-HUD/raw/master/images/1.png)<br/>
 ![example2](https://github.com/Crusader93/Gemini-HUD/blob/master/images/2.png)<br/>
 ![example3](https://github.com/Crusader93/Gemini-HUD/blob/master/images/3.png)<br/>
