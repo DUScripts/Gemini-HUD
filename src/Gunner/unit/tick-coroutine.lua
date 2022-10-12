@@ -3,6 +3,7 @@ if coroutine.status(main1) ~= "dead" and coroutine.status(main1) == "suspended" 
  end
 
 system.setScreen(hudHTML)
+
 --hit/miss concept
 if hit == true then
     local curTime = system.getArkTime()
@@ -28,7 +29,8 @@ if hit == true then
         }
         </style>
         <div class="hit">HIT ]]..damage..[[ HP</div>]]
-    if time == 1 then hit = false end
+
+        if time == 1 then hit = false end
     end
 
     if miss == true then
@@ -55,8 +57,8 @@ if hit == true then
             }
             </style>
             <div class="miss">MISS</div>]]
-    
-    if time == 1 then miss = false end
+
+            if time == 1 then miss = false end
         end
 
     if miss == true and hit == false then 
