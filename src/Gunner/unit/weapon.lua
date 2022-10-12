@@ -1,7 +1,7 @@
 --events
 onHit:
-damage = targetDamage
-lastHitTime = system.getArkTime()
+damage[targetDamage] = targetDamage
+lastHitTime[targetDamage] = system.getArkTime()
 hitOpacity = 1
 hit = true
 
