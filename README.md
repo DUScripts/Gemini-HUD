@@ -17,7 +17,7 @@ Many thanks to:<br/>
  IvanGrozny for Echoes widget, 3D space map, icons from his "Epic HUD"<br/>
  Chelobek for target vector widget<br/>
  <br/>
-![example1](https://github.com/Crusader93/Gemini-HUD/blob/main/images/1.png)<br/>
+![example](https://github.com/Crusader93/Gemini-HUD/blob/main/images/1.png)<br/>
 ![example2](https://github.com/Crusader93/Gemini-HUD/blob/main/images/2.png)<br/>
 ![example3](https://github.com/Crusader93/Gemini-HUD/blob/main/images/3.png)<br/>
 <br/>
