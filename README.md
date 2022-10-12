@@ -23,6 +23,5 @@ TRX: TTEiRTWftQXJCu4h31KZThNZpXhPZjVRMp<br/>
 <br/>
 ![example1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/3.png)<br/>
 Beta CFCS:<br/>
-<br/>
 ![example2](https://github.com/Crusader93/Gemini-HUD/blob/master/images/1.png)<br/>
 ![example3](https://github.com/Crusader93/Gemini-HUD/blob/master/images/2.png)<br/>
