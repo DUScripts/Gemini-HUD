@@ -217,12 +217,18 @@ function checkWhitelist()
  end
  
  function GlobalVars()
+    hit = false
+    miss = false
+    damage = 0
+    missOpacity = 1
+    hitOpacity = 1
     mRadar = {}
     mWeapons = {}
     size = {'XL','L','M','S','XS'}
     defaultSize = 'ALL'
     sizeState = 6
     focus = ''
+    hudHTML = ''
     buttonSpace = false
     buttonC = false
     atmovar = alse

@@ -24,6 +24,7 @@ if text == "safe" then
     end
     if text == "res" then
     mRadar:stopC()
+    defaultRadar()
     end
     local count = #string.gsub(text, "[^f]", "") 
     local f1 = string.sub(text,1,1)

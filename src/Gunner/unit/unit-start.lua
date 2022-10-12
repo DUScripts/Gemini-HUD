@@ -131,6 +131,7 @@ local function main()
       local captionText = ""
       local okcolor = ""
       local captionLcolor = ""
+      hudHTML = ""
       radarTarget = {}
       radarStatic = {}
       radarDynamic = {}
@@ -503,17 +504,21 @@ hudver = hudvers .. [[<div class="hudversion">Gemini v]]..HUD_version..[[</div>]
 
 if GHUD_ShowEcho == true then
 if GHUD_ShowAllies == true then
-   system.setScreen(htmltext .. target .. locks .. hudver .. radarWidget ..targetsele ..statusSVG)
+   --system.setScreen(htmltext .. target .. locks .. hudver .. radarWidget ..targetsele ..statusSVG)
+   hudHTML = htmltext .. target .. locks .. hudver .. radarWidget ..targetsele ..statusSVG
 else
-   system.setScreen(target .. locks .. hudver .. radarWidget ..targetsele ..statusSVG)
+   --system.setScreen(target .. locks .. hudver .. radarWidget ..targetsele ..statusSVG)
+   hudHTML = target .. locks .. hudver .. radarWidget ..targetsele ..statusSVG
 end
 
 else
 
 if GHUD_ShowAllies == true then
-   system.setScreen(htmltext .. target .. locks .. hudver ..targetsele ..statusSVG)
+   --system.setScreen(htmltext .. target .. locks .. hudver ..targetsele ..statusSVG)
+   hudHTML = htmltext .. target .. locks .. hudver ..targetsele ..statusSVG
 else
-   system.setScreen(target .. locks .. hudver ..targetsele ..statusSVG)
+   --system.setScreen(target .. locks .. hudver ..targetsele ..statusSVG)
+   hudHTML = target .. locks .. hudver ..targetsele ..statusSVG
 end
 end
 coroutine.yield()
