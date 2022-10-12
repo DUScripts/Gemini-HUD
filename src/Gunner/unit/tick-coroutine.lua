@@ -16,7 +16,7 @@ if hit == true then
         <style>
         .hit {
             top: ]]..top..[[vh;
-            left: calc(50% + ]].right..[[vh);
+            left: calc(50% + ]]..right..[[vh);
             position: absolute;
             text-alight: center;
             font-size: 40px;
@@ -44,7 +44,7 @@ if hit == true then
             <style>
             .miss {
                 top: ]]..top..[[vh;
-                left: calc(50% - ]].left..[[vh);
+                left: calc(50% - ]]..left..[[vh);
                 position: absolute;
                 text-alight: center;
                 font-size: 40px;
