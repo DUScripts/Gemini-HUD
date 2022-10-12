@@ -1,6 +1,6 @@
 Gemini Foundation<br/>
 Dual Universe PvP HUD<br/>
-##Work in progress<br/>
+## Work in progress<br/>
 <br/>
 Discord: https://discord.gg/sTWdvte8E7<br/>
 <br/>
