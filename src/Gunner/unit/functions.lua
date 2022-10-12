@@ -234,7 +234,7 @@ function checkWhitelist()
     hudHTML = ''
     buttonSpace = false
     buttonC = false
-    atmovar = alse
+    atmovar = false
     newcolor = "#6affb1"
     endload = 0
     dist1 = 0
