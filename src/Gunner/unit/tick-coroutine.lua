@@ -2,6 +2,8 @@ if coroutine.status(main1) ~= "dead" and coroutine.status(main1) == "suspended" 
     coroutine.resume(main1)
  end
 
+system.setScreen(hudHTML)
+--hit/miss concept
 if hit == true then
     local curTime = system.getArkTime()
     local time = curTime - lastHitTime
