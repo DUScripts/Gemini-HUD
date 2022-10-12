@@ -13,14 +13,14 @@ function checkWhitelist()
  end
 
  function mRadar:createWidget()
-    self.dataID = self.system.createData(self.radar.getData())
+    self.dataID = self.system.createData(self.radar.getWidgetData())
     radarPanel = self.system.createWidgetPanel('')
     radarWidget = self.system.createWidget(radarPanel, self.radar.getWidgetType())
     self.system.addDataToWidget(self.dataID, radarWidget)
  end
  
  function mRadar:createWidgetNew()
-    self.dataID = self.system.createData(self.radar.getData())
+    self.dataID = self.system.createData(self.radar.getWidgetData())
     radarWidget = self.system.createWidget(radarPanel, self.radar.getWidgetType())
     self.system.addDataToWidget(self.dataID, radarWidget)
  end
@@ -39,7 +39,7 @@ function checkWhitelist()
  
  function mRadar:updateStep()
     local resultList = {}
-    local data = radar.getData()
+    local data = radar.getWidgetData()
     local constructList = data:gmatch('({"constructId":".-%b{}.-})')
     local isIDFiltered = next(self.idFilter) ~= nil
     local i = 0
@@ -76,7 +76,7 @@ function checkWhitelist()
          end
       end
     end
-    local filterMsg = (isIDFiltered and ''..focus..' - FOCUS - ' or '') .. (self.friendlyMode and ''..defaultSize..' - Friends' or ''..sizestr..' - Enemies')
+    local filterMsg = (isIDFiltered and ''..focus..' - FOCUS - ' or '') .. (self.friendlyMode and ''..defaultSize..' - Friends' or ''..defaultSize..' - Enemies')
     --local postData = data:match('"elementId":".+') --deprecated
     local postData = data:match('"currentTargetId":".+')
     postData = postData:gsub('"errorMessage":""', '"errorMessage":"' .. filterMsg .. '"') --filter data
