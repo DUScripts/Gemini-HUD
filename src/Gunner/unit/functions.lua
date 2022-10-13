@@ -217,11 +217,8 @@ function checkWhitelist()
  end
  
  function GlobalVars()
-    hit = false
-    miss = false
-    damage = 0
-    missOpacity = 1
-    hitOpacity = 1
+    lastHitTime = {}
+    lastMissTime = {}
     dHint = ''
     hithtml = ''
     misshtml = ''
