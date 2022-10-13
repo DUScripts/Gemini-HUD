@@ -10,7 +10,7 @@ if string.sub(tag, 1, 1) == 'h' then
     if hitOpacity <= 0 then hitOpacity = 0 end
     hithtml = [[
         <style>
-        .]]..tag..[[]] {
+        .]]..tag..[[ {
             top: ]]..top..[[vh;
             left: calc(56.5% + ]]..right..[[vh);
             position: absolute;
@@ -45,7 +45,7 @@ if string.sub(tag, 1, 1) == 'h' then
         if hmissOpacity <= 0 then missOpacity = 0 end
         misshtml = [[
             <style>
-            .]]..tag..[[]] {
+            .]]..tag..[[ {
                 top: ]]..top..[[vh;
                 left: calc(47.5% - ]]..left..[[vh);
                 position: absolute;
