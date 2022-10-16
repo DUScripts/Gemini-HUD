@@ -2,7 +2,7 @@ Gemini Foundation<br/>
 Dual Universe PvP HUD<br/>
 ## Work in progress
 Discord: https://discord.gg/sTWdvte8E7<br/>
-<br/>https://youtu.be/qSY3nIZ_R5k
+<br/>
 Gemini HUD is the rebirth of the CFCS HUD (Custom Fire Control System)<br/>
 <br/>
 Many thanks to:<br/>
