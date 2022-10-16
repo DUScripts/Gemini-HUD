@@ -21,8 +21,8 @@ ETH/BEP20: 0x90b865B1e05950826D521B4a0F95597d80b23180<br/>
 BTC: 18HJbJBNeWs4ZZPYQ1hpjYt3BLb8VoiwXA<br/>
 TRX: TTEiRTWftQXJCu4h31KZThNZpXhPZjVRMp<br/>
 <br/>
+Animated shield bar video: https://youtu.be/qSY3nIZ_R5k<br>
 [![Animated shield bar](https://github.com/Crusader93/Gemini-HUD/blob/master/images/4.png)](https://youtu.be/qSY3nIZ_R5k)<br/>
-Video: https://youtu.be/qSY3nIZ_R5k<br>
 ![example1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/3.png)<br/>
 Beta CFCS:<br/>
 ![example2](https://github.com/Crusader93/Gemini-HUD/blob/master/images/1.png)<br/>
