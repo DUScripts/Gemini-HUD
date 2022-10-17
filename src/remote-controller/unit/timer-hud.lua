@@ -11,10 +11,10 @@ end
 end
 
 local stress = shield.getStressRatioRaw()
-AM_stress = math.floor(stress[1])
-EM_stress = math.floor(stress[2])
-KI_stress = math.floor(stress[3])
-TH_stress = math.floor(stress[4])
+AM_stress = stress[1]
+EM_stress = stress[2]
+KI_stress = stress[3]
+TH_stress = stress[4]
 
 hudHTML = [[
 <html>
