@@ -59,6 +59,48 @@ end
 
 friendly_IDs = {} -- put IDs here 34141,231231,31231 etc
 
+--vars
+lastHitTime = {}
+lastMissTime = {}
+dHint = ''
+hithtml = ''
+misshtml = ''
+mRadar = {}
+mWeapons = {}
+size = {'XL','L','M','S','XS'}
+defaultSize = 'ALL'
+sizeState = 6
+focus = ''
+hudHTML = ''
+buttonSpace = false
+buttonC = false
+atmovar = false
+newcolor = "#6affb1"
+endload = 0
+dist1 = 0
+dist3 = 0
+znak = '' --target speed icon
+firstload = 0
+firstload1 = 0
+constructSelected = 0
+probil = 0
+playerName = system.getPlayerName(unit.getMasterPlayerId())
+warpScan = 0 --for 3D map
+t_radarEnter = {}
+loglist = {}
+radarTarget = nil
+radarStatic = {}
+radarDynamic = {}
+radarStaticWidget = {}
+radarStaticData = {}
+radarDynamicWidget = {}
+radarDynamicData = {}
+radarWidget = ''
+shipName = core.getConstructName()
+conID = core.getConstructId()
+system.print(''..shipName..': '..conID..'')
+conID = (""..conID..""):sub(-3)
+
 function checkWhitelist()
    local whitelist = friendly_IDs
    local set = {}
@@ -290,50 +332,7 @@ function seconds_to_clock(time_amount)
    return string.format('%02.f:%02.f:%02.f', wrapped_time.h, wrapped_time.m, wrapped_time.s)
 end
 
-
 whitelist = checkWhitelist() --load IDs
-
---vars
-lastHitTime = {}
-lastMissTime = {}
-dHint = ''
-hithtml = ''
-misshtml = ''
-mRadar = {}
-mWeapons = {}
-size = {'XL','L','M','S','XS'}
-defaultSize = 'ALL'
-sizeState = 6
-focus = ''
-hudHTML = ''
-buttonSpace = false
-buttonC = false
-atmovar = false
-newcolor = "#6affb1"
-endload = 0
-dist1 = 0
-dist3 = 0
-znak = '' --target speed icon
-firstload = 0
-firstload1 = 0
-constructSelected = 0
-probil = 0
-playerName = system.getPlayerName(unit.getMasterPlayerId())
-warpScan = 0 --for 3D map
-t_radarEnter = {}
-loglist = {}
-radarTarget = nil
-radarStatic = {}
-radarDynamic = {}
-radarStaticWidget = {}
-radarStaticData = {}
-radarDynamicWidget = {}
-radarDynamicData = {}
-radarWidget = ''
-shipName = core.getConstructName()
-conID = core.getConstructId()
-system.print(''..shipName..': '..conID..'')
-conID = (""..conID..""):sub(-3)
 
 --radar widget coroutine
 local pauseAfter = 1000
