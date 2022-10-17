@@ -1,7 +1,7 @@
 damageLine = ''
-local curTime = system.getArkTime()
-local time = curTime - lastDamageTime
 if damage > 0 then
+    local curTime = system.getArkTime()
+    local time = curTime - lastDamageTime
     damage = damage - 1
     damageLine = [[<rect x="]].. svghp + 145 ..[[" y="225" width="]]..damage..[[" height="50" style="fill: rgb(212, 42, 96); stroke: rgb(212, 42, 96);" bx:origin="0.5 0.5"/>]]
 end
