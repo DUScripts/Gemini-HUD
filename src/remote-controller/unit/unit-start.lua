@@ -21,7 +21,6 @@ HUD_version = '1.0.0'
 hudHTML = ''
 damageLine = ''
 damage = 0
-lastDamageTime = 0
 maxSHP = 210 --svg shield X right side coordinate
 shieldMaxHP = shield.getMaxShieldHitpoints()
 HP = math.floor(shield.getShieldHitpoints()/shieldMaxHP * 100)
