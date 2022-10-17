@@ -4,7 +4,7 @@ if string.sub(tag, 1, 1) == 'h' then
     local time = curTime - lastHitTime[tag].time
     local hitOpacity = (lastHitTime[tag].time + 1) - curTime
     if time >= 2 then time = 2 end
-    hitOpacity = hitOpacity - 0.02
+    hitOpacity = hitOpacity - 0.02 -- error, need fix!
     local top = 45 - time * 5
     local right = time * 10
     if hitOpacity <= 0 then hitOpacity = 0 end
