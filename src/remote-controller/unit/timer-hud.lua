@@ -4,7 +4,8 @@ local time = curTime - lastDamageTime
 if damage > 0 then
     damage = damage - 1
     damageLine = [[<rect x="]].. svghp + 145 ..[[" y="225" width="]]..damage..[[" height="50" style="fill: rgb(212, 42, 96); stroke: rgb(212, 42, 96);" bx:origin="0.5 0.5"/>]]
-else
+end
+    if damage <= 0 then
     damage = 0
     damageLine = ''
 end
