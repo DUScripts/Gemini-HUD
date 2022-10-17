@@ -8,7 +8,7 @@ end
     damageLine = ''
 end
 
-stress = shield.getStressRatioRaw()
+local stress = shield.getStressRatioRaw()
 AM_stress = stress[1]
 EM_stress = stress[2]
 KI_stress = stress[3]

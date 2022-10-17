@@ -39,7 +39,7 @@ EM_stroke_color = 'rgb(66, 167, 245)'
 TH_stroke_color = 'rgb(66, 167, 245)'
 KI_stroke_color = 'rgb(66, 167, 245)'
 
-stress = shield.getStressRatioRaw()
+local stress = shield.getStressRatioRaw()
 AM_stress = stress[1]
 EM_stress = stress[2]
 KI_stress = stress[3]
