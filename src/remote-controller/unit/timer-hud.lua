@@ -13,6 +13,7 @@ if ccshit > 0 then
         if ccshp >= ccshp1 then
                 ccshp = ccshp1
                 ccsLineHit = ''
+                ccshit = 0
         end
 end
 
