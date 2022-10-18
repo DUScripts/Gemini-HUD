@@ -22,7 +22,7 @@ BTC: 18HJbJBNeWs4ZZPYQ1hpjYt3BLb8VoiwXA<br/>
 TRX: TTEiRTWftQXJCu4h31KZThNZpXhPZjVRMp<br/>
 <br/>
 Animated shield bar: https://youtu.be/xfj97kRHDf4<br>
-[![Animated shield bar](https://github.com/Crusader93/Gemini-HUD/blob/master/images/4.png)](https://youtu.be/xfj97kRHDf4)<br/>
+[![Animated shield bar](https://github.com/Crusader93/Gemini-HUD/blob/master/images/shieldBar.png)](https://youtu.be/xfj97kRHDf4)<br/>
 ![example1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/3.png)<br/>
 Beta CFCS:<br/>
 ![example2](https://github.com/Crusader93/Gemini-HUD/blob/master/images/1.png)<br/>
