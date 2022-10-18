@@ -69,6 +69,26 @@ EM_stress = stress[2]
 KI_stress = stress[3]
 TH_stress = stress[4]
 
+function damage_ccs_SVG()
+if damage > 0 then
+    damage = damage - 0.1
+    damageLine = [[<rect x="]].. svghp + 145 ..[[" y="225" width="]]..damage..[[" height="50" style="fill: #de1656; stroke: #de1656;" bx:origin="0.5 0.5"/>]]
+end
+    if damage <= 0 then
+    damage = 0
+    damageLine = ''
+end
+
+if ccshit > 0 then
+        ccshp = ccshp + 0.25
+        if ccshp >= ccshp1 then
+                ccshp = ccshp1
+                ccsLineHit = ''
+                ccshit = 0
+        end
+end
+end
+
 function checkSvgStress()
     --AM
     if AM_stress ~= AM_last_stress then
