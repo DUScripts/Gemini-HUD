@@ -1,9 +1,13 @@
 --events:
-onStressChanged
-local ccs1 = stress
-if cc1 > 0 then
-    ccshit = ccs1
-    CCS = math.floor(core.getCoreStress()/coreMaxStress * 100)
+onStressChanged:
+
+local stress = core.getCoreStress()
+if stress > last_core_stress then
+    local newstress = stress - last_core_stress
+    local stresschange = newstress/coreMaxStress*100
+    CCS = stress/coreMaxStress * 100
     ccshp1 = maxCCS * (CCS * 0.01)
+    ccshit = maxCCS * (stresschange*0.01)
+    last_core_stress = stress
     ccsLineHit = [[<rect x="180.2" y="220.2" width="]]..ccshp1..[[" height="4.8" style="fill: #de1656; stroke: rgba(0,0,0,0);"/>]]
 end

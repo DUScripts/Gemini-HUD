@@ -53,7 +53,7 @@ filter: drop-shadow(0 0 35px blue);
   <path style="fill: url(#TH_gradient); stroke: ]]..TH_stroke_color..[[; stroke-width: ]]..THstrokeWidth..[[;" d="M 315 225 L 325 215 L 415 215 L 355 250 L 315 225 Z"/>
   <path style="fill: url(#KI_gradient); stroke: ]]..KI_stroke_color..[[; stroke-width: ]]..KIstrokeWidth..[[;" d="M 355 250 L 415 285 L 325 285 L 315 275 L 355 250 Z"/>
   <path style="fill: url(#EM_gradient); stroke: ]]..EM_stroke_color..[[; stroke-width: ]]..EMstrokeWidth..[[;" d="M 85 260 L 95 250 L 185 250 L 125 285 L 85 260 Z" transform="matrix(-1, 0, 0, -1, 270.000006, 535.000011)"/>
-  <text style="white-space: pre; fill: white; font-family: Arial, sans-serif; font-size: 28px;" transform="matrix(0.678357, 0, 0, 0.67836, 235.5, 257.914373)">]]..shieldHP..[[%</text>
+  <text style="white-space: pre; fill: white; font-family: Arial, sans-serif; font-size: 28px;" transform="matrix(0.678357, 0, 0, 0.67836, 235.5, 257.914373)">]]..formatted_hp..[[%</text>
   <text style="white-space: pre; fill: rgb(66, 167, 245); font-family: Arial, sans-serif; font-weight: bold; font-size: 3.2px;" x="252" y="223.591">CCS</text>
   <text style="white-space: pre; fill: white; font-family: Arial, sans-serif; font-size: 28px;" transform="matrix(0.530888, 0, 0, 0.53089, 347.000007, 233.541539)">TH</text>
   <text style="white-space: pre; fill: white; font-family: Arial, sans-serif; font-size: 28px;" transform="matrix(0.530888, 0, 0, 0.53089, 132.021777, 233.541539)">AM</text>
