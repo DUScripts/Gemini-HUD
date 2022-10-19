@@ -3,7 +3,6 @@ if shield.isVenting() == 1 then
     system.print("Shield venting has been stopped!")
     local shield_hp = shield.getShieldHitpoints()
     last_shield_hp = shield_hp
-    --shield.activate()
         else
         if venttime < venttimemax and venttime ~= 0 then
             system.print("Shield venting is already stopped!")
