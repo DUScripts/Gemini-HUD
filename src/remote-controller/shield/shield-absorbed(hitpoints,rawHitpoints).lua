@@ -1,10 +1,7 @@
---events
-absorbed:
-
 local shield_hp = shield.getShieldHitpoints()
 if shield_hp < last_shield_hp then
     HP = shield_hp/shieldMaxHP * 100
-    formatted_hp = string.format('%0.0f',math.ceil(HP))
+    --formatted_hp = string.format('%0.0f',math.ceil(HP))
     local hit = last_shield_hp - shield_hp
     local damage1 = hit/shieldMaxHP*100
     damage = maxSHP * (damage1*0.01)   

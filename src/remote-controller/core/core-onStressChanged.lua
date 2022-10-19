@@ -1,6 +1,3 @@
---events:
-onStressChanged:
-
 local stress = core.getCoreStress()
 if stress > last_core_stress then
     local newstress = stress - last_core_stress

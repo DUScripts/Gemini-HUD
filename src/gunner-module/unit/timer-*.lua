@@ -2,12 +2,11 @@
 if string.sub(tag, 1, 1) == 'h' then
     local curTime = system.getArkTime()
     local time = curTime - lastHitTime[tag].time
-    local hitOpacity = (lastHitTime[tag].time + 1) - curTime
     if time >= 2 then time = 2 end
-    hitOpacity = hitOpacity - 0.02 -- error, need fix!
+    lastHitTime[tag].hitOpacity = lastHitTime[tag].hitOpacity - 0.02
     local top = 45 - time * 5
     local right = time * 10
-    if hitOpacity <= 0 then hitOpacity = 0 end
+    if lastHitTime[tag].hitOpacity <= 0 then lastHitTime[tag].hitOpacity = 0 end
     hithtml = [[
         <style>
         .]]..tag..[[ {
@@ -21,7 +20,7 @@ if string.sub(tag, 1, 1) == 'h' then
             font-weight: bold;
             color: yellow;
             text-shadow: 5px 0 1px orange, 0 1px 1px #000, -1px 0 1px #000, 0 -1px 1px #000;
-            opacity: ]]..hitOpacity..[[;
+            opacity: ]]..lastHitTime[tag].hitOpacity..[[;
             transform: translate(-50%, -50%);
         }
         </style>

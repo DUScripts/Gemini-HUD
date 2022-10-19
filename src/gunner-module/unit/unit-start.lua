@@ -77,8 +77,7 @@ buttonC = false
 atmovar = false
 newcolor = "#6affb1"
 endload = 0
-dist1 = 0
-dist3 = 0
+lastspeed = 0
 znak = '' --target speed icon
 firstload = 0
 firstload1 = 0
@@ -516,7 +515,10 @@ local function main()
       isILock = true
       speed = math.floor(radar.getConstructSpeed(v) * 3.6)
       if radar.getTargetId(v) == v then
-         dist3=math.floor(speed * 3.6)
+         if speed > lastspeed then newcolor = "#00d0ff" znak = "↑" end
+         if speed < lastspeed then newcolor = "#fc033d" znak = "↓" end
+         if speed == lastspeed then newcolor = "#6affb1" znak = "" end
+         lastspeed = speed
          if GHUD_Angular_Radial == true then
             radspeed = math.floor(radar.getConstructRadialSpeed(v) * 3.6)
             angspeed = math.floor(radar.getConstructAngularSpeed(v) * 3.6)
