@@ -1,0 +1,1 @@
+dHint = 'Target has been destroyed!'
