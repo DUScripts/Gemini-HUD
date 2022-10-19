@@ -61,7 +61,7 @@ if string.sub(tag, 1, 1) == 'h' then
             <div class="]]..tag..[[">MISS</div>]]
     
             if time == 2 then
-                hithtml = ''
+                misshtml = ''
                 unit.stopTimer(tag)
             end
         end
