@@ -7,7 +7,7 @@ if string.sub(tag, 1, 1) == 'h' then
     local top = 45 - time * 5
     local right = time * 10
     if lastHitTime[tag].hitOpacity <= 0 then lastHitTime[tag].hitOpacity = 0 end
-    hithtml = [[
+    hithtml = hithtml .. [[
         <style>
         .]]..tag..[[ {
             top: ]]..top..[[vh;
@@ -41,7 +41,7 @@ if string.sub(tag, 1, 1) == 'h' then
         local top = 45 - time * 5
         local left = time * 10
         if lastMissTime[tag].missOpacity <= 0 then lastMissTime[tag].missOpacity = 0 end
-        misshtml = [[
+        misshtml = misshtml .. [[
             <style>
             .]]..tag..[[ {
                 top: ]]..top..[[vh;
