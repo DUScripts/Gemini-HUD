@@ -61,7 +61,7 @@ filter: drop-shadow(0 0 35px blue);
   <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -4.542999, -86.161257)"><tspan x="351.543" y="319.558">TH</tspan></text>
   <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -219.543004, -41.161256)"><tspan x="351.543" y="319.558">EM</tspan></text>
   <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -219.543004, -86.161257)"><tspan x="351.543" y="319.558">AM</tspan></text>
-  <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 20px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 1.25px; alignment-baseline: middle; text-anchor: middle;" transform="matrix(1, 0, 0, 1, -93.528017, -62.474306)"><tspan x="351" y="319.558">]]..formatted_hp..[[%</tspan></text>
+  <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 20px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 1.25px; alignment-baseline: middle; text-anchor: middle;" transform="matrix(1, 0, 0, 1, -93.528017, -62.474306)"><tspan x="352" y="320">]]..formatted_hp..[[%</tspan></text>
 </svg></div>
 </body>
 </html>]]
