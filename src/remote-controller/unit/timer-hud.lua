@@ -16,8 +16,8 @@ hudHTML = [[
 <style>
 .shield {
 position: absolute;
-width: 1200px;
-top: 80%;
+width: 1300px;
+top: 85%;
 left: 50%;
 transform: translate(-50%, -50%);
 filter: drop-shadow(0 0 35px blue);
