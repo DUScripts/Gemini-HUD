@@ -62,9 +62,11 @@ friendly_IDs = {} -- put IDs here 34141,231231,31231 etc
 --vars
 lastHitTime = {}
 lastMissTime = {}
+hits = {}
+misses = {}
+hitAnimations = 0
+missAnimations = 0
 dHint = ''
-hithtml = ''
-misshtml = ''
 mRadar = {}
 mWeapons = {}
 size = {'XL','L','M','S','XS'}
