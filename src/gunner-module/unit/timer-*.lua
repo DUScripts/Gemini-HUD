@@ -27,7 +27,7 @@ if string.sub(tag, 1, 1) == 'd' then
 
         if lastHitTime[tag].time >= 1.5 then
             hits[tag] = {html = ''}
-            if lastHitTime[tag].anims ~= lastHitTime[tag].anims then
+            if lastHitTime[tag].anims == hitAnimations then
                 hits = {} 
                 hitAnimations = 0
                 lastHitTime = {}
@@ -36,7 +36,7 @@ if string.sub(tag, 1, 1) == 'd' then
         end
     end
 --miss timer
-    if string.sub(tag, 1, 1) == 'm' then
+    if string.sub(tag, 1, 1) == 'w' then
         lastMissTime[tag].time = lastMissTime[tag].time + 0.025
         lastMissTime[tag].missOpacity = lastMissTime[tag].missOpacity - 0.025
         local top = 45 - lastMissTime[tag].time*3.25
@@ -64,7 +64,7 @@ if string.sub(tag, 1, 1) == 'd' then
     
             if lastMissTime[tag].time >= 1.5 then
                 misses[tag] = {html = ''}
-                if lastMissTime[tag].anims ~= lastMissTime[tag].anims then
+                if lastMissTime[tag].anims == missAnimations then
                     misses = {} 
                     missAnimations = 0
                     lastMissTime = {}
