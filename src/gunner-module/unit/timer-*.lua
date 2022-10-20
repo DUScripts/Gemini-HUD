@@ -28,7 +28,6 @@ if string.sub(tag, 1, 1) == 'h' then
 
         if time == 2 then
             hithtml = ''
-            table.remove(lastHitTime, lastHitTime[tag])
             unit.stopTimer(tag)
         end
     end
