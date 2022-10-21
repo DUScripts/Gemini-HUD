@@ -375,6 +375,8 @@ else
    radarWidgetScaleDisplay = '<div class="measures"><span>0 SU</span><span>1 SU</span><span>2 SU</span></div>'
 end
 
+radar.setSortMethod(1)
+
 mWeapons = mWeapons:new(system, weapon, GHUD_Weapons_Panels) --weapon widgets
 mRadar = mRadar:new(system, radar, whitelist) --radar widget
 
