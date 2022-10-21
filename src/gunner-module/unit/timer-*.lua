@@ -1,5 +1,5 @@
 --hit timer
-if string.sub(tag, 1, 1) == 'd' then
+if string.sub(tag, 1, 1) == 'w' then
     lastHitTime[tag].time = lastHitTime[tag].time + 0.025
     lastHitTime[tag].hitOpacity = lastHitTime[tag].hitOpacity - 0.025
     local top = 45 - lastHitTime[tag].time*3.25
@@ -36,7 +36,7 @@ if string.sub(tag, 1, 1) == 'd' then
         end
     end
 --miss timer
-    if string.sub(tag, 1, 1) == 'w' then
+    if string.sub(tag, 1, 1) == 'm' then
         lastMissTime[tag].time = lastMissTime[tag].time + 0.025
         lastMissTime[tag].missOpacity = lastMissTime[tag].missOpacity - 0.025
         local top = 45 - lastMissTime[tag].time*3.25
