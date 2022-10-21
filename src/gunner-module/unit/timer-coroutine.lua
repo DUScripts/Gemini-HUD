@@ -2,8 +2,11 @@ if coroutine.status(main1) ~= "dead" and coroutine.status(main1) == "suspended" 
     coroutine.resume(main1)
  end
 
- local hitsHUD = ''
- local missesHUD = ''
+radarIDs = radar.getConstructIds()
+idN = #radarIDs
+
+local hitsHUD = ''
+local missesHUD = ''
 
 for k,v in pairs(hits) do
     hitsHUD = hitsHUD .. hits[k].html
