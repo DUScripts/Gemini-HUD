@@ -17,6 +17,12 @@
 --Remote controller
 HUD_version = '1.0.0'
 
+--LUA parameters
+GHUD_AR_show_sight = true --export:
+GHUD_AR_sight_size = 300 --export:
+GHUD_AR_sight_color = "rgba(255, 255, 255, 0.5)" --export:
+GHUD_AR_sight_angle = 45 --export:
+
 --vars
 hudHTML = ''
 AMstrokeWidth = 1
