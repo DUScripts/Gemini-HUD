@@ -32,6 +32,7 @@ GHUD_Allied_Names_Color = "#0cf27b" --export:
 GHUD_AR_allies_border_size = 400 --export:
 GHUD_AR_allies_border_color = "#0cf27b" --export:
 GHUD_AR_allies_font_color = "#0cf27b" --export:
+GHUD_AR_allies_hold_only = false --export:
 GHUD_Targets_Color = "#fc033d" --export:
 GHUD_Locked_Opacity = 1 --export: 0-1
 GHUD_Target_Names_Color = "#fc033d" --export: Color for target names
@@ -473,7 +474,7 @@ local function main()
          end
          --radarlist
          if GHUD_ShowAllies == true and size ~= "" then
-            if radar.hasMatchingTransponder(v) == 1 then --AR marks
+            if radar.hasMatchingTransponder(v) == 1 and GHUD_AR_allies_hold_only == false then --AR marks
                local pos = radar.getConstructWorldPos(v)
                local point = library.getPointOnScreen({pos[1],pos[2],pos[3]})
                local x = screenWidth*point[1]
