@@ -432,8 +432,8 @@ local function main()
          radarWidgetScale = 2
          radarWidgetScaleDisplay = '<div class="measures"><span>0 SU</span><span>1 SU</span><span>2 SU</span></div>'
       end
-      local idN = #radar.getConstructIds()
       local radarIDs = radar.getConstructIds()
+      local idN = #radarIDs
       for k,v in pairs(radarIDs) do
          i = i + 1
          local size = radar.getConstructCoreSize(v)
