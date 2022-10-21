@@ -479,15 +479,15 @@ local function main()
                local point = library.getPointOnScreen({pos[1],pos[2],pos[3]})
                local x = screenWidth*point[1]
                local y = screenHeight*point[2]
+               --transform: translate(]].. x - GHUD_AR_allies_border_size/2 ..[[px, ]].. y - GHUD_AR_allies_border_size/2 ..[[px);
                AR_allies = AR_allies .. [[
                <style>
                .id]]..v..[[ {
                   width: ]]..GHUD_AR_allies_border_size..[[px;
                   height: ]]..GHUD_AR_allies_border_size..[[px;
                   position: absolute;
-                  left: 0;
-                  top: 0;
-                  transform: translate(]].. x - GHUD_AR_allies_border_size/2 ..[[px, ]].. y - GHUD_AR_allies_border_size/2 ..[[px);
+                  left: ]].. x - GHUD_AR_allies_border_size/2 ..[[px;
+                  top: ]].. y - GHUD_AR_allies_border_size/2 ..[[px;
                }
                </style>
                <div class="id]]..v..[["><?xml version="1.0" encoding="utf-8"?>
