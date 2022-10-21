@@ -60,6 +60,8 @@ end
 friendly_IDs = {} -- put IDs here 34141,231231,31231 etc
 
 --vars
+screenHeight = system.getScreenHeight()
+screenWidth = system.getScreenWidth()
 lastHitTime = {}
 lastMissTime = {}
 hits = {}
