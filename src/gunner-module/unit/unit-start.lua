@@ -60,8 +60,6 @@ end
 friendly_IDs = {} -- put IDs here 34141,231231,31231 etc
 
 --vars
-radarIDs = ''
-idN = 0
 screenHeight = system.getScreenHeight()
 screenWidth = system.getScreenWidth()
 lastHitTime = {}
@@ -70,6 +68,7 @@ hits = {}
 misses = {}
 hitAnimations = 0
 missAnimations = 0
+totalDamage = {}
 dHint = ''
 mRadar = {}
 mWeapons = {}
@@ -379,7 +378,10 @@ else
    radarWidgetScaleDisplay = '<div class="measures"><span>0 SU</span><span>1 SU</span><span>2 SU</span></div>'
 end
 
-radar.setSortMethod(1)
+radar.setSortMethod(1) --set default radar range mode for constructIds list main function
+
+transponder.deactivate() --transponder server bug fix
+transponder.activate()
 
 mWeapons = mWeapons:new(system, weapon, GHUD_Weapons_Panels) --weapon widgets
 mRadar = mRadar:new(system, radar, whitelist) --radar widget
@@ -438,6 +440,9 @@ local function main()
          radarWidgetScale = 2
          radarWidgetScaleDisplay = '<div class="measures"><span>0 SU</span><span>1 SU</span><span>2 SU</span></div>'
       end
+
+      local radarIDs = radar.getConstructIds()
+      local idN = #radarIDs
       for k,v in pairs(radarIDs) do
          i = i + 1
          local size = radar.getConstructCoreSize(v)
