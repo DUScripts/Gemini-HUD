@@ -404,6 +404,7 @@ local function main()
       local captionText = ""
       local okcolor = ""
       local captionLcolor = ""
+      local AR_allies = ""
       hudHTML = ""
       radarTarget = {}
       radarStatic = {}
@@ -432,10 +433,9 @@ local function main()
          radarWidgetScaleDisplay = '<div class="measures"><span>0 SU</span><span>1 SU</span><span>2 SU</span></div>'
       end
       local idN = #radar.getConstructIds()
-      local data = radar.getData()
-      for S in data:gmatch('"constructId":"([0-9]*)"') do
+      local radarIDs = radar.getConstructIds()
+      for k,v in pairs(radarIDs) do
          i = i + 1
-         local v = tonumber(S)
          local size = radar.getConstructCoreSize(v)
          local distSU = 0
          local distm = 0
@@ -461,6 +461,15 @@ local function main()
          end
          --radarlist
          if GHUD_ShowAllies == true and size ~= "" then
+            if radar.hasMatchingTransponder(v) == 1 --AR marks
+            local pos = radar.getConstructWorldPos(v)
+            local point = library.getPointOnScreen({pos[1],pos[2],pos[3]})
+            local x = screenWidth*point[1]
+            local y = screenHeight*point[2]
+            --v%1000
+            AR_allies = AR_allies .. [[html]]
+         end
+
             if radar.hasMatchingTransponder(v) == 1 or whitelist[v] then --whitelist and transponder support
                local name = radar.getConstructName(v)
                local dist = math.floor(radar.getConstructDistance(v))
@@ -646,7 +655,7 @@ local function main()
       </div>]]
    end
 end
-if i > 80 then
+if i > 50 then
    i = 0
    coroutine.yield()
 end
