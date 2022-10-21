@@ -463,7 +463,7 @@ local function main()
          end
          --radarlist
          if GHUD_ShowAllies == true and size ~= "" then
-            if radar.hasMatchingTransponder(v) == 1 --AR marks
+            if radar.hasMatchingTransponder(v) == 1 then --AR marks
             local pos = radar.getConstructWorldPos(v)
             local point = library.getPointOnScreen({pos[1],pos[2],pos[3]})
             local x = screenWidth*point[1]
