@@ -479,7 +479,6 @@ local function main()
             local x = screenWidth*point[1]
             local y = screenHeight*point[2]
             AR_allies = AR_allies .. [[
-      <html>
       <style>
       .id]]..v..[[ {
          width: ]]..GHUD_AR_allies_border_size..[[px;
@@ -490,14 +489,11 @@ local function main()
          transform: translate(]].. x - GHUD_AR_allies_border_size/2 ..[[px, ]].. y - GHUD_AR_allies_border_size/2 ..[[px);
       }
       </style>
-      <body>
       <div class="id]]..v..[["><?xml version="1.0" encoding="utf-8"?>
       <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
         <rect x="235" y="235" width="30" height="30" style="fill: rgba(0,0,0,0); stroke: ]]..GHUD_AR_allies_border_color..[[; stroke-width: 2"/>
         <text style="fill: ]]..GHUD_AR_allies_font_color..[[; font-family: Arial, sans-serif; font-size: 28px; font-weight: 700; text-anchor: middle;" transform="matrix(0.609174, 0, 0, 0.609176, 250.000005, 231)">]].. v%1000 .. [[</text>
-      </svg></div>
-      </body>
-      </html>]]
+      </svg></div>]]
          end
 
             if radar.hasMatchingTransponder(v) == 1 or whitelist[v] then --whitelist and transponder support
