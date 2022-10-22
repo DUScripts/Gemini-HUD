@@ -1794,9 +1794,6 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
        local length1 = -700 * 200000
        local length2 = 800 * 200000
  
-       --local pos123 = decode(databank.getStringValue(1))
-       --local pos234 = decode(databank.getStringValue(3))
- 
        local pos123 = pos1
        local pos234 = pos2
  
@@ -1833,9 +1830,6 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
  
        local length1 = -700 * 200000
        local length2 = 800 * 200000
- 
-       --local pos123 = decode(databank.getStringValue(1))
-       --local pos234 = decode(databank.getStringValue(3))
  
        local pos123 = pos1
        local pos234 = pos2
@@ -1881,54 +1875,6 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
  function UTCscaner(system)
    local T = system.getArkTime() - timeZone * 3600
    return T
- end
- 
--- 2 keys for encription
- Key53 = 8730298826345614
- Key14 = 8927
- 
- local inv256
- 
- function encode(str)
-   if not inv256 then
-       inv256 = {}
-       for M = 0, 127 do
-           local inv = -1
-           repeat
-               inv = inv + 2
-           until inv * (2 * M + 1) % 256 == 1
-           inv256[M] = inv
-       end
-   end
-   local K, F = Key53, 16384 + Key14
-   return (str:gsub(
-       ".",
-       function(m)
-           local L = K % 274877906944 -- 2^38
-           local H = (K - L) / 274877906944
-           local M = H % 128
-           m = m:byte()
-           local c = (m * inv256[M] - (H - M) / 128) % 256
-           K = L * F + H + c + m
-           return ("%02x"):format(c)
-       end
-   ))
- end
- 
- function decode(str)
-   local K, F = Key53, 16384 + Key14
-   return (str:gsub(
-       "%x%x",
-       function(c)
-           local L = K % 274877906944 -- 2^38
-           local H = (K - L) / 274877906944
-           local M = H % 128
-           c = tonumber(c, 16)
-           local m = (c + (H - M) / 128) * (2 * M + 1) % 256
-           K = L * F + H + c + m
-           return string.char(m)
-       end
-   ))
  end
  
  -- прибавляет к вектору, из двух координат, кусочек длины
@@ -1985,8 +1931,8 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
     then
        system.print("Coordinates from DB are used!")
  
-       pos1 = decode(databank.getStringValue(1))
-       pos2 = decode(databank.getStringValue(3))
+       pos1 = databank.getStringValue(1)
+       pos2 = databank.getStringValue(3)
        pos1time = databank.getFloatValue(2)
        pos2time = databank.getFloatValue(4)
  
@@ -2079,7 +2025,7 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
        --local lasttime = UTCscaner()
  
        pos2 = text
-       databank.setStringValue(3, encode(pos2))
+       databank.setStringValue(3, pos2)
        pos2time = math.floor(UTCscaner(system))
        databank.setFloatValue(4, pos2time)
        system.print(text .. " pos2 saved")
@@ -2135,7 +2081,7 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
  
    if pos1 == 0 and string.find(text, "::pos") and exportMode == false then
        pos1 = text
-       databank.setStringValue(1, encode(pos1))
+       databank.setStringValue(1, pos1)
        pos1time = math.floor(UTCscaner(system))
        databank.setFloatValue(2, pos1time)
        system.print(text .. " pos1 saved")
@@ -2210,7 +2156,6 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
        local start = 0
        local fin = string.find(text, "/", start) - 1
        pos1 = string.sub(text, start, fin)
-       pos1 = decode(pos1)
        system.print(pos1)
  
        start = fin + 2
@@ -2221,7 +2166,6 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
        start = fin + 2
        fin = string.find(text, "/", start) - 1
        pos2 = string.sub(text, start, fin)
-       pos2 = decode(pos2)
        system.print(pos2)
  
        start = fin + 2
@@ -2232,9 +2176,9 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
        system.print("---------------")
        --system.print(pos1.."/"..pos2.."/"..oldTime)
        system.print("The coordinates have been loaded successfully!")
-       databank.setStringValue(1, encode(pos1))
+       databank.setStringValue(1, pos1)
        databank.setFloatValue(2, pos1time)
-       databank.setStringValue(3, encode(pos2))
+       databank.setStringValue(3, pos2)
        databank.setFloatValue(4, pos2time)
  
        pos11 = zeroConvertToWorldCoordinates(pos1, system)
@@ -2338,9 +2282,9 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
        system.print("---------------")
        --system.print(pos1.."/"..pos2.."/"..oldTime)
        system.print("The coordinates have been loaded successfully!")
-       databank.setStringValue(1, encode(pos1))
+       databank.setStringValue(1, pos1)
        databank.setFloatValue(2, pos1time)
-       databank.setStringValue(3, encode(pos2))
+       databank.setStringValue(3, pos2)
        databank.setFloatValue(4, pos2time)
  
        pos11 = zeroConvertToWorldCoordinates(pos1, system)
@@ -2399,8 +2343,8 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
        if databank.getStringValue(1) ~= "" and databank.getStringValue(3) ~= "" then
            local length2 = mar * 200000
  
-           local pos123 = decode(databank.getStringValue(1))
-           local pos234 = decode(databank.getStringValue(3))
+           local pos123 = databank.getStringValue(1)
+           local pos234 = databank.getStringValue(3)
  
            pos111 = zeroConvertToWorldCoordinates(pos123, system)
            pos222 = zeroConvertToWorldCoordinates(pos234, system)
@@ -2554,8 +2498,6 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
  
  function tickMarker(unit, system, text)
    if databank.getStringValue(1) ~= "" or databank.getStringValue(3) ~= "" and databank.getFloatValue(2) == 0 or databank.getFloatValue(4) == 0 then
-       --pos1 = decode(databank.getStringValue(1))
-       --pos2 = decode(databank.getStringValue(3))
  
        pos11 = zeroConvertToWorldCoordinates(pos1, system)
        pos22 = zeroConvertToWorldCoordinates(pos2, system)
@@ -2593,9 +2535,6 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
            SU = SU + 2.5
            length = SU * 200000
  
-           --pos1 = decode(databank.getStringValue(1))
-           --pos2 = decode(databank.getStringValue(3))
- 
            pos11 = zeroConvertToWorldCoordinates(pos1, system)
            pos22 = zeroConvertToWorldCoordinates(pos2, system)
  
@@ -2615,9 +2554,6 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
            showMarker = false
            SU = SU - 2.5
            length = SU * 200000
- 
-           --pos1 = decode(databank.getStringValue(1))
-           --pos2 = decode(databank.getStringValue(3))
  
            pos11 = zeroConvertToWorldCoordinates(pos1, system)
            pos22 = zeroConvertToWorldCoordinates(pos2, system)
@@ -2639,9 +2575,6 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
            SU = SU + 10
            length = SU * 200000
  
-           --pos1 = decode(databank.getStringValue(1))
-           --pos2 = decode(databank.getStringValue(3))
- 
            pos11 = zeroConvertToWorldCoordinates(pos1, system)
            pos22 = zeroConvertToWorldCoordinates(pos2, system)
  
@@ -2661,9 +2594,6 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
            showMarker = false
            SU = SU - 10
            length = SU * 200000
- 
-           --pos1 = decode(databank.getStringValue(1))
-           --pos2 = decode(databank.getStringValue(3))
  
            pos11 = zeroConvertToWorldCoordinates(pos1, system)
            pos22 = zeroConvertToWorldCoordinates(pos2, system)
