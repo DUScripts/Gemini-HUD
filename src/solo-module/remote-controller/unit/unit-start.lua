@@ -14,7 +14,7 @@
 -- Gemini HUD is the rebirth of the CFCS HUD (Custom Fire Control System)
 -- Author: GeminiX (aka SneakySnake, DU Pirate)
 
---Solo remote controller module
+--Solo remote controller
 HUD_version = '1.0.0'
 
 --LUA parameters

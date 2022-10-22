@@ -14,5 +14,5 @@
 -- Gemini HUD is the rebirth of the CFCS HUD (Custom Fire Control System)
 -- Author: GeminiX (aka SneakySnake, DU Pirate)
 
---Gunner module
+--Gunner seat
 HUD_version = '1.0.0'
