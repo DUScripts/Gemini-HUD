@@ -14,6 +14,8 @@ if GHUD_AR_show_sight == true then --AR sight for selected target
        local shipPos = vec3(construct.getWorldPosition())
        local pos1 = shipPos + distance * vec3(construct.getWorldOrientationForward())
        local point1 = library.getPointOnScreen({pos1.x,pos1.y,pos1.z})
+       --local pos1 = ConvertLocalToWorld(0,distance,0)
+       --local point1 = library.getPointOnScreen({pos1.x,pos1.y,pos1.z})
        if point1[3] > 0 then --visible zone
           local x2 = screenWidth*point1[1] - GHUD_AR_sight_size/2
           local y2 = screenHeight*point1[2] - GHUD_AR_sight_size/2

@@ -397,7 +397,7 @@ function ConvertLocalToWorld(x,y,z)
    local yOffset = y * vec3(construct.getWorldForward())
    local zOffset = z * vec3(construct.getWorldUp())
 
-   return (xOffset + yOffset + zOffset + vec3(construct.getWorldPosition())):unpack()
+   return xOffset + yOffset + zOffset + vec3(construct.getWorldPosition())
 end
 
 --Echoes startup configurator
