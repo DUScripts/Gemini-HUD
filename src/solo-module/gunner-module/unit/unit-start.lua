@@ -1989,7 +1989,7 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
        system.print("The target flew 20 km " .. lengthSU1 .. " su, speed " .. tspeed1 .. " km/h")
  
        unit.setTimer("marker", 1)
-       system.showScreen(1)
+       --system.showScreen(1)
        unit.setTimer("vectorhud", 0.02)
    else
        databank.clear()
@@ -2076,7 +2076,7 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
        screen.setHTML(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
        system.print("Target speed: " .. tspeed1 .. " km/h")
        unit.setTimer("marker", 1)
-       system.showScreen(1)
+       --system.showScreen(1)
        unit.setTimer("vectorhud", 0.02)
    end
  
@@ -2104,8 +2104,9 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
        meterMarker1 = 0
        SU = 10
  
-       system.showScreen(0)
+       --system.showScreen(0)
        unit.stopTimer("vectorhud")
+       vectorHUD = ''
        Pos1 = 0
        Pos2 = 0
        privMySignAngleR = 0
@@ -2139,8 +2140,9 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
        meterMarker1 = 0
        SU = 10
  
-       system.showScreen(0)
+       --system.showScreen(0)
        unit.stopTimer("vectorhud")
+       vectorHUD = ''
        Pos1 = 0
        Pos2 = 0
        privMySignAngleR = 0
@@ -2226,7 +2228,7 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
  
        system.setWaypoint(Waypoint1)
        unit.setTimer("marker", 1)
-       system.showScreen(1)
+       --system.showScreen(1)
        unit.setTimer("vectorhud", 0.02)
    end
    if exportMode == true and string.find(text, "/::pos") then
@@ -2245,8 +2247,9 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
        meterMarker1 = 0
        SU = 10
  
-       system.showScreen(0)
+       --system.showScreen(0)
        unit.stopTimer("vectorhud")
+       vectorHUD = ''
        Pos1 = 0
        Pos2 = 0
        privMySignAngleR = 0
@@ -2332,7 +2335,7 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
  
        system.setWaypoint(Waypoint1)
        unit.setTimer("marker", 1)
-       system.showScreen(1)
+       --system.showScreen(1)
        unit.setTimer("vectorhud", 0.02)
    end
    if string.find(text, "mar") then
@@ -2679,7 +2682,7 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
       screen.setHTML(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
       system.print("Target speed: " .. tspeed1 .. " km/h")
       unit.setTimer("marker", 1)
-      system.showScreen(1)
+      --system.showScreen(1)
       unit.setTimer("vectorhud", 0.02)
   end
 

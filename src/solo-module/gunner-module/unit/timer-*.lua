@@ -36,7 +36,7 @@ if string.sub(tag, 1, 1) == 'w' then
         end
     end
 --miss timer
-    if string.sub(tag, 1, 1) == 'm' then
+    if string.sub(tag, 1, 1) == 'k' then
         lastMissTime[tag].time = lastMissTime[tag].time + 0.025
         lastMissTime[tag].missOpacity = lastMissTime[tag].missOpacity - 0.025
         local top = 45 - lastMissTime[tag].time*3.25
