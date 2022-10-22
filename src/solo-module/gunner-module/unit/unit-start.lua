@@ -91,6 +91,7 @@ defaultSize = 'ALL'
 sizeState = 6
 focus = ''
 hudHTML = ''
+vectorHUD = ''
 sight = ''
 buttonSpace = false
 buttonC = false
@@ -2490,9 +2491,8 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
  border-radius: 50%;
  opacity: 0.5
  }     .vectorLine{position:absolute;transform-origin: 100% 0%;width: 50px;height:0.15em;}</style>]]
-       system.setScreen(
-           [[<html><head>]] .. style .. [[</head><body>]] .. targetVectorWidget .. [[]] .. html1 .. [[</body></html>]]
-       )
+       --system.setScreen([[<html><head>]] .. style .. [[</head><body>]] .. targetVectorWidget .. [[]] .. html1 .. [[</body></html>]])
+       vectorHUD = [[<html><head>]] .. style .. [[</head><body>]] .. targetVectorWidget .. [[]] .. html1 .. [[</body></html>]]
    end
  end
  

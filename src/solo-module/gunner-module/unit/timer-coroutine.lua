@@ -75,4 +75,4 @@ for k,v in pairs(misses) do
     missesHUD = missesHUD .. misses[k].html
 end
 
-system.setScreen(hudHTML .. missesHUD .. hitsHUD .. AR_allies .. sight)
+system.setScreen(vectorHUD .. hudHTML .. missesHUD .. hitsHUD .. AR_allies .. sight)
