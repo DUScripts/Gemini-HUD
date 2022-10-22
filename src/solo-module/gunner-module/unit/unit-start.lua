@@ -2625,7 +2625,7 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
 
  function radarPos(system,radar)
    local id = radar.getTargetId()
-   if id ~= nil then
+   if id ~= 0 then
    local dist = radar.getConstructDistance(id)
    local forwvector = vec3(system.getCameraWorldForward())
    local worldpos = vec3(system.getCameraWorldPos())
