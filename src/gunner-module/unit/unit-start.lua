@@ -20,6 +20,7 @@ HUD_version = '1.0.0'
 --LUA parameters
 GHUD_AR_show_sight = true --export:
 GHUD_AR_sight_size = 400 --export:
+GHUD_AR_sight_color = "rgba(255, 255, 255, 0.5)" --export:
 GHUD_Weapons_Panels = 3 --export:
 GHUD_log_stats = true --export: Send target statistics to LUA channel
 GHUD_Angular_Radial = false --export: Show angular and radial speed
