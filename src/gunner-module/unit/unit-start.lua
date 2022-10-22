@@ -18,6 +18,8 @@
 HUD_version = '1.0.0'
 
 --LUA parameters
+GHUD_AR_show_sight = true --export:
+GHUD_AR_sight_size = 400 --export:
 GHUD_Weapons_Panels = 3 --export:
 GHUD_log_stats = true --export: Send target statistics to LUA channel
 GHUD_Angular_Radial = false --export: Show angular and radial speed
@@ -83,6 +85,7 @@ defaultSize = 'ALL'
 sizeState = 6
 focus = ''
 hudHTML = ''
+sight = ''
 buttonSpace = false
 buttonC = false
 atmovar = false
@@ -387,6 +390,14 @@ function coroutine.xpcall(co)
      return false, output[2], tb
    end
    return table.unpack(output)
+end
+
+function ConvertLocalToWorld(x,y,z)
+   local xOffset = x * vec3(construct.getWorldRight())
+   local yOffset = y * vec3(construct.getWorldForward())
+   local zOffset = z * vec3(construct.getWorldUp())
+
+   return (xOffset + yOffset + zOffset + vec3(construct.getWorldPosition())):unpack()
 end
 
 --Echoes startup configurator
