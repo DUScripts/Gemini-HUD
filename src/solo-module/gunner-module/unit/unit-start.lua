@@ -18,6 +18,9 @@
 HUD_version = '1.0.0'
 
 --LUA parameters
+exportMode = true --export: Coordinate export mode
+timeZone = 3 --export: from 1 to 24
+targetSpeed = 29999 --export: Target speed
 GHUD_AR_show_sight = true --export:
 GHUD_AR_sight_size = 400 --export:
 GHUD_AR_sight_color = "rgba(255, 255, 255, 0.5)" --export:
@@ -67,6 +70,8 @@ end
 friendly_IDs = {} -- put IDs here 34141,231231,31231 etc
 
 --vars
+atlas = require("atlas")
+shift = false
 radarIDs = {}
 idN = 0
 screenHeight = system.getScreenHeight()
@@ -2689,11 +2694,7 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
    --screen.activate()
  end
 
-atlas = require("atlas")
-shift = false
-exportMode = true --export: Coordinate export mode
-timeZone = 3 --export: from 1 to 24
-targetSpeed = 29999 --export: Target speed
+start(unit,system,text)
 
 unit.setTimer("data", 0.1)
 unit.setTimer("delay", 1)
