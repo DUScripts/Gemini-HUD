@@ -85,7 +85,6 @@ defaultSize = 'ALL'
 sizeState = 6
 focus = ''
 hudHTML = ''
-sight = ''
 buttonSpace = false
 buttonC = false
 atmovar = false

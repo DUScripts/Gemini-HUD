@@ -6,7 +6,7 @@ end
 radarIDs = radar.getConstructIds()
 idN = #radarIDs
 
-sight = ''
+local sight = ''
 if GHUD_AR_show_sight == true then --AR sight for selected target
     local id = radar.getTargetId()
     if id ~= nil then
