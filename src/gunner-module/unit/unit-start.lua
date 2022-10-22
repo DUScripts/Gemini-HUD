@@ -444,7 +444,6 @@ local function main()
       local captionText = ""
       local okcolor = ""
       local captionLcolor = ""
-      local AR_allies = ""
       hudHTML = ""
       radarTarget = {}
       radarStatic = {}
