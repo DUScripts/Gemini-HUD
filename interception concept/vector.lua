@@ -116,8 +116,7 @@ function UTCscaner(system)
   return T
 end
 
--- 2 keys
--- We encrypt and hide the coordinates from Deckard or someone so that NQ does not understand the principle of script
+-- 2 keys for encription
 Key53 = 8730298826345614
 Key14 = 8927
 

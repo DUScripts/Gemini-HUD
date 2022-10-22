@@ -269,7 +269,7 @@ end
 
 function mWeapons:onUpdate()
    for weaponDataID, weap in pairs(self.weaponData) do
-      local weaponData = weap.getData()
+      local weaponData = weap.getWidgetData()
       local weaponStatus = weaponData:match('"weaponStatus":(%d+)')
       local animationTime = tonumber(weaponData:match('"cycleAnimationRemainingTime":(.-),'))
       local fireReady = weaponData:match('"fireReady":(.-),')
@@ -1879,12 +1879,11 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
  end
  
  function UTCscaner(system)
-   local T = system.getTime() - timeZone * 3600
+   local T = system.getArkTime() - timeZone * 3600
    return T
  end
  
- -- 2 keys
- -- We encrypt and hide the coordinates from Deckard or someone so that NQ does not understand the principle of script
+-- 2 keys for encription
  Key53 = 8730298826345614
  Key14 = 8927
  
@@ -2012,7 +2011,7 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
            makeVector(zeroConvertToWorldCoordinates(Pos1, system), zeroConvertToWorldCoordinates(Pos2, system))
        targetTracker = true
  
-       curTime = system.getTime()
+       curTime = system.getArkTime()
  
        --local dt1 = math.floor(UTC() - pos1time)
        local dt2 = math.floor(UTC() - pos2time)
@@ -2250,7 +2249,7 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
        targetTracker = true
  
        oldTime = tonumber(string.sub(text, start, fin))
-       curTime = system.getTime()
+       curTime = system.getArkTime()
  
        --local dt1 = math.floor(UTC() - pos1time)
        local dt2 = math.floor(UTC() - pos2time)
@@ -2356,7 +2355,7 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
        targetTracker = true
  
        oldTime = tonumber(string.sub(text, start, fin))
-       curTime = system.getTime()
+       curTime = system.getArkTime()
  
        --local dt1 = math.floor(UTC() - pos1time)
        local dt2 = math.floor(UTC() - pos2time)
