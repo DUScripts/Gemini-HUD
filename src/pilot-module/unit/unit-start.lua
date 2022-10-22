@@ -149,4 +149,7 @@ end
 
 end
 
+transponder.deactivate() --transponder server bug fix
+transponder.activate()
+
 unit.setTimer('hud',0.02)
