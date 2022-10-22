@@ -1,1 +1,0 @@
-last_shield_hp = 0
