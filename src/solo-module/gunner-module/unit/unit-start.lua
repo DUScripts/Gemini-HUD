@@ -67,6 +67,7 @@ end
 friendly_IDs = {} -- put IDs here 34141,231231,31231 etc
 
 --vars
+atlas = require("atlas")
 radarIDs = {}
 idN = 0
 screenHeight = system.getScreenHeight()
