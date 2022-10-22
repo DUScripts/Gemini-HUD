@@ -2623,6 +2623,76 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
    --screen.activate()
  end
 
+ function radarPos(system,radar)
+   local id = radar.getTargetId()
+   if id ~= nil then
+   local dist = radar.getConstructDistance(id)
+   local forwvector = vec3(system.getCameraWorldForward())
+   local worldpos = vec3(system.getCameraWorldPos())
+   local p = (dist * forwvector + worldpos)
+
+   if pos1 ~= 0 and pos2 == 0 and exportMode == false then
+      
+      pos2 = '::pos{0,0,'..p.x..','..p.y..','..p.z..'}'
+      databank.setStringValue(3, pos2)
+      pos2time = math.floor(UTCscaner(system))
+      databank.setFloatValue(4, pos2time)
+      system.print(pos2 .." pos2 saved")
+
+      pos11 = zeroConvertToWorldCoordinates(pos1, system)
+
+      pos22 = zeroConvertToWorldCoordinates(pos2, system)
+
+      local dist1 = pos11:dist(pos22)
+      local timeroute = pos2time - pos1time
+      tspeed = dist1 / timeroute
+      tspeed1 = math.floor((dist1 / timeroute) * 3.6)
+      Pos1 = pos1
+      Pos2 = pos2
+
+      targetVector =
+          makeVector(zeroConvertToWorldCoordinates(Pos1, system), zeroConvertToWorldCoordinates(Pos2, system))
+      targetTracker = true
+
+      meterMarker1 = meterMarker1 + tspeed * 4
+      length1 = meterMarker1
+
+      resultVector1 = vectorLengthen(pos11, pos22, length1)
+      Waypoint1 = getPos4Vector(resultVector1)
+
+      system.setWaypoint(Waypoint1)
+      meterMarker = meterMarker + calcTargetSpeed * 4
+      length = meterMarker
+
+      resultVector = vectorLengthen(pos11, pos22, length)
+      Waypoint = getPos4Vector(resultVector)
+
+      system.print("---------------")
+      system.print("The coordinates are set manually!")
+      posExport1 = databank.getStringValue(1)
+      posExport2 = databank.getStringValue(3)
+      timeExport1 = math.floor(databank.getFloatValue(2))
+      timeExport2 = math.floor(databank.getFloatValue(4))
+
+      system.print("The coordinates were exported to the screen")
+
+      screen.setHTML(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
+      system.print("Target speed: " .. tspeed1 .. " km/h")
+      unit.setTimer("marker", 1)
+      system.showScreen(1)
+      unit.setTimer("vectorhud", 0.02)
+  end
+
+  if pos1 == 0 and exportMode == false then
+      pos1 = '::pos{0,0,'..p.x..','..p.y..','..p.z..'}'
+      databank.setStringValue(1, pos1)
+      pos1time = math.floor(UTCscaner(system))
+      databank.setFloatValue(2, pos1time)
+      system.print(pos1 .. " pos1 saved")
+  end
+end
+end
+
 start(unit,system,text)
 
 unit.setTimer("data", 0.1)
