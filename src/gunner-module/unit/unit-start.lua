@@ -64,6 +64,8 @@ end
 friendly_IDs = {} -- put IDs here 34141,231231,31231 etc
 
 --vars
+radarIDs = {}
+idN = 0
 screenHeight = system.getScreenHeight()
 screenWidth = system.getScreenWidth()
 lastHitTime = {}
@@ -371,6 +373,22 @@ for slot_name, slot in pairs(unit) do
    end
 end
 
+--debug coroutine
+function coroutine.xpcall(co)
+   local output = {coroutine.resume(co)}
+   if output[1] == false then
+     local tb = traceback(co)
+
+     local message = tb:gsub('"%-%- |STDERROR%-EVENTHANDLER[^"]*"', 'chunk')
+     system.print(message)
+
+     message = output[2]:gsub('"%-%- |STDERROR%-EVENTHANDLER[^"]*"', 'chunk')
+     system.print(message)
+     return false, output[2], tb
+   end
+   return table.unpack(output)
+end
+
 --Echoes startup configurator
 if radar_1.isOperational() == 0 then
    radar=radar_2
@@ -445,8 +463,8 @@ local function main()
          radarWidgetScaleDisplay = '<div class="measures"><span>0 SU</span><span>1 SU</span><span>2 SU</span></div>'
       end
 
-      local radarIDs = radar.getConstructIds()
-      local idN = #radarIDs
+      --local radarIDs = radar.getConstructIds()
+      --local idN = #radarIDs
       for k,v in pairs(radarIDs) do
          i = i + 1
          local size = radar.getConstructCoreSize(v)
@@ -474,28 +492,6 @@ local function main()
          end
          --radarlist
          if GHUD_ShowAllies == true and size ~= "" then
-            if radar.hasMatchingTransponder(v) == 1 and GHUD_AR_allies_hold_only == false then --AR marks
-               local pos = radar.getConstructWorldPos(v)
-               local point = library.getPointOnScreen({pos[1],pos[2],pos[3]})
-               local x = screenWidth*point[1]
-               local y = screenHeight*point[2]
-               --transform: translate(]].. x - GHUD_AR_allies_border_size/2 ..[[px, ]].. y - GHUD_AR_allies_border_size/2 ..[[px);
-               AR_allies = AR_allies .. [[
-               <style>
-               .id]]..v..[[ {
-                  width: ]]..GHUD_AR_allies_border_size..[[px;
-                  height: ]]..GHUD_AR_allies_border_size..[[px;
-                  position: absolute;
-                  left: ]].. x - GHUD_AR_allies_border_size/2 ..[[px;
-                  top: ]].. y - GHUD_AR_allies_border_size/2 ..[[px;
-               }
-               </style>
-               <div class="id]]..v..[["><?xml version="1.0" encoding="utf-8"?>
-               <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-               <rect x="235" y="235" width="30" height="30" style="fill: rgba(0,0,0,0); stroke: ]]..GHUD_AR_allies_border_color..[[; stroke-width: 2"/>
-               <text style="fill: ]]..GHUD_AR_allies_font_color..[[; font-family: Arial, sans-serif; font-size: 28px; font-weight: 700; text-anchor: middle;" transform="matrix(0.609174, 0, 0, 0.609176, 250.000005, 231)">]].. v%1000 .. [[</text>
-               </svg></div>]]
-            end
             if radar.hasMatchingTransponder(v) == 1 or whitelist[v] then --whitelist and transponder support
                local name = radar.getConstructName(v)
                local dist = math.floor(radar.getConstructDistance(v))
