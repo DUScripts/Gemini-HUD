@@ -9,7 +9,7 @@ idN = #radarIDs
 local sight = ''
 if GHUD_AR_show_sight == true then --AR sight for selected target
     local id = radar.getTargetId()
-    if id ~= nil then
+    if id ~= 0 then
        local distance = radar.getConstructDistance(id)
        local shipPos = vec3(construct.getWorldPosition())
        local pos1 = shipPos + distance * vec3(construct.getWorldOrientationForward())
