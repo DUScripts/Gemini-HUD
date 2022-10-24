@@ -96,7 +96,7 @@ sight = ''
 buttonSpace = false
 buttonC = false
 atmovar = false
-newcolor = "#6affb1"
+speedcolor = ""
 endload = 0
 lastspeed = 0
 znak = '' --target speed icon
@@ -130,9 +130,9 @@ end
 
 --radar widget
 function defaultRadar()
-  sizeState = 6
-  defaultSize = 'ALL'
-  if mRadar.friendlyMode == true then mRadar.friendlyMode = false end
+   sizeState = 6
+   defaultSize = 'ALL'
+   if mRadar.friendlyMode == true then mRadar.friendlyMode = false end
 end
 
 function mRadar:createWidget()
@@ -177,27 +177,27 @@ function mRadar:updateStep()
       local alive = radar.isConstructAbandoned(ID)
       local selectedTarget = radar.getTargetId(ID)
       if locked == 1 or alive == 0 or selectedTarget == ID then --show only locked or alive or selected targets
-        if defaultSize == 'ALL' then --default mode
-        if (self.friendList[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode then
-           goto continue1
-        end
-        if isIDFiltered and self.idFilter[ID%1000] ~= true then
-           goto continue1
-        end
-           resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. string.format("%03d", ID%1000) .. ' - %1"')
-           ::continue1::
-        end
-       if defaultSize ~= 'ALL' and size == defaultSize then --sorted
-          if (self.friendList[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode then
-             goto continue2
-          end
-          if isIDFiltered and self.idFilter[ID%1000] ~= true then
-             goto continue2
-          end
-             resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. string.format("%03d", ID%1000) .. ' - %1"')
-             ::continue2::
-        end
-     end
+         if defaultSize == 'ALL' then --default mode
+            if (self.friendList[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode then
+               goto continue1
+            end
+            if isIDFiltered and self.idFilter[ID%1000] ~= true then
+               goto continue1
+            end
+            resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. string.format("%03d", ID%1000) .. ' - %1"')
+            ::continue1::
+         end
+         if defaultSize ~= 'ALL' and size == defaultSize then --sorted
+            if (self.friendList[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode then
+               goto continue2
+            end
+            if isIDFiltered and self.idFilter[ID%1000] ~= true then
+               goto continue2
+            end
+            resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. string.format("%03d", ID%1000) .. ' - %1"')
+            ::continue2::
+         end
+      end
    end
    local filterMsg = (isIDFiltered and ''..focus..' - FOCUS - ' or '') .. (self.friendlyMode and ''..defaultSize..' - Friends' or ''..defaultSize..' - Enemies')
    --local postData = data:match('"elementId":".+') --deprecated
@@ -298,8 +298,8 @@ function mWeapons:onUpdate()
          ammoType1 = "KI"
       elseif ammoName:match("Thermic") then
          ammoType1 = "TH"
-      --elseif ammoName:match("stasis string ammo name") then
-         --ammoType1 = "Stasis"   
+         --elseif ammoName:match("stasis string ammo name") then
+         --ammoType1 = "Stasis"
       end
 
       local ammoType2 = ""
@@ -312,7 +312,7 @@ function mWeapons:onUpdate()
       elseif ammoName:match("Defense") then
          ammoType2 = "Def"
       end
-      
+
       --if ammoType1 == "Statis" then
       --weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. ammoType1 .. '"')
       --else
@@ -387,14 +387,14 @@ end
 function coroutine.xpcall(co)
    local output = {coroutine.resume(co)}
    if output[1] == false then
-     local tb = traceback(co)
+      local tb = traceback(co)
 
-     local message = tb:gsub('"%-%- |STDERROR%-EVENTHANDLER[^"]*"', 'chunk')
-     system.print(message)
+      local message = tb:gsub('"%-%- |STDERROR%-EVENTHANDLER[^"]*"', 'chunk')
+      system.print(message)
 
-     message = output[2]:gsub('"%-%- |STDERROR%-EVENTHANDLER[^"]*"', 'chunk')
-     system.print(message)
-     return false, output[2], tb
+      message = output[2]:gsub('"%-%- |STDERROR%-EVENTHANDLER[^"]*"', 'chunk')
+      system.print(message)
+      return false, output[2], tb
    end
    return table.unpack(output)
 end
@@ -485,9 +485,6 @@ local function main()
       for k,v in pairs(radarIDs) do
          i = i + 1
          local size = radar.getConstructCoreSize(v)
-         local distSU = 0
-         local distm = 0
-         local tdist = 0
          local constructRow = {}
          if GHUD_log_stats then
             if t_radarEnter[v] ~= nil then
@@ -512,1254 +509,1188 @@ local function main()
             if radar.hasMatchingTransponder(v) == 1 or whitelist[v] then --whitelist and transponder support
                local name = radar.getConstructName(v)
                local dist = math.floor(radar.getConstructDistance(v))
-               local seldist = dist
-               if dist < 1000 then tdist = seldist tdists = 'M' dist = ''..dist..'m'
-            elseif dist < 100000 then tdist = string.format('%0.1f', seldist/1000) tdists = 'KM' dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
-            else tdist = string.format('%0.2f', seldist/200000) tdists = 'SU' dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
-            end
-            local allID = (""..v..""):sub(-3) --cut construct IDs
-            local nameA = ''..allID..' '..name..''
-            friendlies = friendlies + 1
-            if radar.getTargetId(v) ~= v and friendlies < GHUD_Allies_Count1 then
-               list = list..[[
-               <div class="table-row3 th3">
-               <div class="table-cell3">
-               ]]..'['..size..'] '..nameA.. [[<br><distalliescolor>]] ..dist.. [[</distalliescolor>
-               </div>
-               </div>]]
-            end
-            if radar.getTargetId(v) == v and friendlies < GHUD_Allies_Count1 then
-               list = list..[[
-               <div class="table-row3 th3S">
-               <div class="table-cell3S">
-               ]]..'['..size..'] '..nameA.. [[<br><distalliescolor>]] ..dist.. [[</distalliescolor>
-               </div>
-               </div>]]
-            end
-            if radar.getTargetId(v) == v and friendlies >= GHUD_Allies_Count1 then
-               list = list..[[
-               <div class="table-row3 th3S">
-               <div class="table-cell3S">
-               ]]..'['..size..'] '..nameA.. [[<br><distalliescolor>]] ..dist.. [[</distalliescolor>
-               </div>
-               </div>]]
+               if dist >= 1000 then
+                  dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
+               else
+                  dist = ''..dist..'m'
+               end
+               local allID = (""..v..""):sub(-3) --cut construct IDs
+               local nameA = ''..allID..' '..name..''
+               friendlies = friendlies + 1
+               if radar.getTargetId(v) ~= v and friendlies < GHUD_Allies_Count1 then
+                  list = list..[[
+                  <div class="table-row3 th3">
+                  <div class="table-cell3">
+                  ]]..'['..size..'] '..nameA.. [[<br><distalliescolor>]] ..dist.. [[</distalliescolor>
+                  </div>
+                  </div>]]
+               end
+               if radar.getTargetId(v) == v and friendlies < GHUD_Allies_Count1 then
+                  list = list..[[
+                  <div class="table-row3 th3S">
+                  <div class="table-cell3S">
+                  ]]..'['..size..'] '..nameA.. [[<br><distalliescolor>]] ..dist.. [[</distalliescolor>
+                  </div>
+                  </div>]]
+               end
+               if radar.getTargetId(v) == v and friendlies >= GHUD_Allies_Count1 then
+                  list = list..[[
+                  <div class="table-row3 th3S">
+                  <div class="table-cell3S">
+                  ]]..'['..size..'] '..nameA.. [[<br><distalliescolor>]] ..dist.. [[</distalliescolor>
+                  </div>
+                  </div>]]
+               end
             end
          end
-      end
-      --targets
-      local speed = 0
-      local radspeed = 0
-      local angspeed = 0
-      if radar.isConstructIdentified(v) == 1 and size ~= "" then
-         local name = radar.getConstructName(v)
-         local dist = math.floor(radar.getConstructDistance(v))
-         local seldist = dist
-         if dist < 1000 then tdist = seldist tdists = 'M' dist = ''..dist..'m'
-      elseif dist < 100000 then tdist = string.format('%0.1f', seldist/1000) tdists = 'KM' dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
-      else tdist = string.format('%0.2f', seldist/200000) tdists = 'SU' dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
-      end
-      local IDT = (""..v..""):sub(-3)
-      local nameIDENT = ''..IDT..' '..name..''
-      local nameT = string.sub((""..nameIDENT..""),1,11)
-      --table.insert(radarTarget, constructRow)
-      isILock = true
-      speed = math.floor(radar.getConstructSpeed(v) * 3.6)
-      if radar.getTargetId(v) == v then
-         if speed > lastspeed then newcolor = "#00d0ff" znak = "↑" end
-         if speed < lastspeed then newcolor = "#fc033d" znak = "↓" end
-         if speed == lastspeed then newcolor = "#6affb1" znak = "" end
-         lastspeed = speed
-         if GHUD_Angular_Radial == true then
-            radspeed = math.floor(radar.getConstructRadialSpeed(v) * 3.6)
-            angspeed = math.floor(radar.getConstructAngularSpeed(v) * 3.6)
-            targetsele = targetstyle.. [[
-
-            <div class="telemetry">
-            <div class="numbers">
-            <div>]]..probil..[[</div>
-            <h2><redcolor>]]..nameT..[[</redcolor><span>%</span></h2>
-            </div>
-            <div class="numbers">
-            <div><style> newcolor {
-               color: ]]..newcolor..[[;
-            }</style><newcolor>]]..znak..[[]]..speed..[[</newcolor></div>
-            <h2>SPEED<span>km/h</span></h2>
-            </div>
-            <div class="numbers">
-            <div>]]..radspeed..[[</div>
-            <h2>RADIAL<span>km/h</span></h2>
-            </div>
-            <div class="numbers">
-            <div>]]..tdist..[[</div>
-            <h2>Distance<span>]]..tdists..[[</span></h2>
-            </div>
-            <div class="numbers">
-            <div>]]..angspeed..[[</div>
-            <h2>ANGULAR<span>°s</span></h2>
-            </div>
-            </div>
-            ]]
-
-            islockList = islockList..[[
-            <div class="table-row2 thS">
-            <div class="table-cellS">
-            ]]..'['..size..'] '..nameIDENT.. [[ <speedcolor> ]] ..speed.. [[km/h</speedcolor><br><distcolor>]] ..dist.. [[</distcolor>
-            </div>
-            </div>]]
-
+         --targets
+         local speed = 0
+         local radspeed = 0
+         local angspeed = 0
+         if radar.isConstructIdentified(v) == 1 and size ~= "" then
+            local name = radar.getConstructName(v)
+            local dist = math.floor(radar.getConstructDistance(v))
+            if dist >= 1000 then
+               dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
+            else
+               dist = ''..dist..'m'
+            end
+            local IDT = (""..v..""):sub(-3)
+            local nameIDENT = ''..IDT..' '..name..''
+            local nameT = string.sub((""..nameIDENT..""),1,11)
+            --table.insert(radarTarget, constructRow)
+            isILock = true
+            speed = math.floor(radar.getConstructSpeed(v) * 3.6)
+            if radar.getTargetId(v) == v then
+               islockList = islockList..[[
+               <div class="table-row2 thS">
+               <div class="table-cellS">
+               ]]..'['..size..'] '..nameIDENT.. [[ <speedcolor> ]] ..speed.. [[km/h</speedcolor><br><distcolor>]] ..dist.. [[</distcolor>
+               </div>
+               </div>]]
+            else
+               islockList = islockList..[[
+               <div class="table-row2 th2">
+               <div class="table-cell2">
+               ]]..'['..size..'] '..nameIDENT.. [[ <speedcolor> ]] ..speed.. [[km/h</speedcolor><br><distcolor>]] ..dist.. [[</distcolor>
+               </div>
+               </div>]]
+            end
          else
 
-            targetsele = targetstyle.. [[
-
-            <div class="telemetry">
-            <div class="numbers">
-            <div>]]..probil..[[</div>
-            <h2><redcolor>]]..nameT..[[</redcolor><span>%</span></h2>
-            </div>
-            <div class="numbers">
-            <div><style> newcolor {
-               color: ]]..newcolor..[[;
-            }</style><newcolor>]]..znak..[[]]..speed..[[</newcolor></div>
-            <h2>SPEED<span>km/h</span></h2>
-            </div>
-            <div class="numbers">
-            <div>]]..tdist..[[</div>
-            <h2>Distance<span>]]..tdists..[[</span></h2>
-            </div>
-            </div>
-            ]]
-
-            islockList = islockList..[[
-            <div class="table-row2 thS">
-            <div class="table-cellS">
-            ]]..'['..size..'] '..nameIDENT.. [[ <speedcolor> ]] ..speed.. [[km/h</speedcolor><br><distcolor>]] ..dist.. [[</distcolor>
-            </div>
-            </div>]]
-
+            if GHUD_ShowEcho == true and size ~= "" then
+               if radar.getConstructType(v) == 'dynamic' then
+                  table.insert(radarDynamic, constructRow)
+                  if radarDynamicWidget[constructRow.widgetDist] ~= nil then
+                     radarDynamicWidget[constructRow.widgetDist] = radarDynamicWidget[constructRow.widgetDist] + 1
+                  else
+                     radarDynamicWidget[constructRow.widgetDist] = 1
+                  end
+               else
+                  table.insert(radarStatic, constructRow)
+                  if radarStaticWidget[constructRow.widgetDist] ~= nil then
+                     radarStaticWidget[constructRow.widgetDist] = radarStaticWidget[constructRow.widgetDist] + 1
+                  else
+                     radarStaticWidget[constructRow.widgetDist] = 1
+                  end
+               end
+            end
          end
-      else
-         islockList = islockList..[[
-         <div class="table-row2 th2">
-         <div class="table-cell2">
-         ]]..'['..size..'] '..nameIDENT.. [[ <speedcolor> ]] ..speed.. [[km/h</speedcolor><br><distcolor>]] ..dist.. [[</distcolor>
+         --lockstatus
+         if radar.getThreatFrom(v) ~= "none" and size ~= "" then
+            countLock = countLock + 1
+            local name = radar.getConstructName(v)
+            local dist = math.floor(radar.getConstructDistance(v))
+            if dist >= 1000 then
+               dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
+            else
+               dist = ''..dist..'m'
+            end
+            local loclIDT = (""..v..""):sub(-3)
+            local nameLOCK = ''..loclIDT..' '..name..''
+            if radar.getThreatFrom(v) == "attacked" then
+               countAttacked = countAttacked + 1
+               lockList = lockList..[[
+               <div class="table-row th">
+               <div class="table-cell">
+               <redcolor1>]]..'['..size..'] '..nameLOCK.. [[</redcolor1><br><distcolor>]] ..dist.. [[</distcolor>
+               </div>
+               </div>]]
+            else
+               lockList = lockList..[[
+               <div class="table-row th">
+               <div class="table-cell">
+               <orangecolor>]]..'['..size..'] '..nameLOCK.. [[</orangecolor><br><distcolor>]] ..dist.. [[</distcolor>
+               </div>
+               </div>]]
+            end
+         end
+         if i > 50 then
+            i = 0
+            coroutine.yield()
+         end
+      end
+      if GHUD_ShowAllies == true then
+         if friendlies > 0 then
+            caption = "<alliescolor>Allies:</alliescolor><br><countcolor>"..friendlies.."</countcolor> <countcolor2>"..conID.."</countcolor2>"
+         else
+            caption = "<alliescolor>Allies:</alliescolor><br><countcolor>0</countcolor> <countcolor2>"..conID.."</countcolor2>"
+         end
+         htmltext = htmlbasic .. [[
+         <style>
+         .th3>.table-cell3 {
+            color: ]]..GHUD_Allied_Names_Color..[[;
+            font-weight: bold;
+         }
+         </style>
+         <div class="table3">
+         <div class="table-row3 th3">
+         <div class="table-cell3">
+         ]]..caption..[[
          </div>
+         </div>
+         ]]..list..[[
          </div>]]
       end
-   else
+      caption = "<targetscolor>Targets:</targetscolor>"
+      target = targetshtml .. [[
+      <style>
+      .th2>.table-cell2 {
+         color: ]]..GHUD_Target_Names_Color..[[;
+         font-weight: bold;
+      }
+      </style>
+      <div class="table2">
+      <div class="table-row2 th2">
+      <div class="table-cell2">
+      ]] .. caption .. [[<br><countcolor>]]..idN-friendlies..[[</colorcount>
+      </div>
+      </div>
+      ]] .. islockList .. [[
+      </div>]]
+      --threat status
+      if countLock == 0 then
+         captionL = "LOCK"
+         captionLcolor = "#6affb1"
+         captionText = "OK"
+         okcolor = captionLcolor
+      else
+         captionL = "LOCKED:"
+         captionLcolor = "#fca503"
+         captionText = countLock
+         okcolor = "#2ebac9"
+      end
+      --attackers count
+      if countAttacked > 0 then
+         captionL = "ATTACKED:"
+         captionLcolor = "#fc033d"
+         captionText = countAttacked
+         okcolor = "#2ebac9"
+      end
+      --threat icon
+      statusSVG = [[<style>.radarLockstatus {
+         position: fixed;
+         background: transparent;
+         width: 6em;
+         padding: 1vh;
+         top: 13.5vh;
+         left: 50%;
+         transform: translateX(-50%);
+         text-align: center;
+         fill: ]]..captionLcolor..[[;
+      }
+      svg text{
+         text-anchor: middle;
+         dominant-baseline: middle;
+         font-size: 110px;
+         font-weight: bold;
+         fill: ]]..okcolor..[[;
+      }
+      </style>
+      <div class="radarLockstatus">
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 512 512">
+      <g>
+      <path d="m501,245.6h-59.7c-5.3-93.9-81-169.6-174.9-174.9v-59.7h-20.9v59.7c-93.8,5.3-169.5,81-174.8,174.9h-59.7v20.9h59.7c5.3,93.8 81,169.5 174.9,174.8v59.7h20.9v-59.7c93.9-5.3 169.6-80.9 174.8-174.8h59.7v-20.9zm-80.6,0h-48.1c-4.9-56.3-49.6-100.9-105.9-105.9v-48.1c82.5,5.2 148.8,71.5 154,154zm-69.1,20.8c-4.9,44.7-40.9,80-84.9,84.9v-31.7h-20.9v31.8c-44.8-4.8-80.1-40.1-84.9-84.9h31.8v-20.9h-31.7c4.9-44.7 40.9-80 84.9-84.9v31.7h20.9v-31.7c44,4.9 80,40.2 84.9,84.9h-31.7v20.9h31.6zm-105.7-174.9v48.1c-56.3,4.9-100.9,49.6-105.9,105.9h-48.1c5.2-82.5 71.5-148.8 154-154zm-154,174.8h48.1c4.9,56.3 49.6,100.9 105.9,105.9v48.1c-82.5-5.2-148.8-71.5-154-154zm174.8,154v-48.1c56.3-4.9 100.9-49.6 105.9-105.9h48.1c-5.2,82.5-71.5,148.8-154,154z"/>
+      </g>
+      <text x="50%" y="52%">]]..captionText..[[</text>
+      </svg>
+      </div>]]
+      locks = lockhtml .. [[
+      <style>
+      .th>.table-cell {
+         font-weight: bold;
+      }
+      </style>
+      <div class="table">
+      <div class="table-row th">
+      <div class="table-cell">
+      <rightlocked style="color: ]]..captionLcolor..[[;">]] .. captionL  .. [[</rightlocked>
+      </div>
+      </div>
+      ]] .. lockList .. [[
+      </div>]]
+      --Echoes widget
+      if GHUD_ShowEcho == true then
+         local dynamic = ''
+         for k,v in pairs(radarDynamicData) do
+            dynamic = dynamic .. '<span style="left:'..k..'px;height:'..v..'px;"></span>'
+         end
+         local static = ''
+         for k,v in pairs(radarStaticData) do
+            static = static .. '<span style="left:'..k..'px;height:'..v..'px;"></span>'
+         end
+         local htmlRadar = htmlRadar .. [[
+         <div class="radar-widget">
+         <div class="d-widget">]] .. dynamic .. [[</div>
+         <div class="s-widget">]] .. static .. [[</div>
+         <div class="labels">
+         <span style="color: #6fc9ff;">DYNAMIC</span>
+         <span style="color: #ff8d00;">STATIC</span>
+         </div>
+         ]]..radarWidgetScaleDisplay..[[
+         </div>
+         ]]
+         radarWidget = htmlRadar
+      else
+         radarWidget = ''
+      end
 
-      if GHUD_ShowEcho == true and size ~= "" then
-         if radar.getConstructType(v) == 'dynamic' then
-            table.insert(radarDynamic, constructRow)
-            if radarDynamicWidget[constructRow.widgetDist] ~= nil then
-               radarDynamicWidget[constructRow.widgetDist] = radarDynamicWidget[constructRow.widgetDist] + 1
-            else
-               radarDynamicWidget[constructRow.widgetDist] = 1
-            end
+      hudver = hudvers .. [[<div class="hudversion">Gemini v]]..HUD_version..[[</div>]]
+
+      if GHUD_ShowEcho == true then
+         if GHUD_ShowAllies == true then
+            --system.setScreen(htmltext .. target .. locks .. hudver .. radarWidget ..targetsele ..statusSVG)
+            hudHTML = htmltext .. target .. locks .. hudver .. radarWidget ..targetsele ..statusSVG
          else
-            table.insert(radarStatic, constructRow)
-            if radarStaticWidget[constructRow.widgetDist] ~= nil then
-               radarStaticWidget[constructRow.widgetDist] = radarStaticWidget[constructRow.widgetDist] + 1
-            else
-               radarStaticWidget[constructRow.widgetDist] = 1
-            end
+            --system.setScreen(target .. locks .. hudver .. radarWidget ..targetsele ..statusSVG)
+            hudHTML = target .. locks .. hudver .. radarWidget ..targetsele ..statusSVG
+         end
+
+      else
+
+         if GHUD_ShowAllies == true then
+            --system.setScreen(htmltext .. target .. locks .. hudver ..targetsele ..statusSVG)
+            hudHTML = htmltext .. target .. locks .. hudver ..targetsele ..statusSVG
+         else
+            --system.setScreen(target .. locks .. hudver ..targetsele ..statusSVG)
+            hudHTML = target .. locks .. hudver ..targetsele ..statusSVG
          end
       end
+      coroutine.yield()
    end
-   --lockstatus
-   if radar.getThreatFrom(v) ~= "none" and size ~= "" then
-      countLock = countLock + 1
-      local name = radar.getConstructName(v)
-      local dist = math.floor(radar.getConstructDistance(v))
-      local seldist = dist
-      if dist < 1000 then tdist = seldist tdists = 'M' dist = ''..dist..'m'
-   elseif dist < 100000 then tdist = string.format('%0.1f', seldist/1000) tdists = 'KM' dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
-   else tdist = string.format('%0.2f', seldist/200000) tdists = 'SU' dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
-   end
-   local loclIDT = (""..v..""):sub(-3)
-   local nameLOCK = ''..loclIDT..' '..name..''
-   if radar.getThreatFrom(v) == "attacked" then
-      countAttacked = countAttacked + 1
-      lockList = lockList..[[
-      <div class="table-row th">
-      <div class="table-cell">
-      <redcolor1>]]..'['..size..'] '..nameLOCK.. [[</redcolor1><br><distcolor>]] ..dist.. [[</distcolor>
-      </div>
-      </div>]]
-   else
-      lockList = lockList..[[
-      <div class="table-row th">
-      <div class="table-cell">
-      <orangecolor>]]..'['..size..'] '..nameLOCK.. [[</orangecolor><br><distcolor>]] ..dist.. [[</distcolor>
-      </div>
-      </div>]]
-   end
-end
-if i > 50 then
-   i = 0
-   coroutine.yield()
-end
-end
-if GHUD_ShowAllies == true then
-if friendlies > 0 then
-   caption = "<alliescolor>Allies:</alliescolor><br><countcolor>"..friendlies.."</countcolor> <countcolor2>"..conID.."</countcolor2>"
-else
-   caption = "<alliescolor>Allies:</alliescolor><br><countcolor>0</countcolor> <countcolor2>"..conID.."</countcolor2>"
-end
-htmltext = htmlbasic .. [[
-<style>
-.th3>.table-cell3 {
-   color: ]]..GHUD_Allied_Names_Color..[[;
-   font-weight: bold;
-}
-</style>
-<div class="table3">
-<div class="table-row3 th3">
-<div class="table-cell3">
-]]..caption..[[
-</div>
-</div>
-]]..list..[[
-</div>]]
-end
-caption = "<targetscolor>Targets:</targetscolor>"
-target = targetshtml .. [[
-<style>
-.th2>.table-cell2 {
-color: ]]..GHUD_Target_Names_Color..[[;
-font-weight: bold;
-}
-</style>
-<div class="table2">
-<div class="table-row2 th2">
-<div class="table-cell2">
-]] .. caption .. [[<br><countcolor>]]..idN-friendlies..[[</colorcount>
-</div>
-</div>
-]] .. islockList .. [[
-</div>]]
---threat status
-if countLock == 0 then
-captionL = "LOCK"
-captionLcolor = "#6affb1"
-captionText = "OK"
-okcolor = captionLcolor
-else
-captionL = "LOCKED:"
-captionLcolor = "#fca503"
-captionText = countLock
-okcolor = "#2ebac9"
-end
---attackers count
-if countAttacked > 0 then
-captionL = "ATTACKED:"
-captionLcolor = "#fc033d"
-captionText = countAttacked
-okcolor = "#2ebac9"
-end
---threat icon
-statusSVG = [[<style>.radarLockstatus {
-position: fixed;
-background: transparent;
-width: 6em;
-padding: 1vh;
-top: 13.5vh;
-left: 50%;
-transform: translateX(-50%);
-text-align: center;
-fill: ]]..captionLcolor..[[;
-}
-svg text{
-text-anchor: middle;
-dominant-baseline: middle;
-font-size: 110px;
-font-weight: bold;
-fill: ]]..okcolor..[[;
-}
-</style>
-<div class="radarLockstatus">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 512 512">
-<g>
-<path d="m501,245.6h-59.7c-5.3-93.9-81-169.6-174.9-174.9v-59.7h-20.9v59.7c-93.8,5.3-169.5,81-174.8,174.9h-59.7v20.9h59.7c5.3,93.8 81,169.5 174.9,174.8v59.7h20.9v-59.7c93.9-5.3 169.6-80.9 174.8-174.8h59.7v-20.9zm-80.6,0h-48.1c-4.9-56.3-49.6-100.9-105.9-105.9v-48.1c82.5,5.2 148.8,71.5 154,154zm-69.1,20.8c-4.9,44.7-40.9,80-84.9,84.9v-31.7h-20.9v31.8c-44.8-4.8-80.1-40.1-84.9-84.9h31.8v-20.9h-31.7c4.9-44.7 40.9-80 84.9-84.9v31.7h20.9v-31.7c44,4.9 80,40.2 84.9,84.9h-31.7v20.9h31.6zm-105.7-174.9v48.1c-56.3,4.9-100.9,49.6-105.9,105.9h-48.1c5.2-82.5 71.5-148.8 154-154zm-154,174.8h48.1c4.9,56.3 49.6,100.9 105.9,105.9v48.1c-82.5-5.2-148.8-71.5-154-154zm174.8,154v-48.1c56.3-4.9 100.9-49.6 105.9-105.9h48.1c-5.2,82.5-71.5,148.8-154,154z"/>
-</g>
-<text x="50%" y="52%">]]..captionText..[[</text>
-</svg>
-</div>]]
-locks = lockhtml .. [[
-<style>
-.th>.table-cell {
-font-weight: bold;
-}
-</style>
-<div class="table">
-<div class="table-row th">
-<div class="table-cell">
-<rightlocked style="color: ]]..captionLcolor..[[;">]] .. captionL  .. [[</rightlocked>
-</div>
-</div>
-]] .. lockList .. [[
-</div>]]
---Echoes widget
-if GHUD_ShowEcho == true then
-local dynamic = ''
-for k,v in pairs(radarDynamicData) do
-   dynamic = dynamic .. '<span style="left:'..k..'px;height:'..v..'px;"></span>'
-end
-local static = ''
-for k,v in pairs(radarStaticData) do
-   static = static .. '<span style="left:'..k..'px;height:'..v..'px;"></span>'
-end
-local htmlRadar = htmlRadar .. [[
-<div class="radar-widget">
-<div class="d-widget">]] .. dynamic .. [[</div>
-<div class="s-widget">]] .. static .. [[</div>
-<div class="labels">
-<span style="color: #6fc9ff;">DYNAMIC</span>
-<span style="color: #ff8d00;">STATIC</span>
-</div>
-]]..radarWidgetScaleDisplay..[[
-</div>
-]]
-radarWidget = htmlRadar
-else
-radarWidget = ''
-end
-
-hudver = hudvers .. [[<div class="hudversion">Gemini v]]..HUD_version..[[</div>]]
-
-if GHUD_ShowEcho == true then
-if GHUD_ShowAllies == true then
-   --system.setScreen(htmltext .. target .. locks .. hudver .. radarWidget ..targetsele ..statusSVG)
-   hudHTML = htmltext .. target .. locks .. hudver .. radarWidget ..targetsele ..statusSVG
-else
-   --system.setScreen(target .. locks .. hudver .. radarWidget ..targetsele ..statusSVG)
-   hudHTML = target .. locks .. hudver .. radarWidget ..targetsele ..statusSVG
-end
-
-else
-
-if GHUD_ShowAllies == true then
-   --system.setScreen(htmltext .. target .. locks .. hudver ..targetsele ..statusSVG)
-   hudHTML = htmltext .. target .. locks .. hudver ..targetsele ..statusSVG
-else
-   --system.setScreen(target .. locks .. hudver ..targetsele ..statusSVG)
-   hudHTML = target .. locks .. hudver ..targetsele ..statusSVG
-end
-end
-coroutine.yield()
-end
 end
 
 --HUD design
 lockhtml = [[<style>
 .table {
-display: table;
-background: ]]..GHUD_Background_Color..[[;
-opacity: ]]..GHUD_Locked_Opacity..[[;
-left: 0;
-top: 5vh;
-position: fixed;
+   display: table;
+   background: ]]..GHUD_Background_Color..[[;
+   opacity: ]]..GHUD_Locked_Opacity..[[;
+   left: 0;
+   top: 5vh;
+   position: fixed;
 }
 .table-row {
-display: table-row;
+   display: table-row;
 }
 .table-cell {
-display: table-cell;
-padding: 6px;
-border: 1px solid ]]..GHUD_Border_Color..[[;
-color: white;
+   display: table-cell;
+   padding: 6px;
+   border: 1px solid ]]..GHUD_Border_Color..[[;
+   color: white;
 }
 orangecolor {
-color: #fca503;
+   color: #fca503;
 }
 redcolor1 {
-color: #fc033d;
+   color: #fc033d;
 }
 rightlocked {
 }</style>]]
 targetshtml = [[<style>
 .table2 {
-display: table;
-background: ]]..GHUD_Background_Color..[[;
-position: fixed;
-top: 0;
-left: 0;
+   display: table;
+   background: ]]..GHUD_Background_Color..[[;
+   position: fixed;
+   top: 0;
+   left: 0;
 }
 .table-row2 {
-display: table-row;
-float: left;
+   display: table-row;
+   float: left;
 }
 .table-cell2 {
-display: table-cell;
-padding: 6px;
-border: 1px solid ]]..GHUD_Border_Color..[[;
-color: white;
+   display: table-cell;
+   padding: 6px;
+   border: 1px solid ]]..GHUD_Border_Color..[[;
+   color: white;
 }
 .table-cellS {
-display: table-cell;
-padding: 6px;
-border: 1px solid ]]..GHUD_SelectBorder_Color..[[;
-color: white;
+   display: table-cell;
+   padding: 6px;
+   border: 1px solid ]]..GHUD_SelectBorder_Color..[[;
+   color: white;
 }
 .thS>.table-cellS {
-color: ]]..GHUD_Target_Names_Color..[[;
-font-weight: bold;
+   color: ]]..GHUD_Target_Names_Color..[[;
+   font-weight: bold;
 }
 distcolor {
-font-weight: bold;
-color: ]]..GHUD_Distance_Color..[[;
+   font-weight: bold;
+   color: ]]..GHUD_Distance_Color..[[;
 }
 distalliescolor {
-font-weight: bold;
-color: ]]..GHUD_Allies_Distance_Color..[[;
+   font-weight: bold;
+   color: ]]..GHUD_Allies_Distance_Color..[[;
 }
 speedcolor {
-font-weight: bold;
-color: ]]..GHUD_Speed_Color..[[;
-outline: 1px ]]..GHUD_BorderStyle_Angular_Radial_Speed_Color..[[ ]]..GHUD_Border_Angular_Radial_Speed_Color..[[;
+   font-weight: bold;
+   color: ]]..GHUD_Speed_Color..[[;
+   outline: 1px ]]..GHUD_BorderStyle_Angular_Radial_Speed_Color..[[ ]]..GHUD_Border_Angular_Radial_Speed_Color..[[;
 }
 angcolor {
-font-weight: bold;
-color: ]]..GHUD_Angular_Color..[[;
-outline: 1px ]]..GHUD_BorderStyle_Angular_Radial_Speed_Color..[[ ]]..GHUD_Border_Angular_Radial_Speed_Color..[[;
+   font-weight: bold;
+   color: ]]..GHUD_Angular_Color..[[;
+   outline: 1px ]]..GHUD_BorderStyle_Angular_Radial_Speed_Color..[[ ]]..GHUD_Border_Angular_Radial_Speed_Color..[[;
 }
 radcolor {
-font-weight: bold;
-color: ]]..GHUD_Radial_Color..[[;
-outline: 1px ]]..GHUD_BorderStyle_Angular_Radial_Speed_Color..[[ ]]..GHUD_Border_Angular_Radial_Speed_Color..[[;
+   font-weight: bold;
+   color: ]]..GHUD_Radial_Color..[[;
+   outline: 1px ]]..GHUD_BorderStyle_Angular_Radial_Speed_Color..[[ ]]..GHUD_Border_Angular_Radial_Speed_Color..[[;
 }
 countcolor {
-font-weight: bold;
-color: ]]..GHUD_Count_Color..[[;
+   font-weight: bold;
+   color: ]]..GHUD_Count_Color..[[;
 }
 countcolor2 {
-font-weight: bold;
-color: ]]..GHUD_Yourship_ID_Color..[[;
-float: right;
+   font-weight: bold;
+   color: ]]..GHUD_Yourship_ID_Color..[[;
+   float: right;
 }
 chancecolor {
-color: #6affb1;
+   color: #6affb1;
 }
 targetscolor {
-color: ]]..GHUD_Targets_Color..[[;
+   color: ]]..GHUD_Targets_Color..[[;
 }
 alliescolor {
-color: ]]..GHUD_Allies_Color..[[;
+   color: ]]..GHUD_Allies_Color..[[;
 }
 .txgrenright {
-font-weight: bold;
-text-align: right;
-color: #0cf27b;
+   font-weight: bold;
+   text-align: right;
+   color: #0cf27b;
 }
 </style>]]
 htmlbasic = [[<style>
 .table3 {
-display: table;
-background: ]]..GHUD_Background_Color..[[;
-font-weight: bold;
-position: fixed;
-bottom: ]]..GHUD_AlliesY..[[vh;
-left: 0;
+   display: table;
+   background: ]]..GHUD_Background_Color..[[;
+   font-weight: bold;
+   position: fixed;
+   bottom: ]]..GHUD_AlliesY..[[vh;
+   left: 0;
 }
 .table-row3 {
-display: table-row;
-float: left;
+   display: table-row;
+   float: left;
 }
 .table-cell3 {
-display: table-cell;
-padding: 5px;
-border: 1px solid ]]..GHUD_Border_Color..[[;
-color: white;
-font-weight: bold;
+   display: table-cell;
+   padding: 5px;
+   border: 1px solid ]]..GHUD_Border_Color..[[;
+   color: white;
+   font-weight: bold;
 }
 .table-cell3S {
-display: table-cell;
-padding: 5px;
-border: 1px solid ]]..GHUD_SelectBorder_Color..[[;
-color: white;
+   display: table-cell;
+   padding: 5px;
+   border: 1px solid ]]..GHUD_SelectBorder_Color..[[;
+   color: white;
 }
 .th3S>.table-cell3S {
-color: ]]..GHUD_Allied_Names_Color..[[;
-font-weight: bold;
+   color: ]]..GHUD_Allied_Names_Color..[[;
+   font-weight: bold;
 }</style>]]
 hudvers = [[
 <style>
 .hudversion {
-position: fixed;
-bottom: 2.7vh;
-color: white;
-right: 8.1vw;
-font-family: 'Open Sans';
-letter-spacing: 0.5px;
-font-size: 1.4em;
-font-weight: bold;
+   position: fixed;
+   bottom: 2.7vh;
+   color: white;
+   right: 8.1vw;
+   font-family: 'Open Sans';
+   letter-spacing: 0.5px;
+   font-size: 1.4em;
+   font-weight: bold;
 }</style>]]
 
 htmlRadar = [[
 <style>
 .top-panel {
-position: absolute;
-top: 160px;
-left: 0;
-right: 0;
-height: 200px;
-transform: perspective(1920px) rotateX(-18deg);
-transform-origin: top;
-display: flex;
-justify-content: center;
+   position: absolute;
+   top: 160px;
+   left: 0;
+   right: 0;
+   height: 200px;
+   transform: perspective(1920px) rotateX(-18deg);
+   transform-origin: top;
+   display: flex;
+   justify-content: center;
 }
 .top-panel .screen-panel {
-transform-style: preserve-3d;
-transform-origin: top;
-transform: perspective(120px) rotateX(-4deg);
+   transform-style: preserve-3d;
+   transform-origin: top;
+   transform: perspective(120px) rotateX(-4deg);
 }
 .screen {
-background: rgba(0, 0, 0, .5);
-border-radius: 6px;
-padding: 5px 10px 10px;
-box-sizing: border-box;
-position: relative;
+   background: rgba(0, 0, 0, .5);
+   border-radius: 6px;
+   padding: 5px 10px 10px;
+   box-sizing: border-box;
+   position: relative;
 }
 .screen::after {
-content: '';
-position: absolute;
-top: -6px;
-left: -6px;
-bottom: -6px;
-right: -6px;
-background: radial-gradient(110% 160% at 50% -40%, transparent 62%, rgba(255, 255, 255, .23)), radial-gradient(100% 70% at 50% 50%, #094075 -70%, transparent);
-border-radius: 10px;
-border: 1px solid #b7b7b7;
+   content: '';
+   position: absolute;
+   top: -6px;
+   left: -6px;
+   bottom: -6px;
+   right: -6px;
+   background: radial-gradient(110% 160% at 50% -40%, transparent 62%, rgba(255, 255, 255, .23)), radial-gradient(100% 70% at 50% 50%, #094075 -70%, transparent);
+   border-radius: 10px;
+   border: 1px solid #b7b7b7;
 }
 .screen.left::after {
-background: radial-gradient(farthest-corner at -20% 100%, transparent 62%, rgba(255, 255, 255, .43)), radial-gradient(farthest-corner at 50% -250%, #094075, transparent);
+   background: radial-gradient(farthest-corner at -20% 100%, transparent 62%, rgba(255, 255, 255, .43)), radial-gradient(farthest-corner at 50% -250%, #094075, transparent);
 }
 .data {
-white-space: nowrap;
-text-align: right;
+   white-space: nowrap;
+   text-align: right;
 }
 .screen.dividers .data:nth-child(1) {
-margin-top: 0;
-padding-top: 0;
-border-top: none;
+   margin-top: 0;
+   padding-top: 0;
+   border-top: none;
 }
 .data {
-display: flex;
-justify-content: space-between;
-align-items: baseline;
-width: 100%;
+   display: flex;
+   justify-content: space-between;
+   align-items: baseline;
+   width: 100%;
 }
 .screen.dividers .data {
-margin-top: 4px;
-border-top: 1px solid #496d8c;
-padding-top: 4px;
+   margin-top: 4px;
+   border-top: 1px solid #496d8c;
+   padding-top: 4px;
 }
 .data-header {
-font-weight: bold;
-font-size: 14px;
-display: flex;
-align-items: baseline;
-justify-content: space-between;
+   font-weight: bold;
+   font-size: 14px;
+   display: flex;
+   align-items: baseline;
+   justify-content: space-between;
 }
 .data-content {
-font-size: 20px;
-display: flex;
-justify-content: flex-end;
-align-items: baseline;
-font-weight: normal;
-color: #edf7ff;
-font-family: monospace;
-font-weight: bold;
+   font-size: 20px;
+   display: flex;
+   justify-content: flex-end;
+   align-items: baseline;
+   font-weight: normal;
+   color: #edf7ff;
+   font-family: monospace;
+   font-weight: bold;
 }
 .data-unit {
-font-size: 12px;
-margin-left: 2px;
-color: #94ceff;
-font-weight: bold;
+   font-size: 12px;
+   margin-left: 2px;
+   color: #94ceff;
+   font-weight: bold;
 }
 .data.speed {
-position: absolute;
-top: 7px;
-left: -5px;
-z-index: 10;
-right: -5px;
-height: 100%;
+   position: absolute;
+   top: 7px;
+   left: -5px;
+   z-index: 10;
+   right: -5px;
+   height: 100%;
 }
 .speed .data-header {
-display: flex;
-justify-content: space-between;
-margin-top: 5px;
-align-items: baseline;
+   display: flex;
+   justify-content: space-between;
+   margin-top: 5px;
+   align-items: baseline;
 }
 .tr-mode {
-background: #e9f5ff;
-border-radius: 2px;
-font-size: 12px;
-color: black;
-padding: 1px 3px;
-font-weight: bold;
-margin-right: 5px;
-height: 14px;
+   background: #e9f5ff;
+   border-radius: 2px;
+   font-size: 12px;
+   color: black;
+   padding: 1px 3px;
+   font-weight: bold;
+   margin-right: 5px;
+   height: 14px;
 }
 .data-bar {
-height: 6px;
-background: #284965;
-margin-top: 4px;
-margin-bottom: 4px;
-overflow: hidden;
-border-radius: 10px;
+   height: 6px;
+   background: #284965;
+   margin-top: 4px;
+   margin-bottom: 4px;
+   overflow: hidden;
+   border-radius: 10px;
 }
 .data-bar>span {
-background: linear-gradient(90deg, transparent calc(100% - 30px), #f1f9ff), repeating-linear-gradient(90deg, #82c5ff 0px, #82c5ff 2px, transparent 2px, transparent 4px);
-display: block;
-position: relative;
-width: 100%;
-height: 100%;
-border-radius: 10px;
+   background: linear-gradient(90deg, transparent calc(100% - 30px), #f1f9ff), repeating-linear-gradient(90deg, #82c5ff 0px, #82c5ff 2px, transparent 2px, transparent 4px);
+   display: block;
+   position: relative;
+   width: 100%;
+   height: 100%;
+   border-radius: 10px;
 }
 .disabled {
-opacity: .3;
+   opacity: .3;
 }
 .icon {
-fill: #94ceff;
-width: 50px;
+   fill: #94ceff;
+   width: 50px;
 }
 .flex {
-display: flex;
+   display: flex;
 }
 .flex.align-bottom {
-align-items: baseline;
+   align-items: baseline;
 }
 .flex.down {
-flex-direction: column;
+   flex-direction: column;
 }
 .flex.align-top {
-align-items: flex-start;
+   align-items: flex-start;
 }
 .flex.align-center {
-align-items: center;
+   align-items: center;
 }
 .flex.justify-end {
-justify-content: flex-end;
+   justify-content: flex-end;
 }
 .flex.space-between {
-justify-content: space-between;
+   justify-content: space-between;
 }
 .hologram {
-display: flex;
-flex-direction: column;
-align-items: flex-end;
-filter: drop-shadow(0px 0px 6px rgba(255, 255, 255, .23)) drop-shadow(0px 0px 20px rgba(0, 0, 0, .20));
-width: 100%;
+   display: flex;
+   flex-direction: column;
+   align-items: flex-end;
+   filter: drop-shadow(0px 0px 6px rgba(255, 255, 255, .23)) drop-shadow(0px 0px 20px rgba(0, 0, 0, .20));
+   width: 100%;
 }
 .holo-wrap {
-transform-origin: center right;
-width: 100%;
-margin-top: 20px;
+   transform-origin: center right;
+   width: 100%;
+   margin-top: 20px;
 }
 .holo-wrap .data {
-display: flex;
-justify-content: space-between;
-align-items: baseline;
+   display: flex;
+   justify-content: space-between;
+   align-items: baseline;
 }
 .holo-wrap .data-content {
-font-size: 12px;
+   font-size: 12px;
 }
 .fuel-tank {
-display: flex;
-justify-content: space-between;
-align-items: baseline;
+   display: flex;
+   justify-content: space-between;
+   align-items: baseline;
 }
 .fuel-gauge {
-width: 160px;
-height: 5px;
-position: relative;
-background: rgba(255, 255, 255, .12);
-border-radius: 15px;
-overflow: hidden;
+   width: 160px;
+   height: 5px;
+   position: relative;
+   background: rgba(255, 255, 255, .12);
+   border-radius: 15px;
+   overflow: hidden;
 }
 .fuel-gauge span {
-position: absolute;
-top: 0;
-bottom: 0;
-left: 0;
-background: #e7f4ff;
-border-radius: 10px;
+   position: absolute;
+   top: 0;
+   bottom: 0;
+   left: 0;
+   background: #e7f4ff;
+   border-radius: 10px;
 }
 .data.icon-panel {
-display: flex;
-align-items: center;
+   display: flex;
+   align-items: center;
 }
 .icon-panel .icon {
-height: 20px;
-width: auto;
-margin: 0px 0px;
-fill: rgba(200, 230, 255, .16);
+   height: 20px;
+   width: auto;
+   margin: 0px 0px;
+   fill: rgba(200, 230, 255, .16);
 }
 .icon-panel .icon.on {
-fill: #94ceff;
+   fill: #94ceff;
 }
 .top-panel .screen-panel {
-display: flex;
-align-items: flex-start;
+   display: flex;
+   align-items: flex-start;
 }
 .screen.top-left {
-width: 470px;
-border-radius: 0px 0px 0px 6px;
-margin-right: -40px;
-height: 90px;
-padding-right: 60px;
-z-index: 0;
+   width: 470px;
+   border-radius: 0px 0px 0px 6px;
+   margin-right: -40px;
+   height: 90px;
+   padding-right: 60px;
+   z-index: 0;
 }
 .top-left::after {
-background: radial-gradient(110% 160% at 70% -40%, transparent 62%, rgba(255, 255, 255, .23)), radial-gradient(100% 70% at 50% 50%, #094075 -70%, transparent);
-z-index: -1;
+   background: radial-gradient(110% 160% at 70% -40%, transparent 62%, rgba(255, 255, 255, .23)), radial-gradient(100% 70% at 50% 50%, #094075 -70%, transparent);
+   z-index: -1;
 }
 .screen.logo-screen {
-width: 160px;
-height: 160px;
-border-radius: 100px;
-margin-top: -40px;
-display: flex;
-justify-content: center;
-align-items: center;
-background: black;
+   width: 160px;
+   height: 160px;
+   border-radius: 100px;
+   margin-top: -40px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   background: black;
 }
 .logo-screen::after {
-border-radius: 120px;
-background: radial-gradient(90% 136% at 50% -37%, transparent 86%, rgba(255, 255, 255, .33)), radial-gradient(100% 70% at 50% 65%, #094075 0%, transparent);
+   border-radius: 120px;
+   background: radial-gradient(90% 136% at 50% -37%, transparent 86%, rgba(255, 255, 255, .33)), radial-gradient(100% 70% at 50% 65%, #094075 0%, transparent);
 }
 .screen.top-right {
-width: 470px;
-border-radius: 0px 0px 6px 0px;
-margin-left: -40px;
-height: 90px;
-z-index: -1;
-padding-left: 60px;
+   width: 470px;
+   border-radius: 0px 0px 6px 0px;
+   margin-left: -40px;
+   height: 90px;
+   z-index: -1;
+   padding-left: 60px;
 }
 .top-right::after {
-background: radial-gradient(110% 160% at 30% -40%, transparent 62%, rgba(255, 255, 255, .23)), radial-gradient(100% 70% at 50% 50%, #094075 -70%, transparent);
-z-index: -1;
+   background: radial-gradient(110% 160% at 30% -40%, transparent 62%, rgba(255, 255, 255, .23)), radial-gradient(100% 70% at 50% 50%, #094075 -70%, transparent);
+   z-index: -1;
 }
 .radar-widget {
-width: 800px;
-height: 50px;
-position: absolute;
-margin-left: auto;
-margin-right: auto;
-left: 0;
-right: 0;
-top: 8vh;
-background: radial-gradient(60% 50% at 50% 50%, rgba(60, 166, 255, .34), transparent);
-border-right: 1px solid;
-border-left: 1px solid;
-transform-style: preserve-3d;
-transform-origin: top;
-transform: perspective(120px) rotateX(-4deg);
+   width: 800px;
+   height: 50px;
+   position: absolute;
+   margin-left: auto;
+   margin-right: auto;
+   left: 0;
+   right: 0;
+   top: 8vh;
+   background: radial-gradient(60% 50% at 50% 50%, rgba(60, 166, 255, .34), transparent);
+   border-right: 1px solid;
+   border-left: 1px solid;
+   transform-style: preserve-3d;
+   transform-origin: top;
+   transform: perspective(120px) rotateX(-4deg);
 }
 .d-widget,
 .s-widget {
-height: 25px;
-width: 100%;
-overflow: hidden;
-position: relative;
+   height: 25px;
+   width: 100%;
+   overflow: hidden;
+   position: relative;
 }
 .s-widget {
-border-top: 1px solid;
+   border-top: 1px solid;
 }
 .d-widget span {
-background: linear-gradient(0deg, #b6ddff, #3ea7ff 25px);
-width: 2px;
-bottom: 0;
-position: absolute;
+   background: linear-gradient(0deg, #b6ddff, #3ea7ff 25px);
+   width: 2px;
+   bottom: 0;
+   position: absolute;
 }
 .s-widget span {
-background: linear-gradient(180deg, #ffd322, #ff7600 25px);
-width: 2px;
-top: 0;
-position: absolute;
+   background: linear-gradient(180deg, #ffd322, #ff7600 25px);
+   width: 2px;
+   top: 0;
+   position: absolute;
 }
 .measures {
-display: flex;
-justify-content: space-between;
-font-size: 20px;
+   display: flex;
+   justify-content: space-between;
+   font-size: 20px;
 }
 .measures span:first-child {
-transform: translateX(-50%);
+   transform: translateX(-50%);
 }
 .measures span:last-child {
-transform: translateX(50%);
+   transform: translateX(50%);
 }
 .labels {
-display: flex;
-flex-direction: column;
-position: absolute;
-right: -60px;
-top: 0;
-height: 100%;
-justify-content: space-evenly;
-font-size: 12px;
+   display: flex;
+   flex-direction: column;
+   position: absolute;
+   right: -60px;
+   top: 0;
+   height: 100%;
+   justify-content: space-evenly;
+   font-size: 12px;
 }
 .needle {
-position: absolute;
-top: -6px;
-left: 50%;
-transform: translateX(-50%);
-width: 0px;
-height: 0px;
-border-left: 8px solid transparent;
-border-right: 8px solid transparent;
-border-bottom: 8px solid #ecf6ff;
-filter: drop-shadow(0px 0px 30px #94ceff) drop-shadow(0px 0px 30px #94ceff) drop-shadow(0px 0px 5px #94ceff);
-z-index: 1;
+   position: absolute;
+   top: -6px;
+   left: 50%;
+   transform: translateX(-50%);
+   width: 0px;
+   height: 0px;
+   border-left: 8px solid transparent;
+   border-right: 8px solid transparent;
+   border-bottom: 8px solid #ecf6ff;
+   filter: drop-shadow(0px 0px 30px #94ceff) drop-shadow(0px 0px 30px #94ceff) drop-shadow(0px 0px 5px #94ceff);
+   z-index: 1;
 }
 .compass {
-position: absolute;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-border-radius: 50%;
-border: 2px;
-border-style: solid;
-transform-origin: center;
-transform: rotate(0deg);
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   border-radius: 50%;
+   border: 2px;
+   border-style: solid;
+   transform-origin: center;
+   transform: rotate(0deg);
 }
 .compass span {
-font-size: 20px;
-position: absolute;
-top: 50%;
-left: 50%;
+   font-size: 20px;
+   position: absolute;
+   top: 50%;
+   left: 50%;
 }
 .left-panel {
-position: absolute;
-top: 300px;
-left: 50%;
-transform: perspective(1920px) translateX(-50%) translateX(-790px) rotateY(50deg) translateZ(20px);
-transform-origin: center right;
-display: flex;
-flex-direction: column;
-justify-content: flex-start;
-align-items: flex-start;
-bottom: 0;
-width: 200px;
+   position: absolute;
+   top: 300px;
+   left: 50%;
+   transform: perspective(1920px) translateX(-50%) translateX(-790px) rotateY(50deg) translateZ(20px);
+   transform-origin: center right;
+   display: flex;
+   flex-direction: column;
+   justify-content: flex-start;
+   align-items: flex-start;
+   bottom: 0;
+   width: 200px;
 }
 .left-panel.extended {
-width: 330px;
-transform: perspective(1920px) translateX(-50%) translateX(-700px) rotateY(50deg) translateZ(20px);
-display: block;
-top: 200px;
+   width: 330px;
+   transform: perspective(1920px) translateX(-50%) translateX(-700px) rotateY(50deg) translateZ(20px);
+   display: block;
+   top: 200px;
 }
 .pitch-roll-panel {
-position: absolute;
-top: 330px;
-border-left: 2px solid;
-left: 50%;
-transform: translateX(-50%) translateX(-465px);
-height: 300px;
-overflow: hidden;
-width: 400px;
-font-family: monospace;
-font-weight: bold;
-filter: drop-shadow(0px 0px 6px rgba(255, 255, 255, .23)) drop-shadow(0px 0px 20px rgba(0, 0, 0, .20));
+   position: absolute;
+   top: 330px;
+   border-left: 2px solid;
+   left: 50%;
+   transform: translateX(-50%) translateX(-465px);
+   height: 300px;
+   overflow: hidden;
+   width: 400px;
+   font-family: monospace;
+   font-weight: bold;
+   filter: drop-shadow(0px 0px 6px rgba(255, 255, 255, .23)) drop-shadow(0px 0px 20px rgba(0, 0, 0, .20));
 }
 .pitch {
-position: absolute;
-top: 50%;
-left: 0;
-transform: translateY(-50%);
+   position: absolute;
+   top: 50%;
+   left: 0;
+   transform: translateY(-50%);
 }
 .pitch-line {
-display: block;
-position: relative;
-height: 30px;
+   display: block;
+   position: relative;
+   height: 30px;
 }
 .pitch-line span {
-position: absolute;
-top: 50%;
-transform: translateY(-50%);
-display: flex;
-justify-content: space-between;
-align-items: center;
-font-weight: bold;
+   position: absolute;
+   top: 50%;
+   transform: translateY(-50%);
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   font-weight: bold;
 }
 .pitch-line span::before {
-content: '';
-margin-right: 10px;
-height: 1px;
-background: #94ceff;
-flex-grow: 1;
-width: 10px;
+   content: '';
+   margin-right: 10px;
+   height: 1px;
+   background: #94ceff;
+   flex-grow: 1;
+   width: 10px;
 }
 .pitch-roll {
-position: absolute;
-top: 50%;
-left: 0;
-transform: translateY(-50%);
-display: flex;
-flex-wrap: nowrap;
-align-items: center;
+   position: absolute;
+   top: 50%;
+   left: 0;
+   transform: translateY(-50%);
+   display: flex;
+   flex-wrap: nowrap;
+   align-items: center;
 }
 .line {
-height: 2px;
-background: #c8e6ff;
-width: 90px;
+   height: 2px;
+   background: #c8e6ff;
+   width: 90px;
 }
 .number-display {
-width: 50px;
-font-size: 16px;
-text-align: center;
-font-weight: bold;
-color: #c8e6ff;
-border: 2px solid;
-height: 21px;
-margin: 0px 8px;
-position: relative;
+   width: 50px;
+   font-size: 16px;
+   text-align: center;
+   font-weight: bold;
+   color: #c8e6ff;
+   border: 2px solid;
+   height: 21px;
+   margin: 0px 8px;
+   position: relative;
 }
 .number-head {
-font-size: 11px;
-position: relative;
-top: -37px;
-font-weight: bold;
+   font-size: 11px;
+   position: relative;
+   top: -37px;
+   font-weight: bold;
 }
 .roll-lines {
-position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%) rotate(55deg);
-width: 80px;
-height: 80px;
-border: 14px dashed rgba(200, 230, 255, .08);
-border-radius: 100px;
-border-style: dashed;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%) rotate(55deg);
+   width: 80px;
+   height: 80px;
+   border: 14px dashed rgba(200, 230, 255, .08);
+   border-radius: 100px;
+   border-style: dashed;
 }
 .roll-lines span {
-width: 50px;
-height: 0;
-border-bottom: 3px dashed rgba(147, 205, 254, .50);
-position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%) rotate(-90deg) translateX(95px);
-z-index: -1;
+   width: 50px;
+   height: 0;
+   border-bottom: 3px dashed rgba(147, 205, 254, .50);
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%) rotate(-90deg) translateX(95px);
+   z-index: -1;
 }
 .roll-lines span:nth-child(2) {
-transform: translate(-50%, -50%) rotate(0deg) translateX(95px);
+   transform: translate(-50%, -50%) rotate(0deg) translateX(95px);
 }
 .roll-lines span:nth-child(3) {
-transform: translate(-50%, -50%) rotate(90deg) translateX(95px);
+   transform: translate(-50%, -50%) rotate(90deg) translateX(95px);
 }
 .roll-lines span:nth-child(4) {
-transform: translate(-50%, -50%) rotate(180deg) translateX(95px);
+   transform: translate(-50%, -50%) rotate(180deg) translateX(95px);
 }
 .ship-orientation {
-width: 100px;
-height: 100px;
-position: relative;
-margin: 30px auto 0;
-border-radius: 50%;
-border: 1px solid;
+   width: 100px;
+   height: 100px;
+   position: relative;
+   margin: 30px auto 0;
+   border-radius: 50%;
+   border: 1px solid;
 }
 .ship-orientation-gimbal {
-width: 100px;
-height: 100px;
-position: relative;
-transform-style: preserve-3d;
-transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+   width: 100px;
+   height: 100px;
+   position: relative;
+   transform-style: preserve-3d;
+   transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
 }
 .plane-z,
 .plane-y,
 .plane-x {
-position: absolute;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-border-radius: 50%;
-/*background: repeating-linear-gradient(0deg, rgba(148,206,255, .28) 0px, rgba(148,206,255, .28) 1px, transparent 1px, transparent 5px);
-border: 4px solid #94ceff;*/
-transform-style: preserve-3d;
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   border-radius: 50%;
+   /*background: repeating-linear-gradient(0deg, rgba(148,206,255, .28) 0px, rgba(148,206,255, .28) 1px, transparent 1px, transparent 5px);
+   border: 4px solid #94ceff;*/
+   transform-style: preserve-3d;
 }
 .plane-z {
-transform: rotateY(90deg);
+   transform: rotateY(90deg);
 }
 .plane-y {
-transform: rotateX(90deg);
-border: 2px solid #9dffab;
+   transform: rotateX(90deg);
+   border: 2px solid #9dffab;
 }
 .plane-x {
-transform: rotateZ(90deg);
+   transform: rotateZ(90deg);
 }
 .plane-z::after {
-content: '';
-position: absolute;
-top: -30px;
-bottom: -30px;
-left: 50%;
-transform: translateX(-50%);
-width: 2px;
-background: #94ceff;
-border-radius: 10px;
+   content: '';
+   position: absolute;
+   top: -30px;
+   bottom: -30px;
+   left: 50%;
+   transform: translateX(-50%);
+   width: 2px;
+   background: #94ceff;
+   border-radius: 10px;
 }
 .orient-z-axis {
-position: absolute;
-top: -30px;
-bottom: -30px;
-width: 2px;
-background: #cce8ff;
-left: 50%;
-transform: translateX(-50%);
+   position: absolute;
+   top: -30px;
+   bottom: -30px;
+   width: 2px;
+   background: #cce8ff;
+   left: 50%;
+   transform: translateX(-50%);
 }
 .orient-z-axis::before,
 .orient-z-axis::after {
-content: 'S';
-position: absolute;
-bottom: -16px;
-left: 50%;
-transform: translate(-50%, 0px);
-font-size: 13px;
-color: #c8e6ff;
+   content: 'S';
+   position: absolute;
+   bottom: -16px;
+   left: 50%;
+   transform: translate(-50%, 0px);
+   font-size: 13px;
+   color: #c8e6ff;
 }
 .orient-z-axis::before {
-content: 'N';
-bottom: auto;
-top: -16px;
+   content: 'N';
+   bottom: auto;
+   top: -16px;
 }
 .plane-x span {
-position: absolute;
-top: 0;
-left: 0;
-bottom: 0;
-right: 0;
-border: 1px solid;
-border-radius: 50%;
+   position: absolute;
+   top: 0;
+   left: 0;
+   bottom: 0;
+   right: 0;
+   border: 1px solid;
+   border-radius: 50%;
 }
 .orient-x-axis {
-position: absolute;
-height: 2px;
-top: 50%;
-transform: translateY(-50%);
-left: -30px;
-right: -30px;
-background: #cce8ff;
+   position: absolute;
+   height: 2px;
+   top: 50%;
+   transform: translateY(-50%);
+   left: -30px;
+   right: -30px;
+   background: #cce8ff;
 }
 .orient-x-axis::before,
 .orient-x-axis::after {
-content: 'W';
-position: absolute;
-left: -16px;
-top: 50%;
-transform: translate(0%, -50%);
-font-size: 13px;
-color: #c8e6ff;
+   content: 'W';
+   position: absolute;
+   left: -16px;
+   top: 50%;
+   transform: translate(0%, -50%);
+   font-size: 13px;
+   color: #c8e6ff;
 }
 .orient-x-axis::after {
-content: 'E';
-right: -16px;
-left: auto;
+   content: 'E';
+   right: -16px;
+   left: auto;
 }
 .ui {
-position: absolute;
-bottom: 0;
-left: 50%;
-transform: translateX(-50%);
-height: 300px;
-width: 900px;
-background: rgb(0 0 0 / 53%);
-border-radius: 5px;
+   position: absolute;
+   bottom: 0;
+   left: 50%;
+   transform: translateX(-50%);
+   height: 300px;
+   width: 900px;
+   background: rgb(0 0 0 / 53%);
+   border-radius: 5px;
 }
 .ui::before {
-content: '';
-position: absolute;
-top: -6px;
-left: -6px;
-bottom: -6px;
-right: -6px;
-background: radial-gradient(110% 160% at 50% -40%, transparent 62%, rgba(255, 255, 255, .23)), radial-gradient(100% 70% at 50% 50%, #094075 -70%, transparent);
-border-radius: 10px;
-border: 1px solid #b7b7b7;
-pointer-events: none;
+   content: '';
+   position: absolute;
+   top: -6px;
+   left: -6px;
+   bottom: -6px;
+   right: -6px;
+   background: radial-gradient(110% 160% at 50% -40%, transparent 62%, rgba(255, 255, 255, .23)), radial-gradient(100% 70% at 50% 50%, #094075 -70%, transparent);
+   border-radius: 10px;
+   border: 1px solid #b7b7b7;
+   pointer-events: none;
 }
 .top-bar {
-height: 25px;
-background: radial-gradient(50% 150% at 50% 160%, #007ae2, transparent);
-border-bottom: 1px solid rgba(148, 206, 255, .16);
-padding: 0px 10px;
-font-style: italic;
+   height: 25px;
+   background: radial-gradient(50% 150% at 50% 160%, #007ae2, transparent);
+   border-bottom: 1px solid rgba(148, 206, 255, .16);
+   padding: 0px 10px;
+   font-style: italic;
 }
 .ui-menu,
 .ui-content {
-height: 100%;
-padding: 10px;
-box-sizing: border-box;
-font-family: monospace;
+   height: 100%;
+   padding: 10px;
+   box-sizing: border-box;
+   font-family: monospace;
 }
 .ui-content {
-width: 800px;
+   width: 800px;
 }
 .ui-menu {
-width: 100px;
-background: radial-gradient(80% 120% at 50% 0%, rgba(0, 122, 226, .30), transparent);
-border-right: 1px solid rgba(148, 206, 255, .16);
-padding: 0;
+   width: 100px;
+   background: radial-gradient(80% 120% at 50% 0%, rgba(0, 122, 226, .30), transparent);
+   border-right: 1px solid rgba(148, 206, 255, .16);
+   padding: 0;
 }
 .ui-menu>div {
-padding: 20px 20px 20px;
-font-size: 16px;
-text-align: left;
-border-bottom: 1px solid rgba(148, 206, 255, .20);
+   padding: 20px 20px 20px;
+   font-size: 16px;
+   text-align: left;
+   border-bottom: 1px solid rgba(148, 206, 255, .20);
 }
 .ui-menu>div.active {
-background: radial-gradient(70% 50% at 100% 50%, rgba(0, 134, 247, .95), transparent);
-color: #87c8ff;
+   background: radial-gradient(70% 50% at 100% 50%, rgba(0, 134, 247, .95), transparent);
+   color: #87c8ff;
 }
 span.query {
-padding: 2px 4px;
-background: #294256;
+   padding: 2px 4px;
+   background: #294256;
 }
 .system-map {
-position: absolute;
-top: 0;
-width: 100%;
-height: 100%;
-background: rgba(7, 44, 82, .81);
-left: 0;
+   position: absolute;
+   top: 0;
+   width: 100%;
+   height: 100%;
+   background: rgba(7, 44, 82, .81);
+   left: 0;
 }
 .planet {
-width: 20px;
-height: 20px;
-border-radius: 50%;
-border: 2px solid;
-box-sizing: border-box;
-background: rgba(148, 206, 255, .29);
+   width: 20px;
+   height: 20px;
+   border-radius: 50%;
+   border: 2px solid;
+   box-sizing: border-box;
+   background: rgba(148, 206, 255, .29);
 }
 .map-actual {
-position: absolute;
-width: 100%;
-height: 100%;
-top: 0;
-left: 0;
-transform-style: preserve-3d;
+   position: absolute;
+   width: 100%;
+   height: 100%;
+   top: 0;
+   left: 0;
+   transform-style: preserve-3d;
 }
 .map-center {
-position: absolute;
-content: '';
-width: 2000px;
-height: 2000px;
-top: 50%;
-left: 50%;
-background: repeating-radial-gradient(rgba(0, 17, 35, .23), transparent 112px), repeating-radial-gradient(rgba(148, 206, 255, .34), transparent 75%);
-border-radius: 50%;
+   position: absolute;
+   content: '';
+   width: 2000px;
+   height: 2000px;
+   top: 50%;
+   left: 50%;
+   background: repeating-radial-gradient(rgba(0, 17, 35, .23), transparent 112px), repeating-radial-gradient(rgba(148, 206, 255, .34), transparent 75%);
+   border-radius: 50%;
 }
 .map-pin {
-position: absolute;
-top: 50%;
-left: 50%;
+   position: absolute;
+   top: 50%;
+   left: 50%;
 }
 .map-pin .icon,
 .map-pin .planet {
-height: 30px;
-width: 30px;
+   height: 30px;
+   width: 30px;
 }
 .pin-data {
-position: absolute;
-bottom: 100%;
-margin-bottom: 10px;
-white-space: nowrap;
-text-align: center;
-width: 200px;
-left: 50%;
-transform: translateX(-50%);
+   position: absolute;
+   bottom: 100%;
+   margin-bottom: 10px;
+   white-space: nowrap;
+   text-align: center;
+   width: 200px;
+   left: 50%;
+   transform: translateX(-50%);
 }
 .pin-data .name {
-font-size: 16px;
-color: white;
-line-height: 16px;
+   font-size: 16px;
+   color: white;
+   line-height: 16px;
 }
 .pin-data .units {
-font-family: monospace;
-font-size: 14px;
-font-weight: bold;
-line-height: 14px;
+   font-family: monospace;
+   font-size: 14px;
+   font-weight: bold;
+   line-height: 14px;
 }
 .map-pin.player {
-filter: drop-shadow(0px 0px 20px #edf7ff);
+   filter: drop-shadow(0px 0px 20px #edf7ff);
 }
 .map-pin.player .icon {
-fill: #ffde56;
+   fill: #ffde56;
 }
 .con-size {
-width: 20px;
-text-align: center;
-background: #235f92;
-margin-right: 4px;
-color: white;
-height: 18px;
+   width: 20px;
+   text-align: center;
+   background: #235f92;
+   margin-right: 4px;
+   color: white;
+   height: 18px;
 }
 .warp-scan {
-width: 15px;
-height: 15px;
-border-radius: 50%;
-box-sizing: border-box;
-background: #ff3a56;
+   width: 15px;
+   height: 15px;
+   border-radius: 50%;
+   box-sizing: border-box;
+   background: #ff3a56;
 }
 </style>]]
 targetstyle = [[<style> .telemetry {
-margin: 0;
-padding: 0;
-background: transparent;
-width: 100vw;
-height: 100vh;
-position: fixed;
-top: ]]..GHUD_SelectedY..[[vh;
-right: ]]..GHUD_SelectedX..[[vw;
-white-space:nowrap;
-width: 400px;
+   margin: 0;
+   padding: 0;
+   background: transparent;
+   width: 100vw;
+   height: 100vh;
+   position: fixed;
+   top: ]]..GHUD_SelectedY..[[vh;
+   right: ]]..GHUD_SelectedX..[[vw;
+   white-space:nowrap;
+   width: 400px;
 }
 .telemetry > div.numbers {
-margin-bottom: 10px;
-display: flex;
-width: 100%;
-justify-content: flex-end;
-margin-bottom: 0px;
+   margin-bottom: 10px;
+   display: flex;
+   width: 100%;
+   justify-content: flex-end;
+   margin-bottom: 0px;
 }
 .telemetry > div.numbers > h2 {
-font-size: 10px;
-font-weight: 900;
-margin-bottom:-3px;
-text-align: left;
-width: 60px;
+   font-size: 10px;
+   font-weight: 900;
+   margin-bottom:-3px;
+   text-align: left;
+   width: 60px;
 }
 .telemetry > div.numbers > div {
-font-weight: 500;
-font-size: 26px;
-text-align: right;
-color: #6affb1;
-margin-right: 4px;
-margin-top: ]]..GHUD_SelectedTextY..[[px;
+   font-weight: 500;
+   font-size: 26px;
+   text-align: right;
+   color: #6affb1;
+   margin-right: 4px;
+   margin-top: ]]..GHUD_SelectedTextY..[[px;
 }
 .telemetry > div.numbers > h2 > span {
-display:block;
-font-size: 20px;
+   display:block;
+   font-size: 20px;
 }
 tran {
-color: transparent;
+   color: transparent;
 }
 orangecolor {
-color: orange;
+   color: orange;
 }
 redcolor {
-font-weight: bold;
-font-family: Helvetica, sans-serif;
-font-size: 12px;
-color: ]]..GHUD_Target_Names_Color..[[;
-text-transform: none;
+   font-weight: bold;
+   font-family: Helvetica, sans-serif;
+   font-size: 12px;
+   color: ]]..GHUD_Target_Names_Color..[[;
+   text-transform: none;
 }
 greencolor {
-color: #2ebac9;
+   color: #2ebac9;
 }
 powercolor {
-font-size: 15px;
-color: #b6dfed;
+   font-size: 15px;
+   color: #b6dfed;
 }
 </style>]]
 
@@ -1770,15 +1701,15 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
    local num = " *([+-]?%d+%.?%d*e?[+-]?%d*)"
    local posPattern = "::pos{" .. num .. "," .. num .. "," .. num .. "," .. num .. "," .. num .. "}"
    local systemId, bodyId, latitude, longitude, altitude = string.match(pos, posPattern)
- 
+
    if systemId == nil or bodyId == nil or latitude == nil or longitude == nil or altitude == nil then
-       system.print("Invalid POS!")
-       return vec3()
+      system.print("Invalid POS!")
+      return vec3()
    end
- 
+
    if (systemId == "0" and bodyId == "0") then
-       --convert space bm
-       return vec3(latitude, longitude, altitude)
+      --convert space bm
+      return vec3(latitude, longitude, altitude)
    end
    longitude = math.rad(longitude)
    latitude = math.rad(latitude)
@@ -1786,101 +1717,101 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
    local xproj = math.cos(latitude)
    local planetxyz = vec3(xproj * math.cos(longitude), xproj * math.sin(longitude), math.sin(latitude))
    return vec3(planet.center) + (planet.radius + altitude) * planetxyz
- end
- 
- function getPipeD(system)
+end
+
+function getPipeD(system)
    if databank.getStringValue(1) ~= "" and databank.getStringValue(3) ~= "" then
-       local distanceS = ""
- 
-       local length1 = -700 * 200000
-       local length2 = 800 * 200000
- 
-       local pos123 = pos1
-       local pos234 = pos2
- 
-       local pos111 = zeroConvertToWorldCoordinates(pos123, system)
-       local pos222 = zeroConvertToWorldCoordinates(pos234, system)
- 
-       local DestinationCenter = vectorLengthen(pos111, pos222, length1)
-       local DepartureCenter = vectorLengthen(pos111, pos222, length2)
- 
-       local worldPos = vec3(core.getConstructWorldPos())
-       local pipe = (DestinationCenter - DepartureCenter):normalize()
-       local r = (worldPos - DepartureCenter):dot(pipe) / pipe:dot(pipe)
-       if r <= 0. then
-           return (worldPos - DepartureCenter):len()
-       elseif r >= (DestinationCenter - DepartureCenter):len() then
-           return (worldPos - DestinationCenter):len()
-       end
-       local L = DepartureCenter + (r * pipe)
-       local distance = (L - worldPos):len()
-       if distance < 1000 then
-           distanceS = "" .. string.format("%0.0f", distance) .. " m"
-       elseif distance < 100000 then
-           distanceS = "" .. string.format("%0.1f", distance / 1000) .. " km"
-       else
-           distanceS = "" .. string.format("%0.2f", distance / 200000) .. " su"
-       end
-       return distanceS
+      local distanceS = ""
+
+      local length1 = -700 * 200000
+      local length2 = 800 * 200000
+
+      local pos123 = pos1
+      local pos234 = pos2
+
+      local pos111 = zeroConvertToWorldCoordinates(pos123, system)
+      local pos222 = zeroConvertToWorldCoordinates(pos234, system)
+
+      local DestinationCenter = vectorLengthen(pos111, pos222, length1)
+      local DepartureCenter = vectorLengthen(pos111, pos222, length2)
+
+      local worldPos = vec3(core.getConstructWorldPos())
+      local pipe = (DestinationCenter - DepartureCenter):normalize()
+      local r = (worldPos - DepartureCenter):dot(pipe) / pipe:dot(pipe)
+      if r <= 0. then
+         return (worldPos - DepartureCenter):len()
+      elseif r >= (DestinationCenter - DepartureCenter):len() then
+         return (worldPos - DestinationCenter):len()
+      end
+      local L = DepartureCenter + (r * pipe)
+      local distance = (L - worldPos):len()
+      if distance < 1000 then
+         distanceS = "" .. string.format("%0.0f", distance) .. " m"
+      elseif distance < 100000 then
+         distanceS = "" .. string.format("%0.1f", distance / 1000) .. " km"
+      else
+         distanceS = "" .. string.format("%0.2f", distance / 200000) .. " su"
+      end
+      return distanceS
    end
- end
- 
- function getPipeW(system)
+end
+
+function getPipeW(system)
    if databank.getStringValue(1) ~= "" and databank.getStringValue(3) ~= "" then
-       showMarker = false
- 
-       local length1 = -700 * 200000
-       local length2 = 800 * 200000
- 
-       local pos123 = pos1
-       local pos234 = pos2
- 
-       local pos111 = zeroConvertToWorldCoordinates(pos123, system)
-       local pos222 = zeroConvertToWorldCoordinates(pos234, system)
- 
-       local DestinationCenter = vectorLengthen(pos111, pos222, length1)
-       local DepartureCenter = vectorLengthen(pos111, pos222, length2)
- 
-       local worldPos = vec3(core.getConstructWorldPos())
-       local pipe = (DestinationCenter - DepartureCenter):normalize()
-       local r = (worldPos - DepartureCenter):dot(pipe) / pipe:dot(pipe)
-       if r <= 0. then
-           return (worldPos - DepartureCenter):len()
-       elseif r >= (DestinationCenter - DepartureCenter):len() then
-           return (worldPos - DestinationCenter):len()
-       end
-       local L = DepartureCenter + (r * pipe)
-       local PipeWaypoint = "::pos{0,0," .. math.floor(L.x) .. "," .. math.floor(L.y) .. "," .. math.floor(L.z) .. "}"
-       system.print("Pipe center")
-       system.setWaypoint(PipeWaypoint)
+      showMarker = false
+
+      local length1 = -700 * 200000
+      local length2 = 800 * 200000
+
+      local pos123 = pos1
+      local pos234 = pos2
+
+      local pos111 = zeroConvertToWorldCoordinates(pos123, system)
+      local pos222 = zeroConvertToWorldCoordinates(pos234, system)
+
+      local DestinationCenter = vectorLengthen(pos111, pos222, length1)
+      local DepartureCenter = vectorLengthen(pos111, pos222, length2)
+
+      local worldPos = vec3(core.getConstructWorldPos())
+      local pipe = (DestinationCenter - DepartureCenter):normalize()
+      local r = (worldPos - DepartureCenter):dot(pipe) / pipe:dot(pipe)
+      if r <= 0. then
+         return (worldPos - DepartureCenter):len()
+      elseif r >= (DestinationCenter - DepartureCenter):len() then
+         return (worldPos - DestinationCenter):len()
+      end
+      local L = DepartureCenter + (r * pipe)
+      local PipeWaypoint = "::pos{0,0," .. math.floor(L.x) .. "," .. math.floor(L.y) .. "," .. math.floor(L.z) .. "}"
+      system.print("Pipe center")
+      system.setWaypoint(PipeWaypoint)
    end
- end
- 
- function getPos4Vector(coordinate)
+end
+
+function getPos4Vector(coordinate)
    return "::pos{0,0," .. vec3(coordinate).x .. "," .. vec3(coordinate).y .. "," .. vec3(coordinate).z .. "}"
- end
- 
- -- делает вектор из двух координат
- function makeVector(coordinateBegin, coordinateEnd)
+end
+
+-- делает вектор из двух координат
+function makeVector(coordinateBegin, coordinateEnd)
    local x = vec3(coordinateEnd).x - vec3(coordinateBegin).x
    local y = vec3(coordinateEnd).y - vec3(coordinateBegin).y
    local z = vec3(coordinateEnd).z - vec3(coordinateBegin).z
    return vec3(x, y, z)
- end
- 
- function UTC()
+end
+
+function UTC()
    local T = curTime - timeZone * 3600
    return T
- end
- 
- function UTCscaner(system)
+end
+
+function UTCscaner(system)
    local T = system.getArkTime() - timeZone * 3600
    return T
- end
- 
- -- прибавляет к вектору, из двух координат, кусочек длины
- -- и воозращает координату окончания вектора, с учетом прибалвенной длины
- function vectorLengthen(coordinateBegin, coordinateEnd, deltaLen)
+end
+
+-- прибавляет к вектору, из двух координат, кусочек длины
+-- и воозращает координату окончания вектора, с учетом прибалвенной длины
+function vectorLengthen(coordinateBegin, coordinateEnd, deltaLen)
    local vector = makeVector(coordinateBegin, coordinateEnd)
    --длина вектора
    local lenVector = vec3(vector):len()
@@ -1896,751 +1827,140 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
    -- итого координата окончания удлиненного вектора
    local resultCoordinate = vec3(x, y, z)
    return resultCoordinate
- end
- 
- function start(unit, system, text)
+end
+
+function start(unit, system, text)
    pos1time = 0
    pos2time = 0
    tspeed = 0
    tspeed1 = 0
    mmode = true
    lalt = false
- 
+
    system.createWidgetPanel("Target Vector")
    deg2rad = math.pi / 180
    rad2deg = 180 / math.pi
    ms2kmh = 3600 / 1000
    kmh2ms = 1000 / 3600
- 
+
    showMarker = true
- 
+
    if exportMode == true then
-       system.print("---------------")
-       system.print("The export mode is enabled ALT+G")
+      system.print("---------------")
+      system.print("The export mode is enabled ALT+G")
    else
-       system.print("---------------")
-       system.print("The export mode is disabled ALT+G")
+      system.print("---------------")
+      system.print("The export mode is disabled ALT+G")
    end
- 
+
    SU = 10
    calcTargetSpeed = targetSpeed / 3.6
    meterMarker = 0
- 
+
    if
-       databank.getStringValue(1) ~= "" and databank.getFloatValue(2) ~= 0 and databank.getStringValue(3) ~= "" and
-           databank.getFloatValue(4) ~= 0
-    then
-       system.print("Coordinates from DB are used!")
- 
-       pos1 = databank.getStringValue(1)
-       pos2 = databank.getStringValue(3)
-       pos1time = databank.getFloatValue(2)
-       pos2time = databank.getFloatValue(4)
- 
-       pos11 = zeroConvertToWorldCoordinates(pos1, system)
- 
-       pos22 = zeroConvertToWorldCoordinates(pos2, system)
- 
-       Pos1 = pos1
-       Pos2 = pos2
- 
-       privMySignAngleR = 0
-       privMySignAngleUp = 0
-       privTargetSignAngleR = 0
-       privTargetSignAngleUp = 0
-       targetVector = vec3.new(0, 0, 0)
-       myAngleR = 0
-       myAngleUp = 0
-       targetAngleR = 0
-       targetAngleUp = 0
- 
-       targetVector =
-           makeVector(zeroConvertToWorldCoordinates(Pos1, system), zeroConvertToWorldCoordinates(Pos2, system))
-       targetTracker = true
- 
-       curTime = system.getArkTime()
- 
-       --local dt1 = math.floor(UTC() - pos1time)
-       local dt2 = math.floor(UTC() - pos2time)
-       local lasttime = dt2
-       local dist1 = pos11:dist(pos22)
-       local timeroute = pos2time - pos1time
-       tspeed = dist1 / timeroute
-       tspeed1 = math.floor((dist1 / timeroute) * 3.6)
-       meterMarker1 = (lasttime * tspeed) + tspeed * 4
- 
-       --length = SU*200000
-       length1 = meterMarker1
-       --lengthSU1=math.floor((length1/200000) * 100)/100
-       lengthSU1 = string.format("%0.2f", ((length1 / 200000) * 100) / 100)
- 
-       meterMarker = (lasttime * calcTargetSpeed) + calcTargetSpeed * 4
- 
-       --length = SU*200000
-       length = meterMarker
-       --lengthSU=math.floor((length/200000) * 100)/100
-       lengthSU = string.format("%0.2f", ((length / 200000) * 100) / 100)
- 
-       resultVector1 = vectorLengthen(pos11, pos22, length1)
-       Waypoint1 = getPos4Vector(resultVector1)
- 
-       system.setWaypoint(Waypoint1)
- 
-       system.print("The target flew 20 km " .. lengthSU1 .. " su, speed " .. tspeed1 .. " km/h")
- 
-       unit.setTimer("marker", 1)
-       --system.showScreen(1)
-       unit.setTimer("vectorhud", 0.02)
+   databank.getStringValue(1) ~= "" and databank.getFloatValue(2) ~= 0 and databank.getStringValue(3) ~= "" and
+   databank.getFloatValue(4) ~= 0
+   then
+      system.print("Coordinates from DB are used!")
+
+      pos1 = databank.getStringValue(1)
+      pos2 = databank.getStringValue(3)
+      pos1time = databank.getFloatValue(2)
+      pos2time = databank.getFloatValue(4)
+
+      pos11 = zeroConvertToWorldCoordinates(pos1, system)
+
+      pos22 = zeroConvertToWorldCoordinates(pos2, system)
+
+      Pos1 = pos1
+      Pos2 = pos2
+
+      privMySignAngleR = 0
+      privMySignAngleUp = 0
+      privTargetSignAngleR = 0
+      privTargetSignAngleUp = 0
+      targetVector = vec3.new(0, 0, 0)
+      myAngleR = 0
+      myAngleUp = 0
+      targetAngleR = 0
+      targetAngleUp = 0
+
+      targetVector =
+      makeVector(zeroConvertToWorldCoordinates(Pos1, system), zeroConvertToWorldCoordinates(Pos2, system))
+      targetTracker = true
+
+      curTime = system.getArkTime()
+
+      --local dt1 = math.floor(UTC() - pos1time)
+      local dt2 = math.floor(UTC() - pos2time)
+      local lasttime = dt2
+      local dist1 = pos11:dist(pos22)
+      local timeroute = pos2time - pos1time
+      tspeed = dist1 / timeroute
+      tspeed1 = math.floor((dist1 / timeroute) * 3.6)
+      meterMarker1 = (lasttime * tspeed) + tspeed * 4
+
+      --length = SU*200000
+      length1 = meterMarker1
+      --lengthSU1=math.floor((length1/200000) * 100)/100
+      lengthSU1 = string.format("%0.2f", ((length1 / 200000) * 100) / 100)
+
+      meterMarker = (lasttime * calcTargetSpeed) + calcTargetSpeed * 4
+
+      --length = SU*200000
+      length = meterMarker
+      --lengthSU=math.floor((length/200000) * 100)/100
+      lengthSU = string.format("%0.2f", ((length / 200000) * 100) / 100)
+
+      resultVector1 = vectorLengthen(pos11, pos22, length1)
+      Waypoint1 = getPos4Vector(resultVector1)
+
+      system.setWaypoint(Waypoint1)
+
+      system.print("The target flew 20 km " .. lengthSU1 .. " su, speed " .. tspeed1 .. " km/h")
+
+      unit.setTimer("marker", 1)
+      --system.showScreen(1)
+      unit.setTimer("vectorhud", 0.02)
    else
-       databank.clear()
-       blockTime = 0
-       databank.setFloatValue(2, blockTime)
-       databank.setFloatValue(4, blockTime)
-       pos1 = 0
-       pos2 = 0
-       lasttime = 0
-       pos1time = 0
-       pos2time = 0
-       meterMarker = 0
-       meterMarker1 = 0
- 
-       Pos1 = 0
-       Pos2 = 0
-       privMySignAngleR = 0
-       privMySignAngleUp = 0
-       privTargetSignAngleR = 0
-       privTargetSignAngleUp = 0
-       targetVector = vec3.new(0, 0, 0)
-       targetTracker = false
-       myAngleR = 0
-       myAngleUp = 0
-       targetAngleR = 0
-       targetAngleUp = 0
- 
-       system.print("Coordinates are missing set new or export")
+      databank.clear()
+      blockTime = 0
+      databank.setFloatValue(2, blockTime)
+      databank.setFloatValue(4, blockTime)
+      pos1 = 0
+      pos2 = 0
+      lasttime = 0
+      pos1time = 0
+      pos2time = 0
+      meterMarker = 0
+      meterMarker1 = 0
+
+      Pos1 = 0
+      Pos2 = 0
+      privMySignAngleR = 0
+      privMySignAngleUp = 0
+      privTargetSignAngleR = 0
+      privTargetSignAngleUp = 0
+      targetVector = vec3.new(0, 0, 0)
+      targetTracker = false
+      myAngleR = 0
+      myAngleUp = 0
+      targetAngleR = 0
+      targetAngleUp = 0
+
+      system.print("Coordinates are missing set new or export")
    end
- end
- 
- function inTEXT(unit, system, text)
+end
+
+function inTEXT(unit, system, text)
    if pos1 ~= 0 and string.find(text, "::pos") and pos2 == 0 and exportMode == false then
-       --local lasttime = UTCscaner()
- 
-       pos2 = text
-       databank.setStringValue(3, pos2)
-       pos2time = math.floor(UTCscaner(system))
-       databank.setFloatValue(4, pos2time)
-       system.print(text .. " pos2 saved")
- 
-       pos11 = zeroConvertToWorldCoordinates(pos1, system)
- 
-       pos22 = zeroConvertToWorldCoordinates(pos2, system)
- 
-       local dist1 = pos11:dist(pos22)
-       local timeroute = pos2time - pos1time
-       tspeed = dist1 / timeroute
-       tspeed1 = math.floor((dist1 / timeroute) * 3.6)
-       Pos1 = pos1
-       Pos2 = pos2
- 
-       targetVector =
-           makeVector(zeroConvertToWorldCoordinates(Pos1, system), zeroConvertToWorldCoordinates(Pos2, system))
-       targetTracker = true
- 
-       --length = SU*200000
-       --meterMarker = meterMarker + 33333.32
-       --meterMarker = meterMarker + calcTargetSpeed*4
-       meterMarker1 = meterMarker1 + tspeed * 4
-       length1 = meterMarker1
- 
-       resultVector1 = vectorLengthen(pos11, pos22, length1)
-       Waypoint1 = getPos4Vector(resultVector1)
- 
-       system.setWaypoint(Waypoint1)
-       meterMarker = meterMarker + calcTargetSpeed * 4
-       length = meterMarker
- 
-       resultVector = vectorLengthen(pos11, pos22, length)
-       Waypoint = getPos4Vector(resultVector)
- 
-       --system.setWaypoint(Waypoint)
- 
-       system.print("---------------")
-       system.print("The coordinates are set manually!")
-       posExport1 = databank.getStringValue(1)
-       posExport2 = databank.getStringValue(3)
-       timeExport1 = math.floor(databank.getFloatValue(2))
-       timeExport2 = math.floor(databank.getFloatValue(4))
- 
-       system.print("The coordinates were exported to the screen")
- 
-       screen.setHTML(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
-       system.print("Target speed: " .. tspeed1 .. " km/h")
-       unit.setTimer("marker", 1)
-       --system.showScreen(1)
-       unit.setTimer("vectorhud", 0.02)
-   end
- 
-   if pos1 == 0 and string.find(text, "::pos") and exportMode == false then
-       pos1 = text
-       databank.setStringValue(1, pos1)
-       pos1time = math.floor(UTCscaner(system))
-       databank.setFloatValue(2, pos1time)
-       system.print(text .. " pos1 saved")
-   end
- 
-   if text == "n" then
-       unit.stopTimer("marker")
-       databank.clear()
-       showMarker = true
-       blockTime = 0
-       databank.setFloatValue(2, blockTime)
-       databank.setFloatValue(4, blockTime)
-       pos1 = 0
-       pos2 = 0
-       lasttime = 0
-       pos1time = 0
-       pos2time = 0
-       meterMarker = 0
-       meterMarker1 = 0
-       SU = 10
- 
-       --system.showScreen(0)
-       unit.stopTimer("vectorhud")
-       vectorHUD = ''
-       Pos1 = 0
-       Pos2 = 0
-       privMySignAngleR = 0
-       privMySignAngleUp = 0
-       privTargetSignAngleR = 0
-       privTargetSignAngleUp = 0
-       targetVector = vec3.new(0, 0, 0)
-       targetTracker = false
-       myAngleR = 0
-       myAngleUp = 0
-       targetAngleR = 0
-       targetAngleUp = 0
- 
-       system.print("---------------")
-       system.print("Coordinates have been deleted, set new coordinates")
-   end
- 
-   if exportMode == true and string.find(text, "/") and not string.find(text, "/::pos") then
-       unit.stopTimer("marker")
-       databank.clear()
-       showMarker = true
-       blockTime = 0
-       databank.setFloatValue(2, blockTime)
-       databank.setFloatValue(4, blockTime)
-       pos1 = 0
-       pos2 = 0
-       lasttime = 0
-       pos1time = 0
-       pos2time = 0
-       meterMarker = 0
-       meterMarker1 = 0
-       SU = 10
- 
-       --system.showScreen(0)
-       unit.stopTimer("vectorhud")
-       vectorHUD = ''
-       Pos1 = 0
-       Pos2 = 0
-       privMySignAngleR = 0
-       privMySignAngleUp = 0
-       privTargetSignAngleR = 0
-       privTargetSignAngleUp = 0
-       targetVector = vec3.new(0, 0, 0)
-       targetTracker = false
-       myAngleR = 0
-       myAngleUp = 0
-       targetAngleR = 0
-       targetAngleUp = 0
- 
-       local start = 0
-       local fin = string.find(text, "/", start) - 1
-       pos1 = string.sub(text, start, fin)
-       system.print(pos1)
- 
-       start = fin + 2
-       fin = string.find(text, "/", start) - 1
-       pos1time = tonumber(string.sub(text, start, fin))
-       system.print(pos1time)
- 
-       start = fin + 2
-       fin = string.find(text, "/", start) - 1
-       pos2 = string.sub(text, start, fin)
-       system.print(pos2)
- 
-       start = fin + 2
-       fin = string.find(text, "/", start)
-       pos2time = tonumber(string.sub(text, start, fin))
-       system.print(pos2time)
- 
-       system.print("---------------")
-       --system.print(pos1.."/"..pos2.."/"..oldTime)
-       system.print("The coordinates have been loaded successfully!")
-       databank.setStringValue(1, pos1)
-       databank.setFloatValue(2, pos1time)
-       databank.setStringValue(3, pos2)
-       databank.setFloatValue(4, pos2time)
- 
-       pos11 = zeroConvertToWorldCoordinates(pos1, system)
- 
-       pos22 = zeroConvertToWorldCoordinates(pos2, system)
- 
-       Pos1 = pos1
-       Pos2 = pos2
- 
-       targetVector =
-           makeVector(zeroConvertToWorldCoordinates(Pos1, system), zeroConvertToWorldCoordinates(Pos2, system))
-       targetTracker = true
- 
-       oldTime = tonumber(string.sub(text, start, fin))
-       curTime = system.getArkTime()
- 
-       --local dt1 = math.floor(UTC() - pos1time)
-       local dt2 = math.floor(UTC() - pos2time)
-       local lasttime = dt2
-       local dist1 = pos11:dist(pos22)
-       local timeroute = pos2time - pos1time
-       tspeed = dist1 / timeroute
-       tspeed1 = math.floor((dist1 / timeroute) * 3.6)
-       meterMarker1 = (lasttime * tspeed) + tspeed * 4
- 
-       --length = SU*200000
-       length1 = meterMarker1
-       --lengthSU1=math.floor((length1/200000) * 100)/100
-       lengthSU1 = string.format("%0.2f", ((length1 / 200000) * 100) / 100)
- 
-       meterMarker = (lasttime * calcTargetSpeed) + calcTargetSpeed * 4
- 
-       --length = SU*200000
-       length = meterMarker
-       --lengthSU=math.floor((length/200000) * 100)/100
-       lengthSU = string.format("%0.2f", ((length / 200000) * 100) / 100)
- 
-       resultVector1 = vectorLengthen(pos11, pos22, length1)
-       Waypoint1 = getPos4Vector(resultVector1)
- 
-       system.setWaypoint(Waypoint1)
- 
-       system.print("The target flew " .. lengthSU1 .. " su, speed " .. tspeed1 .. " km/h")
- 
-       system.setWaypoint(Waypoint1)
-       unit.setTimer("marker", 1)
-       --system.showScreen(1)
-       unit.setTimer("vectorhud", 0.02)
-   end
-   if exportMode == true and string.find(text, "/::pos") then
-       unit.stopTimer("marker")
-       databank.clear()
-       showMarker = true
-       blockTime = 0
-       databank.setFloatValue(2, blockTime)
-       databank.setFloatValue(4, blockTime)
-       pos1 = 0
-       pos2 = 0
-       lasttime = 0
-       pos1time = 0
-       pos2time = 0
-       meterMarker = 0
-       meterMarker1 = 0
-       SU = 10
- 
-       --system.showScreen(0)
-       unit.stopTimer("vectorhud")
-       vectorHUD = ''
-       Pos1 = 0
-       Pos2 = 0
-       privMySignAngleR = 0
-       privMySignAngleUp = 0
-       privTargetSignAngleR = 0
-       privTargetSignAngleUp = 0
-       targetVector = vec3.new(0, 0, 0)
-       targetTracker = false
-       myAngleR = 0
-       myAngleUp = 0
-       targetAngleR = 0
-       targetAngleUp = 0
- 
-       local start = 0
-       local fin = string.find(text, "/", start) - 1
-       pos1 = string.sub(text, start, fin)
-       system.print(pos1)
- 
-       start = fin + 2
-       fin = string.find(text, "/", start) - 1
-       pos1time = tonumber(string.sub(text, start, fin))
-       system.print(pos1time)
- 
-       start = fin + 2
-       fin = string.find(text, "/", start) - 1
-       pos2 = string.sub(text, start, fin)
-       system.print(pos2)
- 
-       start = fin + 2
-       fin = string.find(text, "/", start)
-       pos2time = tonumber(string.sub(text, start, fin))
-       system.print(pos2time)
- 
-       system.print("---------------")
-       --system.print(pos1.."/"..pos2.."/"..oldTime)
-       system.print("The coordinates have been loaded successfully!")
-       databank.setStringValue(1, pos1)
-       databank.setFloatValue(2, pos1time)
-       databank.setStringValue(3, pos2)
-       databank.setFloatValue(4, pos2time)
- 
-       pos11 = zeroConvertToWorldCoordinates(pos1, system)
- 
-       pos22 = zeroConvertToWorldCoordinates(pos2, system)
- 
-       Pos1 = pos1
-       Pos2 = pos2
- 
-       targetVector =
-           makeVector(zeroConvertToWorldCoordinates(Pos1, system), zeroConvertToWorldCoordinates(Pos2, system))
-       targetTracker = true
- 
-       oldTime = tonumber(string.sub(text, start, fin))
-       curTime = system.getArkTime()
- 
-       --local dt1 = math.floor(UTC() - pos1time)
-       local dt2 = math.floor(UTC() - pos2time)
-       local lasttime = dt2
-       local dist1 = pos11:dist(pos22)
-       local timeroute = pos2time - pos1time
-       tspeed = dist1 / timeroute
-       tspeed1 = math.floor((dist1 / timeroute) * 3.6)
-       meterMarker1 = (lasttime * tspeed) + tspeed * 4
- 
-       --length = SU*200000
-       length1 = meterMarker1
-       --lengthSU1=math.floor((length1/200000) * 100)/100
-       lengthSU1 = string.format("%0.2f", ((length1 / 200000) * 100) / 100)
- 
-       meterMarker = (lasttime * calcTargetSpeed) + calcTargetSpeed * 4
- 
-       --length = SU*200000
-       length = meterMarker
-       --lengthSU=math.floor((length/200000) * 100)/100
-       lengthSU = string.format("%0.2f", ((length / 200000) * 100) / 100)
- 
-       resultVector1 = vectorLengthen(pos11, pos22, length1)
-       Waypoint1 = getPos4Vector(resultVector1)
- 
-       system.setWaypoint(Waypoint1)
- 
-       system.print("The target flew " .. lengthSU1 .. " su, speed " .. tspeed1 .. " km/h")
- 
-       system.setWaypoint(Waypoint1)
-       unit.setTimer("marker", 1)
-       --system.showScreen(1)
-       unit.setTimer("vectorhud", 0.02)
-   end
-   if string.find(text, "mar") then
-       if showMarker == true then
-           showMarker = false
-           system.print("Current target position - OFF")
-       end
-       local mar = tonumber((text):sub(4))
-       if databank.getStringValue(1) ~= "" and databank.getStringValue(3) ~= "" then
-           local length2 = mar * 200000
- 
-           local pos123 = databank.getStringValue(1)
-           local pos234 = databank.getStringValue(3)
- 
-           pos111 = zeroConvertToWorldCoordinates(pos123, system)
-           pos222 = zeroConvertToWorldCoordinates(pos234, system)
- 
-           local resultVector2 = vectorLengthen(pos111, pos222, length2)
-           local Waypoint3 = getPos4Vector(resultVector2)
- 
-           system.print(Waypoint3 .. " waypoint " .. mar .. " su")
-       end
-   end
- end
- 
- function tickVector(unit, system, text)
-   if targetTracker == true and targetVector.x ~= 0 and targetVector.y ~= 0 and targetVector.z ~= 0 then
-       local pipeDist = getPipeD(system)
-       local worldOrintUp = vec3(core.getConstructWorldOrientationUp()):normalize()
-       local worldOrintRight = vec3(core.getConstructWorldOrientationRight()):normalize()
-       local worldOrintForw = vec3(core.getConstructWorldOrientationForward()):normalize()
-       local mySpeedVectorNorm = vec3(core.getWorldVelocity()):normalize()
-       local projectedWorldUp = mySpeedVectorNorm:project_on_plane(worldOrintUp)
-       local projectedWorldR = mySpeedVectorNorm:project_on_plane(worldOrintRight)
-       local projectedWorldF = mySpeedVectorNorm:project_on_plane(worldOrintForw)
- 
-       local myRotateDirR = projectedWorldF:cross(worldOrintUp):normalize()
-       myAngleR = projectedWorldUp:angle_between(worldOrintForw)
-       local mySignAngleR = utils.sign(myRotateDirR:angle_between(worldOrintForw) - math.pi / 2)
-       if mySignAngleR ~= 0 then
-           myAngleR = myAngleR * mySignAngleR
-           privMySignAngleR = mySignAngleR
-       else
-           myAngleR = myAngleR * privMySignAngleR
-       end
- 
-       local myRotateDirUp = projectedWorldR:cross(worldOrintUp):normalize()
-       myAngleUp = projectedWorldR:angle_between(-worldOrintUp) - math.pi / 2
-       local mySignAngleUp = utils.sign(myRotateDirUp:angle_between(worldOrintRight) - math.pi / 2)
-       if mySignAngleUp ~= 0 then
-           myAngleUp = myAngleUp * mySignAngleUp
-           privMySignAngleUp = mySignAngleUp
-       else
-           myAngleUp = myAngleUp * privMySignAngleUp
-       end
-       local targetVectorNorm = targetVector:normalize()
- 
-       local targetProjectedWorldUp = targetVectorNorm:project_on_plane(worldOrintUp)
-       local targetProjectedWorldR = targetVectorNorm:project_on_plane(worldOrintRight)
-       local targetProjectedWorldF = targetVectorNorm:project_on_plane(worldOrintForw)
-       local targetRotateDirR = targetProjectedWorldF:cross(worldOrintUp):normalize()
-       targetAngleR = targetProjectedWorldUp:angle_between(worldOrintForw)
-       local targetSignAngleR = utils.sign(targetRotateDirR:angle_between(worldOrintForw) - math.pi / 2)
- 
-       if targetSignAngleR ~= 0 then
-           targetAngleR = targetAngleR * targetSignAngleR
-           privTargetSignAngleR = targetSignAngleR
-       else
-           targetAngleR = targetAngleR * privTargetSignAngleR
-       end
-       local targetRotateDirUp = targetProjectedWorldR:cross(worldOrintUp):normalize()
-       targetAngleUp = targetProjectedWorldR:angle_between(-worldOrintUp) - math.pi / 2
-       local targetSignAngleUp = utils.sign(targetRotateDirUp:angle_between(worldOrintRight) - math.pi / 2)
-       if targetSignAngleUp ~= 0 then
-           targetAngleUp = targetAngleUp * targetSignAngleUp
-           privTargetSignAngleUp = targetSignAngleUp
-       else
-           targetAngleUp = targetAngleUp * privTargetSignAngleUp
-       end
-       --system.print(targetAngleR*rad2deg.. [[ | ]].. targetAngleUp*rad2deg)
-       targetVectorWidget =
-           [[
-   
-   <div class='circle' style='position:absolute;top:85%;left:43%;'>
-       <div style='transform: translate(0px, -16px);color:#ffb750;'>]] ..
-           string.format("%0.1f", myAngleR * rad2deg) ..
-               [[°</div>
-       <div style='transform: translate(70px, -35px);color:#f54425;'>]] ..
-                   string.format("%0.1f", targetAngleR * rad2deg) ..
-                       [[°</div>
-       <div style='transform: translate(20px, 70px);color:#f54425;'>Δ ]] ..
-                           string.format("%0.1f", myAngleR * rad2deg - targetAngleR * rad2deg) ..
-                               [[°</div>
-   </div>
-   <div class='vectorLine' style='top:89.65%;left:43%;background:#ffb750;z-index:30;transform:rotate(]] ..
-                                   myAngleR * rad2deg + 90 ..
-                                       [[deg)'></div>
-   
-   
-   <div class='circle' style='position:absolute;top:85%;left:51%;'>
-       <div style='transform: translate(0px, -16px);color:#ffb750;'>]] ..
-                                           string.format("%0.1f", myAngleUp * rad2deg) ..
-                                               [[°</div>
-       <div style='transform: translate(70px, -35px);color:#f54425;'>]] ..
-                                                   string.format("%0.1f", targetAngleUp * rad2deg) ..
-                                                       [[°</div>
-       <div style='transform: translate(20px, 70px);color:#f54425;'>Δ ]] ..
-                                                           string.format(
-                                                               "%0.1f",
-                                                               myAngleUp * rad2deg - targetAngleUp * rad2deg
-                                                           ) ..
-                                                               [[°</div>
-   </div>
-   <div class='vectorLine' style='top:89.65%;left:51%;background:#ffb750;z-index:30;transform:rotate(]] ..
-                                                                   myAngleUp * rad2deg + 180 ..
-                                                                       [[deg)'></div>
-  
-   
-   <div class='vectorLine' style='top:89.65%;left:43%;background:#f54425;z-index:29;transform:rotate(]] ..
-                                                                           targetAngleR * rad2deg + 90 ..
-                                                                               [[deg)'></div>
-   <div class='vectorLine' style='top:89.65%;left:51%;background:#f54425;z-index:29;transform:rotate(]] ..
-                                                                                   targetAngleUp * rad2deg + 180 ..
-                                                                                       [[deg)'></div>
-   ]]
- 
-       html1 =
-           [[
-           <style> 
-               .main1 {
-           position: fixed;
-           width: auto; 
-           padding: 0.2vw;
-           bottom: 3vh;
-           left: 49.7%;
-           transform: translateX(-50%);
-           text-align: center;
-           background: #142027;
-           color: white;
-           font-family: "Lucida" Grande, sans-serif;
-           font-size: 1em;
-           border-radius: 2vh;
-               border: 0.2vh solid;
-               border-color: #fca503;
-           </style>
-           <div class="main1">]] ..
-           pipeDist .. [[</div>]]
- 
-       style =
-           [[
-   <style>
- .circle {
- height: 100px;
- width: 100px;
- background-color: #555;
- border-radius: 50%;
- opacity: 0.5
- }     .vectorLine{position:absolute;transform-origin: 100% 0%;width: 50px;height:0.15em;}</style>]]
-       --system.setScreen([[<html><head>]] .. style .. [[</head><body>]] .. targetVectorWidget .. [[]] .. html1 .. [[</body></html>]])
-       vectorHUD = [[<html><head>]] .. style .. [[</head><body>]] .. targetVectorWidget .. [[]] .. html1 .. [[</body></html>]]
-   end
- end
- 
- function tickMarker(unit, system, text)
-   if databank.getStringValue(1) ~= "" or databank.getStringValue(3) ~= "" and databank.getFloatValue(2) == 0 or databank.getFloatValue(4) == 0 then
- 
-       pos11 = zeroConvertToWorldCoordinates(pos1, system)
-       pos22 = zeroConvertToWorldCoordinates(pos2, system)
- 
-       meterMarker1 = meterMarker1 + tspeed
-       length1 = meterMarker1
-       --lengthSU1=math.floor((length1/200000) * 100)/100
-       lengthSU1 = string.format("%0.2f", ((length1 / 200000) * 100) / 100)
-       resultVector1 = vectorLengthen(pos11, pos22, length1)
-       Waypoint1 = getPos4Vector(resultVector1)
- 
-       meterMarker = meterMarker + calcTargetSpeed
-       length = meterMarker
-       --lengthSU=math.floor((length/200000) * 100)/100
-       lengthSU = string.format("%0.2f", ((length / 200000) * 100) / 100)
-       resultVector = vectorLengthen(pos11, pos22, length)
-       Waypoint = getPos4Vector(resultVector)
- 
-       if showMarker == true then
-           if mmode == true then
-               system.setWaypoint(Waypoint1)
-               system.print("The target flew " .. lengthSU1 .. " su, speed " .. tspeed1 .. " km/h")
-           else
-               system.setWaypoint(Waypoint)
-               system.print("The target flew " .. lengthSU .. " su, speed " .. targetSpeed .. " km/h")
-           end
-       end
-   end
- end
- 
- function altUP(unit, system, text)
-   if lalt == true then
-       if databank.getStringValue(1) ~= "" and databank.getStringValue(3) ~= "" then
-           showMarker = false
-           SU = SU + 2.5
-           length = SU * 200000
- 
-           pos11 = zeroConvertToWorldCoordinates(pos1, system)
-           pos22 = zeroConvertToWorldCoordinates(pos2, system)
- 
-           resultVector = vectorLengthen(pos11, pos22, length)
-           Waypoint = getPos4Vector(resultVector)
- 
-           system.setWaypoint(Waypoint)
- 
-           system.print(Waypoint .. " waypoint " .. SU .. " su")
-       end
-   end
- end
- 
- function altDOWN(unit, system, text)
-   if lalt == true then
-       if databank.getStringValue(1) ~= "" and databank.getStringValue(3) ~= "" then
-           showMarker = false
-           SU = SU - 2.5
-           length = SU * 200000
- 
-           pos11 = zeroConvertToWorldCoordinates(pos1, system)
-           pos22 = zeroConvertToWorldCoordinates(pos2, system)
- 
-           resultVector = vectorLengthen(pos11, pos22, length)
-           Waypoint = getPos4Vector(resultVector)
- 
-           system.setWaypoint(Waypoint)
- 
-           system.print(Waypoint .. " waypoint " .. SU .. " su")
-       end
-   end
- end
- 
- function altRIGHT(unit, system, text)
-   if lalt == true then
-       if databank.getStringValue(1) ~= "" and databank.getStringValue(3) ~= "" then
-           showMarker = false
-           SU = SU + 10
-           length = SU * 200000
- 
-           pos11 = zeroConvertToWorldCoordinates(pos1, system)
-           pos22 = zeroConvertToWorldCoordinates(pos2, system)
- 
-           resultVector = vectorLengthen(pos11, pos22, length)
-           Waypoint = getPos4Vector(resultVector)
- 
-           system.setWaypoint(Waypoint)
- 
-           system.print(Waypoint .. " waypoint " .. SU .. " su")
-       end
-   end
- end
- 
- function altLEFT(unit, system, text)
-   if lalt == true then
-       if databank.getStringValue(1) ~= "" and databank.getStringValue(3) ~= "" then
-           showMarker = false
-           SU = SU - 10
-           length = SU * 200000
- 
-           pos11 = zeroConvertToWorldCoordinates(pos1, system)
-           pos22 = zeroConvertToWorldCoordinates(pos2, system)
- 
-           resultVector = vectorLengthen(pos11, pos22, length)
-           Waypoint = getPos4Vector(resultVector)
- 
-           system.setWaypoint(Waypoint)
- 
-           system.print(Waypoint .. " waypoint " .. SU .. " su")
-       end
-   end
- end
- 
- function GEAR(unit, system, text)
-   posExport1 = databank.getStringValue(1)
-   posExport2 = databank.getStringValue(3)
-   --timeExport1 = tonumber(string.format('%0.0f',databank.getFloatValue(2)))
-   --timeExport2 = tonumber(string.format('%0.0f',databank.getFloatValue(2)))
-   timeExport1 = math.floor(databank.getFloatValue(2))
-   timeExport2 = math.floor(databank.getFloatValue(4))
- 
-   system.print("The coordinates were exported to the screen")
- 
-   screen.setHTML(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
-   --system.logInfo('testLua: ```'..posExport1..'/'..posExport2..'/'..timeExport..'```')
-   --screen.activate()
- end
+      --local lasttime = UTCscaner()
 
- function radarPos(system,radar)
-   local id = radar.getTargetId()
-   if id ~= 0 then
-   local dist = radar.getConstructDistance(id)
-   local forwvector = vec3(system.getCameraWorldForward())
-   local worldpos = vec3(system.getCameraWorldPos())
-   local p = (dist * forwvector + worldpos)
-
-   if pos1 ~= 0 and pos2 == 0 and exportMode == false then
-      
-      pos2 = '::pos{0,0,'..p.x..','..p.y..','..p.z..'}'
+      pos2 = text
       databank.setStringValue(3, pos2)
       pos2time = math.floor(UTCscaner(system))
       databank.setFloatValue(4, pos2time)
-      system.print(pos2 .." pos2 saved")
+      system.print(text .. " pos2 saved")
 
       pos11 = zeroConvertToWorldCoordinates(pos1, system)
 
@@ -2654,9 +1974,12 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
       Pos2 = pos2
 
       targetVector =
-          makeVector(zeroConvertToWorldCoordinates(Pos1, system), zeroConvertToWorldCoordinates(Pos2, system))
+      makeVector(zeroConvertToWorldCoordinates(Pos1, system), zeroConvertToWorldCoordinates(Pos2, system))
       targetTracker = true
 
+      --length = SU*200000
+      --meterMarker = meterMarker + 33333.32
+      --meterMarker = meterMarker + calcTargetSpeed*4
       meterMarker1 = meterMarker1 + tspeed * 4
       length1 = meterMarker1
 
@@ -2669,6 +1992,8 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
 
       resultVector = vectorLengthen(pos11, pos22, length)
       Waypoint = getPos4Vector(resultVector)
+
+      --system.setWaypoint(Waypoint)
 
       system.print("---------------")
       system.print("The coordinates are set manually!")
@@ -2684,24 +2009,630 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
       unit.setTimer("marker", 1)
       --system.showScreen(1)
       unit.setTimer("vectorhud", 0.02)
-  end
+   end
 
-  if pos1 == 0 and exportMode == false then
-      pos1 = '::pos{0,0,'..p.x..','..p.y..','..p.z..'}'
+   if pos1 == 0 and string.find(text, "::pos") and exportMode == false then
+      pos1 = text
       databank.setStringValue(1, pos1)
       pos1time = math.floor(UTCscaner(system))
       databank.setFloatValue(2, pos1time)
-      system.print(pos1 .. " pos1 saved")
-  end
-end
+      system.print(text .. " pos1 saved")
+   end
+
+   if text == "n" then
+      unit.stopTimer("marker")
+      databank.clear()
+      showMarker = true
+      blockTime = 0
+      databank.setFloatValue(2, blockTime)
+      databank.setFloatValue(4, blockTime)
+      pos1 = 0
+      pos2 = 0
+      lasttime = 0
+      pos1time = 0
+      pos2time = 0
+      meterMarker = 0
+      meterMarker1 = 0
+      SU = 10
+
+      --system.showScreen(0)
+      unit.stopTimer("vectorhud")
+      vectorHUD = ''
+      Pos1 = 0
+      Pos2 = 0
+      privMySignAngleR = 0
+      privMySignAngleUp = 0
+      privTargetSignAngleR = 0
+      privTargetSignAngleUp = 0
+      targetVector = vec3.new(0, 0, 0)
+      targetTracker = false
+      myAngleR = 0
+      myAngleUp = 0
+      targetAngleR = 0
+      targetAngleUp = 0
+
+      system.print("---------------")
+      system.print("Coordinates have been deleted, set new coordinates")
+   end
+
+   if exportMode == true and string.find(text, "/") and not string.find(text, "/::pos") then
+      unit.stopTimer("marker")
+      databank.clear()
+      showMarker = true
+      blockTime = 0
+      databank.setFloatValue(2, blockTime)
+      databank.setFloatValue(4, blockTime)
+      pos1 = 0
+      pos2 = 0
+      lasttime = 0
+      pos1time = 0
+      pos2time = 0
+      meterMarker = 0
+      meterMarker1 = 0
+      SU = 10
+
+      --system.showScreen(0)
+      unit.stopTimer("vectorhud")
+      vectorHUD = ''
+      Pos1 = 0
+      Pos2 = 0
+      privMySignAngleR = 0
+      privMySignAngleUp = 0
+      privTargetSignAngleR = 0
+      privTargetSignAngleUp = 0
+      targetVector = vec3.new(0, 0, 0)
+      targetTracker = false
+      myAngleR = 0
+      myAngleUp = 0
+      targetAngleR = 0
+      targetAngleUp = 0
+
+      local start = 0
+      local fin = string.find(text, "/", start) - 1
+      pos1 = string.sub(text, start, fin)
+      system.print(pos1)
+
+      start = fin + 2
+      fin = string.find(text, "/", start) - 1
+      pos1time = tonumber(string.sub(text, start, fin))
+      system.print(pos1time)
+
+      start = fin + 2
+      fin = string.find(text, "/", start) - 1
+      pos2 = string.sub(text, start, fin)
+      system.print(pos2)
+
+      start = fin + 2
+      fin = string.find(text, "/", start)
+      pos2time = tonumber(string.sub(text, start, fin))
+      system.print(pos2time)
+
+      system.print("---------------")
+      --system.print(pos1.."/"..pos2.."/"..oldTime)
+      system.print("The coordinates have been loaded successfully!")
+      databank.setStringValue(1, pos1)
+      databank.setFloatValue(2, pos1time)
+      databank.setStringValue(3, pos2)
+      databank.setFloatValue(4, pos2time)
+
+      pos11 = zeroConvertToWorldCoordinates(pos1, system)
+
+      pos22 = zeroConvertToWorldCoordinates(pos2, system)
+
+      Pos1 = pos1
+      Pos2 = pos2
+
+      targetVector =
+      makeVector(zeroConvertToWorldCoordinates(Pos1, system), zeroConvertToWorldCoordinates(Pos2, system))
+      targetTracker = true
+
+      oldTime = tonumber(string.sub(text, start, fin))
+      curTime = system.getArkTime()
+
+      --local dt1 = math.floor(UTC() - pos1time)
+      local dt2 = math.floor(UTC() - pos2time)
+      local lasttime = dt2
+      local dist1 = pos11:dist(pos22)
+      local timeroute = pos2time - pos1time
+      tspeed = dist1 / timeroute
+      tspeed1 = math.floor((dist1 / timeroute) * 3.6)
+      meterMarker1 = (lasttime * tspeed) + tspeed * 4
+
+      --length = SU*200000
+      length1 = meterMarker1
+      --lengthSU1=math.floor((length1/200000) * 100)/100
+      lengthSU1 = string.format("%0.2f", ((length1 / 200000) * 100) / 100)
+
+      meterMarker = (lasttime * calcTargetSpeed) + calcTargetSpeed * 4
+
+      --length = SU*200000
+      length = meterMarker
+      --lengthSU=math.floor((length/200000) * 100)/100
+      lengthSU = string.format("%0.2f", ((length / 200000) * 100) / 100)
+
+      resultVector1 = vectorLengthen(pos11, pos22, length1)
+      Waypoint1 = getPos4Vector(resultVector1)
+
+      system.setWaypoint(Waypoint1)
+
+      system.print("The target flew " .. lengthSU1 .. " su, speed " .. tspeed1 .. " km/h")
+
+      system.setWaypoint(Waypoint1)
+      unit.setTimer("marker", 1)
+      --system.showScreen(1)
+      unit.setTimer("vectorhud", 0.02)
+   end
+   if exportMode == true and string.find(text, "/::pos") then
+      unit.stopTimer("marker")
+      databank.clear()
+      showMarker = true
+      blockTime = 0
+      databank.setFloatValue(2, blockTime)
+      databank.setFloatValue(4, blockTime)
+      pos1 = 0
+      pos2 = 0
+      lasttime = 0
+      pos1time = 0
+      pos2time = 0
+      meterMarker = 0
+      meterMarker1 = 0
+      SU = 10
+
+      --system.showScreen(0)
+      unit.stopTimer("vectorhud")
+      vectorHUD = ''
+      Pos1 = 0
+      Pos2 = 0
+      privMySignAngleR = 0
+      privMySignAngleUp = 0
+      privTargetSignAngleR = 0
+      privTargetSignAngleUp = 0
+      targetVector = vec3.new(0, 0, 0)
+      targetTracker = false
+      myAngleR = 0
+      myAngleUp = 0
+      targetAngleR = 0
+      targetAngleUp = 0
+
+      local start = 0
+      local fin = string.find(text, "/", start) - 1
+      pos1 = string.sub(text, start, fin)
+      system.print(pos1)
+
+      start = fin + 2
+      fin = string.find(text, "/", start) - 1
+      pos1time = tonumber(string.sub(text, start, fin))
+      system.print(pos1time)
+
+      start = fin + 2
+      fin = string.find(text, "/", start) - 1
+      pos2 = string.sub(text, start, fin)
+      system.print(pos2)
+
+      start = fin + 2
+      fin = string.find(text, "/", start)
+      pos2time = tonumber(string.sub(text, start, fin))
+      system.print(pos2time)
+
+      system.print("---------------")
+      --system.print(pos1.."/"..pos2.."/"..oldTime)
+      system.print("The coordinates have been loaded successfully!")
+      databank.setStringValue(1, pos1)
+      databank.setFloatValue(2, pos1time)
+      databank.setStringValue(3, pos2)
+      databank.setFloatValue(4, pos2time)
+
+      pos11 = zeroConvertToWorldCoordinates(pos1, system)
+
+      pos22 = zeroConvertToWorldCoordinates(pos2, system)
+
+      Pos1 = pos1
+      Pos2 = pos2
+
+      targetVector =
+      makeVector(zeroConvertToWorldCoordinates(Pos1, system), zeroConvertToWorldCoordinates(Pos2, system))
+      targetTracker = true
+
+      oldTime = tonumber(string.sub(text, start, fin))
+      curTime = system.getArkTime()
+
+      --local dt1 = math.floor(UTC() - pos1time)
+      local dt2 = math.floor(UTC() - pos2time)
+      local lasttime = dt2
+      local dist1 = pos11:dist(pos22)
+      local timeroute = pos2time - pos1time
+      tspeed = dist1 / timeroute
+      tspeed1 = math.floor((dist1 / timeroute) * 3.6)
+      meterMarker1 = (lasttime * tspeed) + tspeed * 4
+
+      --length = SU*200000
+      length1 = meterMarker1
+      --lengthSU1=math.floor((length1/200000) * 100)/100
+      lengthSU1 = string.format("%0.2f", ((length1 / 200000) * 100) / 100)
+
+      meterMarker = (lasttime * calcTargetSpeed) + calcTargetSpeed * 4
+
+      --length = SU*200000
+      length = meterMarker
+      --lengthSU=math.floor((length/200000) * 100)/100
+      lengthSU = string.format("%0.2f", ((length / 200000) * 100) / 100)
+
+      resultVector1 = vectorLengthen(pos11, pos22, length1)
+      Waypoint1 = getPos4Vector(resultVector1)
+
+      system.setWaypoint(Waypoint1)
+
+      system.print("The target flew " .. lengthSU1 .. " su, speed " .. tspeed1 .. " km/h")
+
+      system.setWaypoint(Waypoint1)
+      unit.setTimer("marker", 1)
+      --system.showScreen(1)
+      unit.setTimer("vectorhud", 0.02)
+   end
+   if string.find(text, "mar") then
+      if showMarker == true then
+         showMarker = false
+         system.print("Current target position - OFF")
+      end
+      local mar = tonumber((text):sub(4))
+      if databank.getStringValue(1) ~= "" and databank.getStringValue(3) ~= "" then
+         local length2 = mar * 200000
+
+         local pos123 = databank.getStringValue(1)
+         local pos234 = databank.getStringValue(3)
+
+         pos111 = zeroConvertToWorldCoordinates(pos123, system)
+         pos222 = zeroConvertToWorldCoordinates(pos234, system)
+
+         local resultVector2 = vectorLengthen(pos111, pos222, length2)
+         local Waypoint3 = getPos4Vector(resultVector2)
+
+         system.print(Waypoint3 .. " waypoint " .. mar .. " su")
+      end
+   end
 end
 
-start(unit,system,text)
+function tickVector(unit, system, text)
+   if targetTracker == true and targetVector.x ~= 0 and targetVector.y ~= 0 and targetVector.z ~= 0 then
+      local pipeDist = getPipeD(system)
+      local worldOrintUp = vec3(core.getConstructWorldOrientationUp()):normalize()
+      local worldOrintRight = vec3(core.getConstructWorldOrientationRight()):normalize()
+      local worldOrintForw = vec3(core.getConstructWorldOrientationForward()):normalize()
+      local mySpeedVectorNorm = vec3(core.getWorldVelocity()):normalize()
+      local projectedWorldUp = mySpeedVectorNorm:project_on_plane(worldOrintUp)
+      local projectedWorldR = mySpeedVectorNorm:project_on_plane(worldOrintRight)
+      local projectedWorldF = mySpeedVectorNorm:project_on_plane(worldOrintForw)
 
-unit.setTimer("data", 0.1)
-unit.setTimer("delay", 1)
+      local myRotateDirR = projectedWorldF:cross(worldOrintUp):normalize()
+      myAngleR = projectedWorldUp:angle_between(worldOrintForw)
+      local mySignAngleR = utils.sign(myRotateDirR:angle_between(worldOrintForw) - math.pi / 2)
+      if mySignAngleR ~= 0 then
+         myAngleR = myAngleR * mySignAngleR
+         privMySignAngleR = mySignAngleR
+      else
+         myAngleR = myAngleR * privMySignAngleR
+      end
 
---clean performance
-if collectgarbages == true then
-unit.setTimer("cleaner",30)
-end
+      local myRotateDirUp = projectedWorldR:cross(worldOrintUp):normalize()
+      myAngleUp = projectedWorldR:angle_between(-worldOrintUp) - math.pi / 2
+      local mySignAngleUp = utils.sign(myRotateDirUp:angle_between(worldOrintRight) - math.pi / 2)
+      if mySignAngleUp ~= 0 then
+         myAngleUp = myAngleUp * mySignAngleUp
+         privMySignAngleUp = mySignAngleUp
+      else
+         myAngleUp = myAngleUp * privMySignAngleUp
+      end
+      local targetVectorNorm = targetVector:normalize()
+
+      local targetProjectedWorldUp = targetVectorNorm:project_on_plane(worldOrintUp)
+      local targetProjectedWorldR = targetVectorNorm:project_on_plane(worldOrintRight)
+      local targetProjectedWorldF = targetVectorNorm:project_on_plane(worldOrintForw)
+      local targetRotateDirR = targetProjectedWorldF:cross(worldOrintUp):normalize()
+      targetAngleR = targetProjectedWorldUp:angle_between(worldOrintForw)
+      local targetSignAngleR = utils.sign(targetRotateDirR:angle_between(worldOrintForw) - math.pi / 2)
+
+      if targetSignAngleR ~= 0 then
+         targetAngleR = targetAngleR * targetSignAngleR
+         privTargetSignAngleR = targetSignAngleR
+      else
+         targetAngleR = targetAngleR * privTargetSignAngleR
+      end
+      local targetRotateDirUp = targetProjectedWorldR:cross(worldOrintUp):normalize()
+      targetAngleUp = targetProjectedWorldR:angle_between(-worldOrintUp) - math.pi / 2
+      local targetSignAngleUp = utils.sign(targetRotateDirUp:angle_between(worldOrintRight) - math.pi / 2)
+      if targetSignAngleUp ~= 0 then
+         targetAngleUp = targetAngleUp * targetSignAngleUp
+         privTargetSignAngleUp = targetSignAngleUp
+      else
+         targetAngleUp = targetAngleUp * privTargetSignAngleUp
+      end
+      --system.print(targetAngleR*rad2deg.. [[ | ]].. targetAngleUp*rad2deg)
+      targetVectorWidget =
+      [[
+
+      <div class='circle' style='position:absolute;top:85%;left:43%;'>
+      <div style='transform: translate(0px, -16px);color:#ffb750;'>]] ..
+      string.format("%0.1f", myAngleR * rad2deg) ..
+      [[°</div>
+      <div style='transform: translate(70px, -35px);color:#f54425;'>]] ..
+      string.format("%0.1f", targetAngleR * rad2deg) ..
+      [[°</div>
+      <div style='transform: translate(20px, 70px);color:#f54425;'>Δ ]] ..
+      string.format("%0.1f", myAngleR * rad2deg - targetAngleR * rad2deg) ..
+      [[°</div>
+      </div>
+      <div class='vectorLine' style='top:89.65%;left:43%;background:#ffb750;z-index:30;transform:rotate(]] ..
+      myAngleR * rad2deg + 90 ..
+      [[deg)'></div>
+
+
+      <div class='circle' style='position:absolute;top:85%;left:51%;'>
+      <div style='transform: translate(0px, -16px);color:#ffb750;'>]] ..
+      string.format("%0.1f", myAngleUp * rad2deg) ..
+      [[°</div>
+      <div style='transform: translate(70px, -35px);color:#f54425;'>]] ..
+      string.format("%0.1f", targetAngleUp * rad2deg) ..
+      [[°</div>
+      <div style='transform: translate(20px, 70px);color:#f54425;'>Δ ]] ..
+      string.format(
+      "%0.1f",
+      myAngleUp * rad2deg - targetAngleUp * rad2deg
+      ) ..
+      [[°</div>
+      </div>
+      <div class='vectorLine' style='top:89.65%;left:51%;background:#ffb750;z-index:30;transform:rotate(]] ..
+      myAngleUp * rad2deg + 180 ..
+      [[deg)'></div>
+
+
+      <div class='vectorLine' style='top:89.65%;left:43%;background:#f54425;z-index:29;transform:rotate(]] ..
+      targetAngleR * rad2deg + 90 ..
+      [[deg)'></div>
+      <div class='vectorLine' style='top:89.65%;left:51%;background:#f54425;z-index:29;transform:rotate(]] ..
+      targetAngleUp * rad2deg + 180 ..
+      [[deg)'></div>
+      ]]
+
+      html1 =
+      [[
+      <style>
+      .main1 {
+         position: fixed;
+         width: auto;
+         padding: 0.2vw;
+         bottom: 3vh;
+         left: 49.7%;
+         transform: translateX(-50%);
+         text-align: center;
+         background: #142027;
+         color: white;
+         font-family: "Lucida" Grande, sans-serif;
+         font-size: 1em;
+         border-radius: 2vh;
+         border: 0.2vh solid;
+         border-color: #fca503;
+         </style>
+         <div class="main1">]] ..
+         pipeDist .. [[</div>]]
+
+         style =
+         [[
+         <style>
+         .circle {
+            height: 100px;
+            width: 100px;
+            background-color: #555;
+            border-radius: 50%;
+            opacity: 0.5
+         }     .vectorLine{position:absolute;transform-origin: 100% 0%;width: 50px;height:0.15em;}</style>]]
+         --system.setScreen([[<html><head>]] .. style .. [[</head><body>]] .. targetVectorWidget .. [[]] .. html1 .. [[</body></html>]])
+         vectorHUD = [[<html><head>]] .. style .. [[</head><body>]] .. targetVectorWidget .. [[]] .. html1 .. [[</body></html>]]
+      end
+   end
+
+   function tickMarker(unit, system, text)
+      if databank.getStringValue(1) ~= "" or databank.getStringValue(3) ~= "" and databank.getFloatValue(2) == 0 or databank.getFloatValue(4) == 0 then
+
+         pos11 = zeroConvertToWorldCoordinates(pos1, system)
+         pos22 = zeroConvertToWorldCoordinates(pos2, system)
+
+         meterMarker1 = meterMarker1 + tspeed
+         length1 = meterMarker1
+         --lengthSU1=math.floor((length1/200000) * 100)/100
+         lengthSU1 = string.format("%0.2f", ((length1 / 200000) * 100) / 100)
+         resultVector1 = vectorLengthen(pos11, pos22, length1)
+         Waypoint1 = getPos4Vector(resultVector1)
+
+         meterMarker = meterMarker + calcTargetSpeed
+         length = meterMarker
+         --lengthSU=math.floor((length/200000) * 100)/100
+         lengthSU = string.format("%0.2f", ((length / 200000) * 100) / 100)
+         resultVector = vectorLengthen(pos11, pos22, length)
+         Waypoint = getPos4Vector(resultVector)
+
+         if showMarker == true then
+            if mmode == true then
+               system.setWaypoint(Waypoint1)
+               system.print("The target flew " .. lengthSU1 .. " su, speed " .. tspeed1 .. " km/h")
+            else
+               system.setWaypoint(Waypoint)
+               system.print("The target flew " .. lengthSU .. " su, speed " .. targetSpeed .. " km/h")
+            end
+         end
+      end
+   end
+
+   function altUP(unit, system, text)
+      if lalt == true then
+         if databank.getStringValue(1) ~= "" and databank.getStringValue(3) ~= "" then
+            showMarker = false
+            SU = SU + 2.5
+            length = SU * 200000
+
+            pos11 = zeroConvertToWorldCoordinates(pos1, system)
+            pos22 = zeroConvertToWorldCoordinates(pos2, system)
+
+            resultVector = vectorLengthen(pos11, pos22, length)
+            Waypoint = getPos4Vector(resultVector)
+
+            system.setWaypoint(Waypoint)
+
+            system.print(Waypoint .. " waypoint " .. SU .. " su")
+         end
+      end
+   end
+
+   function altDOWN(unit, system, text)
+      if lalt == true then
+         if databank.getStringValue(1) ~= "" and databank.getStringValue(3) ~= "" then
+            showMarker = false
+            SU = SU - 2.5
+            length = SU * 200000
+
+            pos11 = zeroConvertToWorldCoordinates(pos1, system)
+            pos22 = zeroConvertToWorldCoordinates(pos2, system)
+
+            resultVector = vectorLengthen(pos11, pos22, length)
+            Waypoint = getPos4Vector(resultVector)
+
+            system.setWaypoint(Waypoint)
+
+            system.print(Waypoint .. " waypoint " .. SU .. " su")
+         end
+      end
+   end
+
+   function altRIGHT(unit, system, text)
+      if lalt == true then
+         if databank.getStringValue(1) ~= "" and databank.getStringValue(3) ~= "" then
+            showMarker = false
+            SU = SU + 10
+            length = SU * 200000
+
+            pos11 = zeroConvertToWorldCoordinates(pos1, system)
+            pos22 = zeroConvertToWorldCoordinates(pos2, system)
+
+            resultVector = vectorLengthen(pos11, pos22, length)
+            Waypoint = getPos4Vector(resultVector)
+
+            system.setWaypoint(Waypoint)
+
+            system.print(Waypoint .. " waypoint " .. SU .. " su")
+         end
+      end
+   end
+
+   function altLEFT(unit, system, text)
+      if lalt == true then
+         if databank.getStringValue(1) ~= "" and databank.getStringValue(3) ~= "" then
+            showMarker = false
+            SU = SU - 10
+            length = SU * 200000
+
+            pos11 = zeroConvertToWorldCoordinates(pos1, system)
+            pos22 = zeroConvertToWorldCoordinates(pos2, system)
+
+            resultVector = vectorLengthen(pos11, pos22, length)
+            Waypoint = getPos4Vector(resultVector)
+
+            system.setWaypoint(Waypoint)
+
+            system.print(Waypoint .. " waypoint " .. SU .. " su")
+         end
+      end
+   end
+
+   function GEAR(unit, system, text)
+      posExport1 = databank.getStringValue(1)
+      posExport2 = databank.getStringValue(3)
+      --timeExport1 = tonumber(string.format('%0.0f',databank.getFloatValue(2)))
+      --timeExport2 = tonumber(string.format('%0.0f',databank.getFloatValue(2)))
+      timeExport1 = math.floor(databank.getFloatValue(2))
+      timeExport2 = math.floor(databank.getFloatValue(4))
+
+      system.print("The coordinates were exported to the screen")
+
+      screen.setHTML(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
+      --system.logInfo('testLua: ```'..posExport1..'/'..posExport2..'/'..timeExport..'```')
+      --screen.activate()
+   end
+
+   function radarPos(system,radar)
+      local id = radar.getTargetId()
+      if id ~= 0 then
+         local dist = radar.getConstructDistance(id)
+         local forwvector = vec3(system.getCameraWorldForward())
+         local worldpos = vec3(system.getCameraWorldPos())
+         local p = (dist * forwvector + worldpos)
+
+         if pos1 ~= 0 and pos2 == 0 and exportMode == false then
+
+            pos2 = '::pos{0,0,'..p.x..','..p.y..','..p.z..'}'
+            databank.setStringValue(3, pos2)
+            pos2time = math.floor(UTCscaner(system))
+            databank.setFloatValue(4, pos2time)
+            system.print(pos2 .." pos2 saved")
+
+            pos11 = zeroConvertToWorldCoordinates(pos1, system)
+
+            pos22 = zeroConvertToWorldCoordinates(pos2, system)
+
+            local dist1 = pos11:dist(pos22)
+            local timeroute = pos2time - pos1time
+            tspeed = dist1 / timeroute
+            tspeed1 = math.floor((dist1 / timeroute) * 3.6)
+            Pos1 = pos1
+            Pos2 = pos2
+
+            targetVector =
+            makeVector(zeroConvertToWorldCoordinates(Pos1, system), zeroConvertToWorldCoordinates(Pos2, system))
+            targetTracker = true
+
+            meterMarker1 = meterMarker1 + tspeed * 4
+            length1 = meterMarker1
+
+            resultVector1 = vectorLengthen(pos11, pos22, length1)
+            Waypoint1 = getPos4Vector(resultVector1)
+
+            system.setWaypoint(Waypoint1)
+            meterMarker = meterMarker + calcTargetSpeed * 4
+            length = meterMarker
+
+            resultVector = vectorLengthen(pos11, pos22, length)
+            Waypoint = getPos4Vector(resultVector)
+
+            system.print("---------------")
+            system.print("The coordinates are set manually!")
+            posExport1 = databank.getStringValue(1)
+            posExport2 = databank.getStringValue(3)
+            timeExport1 = math.floor(databank.getFloatValue(2))
+            timeExport2 = math.floor(databank.getFloatValue(4))
+
+            system.print("The coordinates were exported to the screen")
+
+            screen.setHTML(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
+            system.print("Target speed: " .. tspeed1 .. " km/h")
+            unit.setTimer("marker", 1)
+            --system.showScreen(1)
+            unit.setTimer("vectorhud", 0.02)
+         end
+
+         if pos1 == 0 and exportMode == false then
+            pos1 = '::pos{0,0,'..p.x..','..p.y..','..p.z..'}'
+            databank.setStringValue(1, pos1)
+            pos1time = math.floor(UTCscaner(system))
+            databank.setFloatValue(2, pos1time)
+            system.print(pos1 .. " pos1 saved")
+         end
+      end
+   end
+
+   start(unit,system,text)
+
+   unit.setTimer("data", 0.1)
+   unit.setTimer("delay", 1)
+
+   --clean performance
+   if collectgarbages == true then
+      unit.setTimer("cleaner",30)
+   end
