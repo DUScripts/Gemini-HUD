@@ -22,7 +22,7 @@ exportMode = true --export: Coordinate export mode
 timeZone = 3 --export: from 1 to 24
 targetSpeed = 29999 --export: Target speed
 GHUD_AR_show_sight = true --export:
-GHUD_AR_sight_color = "rgba(255, 255, 255, 0.5)" --export:
+GHUD_AR_sight_color = "rgb(0, 191, 255)" --export:
 GHUD_Weapons_Panels = 3 --export:
 GHUD_log_stats = true --export: Send target statistics to LUA channel
 GHUD_Angular_Radial = false --export: Show angular and radial speed
@@ -70,7 +70,7 @@ friendly_IDs = {} -- put IDs here 34141,231231,31231 etc
 
 --vars
 atlas = require("atlas")
-GHUD_AR_sight_size = 250
+GHUD_AR_sight_size = 200
 shift = false
 radarIDs = {}
 idN = 0
