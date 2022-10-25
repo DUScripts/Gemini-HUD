@@ -19,7 +19,6 @@ HUD_version = '1.0.0'
 
 --LUA parameters
 exportMode = true --export: Coordinate export mode
-timeZone = 3 --export: from 1 to 24
 targetSpeed = 29999 --export: Target speed
 GHUD_AR_show_sight = true --export:
 GHUD_AR_sight_color = "rgb(0, 191, 255)" --export:
@@ -1889,11 +1888,11 @@ function start(unit, system, text)
       makeVector(zeroConvertToWorldCoordinates(Pos1, system), zeroConvertToWorldCoordinates(Pos2, system))
       targetTracker = true
 
-      curTime = system.getArkTime()
+      curTime = system.getUtcTime()
 
       --local dt1 = math.floor(UTC() - pos1time)
-      local dt2 = math.floor(UTC() - pos2time)
-      local lasttime = dt2
+      --local dt2 = math.floor(UTC() - pos2time)
+      local lasttime = math.floor(curTime - pos2time)
       local dist1 = pos11:dist(pos22)
       local timeroute = pos2time - pos1time
       tspeed = dist1 / timeroute
@@ -1958,7 +1957,7 @@ function inTEXT(unit, system, text)
 
       pos2 = text
       databank.setStringValue(3, pos2)
-      pos2time = math.floor(UTCscaner(system))
+      pos2time = math.floor(system.getUtcTime())
       databank.setFloatValue(4, pos2time)
       system.print(text .. " pos2 saved")
 
@@ -2014,7 +2013,7 @@ function inTEXT(unit, system, text)
    if pos1 == 0 and string.find(text, "::pos") and exportMode == false then
       pos1 = text
       databank.setStringValue(1, pos1)
-      pos1time = math.floor(UTCscaner(system))
+      pos1time = math.floor(system.getUtcTime())
       databank.setFloatValue(2, pos1time)
       system.print(text .. " pos1 saved")
    end
@@ -2127,11 +2126,11 @@ function inTEXT(unit, system, text)
       targetTracker = true
 
       oldTime = tonumber(string.sub(text, start, fin))
-      curTime = system.getArkTime()
+      curTime = system.getUtcTime()
 
       --local dt1 = math.floor(UTC() - pos1time)
-      local dt2 = math.floor(UTC() - pos2time)
-      local lasttime = dt2
+      --local dt2 = math.floor(UTC() - pos2time)
+      local lasttime = math.floor(curTime - pos2time)
       local dist1 = pos11:dist(pos22)
       local timeroute = pos2time - pos1time
       tspeed = dist1 / timeroute
@@ -2234,11 +2233,11 @@ function inTEXT(unit, system, text)
       targetTracker = true
 
       oldTime = tonumber(string.sub(text, start, fin))
-      curTime = system.getArkTime()
+      curTime = system.getUtcTime()
 
       --local dt1 = math.floor(UTC() - pos1time)
-      local dt2 = math.floor(UTC() - pos2time)
-      local lasttime = dt2
+      --local dt2 = math.floor(UTC() - pos2time)
+      local lasttime = math.floor(curTime - pos2time)
       local dist1 = pos11:dist(pos22)
       local timeroute = pos2time - pos1time
       tspeed = dist1 / timeroute
@@ -2569,7 +2568,7 @@ function tickVector(unit, system, text)
 
             pos2 = '::pos{0,0,'..p.x..','..p.y..','..p.z..'}'
             databank.setStringValue(3, pos2)
-            pos2time = math.floor(UTCscaner(system))
+            pos2time = math.floor(system.getUtcTime())
             databank.setFloatValue(4, pos2time)
             system.print(pos2 .." pos2 saved")
 
@@ -2591,7 +2590,7 @@ function tickVector(unit, system, text)
             meterMarker1 = meterMarker1 + tspeed * 4
             length1 = meterMarker1
 
-            resultVector1 = vectorLengthen(pos11, pos22, length1)
+            resultVector1 = vectorLengthen(pos11, pos22, 6000000)
             Waypoint1 = getPos4Vector(resultVector1)
 
             system.setWaypoint(Waypoint1)
@@ -2612,7 +2611,7 @@ function tickVector(unit, system, text)
 
             screen.setHTML(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
             system.print("Target speed: " .. tspeed1 .. " km/h")
-            unit.setTimer("marker", 1)
+            --unit.setTimer("marker", 1)
             --system.showScreen(1)
             unit.setTimer("vectorhud", 0.02)
          end
