@@ -36,14 +36,14 @@ if GHUD_AR_show_sight == true then --AR sight for selected target
    --local pos1 = ConvertLocalToWorld(0,distance,0)
    --local point1 = library.getPointOnScreen({pos1.x,pos1.y,pos1.z})
    if point1[3] > 0 then --visible zone
-      local x2 = screenWidth*point1[1] - GHUD_AR_sight_size/2
-      local y2 = screenHeight*point1[2] - GHUD_AR_sight_size/2
+      local x2 = screenWidth*point1[1] - 100
+      local y2 = screenHeight*point1[2] - 100
       sight = [[
       <style>
       .sight1 {
          position: absolute;
-         width: ]]..GHUD_AR_sight_size..[[px;
-         height: ]]..GHUD_AR_sight_size..[[px;
+         width: 200px;
+         height: 200px;
          left: ]]..x2..[[px;
          top: ]]..y2..[[px;
       }
@@ -81,14 +81,14 @@ else
    --local pos1 = ConvertLocalToWorld(0,distance,0)
    --local point1 = library.getPointOnScreen({pos1.x,pos1.y,pos1.z})
    if point1[3] > 0 then --visible zone
-      local x2 = screenWidth*point1[1] - GHUD_AR_sight_size/2
-      local y2 = screenHeight*point1[2] - GHUD_AR_sight_size/2
+      local x2 = screenWidth*point1[1] - 100
+      local y2 = screenHeight*point1[2] - 100
       sight = [[
       <style>
       .sight1 {
          position: absolute;
-         width: ]]..GHUD_AR_sight_size..[[px;
-         height: ]]..GHUD_AR_sight_size..[[px;
+         width: 200px;
+         height: 200px;
          left: ]]..x2..[[px;
          top: ]]..y2..[[px;
       }

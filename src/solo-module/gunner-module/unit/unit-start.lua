@@ -24,7 +24,6 @@ GHUD_AR_show_sight = true --export:
 GHUD_AR_sight_color = "rgb(0, 191, 255)" --export:
 GHUD_Weapons_Panels = 3 --export:
 GHUD_log_stats = true --export: Send target statistics to LUA channel
-GHUD_Angular_Radial = false --export: Show angular and radial speed
 GHUD_ShowAllies = true --export: Show allies
 GHUD_ShowEcho = true --export: Show targets echo
 GHUD_Notifications = true --export: LUA radar notifications
@@ -49,9 +48,6 @@ GHUD_Radial_Color = "#bccc06"
 GHUD_Count_Color = "#00b9c9" --export:
 GHUD_Yourship_ID_Color = "#fca503" --export:
 GHUD_Border_Color = "black" --export:
-GHUD_Border_Angular_Radial_Speed_Color = "black" --export:
-GHUD_Background_Color = "#142027" --export: Backgroung color GHUD system
-GHUD_BorderStyle_Angular_Radial_Speed_Color = "inset" --export:
 GHUD_AlliesY = 0 --export: set to 0 if playing in fullscreen mode
 GHUD_SelectedY = 50 --export:
 GHUD_SelectedX = 37.4 --export:
@@ -69,7 +65,6 @@ friendly_IDs = {} -- put IDs here 34141,231231,31231 etc
 
 --vars
 atlas = require("atlas")
-GHUD_AR_sight_size = 200
 shift = false
 radarIDs = {}
 idN = 0
@@ -845,17 +840,7 @@ distalliescolor {
 speedcolor {
    font-weight: bold;
    color: ]]..GHUD_Speed_Color..[[;
-   outline: 1px ]]..GHUD_BorderStyle_Angular_Radial_Speed_Color..[[ ]]..GHUD_Border_Angular_Radial_Speed_Color..[[;
-}
-angcolor {
-   font-weight: bold;
-   color: ]]..GHUD_Angular_Color..[[;
-   outline: 1px ]]..GHUD_BorderStyle_Angular_Radial_Speed_Color..[[ ]]..GHUD_Border_Angular_Radial_Speed_Color..[[;
-}
-radcolor {
-   font-weight: bold;
-   color: ]]..GHUD_Radial_Color..[[;
-   outline: 1px ]]..GHUD_BorderStyle_Angular_Radial_Speed_Color..[[ ]]..GHUD_Border_Angular_Radial_Speed_Color..[[;
+   outline: 1px inset black;
 }
 countcolor {
    font-weight: bold;
