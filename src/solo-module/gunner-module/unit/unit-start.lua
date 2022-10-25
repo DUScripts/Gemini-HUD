@@ -18,6 +18,7 @@
 HUD_version = '1.0.0'
 
 --LUA parameters
+friendly_IDs = {} -- put IDs here 34141,231231,31231 etc
 exportMode = true --export: Coordinate export mode
 targetSpeed = 29999 --export: Target speed
 GHUD_AR_show_sight = true --export:
@@ -60,8 +61,6 @@ GHUD_Allies_Count1 = GHUD_Allies_Count + 1
 if GHUD_Windowed_Mode then
    GHUD_AlliesY = 2
 end
-
-friendly_IDs = {} -- put IDs here 34141,231231,31231 etc
 
 --vars
 atlas = require("atlas")
@@ -439,14 +438,12 @@ local function main()
       local caption = ""
       local captionL = ""
       local targetsele = ""
-      local tdists = ""
       local target = ""
       local locks = ""
       local statusSVG = ""
       local captionText = ""
       local okcolor = ""
       local captionLcolor = ""
-      gunnerHUD = ""
       radarTarget = {}
       radarStatic = {}
       radarDynamic = {}
