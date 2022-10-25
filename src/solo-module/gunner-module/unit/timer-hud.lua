@@ -138,13 +138,13 @@ local hitsHUD = ''
 local missesHUD = ''
 
 for k,v in pairs(hits) do
-   if hits[k].html ~= nil then
+   if hits[k] ~= nil then
 hitsHUD = hitsHUD .. hits[k].html
    end
 end
 
 for k,v in pairs(misses) do
-   if misses[k].html ~= nil then
+   if misses[k] ~= nil then
 missesHUD = missesHUD .. misses[k].html
    end
 end
