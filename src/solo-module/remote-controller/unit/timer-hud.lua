@@ -9,7 +9,7 @@ TH_stress = stress[4]
 checkSvgStress()
 
 local HPS = math.floor(shield.getShieldHitpoints()/shieldMaxHP*100)
-formatted_hp = string.format('%0.0f',math.ceil(HPS))
+local formatted_hp = string.format('%0.0f',math.ceil(HPS))
 
 local htmlHUD = [[
 <html>

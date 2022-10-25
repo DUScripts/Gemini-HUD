@@ -33,7 +33,6 @@ maxSHP = 210 --svg shield X right side coordinate
 shieldMaxHP = shield.getMaxShieldHitpoints()
 last_shield_hp = shield.getShieldHitpoints()
 HP = shield.getShieldHitpoints()/shieldMaxHP * 100
-formatted_hp = string.format('%0.0f',math.ceil(HP))
 svghp = maxSHP * (HP * 0.01)
 
 --CCS
