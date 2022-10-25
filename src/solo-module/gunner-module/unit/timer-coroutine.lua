@@ -6,35 +6,37 @@ end
 radarIDs = radar.getConstructIds()
 idN = #radarIDs
 
-if GHUD_AR_show_sight == true then --AR sight for selected target
-   local id = radar.getTargetId()
-   local shipPos = vec3(construct.getWorldPosition())
-   if id ~= 0 then
-      local sdist = ""
-      local dist = radar.getConstructDistance(id)
-      if dist >= 100000 then
-         dist = string.format('%0.2f', dist/200000)
-         sdist = 'SU'
-      elseif dist >= 1000 and dist < 100000 then
-         dist = string.format('%0.1f', dist/1000)
-         sdist = 'KM'
-      else
-         dist = string.format('%0.0f', dist)
-         sdist = 'M'
-      end
-      local name = radar.getConstructName(id)
-      local speed = radar.getConstructSpeed(id)
-      local size = radar.getConstructCoreSize(v)
-      if speed > lastspeed then newcolor = "#00d0ff" znak = "↑" end
-      if speed < lastspeed then newcolor = "#fc033d" znak = "↓" end
-      if speed == lastspeed then newcolor = "white" znak = "" end
-      lastspeed = speed
+
+local id = radar.getTargetId()
+local shipPos = vec3(construct.getWorldPosition())
+if id ~= 0 then
+   local sdist = ""
+   local dist = radar.getConstructDistance(id)
+   if dist >= 100000 then
+      dist = string.format('%0.2f', dist/200000)
+      sdist = 'SU'
+   elseif dist >= 1000 and dist < 100000 then
+      dist = string.format('%0.1f', dist/1000)
+      sdist = 'KM'
+   else
+      dist = string.format('%0.0f', dist)
+      sdist = 'M'
    end
-   speed = math.floor(speed * 3.6)
+   local name = radar.getConstructName(id)
+   local size = radar.getConstructCoreSize(id)
+   local speed = 'LOCK REQUIRED'
+   newcolor = 'white'
+   lastspeed = 0
+   if radar.isConstructIdentified(id) == 1 then
+      speed = radar.getConstructSpeed(id)
+      if speed > lastspeed then newcolor = '#00d0ff' znak = '↑' end
+      if speed < lastspeed then newcolor = '#fc033d' znak = '↓' end
+      if speed == lastspeed then newcolor = 'white' znak = '' end
+      lastspeed = speed
+      speed = math.floor(speed * 3.6)
+   end
    local pos1 = shipPos + distance * vec3(construct.getWorldOrientationForward())
    local point1 = library.getPointOnScreen({pos1.x,pos1.y,pos1.z})
-   --local pos1 = ConvertLocalToWorld(0,distance,0)
-   --local point1 = library.getPointOnScreen({pos1.x,pos1.y,pos1.z})
    if point1[3] > 0 then --visible zone
       local x2 = screenWidth*point1[1] - 100
       local y2 = screenHeight*point1[2] - 100

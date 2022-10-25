@@ -21,7 +21,6 @@ HUD_version = '1.0.0'
 friendly_IDs = {} -- put IDs here 34141,231231,31231 etc
 exportMode = true --export: Coordinate export mode
 targetSpeed = 29999 --export: Target speed
-GHUD_AR_show_sight = true --export:
 GHUD_AR_sight_color = "rgb(0, 191, 255)" --export:
 GHUD_Weapons_Panels = 3 --export:
 GHUD_log_stats = true --export: Send target statistics to LUA channel
