@@ -90,7 +90,7 @@ size = {'XL','L','M','S','XS'}
 defaultSize = 'ALL'
 sizeState = 6
 focus = ''
-hudHTML = ''
+gunnerHUD = ''
 vectorHUD = ''
 sight = ''
 buttonSpace = false
@@ -452,7 +452,7 @@ local function main()
       local captionText = ""
       local okcolor = ""
       local captionLcolor = ""
-      hudHTML = ""
+      gunnerHUD = ""
       radarTarget = {}
       radarStatic = {}
       radarDynamic = {}
@@ -760,20 +760,20 @@ local function main()
       if GHUD_ShowEcho == true then
          if GHUD_ShowAllies == true then
             --system.setScreen(htmltext .. target .. locks .. hudver .. radarWidget ..targetsele ..statusSVG)
-            hudHTML = htmltext .. target .. locks .. hudver .. radarWidget ..targetsele ..statusSVG
+            gunnerHUD = htmltext .. target .. locks .. hudver .. radarWidget ..targetsele ..statusSVG
          else
             --system.setScreen(target .. locks .. hudver .. radarWidget ..targetsele ..statusSVG)
-            hudHTML = target .. locks .. hudver .. radarWidget ..targetsele ..statusSVG
+            gunnerHUD = target .. locks .. hudver .. radarWidget ..targetsele ..statusSVG
          end
 
       else
 
          if GHUD_ShowAllies == true then
             --system.setScreen(htmltext .. target .. locks .. hudver ..targetsele ..statusSVG)
-            hudHTML = htmltext .. target .. locks .. hudver ..targetsele ..statusSVG
+            gunnerHUD = htmltext .. target .. locks .. hudver ..targetsele ..statusSVG
          else
             --system.setScreen(target .. locks .. hudver ..targetsele ..statusSVG)
-            hudHTML = target .. locks .. hudver ..targetsele ..statusSVG
+            gunnerHUD = target .. locks .. hudver ..targetsele ..statusSVG
          end
       end
       coroutine.yield()

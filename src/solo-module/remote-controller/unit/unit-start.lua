@@ -20,7 +20,6 @@ HUD_version = '1.0.0'
 --LUA parameters
 
 --vars
-hudHTML = ''
 AMstrokeWidth = 1
 EMstrokeWidth = 1
 THstrokeWidth = 1

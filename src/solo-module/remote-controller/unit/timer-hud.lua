@@ -11,9 +11,14 @@ checkSvgStress()
 local HPS = math.floor(shield.getShieldHitpoints()/shieldMaxHP*100)
 formatted_hp = string.format('%0.0f',math.ceil(HPS))
 
-hudHTML = [[
+local htmlHUD = [[
 <html>
 <style>
+html,body {
+margin:0;
+padding:0;
+overflow: hidden;
+}
 .shield {
 position: absolute;
 width: 1300px;
@@ -65,4 +70,5 @@ filter: drop-shadow(0 0 35px blue);
 </svg></div>
 </body>
 </html>]]
-system.setScreen(hudHTML)
+
+system.setScreen(htmlHUD)

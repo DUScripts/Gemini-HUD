@@ -140,4 +140,24 @@ for k,v in pairs(misses) do
 missesHUD = missesHUD .. misses[k].html
 end
 
-system.setScreen(AR_allies .. vectorHUD .. sight .. missesHUD .. hitsHUD .. hudHTML)
+local htmlHUD = [[
+   <html>
+   <style>
+   html,body {
+      margin:0;
+      padding:0;
+      overflow: hidden;
+   }
+   </style>
+   <body>
+   ]]..AR_allies..[[
+   ]]..vectorHUD..[[
+   ]]..sight..[[
+   ]]..missesHUD..[[
+   ]]..hitsHUD..[[
+   ]]..gunnerHUD..[[
+   </body>
+   </html>
+]]
+
+system.setScreen(htmlHUD)
