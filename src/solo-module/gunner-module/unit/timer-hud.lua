@@ -28,7 +28,7 @@ if id ~= 0 then
    lastspeed = 0
    local damage = 0
    if totalDamage[id] ~= nil then --target damage calculation concept
-      damage = string.format('%0.1f',totalDamage[targetId].damage * 0.000001)
+      damage = string.format('%0.1f',totalDamage[id].damage * 0.000001)
    end
    if radar.isConstructIdentified(id) == 1 then
       speed = radar.getConstructSpeed(id)
