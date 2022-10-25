@@ -172,13 +172,19 @@ end
 function getClosestPipe(wp,startLocation)
    local ClosestPlanet={}
    ClosestPlanet.pipedistance=999999999999
+   local i = 0
    for BodyId in pairs(atlas[0]) do
+      i = i + 1
       local stopLocation=atlas[0][BodyId]
       local pipe=vec3(startLocation.center) - vec3(stopLocation.center)
       local pipedistance=(wp - vec3(startLocation.center)):project_on_plane(pipe):len()
       if math.min(ClosestPlanet.pipedistance,pipedistance)==pipedistance and (vec3(startLocation.center)-wp):len()<pipe:len() and (vec3(stopLocation.center)-wp):len()<pipe:len() then
          ClosestPlanet.pipename=stopLocation.name[1]
          ClosestPlanet.pipedistance=pipedistance
+      end
+      if i > 5 then
+         i = 0
+         coroutine.yield()
       end
    end
    return ClosestPlanet.pipename, ClosestPlanet.pipedistance
@@ -215,7 +221,7 @@ function zeroConvertToWorldCoordinates(pos,system)
    math.sin(latitude));
    return vec3(planet.center) + (planet.radius + altitude) * planetxyz
 end
-
+--for 3D map
 function zeroConvertToWorldCoordinatesG(pos,system)
    local num  = ' *([+-]?%d+%.?%d*e?[+-]?%d*)'
    local posPattern = '::pos{' .. num .. ',' .. num .. ',' ..  num .. ',' .. num ..  ',' .. num .. '}'
