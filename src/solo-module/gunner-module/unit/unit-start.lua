@@ -569,7 +569,7 @@ local function main()
          else
 
             if GHUD_ShowEcho == true and size ~= "" then
-               if radar.getConstructType(v) == 'dynamic' then
+               if radar.getConstructKind(v) == 5 then
                   table.insert(radarDynamic, constructRow)
                   if radarDynamicWidget[constructRow.widgetDist] ~= nil then
                      radarDynamicWidget[constructRow.widgetDist] = radarDynamicWidget[constructRow.widgetDist] + 1
@@ -587,7 +587,7 @@ local function main()
             end
          end
          --lockstatus
-         if radar.getThreatFrom(v) ~= "none" and size ~= "" then
+         if radar.getThreatRateFrom(v) ~= 1 and size ~= "" then
             countLock = countLock + 1
             local name = radar.getConstructName(v)
             local dist = math.floor(radar.getConstructDistance(v))
@@ -598,7 +598,7 @@ local function main()
             end
             local loclIDT = (""..v..""):sub(-3)
             local nameLOCK = ''..loclIDT..' '..name..''
-            if radar.getThreatFrom(v) == "attacked" then
+            if radar.getThreatRateFrom(v) == 5 then
                countAttacked = countAttacked + 1
                lockList = lockList..[[
                <div class="table-row th">

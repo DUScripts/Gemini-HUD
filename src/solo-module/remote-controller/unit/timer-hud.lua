@@ -7,9 +7,17 @@ KI_stress = stress[3]
 TH_stress = stress[4]
 
 checkSvgStress()
+local HP = shield.getShieldHitpoints()/shieldMaxHP * 100
+local HPS = math.floor(HP)
+local formatted_hp = string.format('%0.0f',math.ceil(HP))
 
-local HPS = math.floor(shield.getShieldHitpoints()/shieldMaxHP*100)
-local formatted_hp = string.format('%0.0f',math.ceil(HPS))
+if shield.getState() == 0 then
+   svghp = maxSHP * (HP*0.01)
+end
+
+if (system.getTime() - lastShotTime) >= 40 then
+   shoteCount = 0
+   end
 
 local htmlHUD = [[
 <html>
@@ -226,6 +234,10 @@ orange {
 <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -219.543004, -86.161257)"><tspan x="351.543" y="319.558">AM</tspan></text>
 <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 20px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 1.25px; text-anchor: middle;" transform="matrix(1, 0, 0, 1, -93.528017, -62.474306)"><tspan x="352" y="320">]]..formatted_hp..[[%</tspan></text>
 </svg></div>
+<div class="dotsight"><?xml version="1.0" encoding="utf-8"?>
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <ellipse style="fill:rgba(255, 255, 255, 0.5); stroke:rgba(255, 255, 255, 0.5);" cx="50" cy="50" rx="6" ry="6"/>
+  </svg></div>
 </body>
 </html>]]
 

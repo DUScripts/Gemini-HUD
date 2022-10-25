@@ -22,7 +22,7 @@ if text == "safe" then
         system.print("ANGULAR SPEED OFF")
         end
     end
-    if text == "res" then
+    if text == "s" then
     mRadar:stopC()
     defaultRadar()
     end
