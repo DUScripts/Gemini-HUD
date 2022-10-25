@@ -780,6 +780,7 @@ return mkPlanetaryReference(...)
 end })
 
 --pipe distance
+--deprecated code
 increment = 5
 heightBetweenAngles = 30
 playerName = system.getPlayerName(unit.getMasterPlayerId())
