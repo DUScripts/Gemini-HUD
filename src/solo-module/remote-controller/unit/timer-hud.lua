@@ -79,12 +79,10 @@ if (system.getTime() - lastShotTime) >= 40 then
             for BodyId in pairs(atlas[0]) do
                local planet=atlas[0][BodyId]
                if (planet.type[1] == 'Planet' or planet.isSanctuary == true) then
-                  local center = vec3(planet.center)
-                  drawonradar(center,planet.name[1])
-                  local point1 = library.getPointOnScreen({center.x,center.y,center.z})
+                  drawonradar(vec3(planet.center),planet.name[1])
+                  local point1 = library.getPointOnScreen({planet.center.x,planet.center.y,planet.center.z})
                   if point1[3] > 0 then --visible zone
-                     local name = planet.name[1]
-                     local dist = vec3(shipPos - center):len()
+                     local dist = vec3(shipPos - vec3(planet.center)):len()
                      local sdist = ''
                      if dist >= 100000 then
                         dist = string.format('%0.2f', dist/200000)
@@ -100,7 +98,7 @@ if (system.getTime() - lastShotTime) >= 40 then
                      local y2 = screenHeight*point1[2] - 50
                      AR_planets = AR_planets .. [[
                      <style>
-                     .]]..name..[[ {
+                     .]]..planet.name[1]..[[ {
                         position: absolute;
                         width: 100px;
                         height: 100px;
@@ -108,22 +106,21 @@ if (system.getTime() - lastShotTime) >= 40 then
                         top: ]]..y2..[[px;
                      }
                      </style>
-                     <div class="]]..name..[["><?xml version="1.0" encoding="utf-8"?>
+                     <div class="]]..planet.name[1]..[["><?xml version="1.0" encoding="utf-8"?>
                      <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
                      <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #FFB12C; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
-                     <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; white-space: pre; text-anchor: middle;" x="125" y="48.955">]]..name..[[</text>
+                     <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; white-space: pre; text-anchor: middle;" x="125" y="48.955">]]..planet.name[1]..[[</text>
                      <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; white-space: pre; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
                      <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle; white-space: pre;" x="125" y="240.424">]]..sdist..[[</text>
                      </svg></div>]]
                   end
                end --end draw radar
             end
-            drawonradar(safeWorldPos,"SAFE ZONE")
+            drawonradar(safeWorldPos,"CENTRAL SZ")
             if asteroidPOS ~= "" then
                drawonradar(asteroidcoord,""..markerName.."")
                local point1 = library.getPointOnScreen({asteroidcoord.x,asteroidcoord.y,asteroidcoord.z})
                if point1[3] > 0 then --visible zone
-                  local name = markerName
                   local dist = vec3(shipPos - asteroidcoord):len()
                   local sdist = ''
                   if dist >= 100000 then
@@ -140,7 +137,7 @@ if (system.getTime() - lastShotTime) >= 40 then
                   local y2 = screenHeight*point1[2] - 50
                   AR_asteroid = [[
                   <style>
-                  .]]..name..[[ {
+                  .]].markerName..[[ {
                      position: absolute;
                      width: 100px;
                      height: 100px;
@@ -148,10 +145,10 @@ if (system.getTime() - lastShotTime) >= 40 then
                      top: ]]..y2..[[px;
                   }
                   </style>
-                  <div class="]]..name..[["><?xml version="1.0" encoding="utf-8"?>
+                  <div class="]]..markerName..[["><?xml version="1.0" encoding="utf-8"?>
                   <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
                   <ellipse style="fill: rgba(0, 0, 0, 0); stroke: red; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
-                  <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; white-space: pre; text-anchor: middle;" x="125" y="48.955">]]..name..[[</text>
+                  <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; white-space: pre; text-anchor: middle;" x="125" y="48.955">]]..markerName..[[</text>
                   <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; white-space: pre; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
                   <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle; white-space: pre;" x="125" y="240.424">]]..sdist..[[</text>
                   </svg></div>]]
