@@ -1,5 +1,5 @@
 if coroutine.status(main1) ~= "dead" and coroutine.status(main1) == "suspended" then
-   coroutine.resume(main1, shipPos)
+   coroutine.resume(main1)
    --coroutine.xpcall(main1) -- resume debug coroutine
 end
 
@@ -19,10 +19,6 @@ local formatted_hp = string.format('%0.0f',math.ceil(HP))
 if shield.getState() == 0 then
    svghp = maxSHP * (HP*0.01)
 end
-
-if (system.getTime() - lastShotTime) >= 40 then
-   shoteCount = 0
-   end
 
    AR_planets = ''
    AR_asteroid = ''
