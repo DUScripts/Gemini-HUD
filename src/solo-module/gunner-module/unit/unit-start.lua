@@ -120,6 +120,9 @@ function checkWhitelist()
    return set
 end
 
+whitelist = checkWhitelist() --load IDs
+local pauseAfter = 500 --radar widget coroutine
+
 --radar widget
 function defaultRadar()
    sizeState = 6
@@ -160,9 +163,9 @@ function mRadar:updateStep()
    local i = 0
    for str in constructList do
       i = i + 1
-      if i%pauseAfter==0 then
-         coroutine.yield()
-      end
+      -- if i%pauseAfter==0 then
+      --    coroutine.yield()
+      -- end
       local ID = tonumber(str:match('"constructId":"([%d]*)"'))
       local size = radar.getConstructCoreSize(ID)
       local locked = radar.isConstructIdentified(ID)
@@ -189,6 +192,10 @@ function mRadar:updateStep()
             resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. string.format("%03d", ID%1000) .. ' - %1"')
             ::continue2::
          end
+      end
+      if i > 50 then
+         i = 0
+         coroutine.yield()
       end
    end
    local filterMsg = (isIDFiltered and ''..focus..' - FOCUS - ' or '') .. (self.friendlyMode and ''..defaultSize..' - Friends' or ''..defaultSize..' - Enemies')
@@ -343,11 +350,6 @@ function seconds_to_clock(time_amount)
    local wrapped_time = {h=hours, m=minutes, s=seconds}
    return string.format('%02.f:%02.f:%02.f', wrapped_time.h, wrapped_time.m, wrapped_time.s)
 end
-
-whitelist = checkWhitelist() --load IDs
-
---radar widget coroutine
-local pauseAfter = 1000
 
 --weapon widget
 local oldAnimationTime = {}
