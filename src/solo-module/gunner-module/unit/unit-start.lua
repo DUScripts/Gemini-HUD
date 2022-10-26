@@ -423,7 +423,6 @@ unit.setTimer("radar",0.1)
 
 --main gunner function
 local function main()
-   local id = ""
    while true do
       local i = 0
       local htmltext = ""

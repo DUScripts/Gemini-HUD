@@ -1,3 +1,8 @@
+if coroutine.status(main1) ~= "dead" and coroutine.status(main1) == "suspended" then
+   coroutine.resume(main1, shipPos)
+   --coroutine.xpcall(main1) -- resume debug coroutine
+end
+
 damage_ccs_SVG()
 
 local stress = shield.getStressRatioRaw()

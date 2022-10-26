@@ -21,7 +21,7 @@ HUD_version = '1.0.0'
 
 --vars
 atlas = require("atlas")
-_stellarObjects = atlas[0]
+shipPos = vec3(construct.getWorldPosition())
 safeWorldPos = vec3({13771471,7435803,-128971})
 
 AMstrokeWidth = 1
@@ -143,58 +143,6 @@ function checkSvgStress()
  end
 end
 
-function customDistance(distance)
-   local distanceS = ''
-   if distance < 1000 then
-      distanceS = ''..string.format('%0.0f', distance)..' m'
-   elseif distance < 100000 then
-      distanceS = ''..string.format('%0.1f', distance/1000)..' km'
-   else
-      distanceS = ''..string.format('%0.2f', distance/200000)..' su'
-   end
-   return distanceS
-end
-
-function getClosestPlanet(wp)
-   local ClosestPlanet={}
-   ClosestPlanet.distance = 999999999999
-   for BodyId in pairs(atlas[0]) do
-      local planet=atlas[0][BodyId]
-      local distance=(vec3(planet.center)-wp):len()
-      if math.min(ClosestPlanet.distance,distance)==distance then
-         ClosestPlanet.name=planet.name[1]
-         ClosestPlanet.distance=distance
-      end
-   end
-   return ClosestPlanet.name,ClosestPlanet.distance
-end
-
-function getClosestPipe(wp,startLocation)
-   local ClosestPlanet={}
-   ClosestPlanet.pipedistance=999999999999
-   local i = 0
-   for BodyId in pairs(atlas[0]) do
-      i = i + 1
-      local stopLocation=atlas[0][BodyId]
-      local pipe=vec3(startLocation.center) - vec3(stopLocation.center)
-      local pipedistance=(wp - vec3(startLocation.center)):project_on_plane(pipe):len()
-      if math.min(ClosestPlanet.pipedistance,pipedistance)==pipedistance and (vec3(startLocation.center)-wp):len()<pipe:len() and (vec3(stopLocation.center)-wp):len()<pipe:len() then
-         ClosestPlanet.pipename=stopLocation.name[1]
-         ClosestPlanet.pipedistance=pipedistance
-      end
-      if i > 5 then
-         i = 0
-         coroutine.yield()
-      end
-   end
-   return ClosestPlanet.pipename, ClosestPlanet.pipedistance
-end
-
-function getSafeZoneDistance(wp)
-   local distance=math.floor(((wp-safeWorldPos):len()-18000000))
-   return distance
-end
-
 function zeroConvertToWorldCoordinates(pos,system)
    local num  = ' *([+-]?%d+%.?%d*e?[+-]?%d*)'
    local posPattern = '::pos{' .. num .. ',' .. num .. ',' ..  num .. ',' .. num ..  ',' .. num .. '}'
@@ -285,5 +233,97 @@ function icons.player(status)
    </svg>
    ]]
 end
+ 
+--debug coroutine
+function coroutine.xpcall(co)
+    local output = {coroutine.resume(co)}
+    if output[1] == false then
+       local tb = traceback(co)
+ 
+       local message = tb:gsub('"%-%- |STDERROR%-EVENTHANDLER[^"]*"', 'chunk')
+       system.print(message)
+ 
+       message = output[2]:gsub('"%-%- |STDERROR%-EVENTHANDLER[^"]*"', 'chunk')
+       system.print(message)
+       return false, output[2], tb
+    end
+    return table.unpack(output)
+end
+ 
+function calcDistance(origCenter, destCenter, location)
+    local pipe = (destCenter - origCenter):normalize()
+    local r = (location-origCenter):dot(pipe) / pipe:dot(pipe)
+    if r <= 0. then
+       return (location-origCenter):len()
+    elseif r >= (destCenter - origCenter):len() then
+       return (location-destCenter):len()
+    end
+    local L = origCenter + (r * pipe)
+    pipeDistance =  (L - location):len()
+ 
+    return pipeDistance
+end
 
-unit.setTimer("hud",0.02)
+function calcDistanceStellar(stellarObjectOrigin, stellarObjectDestination, currenLocation)
+    local origCenter = vec3(stellarObjectOrigin.center)
+    local destCenter = vec3(stellarObjectDestination.center)
+ 
+    return calcDistance(origCenter, destCenter, currenLocation)
+end
+
+function closestPipe() --
+    while true do
+       local smallestDistance = nil;
+       local nearestPlanet = nil;
+       local i = 0
+       for obj in pairs(_stellarObjects) do
+          i = i + 1
+          if (_stellarObjects[obj].type[1] == 'Planet' or _stellarObjects[obj].isSanctuary == true) then
+             local planetCenter = vec3(_stellarObjects[obj].center)
+             local distance = vec3(shipPos - planetCenter):len()
+ 
+             if (smallestDistance == nil or distance < smallestDistance) then
+                smallestDistance = distance;
+                nearestPlanet = obj;
+             end
+          end
+          if i > 30 then
+             i = 0
+             coroutine.yield()
+          end
+       end
+       i = 0
+       closestPlanet = _stellarObjects[nearestPlanet]
+       nearestPipeDistance = nil
+       nearestAliothPipeDistance= nil
+       for obj in pairs(_stellarObjects) do
+          i = i + 1
+          if (_stellarObjects[obj].type[1] == 'Planet' or _stellarObjects[obj].isSanctuary == true) then
+             for obj2 in pairs(_stellarObjects) do
+                if (obj2 > obj and (_stellarObjects[obj2].type[1] == 'Planet' or _stellarObjects[obj2].isSanctuary == true)) then
+                   pipeDistance = calcDistanceStellar(_stellarObjects[obj], _stellarObjects[obj2], shipPos)
+                   if nearestPipeDistance == nil or pipeDistance < nearestPipeDistance then
+                      nearestPipeDistance = pipeDistance;
+                      sortestPipeKeyId = obj;
+                      sortestPipeKey2Id = obj2;
+                   end
+                   if _stellarObjects[obj].name[1] == "Alioth" and (nearestAliothPipeDistance == nil or pipeDistance < nearestAliothPipeDistance) then
+                      nearestAliothPipeDistance = pipeDistance;
+                      sortestAliothPipeKeyId = obj;
+                      sortestAliothPipeKey2Id = obj2;
+                   end
+                end
+             end
+          end
+       end
+       if i > 30 then
+          i = 0
+          coroutine.yield()
+       end
+    end
+ end
+
+ main1 = coroutine.create(closestPipe)
+ unit.setTimer("hud",0.02)
+
+
