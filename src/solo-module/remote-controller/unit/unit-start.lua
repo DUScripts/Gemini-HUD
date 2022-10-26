@@ -151,7 +151,7 @@ function setTag(tag)
    transponder.setTags(tag)
 end
 
-function zeroConvertToWorldCoordinates(pos,system)
+function zeroConvertToWorldCoordinates(pos)
    local num  = ' *([+-]?%d+%.?%d*e?[+-]?%d*)'
    local posPattern = '::pos{' .. num .. ',' .. num .. ',' ..  num .. ',' .. num ..  ',' .. num .. '}'
    local systemId, bodyId, latitude, longitude, altitude = string.match(pos, posPattern)
@@ -177,30 +177,20 @@ function zeroConvertToWorldCoordinates(pos,system)
    math.sin(latitude));
    return vec3(planet.center) + (planet.radius + altitude) * planetxyz
 end
---for 3D map
-function zeroConvertToWorldCoordinatesG(pos,system)
-   local num  = ' *([+-]?%d+%.?%d*e?[+-]?%d*)'
-   local posPattern = '::pos{' .. num .. ',' .. num .. ',' ..  num .. ',' .. num ..  ',' .. num .. '}'
-   local systemId, bodyId, latitude, longitude, altitude = string.match(pos, posPattern)
 
-   if systemId==nil or bodyId==nil or latitude==nil or longitude==nil or altitude==nil then
-      system.print("Invalid pos!")
-      return {0, 0, 0}
+if db.getStringValue(15) ~= "" then
+   asteroidPOS = db.getStringValue(15)
+           else
+           asteroidPOS = ''
+           end
+               markerName = "Asteroid" --export:
+               if markerName == "" then markerName = "Asteroid" end
+               asteroidcoord = {}
+       if asteroidPOS ~= "" then
+       asteroidcoord = zeroConvertToWorldCoordinates(asteroidPOS)
+           else
+           asteroidcoord = {0,0,0}
    end
-
-   if (systemId == "0" and bodyId == "0") then
-      --convert space bm
-      return {tonumber(latitude), tonumber(longitude), tonumber(altitude)}
-   end
-   longitude = math.rad(longitude)
-   latitude = math.rad(latitude)
-   local planet = atlas[tonumber(systemId)][tonumber(bodyId)]
-   local xproj = math.cos(latitude);
-   local planetxyz = vec3(xproj*math.cos(longitude),
-   xproj*math.sin(longitude),
-   math.sin(latitude));
-   return {(planet.center + (planet.radius + altitude) * planetxyz):unpack()}
-end
 
 --icons
 local icons = {}
@@ -330,6 +320,41 @@ function closestPipe()
        end
     end
  end
+
+--2D Planet radar and AR planets
+screenHeight = system.getScreenHeight()
+screenWidth = system.getScreenWidth()
+DisplayRadar = false
+function drawonradar(coordonate,PlaneteName)
+   local constructUp = vec3(construct.getWorldOrientationUp())
+   local constructForward = vec3(construct.getWorldOrientationForward())
+   local constructRight = vec3(construct.getWorldOrientationRight())
+   local ConstructWorldPos = shipPos
+   local ToCible=coordonate-ConstructWorldPos
+   local Xcoord = mySignedAngleBetween(ToCible, constructForward, constructUp)/math.pi --*RadarR
+   local Ycoord = mySignedAngleBetween(ToCible, constructForward, constructRight)/math.pi --*RadarR+RadarY
+   local XcoordR=Xcoord*math.sqrt(1-Ycoord*Ycoord/2)*RadarR+RadarX
+   local YcoordR=Ycoord*math.sqrt(1-Xcoord*Xcoord/2)*RadarR+RadarY
+   svgradar=svgradar..string.format([[
+   <circle cx="%f" cy="%f" r="4" fill="red" />
+   <text x="%f" y="%f" font-size="12px" fill="yellow">%s</text>
+   ]],XcoordR,YcoordR,XcoordR+4,YcoordR,PlaneteName)
+end
+
+function mySignedAngleBetween(vecteur1, vecteur2, planeNormal)
+
+   local normVec1 = vecteur1:project_on_plane(planeNormal):normalize()
+   local normVec2 = vecteur2:normalize()
+
+   local angle = math.acos(normVec1:dot(normVec2))
+   local crossProduct = vecteur1:cross(vecteur2)
+
+   if crossProduct:dot(planeNormal) < 0 then
+      return -angle
+   else
+      return angle
+   end
+end
 
  main1 = coroutine.create(closestPipe)
 

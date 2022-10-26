@@ -24,6 +24,145 @@ if (system.getTime() - lastShotTime) >= 40 then
    shoteCount = 0
    end
 
+   AR_planets = ''
+   AR_asteroid = ''
+   if DisplayRadar==true then
+      local x,y,z = table.unpack(construct.getWorldOrientationForward())
+      local xoc = math.floor(math.atan(x, y)*180/math.pi+180)
+      local yoc = math.floor(math.atan(y, z)*180/math.pi+180)
+      local XY = [[
+      <style>
+      .XY {
+         position: absolute;
+         left: 2%;
+         top: 25%;
+         color: orange;
+         font-size:18px;
+         font-family: verdana;
+         font-weight: bold;
+         text-align: left;
+      }</style>
+      <div class="XY">X: ]]..xoc..[[<br>Y: ]]..yoc..[[</div>]]
+      message=[[
+      <style>
+      .svg {
+         position:absolute;
+         left: 0;
+         top: 6vh;
+         height: 100vh;
+         width: 100vw;
+         .wptxt {
+            fill: white;
+            font-size: ]].. screenHeight/80 ..[[;
+            font-family: sans-serif;
+            text-anchor: end;
+            .shiptxt {
+               fill: white;
+               font-size: ]].. screenHeight/80 ..[[;
+               font-family: sans-serif;
+               text-anchor: start;
+            }
+            </style>]]
+            message=message..[[<svg class="svg">]]
+            svgradar=""
+            RadarX=screenWidth*1/6
+            RadarY=screenWidth*1/6
+            RadarR=screenWidth*1/6
+   
+            svgradar=svgradar..string.format([[<line x1="%f" y1="%f" x2="%f" y2="%f" stroke-width="2" stroke="black" />]],RadarX,RadarY-RadarR,RadarX,RadarY+RadarR)
+            svgradar=svgradar..string.format([[<line x1="%f" y1="%f" x2="%f" y2="%f" stroke-width="2" stroke="black" />]],RadarX-RadarR,RadarY,RadarX+RadarR,RadarY)
+            svgradar=svgradar..string.format([[<circle  cx="%f" cy="%f" r="%f" stroke="black" fill="transparent" stroke-width="5"/>]],
+            RadarX,RadarY,RadarR/2)
+            svgradar=svgradar..string.format([[<circle  cx="%f" cy="%f" r="%f" stroke="black" fill-opacity="0.2" fill="green" stroke-width="5"/>]],
+            RadarX,RadarY,RadarR)
+   
+            for BodyId in pairs(atlas[0]) do
+               local planet=atlas[0][BodyId]
+               if (planet.type[1] == 'Planet' or planet.isSanctuary == true) then
+                  local center = vec3(planet.center)
+                  drawonradar(center,planet.name[1])
+                  local point1 = library.getPointOnScreen({center.x,center.y,center.z})
+                  if point1[3] > 0 then --visible zone
+                     local name = planet.name[1]
+                     local dist = vec3(shipPos - center):len()
+                     local sdist = ''
+                     if dist >= 100000 then
+                        dist = string.format('%0.2f', dist/200000)
+                        sdist = 'SU'
+                     elseif dist >= 1000 and dist < 100000 then
+                        dist = string.format('%0.1f', dist/1000)
+                        sdist = 'KM'
+                     else
+                        dist = string.format('%0.0f', dist)
+                        sdist = 'M'
+                     end
+                     local x2 = screenWidth*point1[1] - 50
+                     local y2 = screenHeight*point1[2] - 50
+                     AR_planets = AR_planets .. [[
+                     <style>
+                     .]]..name..[[ {
+                        position: absolute;
+                        width: 100px;
+                        height: 100px;
+                        left: ]]..x2..[[px;
+                        top: ]]..y2..[[px;
+                     }
+                     </style>
+                     <div class="]]..name..[["><?xml version="1.0" encoding="utf-8"?>
+                     <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+                     <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #FFB12C; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
+                     <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; white-space: pre; text-anchor: middle;" x="125" y="48.955">]]..name..[[</text>
+                     <text style="fill: white; font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; white-space: pre; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
+                     <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle; white-space: pre;" x="125" y="240.424">]]..sdist..[[</text>
+                     </svg></div>]]
+                  end
+               end --end draw radar
+            end
+            drawonradar(safeWorldPos,"SAFE ZONE")
+            if asteroidPOS ~= "" then
+               drawonradar(asteroidcoord,""..markerName.."")
+               local point1 = library.getPointOnScreen({asteroidcoord.x,asteroidcoord.y,asteroidcoord.z})
+               if point1[3] > 0 then --visible zone
+                  local name = markerName
+                  local dist = vec3(shipPos - asteroidcoord):len()
+                  local sdist = ''
+                  if dist >= 100000 then
+                     dist = string.format('%0.2f', dist/200000)
+                     sdist = 'SU'
+                  elseif dist >= 1000 and dist < 100000 then
+                     dist = string.format('%0.1f', dist/1000)
+                     sdist = 'KM'
+                  else
+                     dist = string.format('%0.0f', dist)
+                     sdist = 'M'
+                  end
+                  local x2 = screenWidth*point1[1] - 50
+                  local y2 = screenHeight*point1[2] - 50
+                  AR_asteroid = [[
+                  <style>
+                  .]]..name..[[ {
+                     position: absolute;
+                     width: 100px;
+                     height: 100px;
+                     left: ]]..x2..[[px;
+                     top: ]]..y2..[[px;
+                  }
+                  </style>
+                  <div class="]]..name..[["><?xml version="1.0" encoding="utf-8"?>
+                  <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #FFB12C; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
+                  <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; white-space: pre; text-anchor: middle;" x="125" y="48.955">]]..name..[[</text>
+                  <text style="fill: white; font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; white-space: pre; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
+                  <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle; white-space: pre;" x="125" y="240.424">]]..sdist..[[</text>
+                  </svg></div>]]
+               end
+            end --end asteroid
+            message=message..svgradar..XY
+            message=message.."</svg>"
+         else
+            message = ''
+         end
+
 local htmlHUD = [[
 <html>
 <style>
