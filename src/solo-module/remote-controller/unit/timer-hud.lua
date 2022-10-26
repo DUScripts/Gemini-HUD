@@ -112,7 +112,7 @@ if (system.getTime() - lastShotTime) >= 40 then
                      <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
                      <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #FFB12C; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
                      <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; white-space: pre; text-anchor: middle;" x="125" y="48.955">]]..name..[[</text>
-                     <text style="fill: white; font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; white-space: pre; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
+                     <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; white-space: pre; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
                      <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle; white-space: pre;" x="125" y="240.424">]]..sdist..[[</text>
                      </svg></div>]]
                   end
@@ -152,7 +152,7 @@ if (system.getTime() - lastShotTime) >= 40 then
                   <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
                   <ellipse style="fill: rgba(0, 0, 0, 0); stroke: red; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
                   <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; white-space: pre; text-anchor: middle;" x="125" y="48.955">]]..name..[[</text>
-                  <text style="fill: white; font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; white-space: pre; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
+                  <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; white-space: pre; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
                   <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle; white-space: pre;" x="125" y="240.424">]]..sdist..[[</text>
                   </svg></div>]]
                end
