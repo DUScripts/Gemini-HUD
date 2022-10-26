@@ -271,7 +271,7 @@ function calcDistanceStellar(stellarObjectOrigin, stellarObjectDestination, curr
     return calcDistance(origCenter, destCenter, currenLocation)
 end
 
-function closestPipe() --
+function closestPipe()
     while true do
        local smallestDistance = nil;
        local nearestPlanet = nil;
@@ -297,9 +297,9 @@ function closestPipe() --
        nearestPipeDistance = nil
        nearestAliothPipeDistance= nil
        for obj in pairs(_stellarObjects) do
-          i = i + 1
           if (_stellarObjects[obj].type[1] == 'Planet' or _stellarObjects[obj].isSanctuary == true) then
              for obj2 in pairs(_stellarObjects) do
+                i = i + 1
                 if (obj2 > obj and (_stellarObjects[obj2].type[1] == 'Planet' or _stellarObjects[obj2].isSanctuary == true)) then
                    pipeDistance = calcDistanceStellar(_stellarObjects[obj], _stellarObjects[obj2], shipPos)
                    if nearestPipeDistance == nil or pipeDistance < nearestPipeDistance then
@@ -313,12 +313,12 @@ function closestPipe() --
                       sortestAliothPipeKey2Id = obj2;
                    end
                 end
+                if i > 30 then
+                  i = 0
+                  coroutine.yield()
+               end
              end
           end
-       end
-       if i > 30 then
-          i = 0
-          coroutine.yield()
        end
     end
  end
