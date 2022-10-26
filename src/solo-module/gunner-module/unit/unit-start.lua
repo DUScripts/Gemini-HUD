@@ -414,9 +414,6 @@ end
 
 radar.setSortMethod(1) --set default radar range mode for constructIds list main function
 
-transponder.deactivate() --transponder server bug fix
-transponder.activate()
-
 mWeapons = mWeapons:new(system, weapon, GHUD_Weapons_Panels) --weapon widgets
 mRadar = mRadar:new(system, radar, whitelist) --radar widget
 

@@ -144,6 +144,13 @@ function checkSvgStress()
  end
 end
 
+function setTag(tag)
+   local tag = tag:sub(5)
+   system.print('Activated new transponder tag "'..tag..'"')
+   tag = {tag}
+   transponder.setTags(tag)
+end
+
 function zeroConvertToWorldCoordinates(pos,system)
    local num  = ' *([+-]?%d+%.?%d*e?[+-]?%d*)'
    local posPattern = '::pos{' .. num .. ',' .. num .. ',' ..  num .. ',' .. num ..  ',' .. num .. '}'
@@ -325,6 +332,10 @@ function closestPipe()
  end
 
  main1 = coroutine.create(closestPipe)
+
+ transponder.deactivate() --transponder server bug fix
+ unit.setTimer('tr',2)
+
  unit.setTimer("hud",0.02)
 
 
