@@ -21,6 +21,7 @@ HUD_version = '1.0.0'
 
 --vars
 atlas = require("atlas")
+_stellarObjects = atlas[0]
 shipPos = vec3(construct.getWorldPosition())
 safeWorldPos = vec3({13771471,7435803,-128971})
 
