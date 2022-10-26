@@ -3,7 +3,7 @@ if coroutine.status(main1) ~= "dead" and coroutine.status(main1) == "suspended" 
    --coroutine.xpcall(main1) -- resume debug coroutine
 end
 
-damage_ccs_SVG()
+damage_SVG()
 
 local stress = shield.getStressRatioRaw()
 AM_stress = stress[1]
@@ -11,7 +11,8 @@ EM_stress = stress[2]
 KI_stress = stress[3]
 TH_stress = stress[4]
 
-checkSvgStress()
+ccs_SVG()
+
 local HP = shield.getShieldHitpoints()/shieldMaxHP * 100
 local HPS = math.floor(HP)
 local formatted_hp = string.format('%0.0f',math.ceil(HP))
