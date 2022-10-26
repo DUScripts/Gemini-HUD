@@ -72,7 +72,7 @@ EM_stress = stress[2]
 KI_stress = stress[3]
 TH_stress = stress[4]
 
-function damage_ccs_SVG()
+function damage_SVG()
    if damage > 0 then
       damage = damage - 0.1
       damageLine = [[<rect x="]].. svghp + 145 ..[[" y="225" width="]]..damage..[[" height="50" style="fill: #de1656; stroke: #de1656;" bx:origin="0.5 0.5"/>]]
@@ -92,7 +92,7 @@ function damage_ccs_SVG()
    end
 end
 
-function checkSvgStress()
+function ccs_SVG()
    --AM
    if AM_stress ~= AM_last_stress then
       AM_last_stress = AM_stress
@@ -418,7 +418,7 @@ end
 lalt=false
 buttonC=false
 buttonSpace=false
-stress = {0,0,0,0}
+--stress = {0,0,0,0}
 resMAX = shield.getResistancesPool()
 function getRes(stress, resMAX)
 local res = {0.15,0.15,0.15,0.15}
@@ -447,17 +447,17 @@ elseif stress[2] >= stress[1] and
       lastShotTime = system.getTime()
       Shield_Auto_Calibration = true --export: (AUTO/MANUAL) shield mode
       Shield_Calibration_Max = true --export: (MAX/50) calibration of the entire shield power by the largest resist based on DPS
-      Departure_export = 2 --export: Departure ID planet
-      Destination_export = 9 --export: Destination ID planet
+      Departure__Planet = 'Alioth' --export: Departure ID planet
+      Destination_Planet = 'Jago' --export: Destination ID planet
       collectgarbages = true --export:
-      local CFCS_Background_Color = "#142027" --export: Backgroung color CFCS system
-      local CFCS_PipeText_Color = "#FFFFFF" --export: Pipe text color
-      local CFCS_PipeY = -0.1 --export:
-      local CFCS_PipeX = 15.5 --export:
-      local CFCS_Y = 50 --export:
-      local CFCS_TextY = 12 --export:
-      local CFCS_RightBlock_X = 30 --export:
-      local CFCS_LeftBlock_X = 12 --export:
+      local GHUD_Background_Color = "#142027" --export: Backgroung color CFCS system
+      local GHUD_PipeText_Color = "#FFFFFF" --export: Pipe text color
+      local GHUD_PipeY = -0.1 --export:
+      local GHUD_PipeX = 15.5 --export:
+      local GHUD_Y = 50 --export:
+      local GHUD_TextY = 12 --export:
+      local GHUD_RightBlock_X = 30 --export:
+      local GHUD_LeftBlock_X = 12 --export:
       resCLWN = ""
       ventCLWN = ""
       if Shield_Auto_Calibration
@@ -495,14 +495,13 @@ elseif stress[2] >= stress[1] and
       EMres = math.floor(data2[2]/resMAX*100)
       KIres = math.floor(data2[3]/resMAX*100)
       THres = math.floor(data2[4]/resMAX*100)
-
+--needs nil check (planet)
       DepartureCenter = vec3(stellarObjects[Departure_export].center)
       DestinationCenter = vec3(stellarObjects[Destination_export].center)
       DepartureCenterName = stellarObjects[Departure_export].name[1]
       DestinationCenterName = stellarObjects[Destination_export].name[1]
-      unit.widgetHide()
       mybr=false
-
+--needs redesign
       html1 = [[
       <style>
       .main1 {
