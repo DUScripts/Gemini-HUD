@@ -173,7 +173,7 @@ function mRadar:updateStep()
       local selectedTarget = radar.getTargetId(ID)
       if locked == 1 or alive == 0 or selectedTarget == ID then --show only locked or alive or selected targets
          if defaultSize == 'ALL' then --default mode
-            if (self.friendList[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode then
+            if (self.friendList[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode and self.radar.getThreatRateFrom(ID) ~= 5 then  --show attacking traitor on widget
                goto continue1
             end
             if isIDFiltered and self.idFilter[ID%1000] ~= true then
@@ -494,7 +494,7 @@ local function main()
          end
          --radarlist
          if GHUD_ShowAllies == true and size ~= "" then
-            if radar.hasMatchingTransponder(v) == 1 or whitelist[v] then --whitelist and transponder support
+            if radar.hasMatchingTransponder(v) == 1 or whitelist[v] and radar.getThreatRateFrom(v) ~= 5 then  --remove attacking traitor from the allies HUD
                local name = radar.getConstructName(v)
                local dist = math.floor(radar.getConstructDistance(v))
                if dist >= 1000 then
