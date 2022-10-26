@@ -421,7 +421,7 @@ mWeapons = mWeapons:new(system, weapon, GHUD_Weapons_Panels) --weapon widgets
 mRadar = mRadar:new(system, radar, whitelist) --radar widget
 
 system.showScreen(1)
-unit.setTimer("radar",0.1)
+unit.setTimer("radar",0.05)
 
 --main gunner function
 local function main()
