@@ -183,7 +183,7 @@ function mRadar:updateStep()
             ::continue1::
          end
          if defaultSize ~= 'ALL' and size == defaultSize then --sorted
-            if (self.friendList[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode then
+            if (self.friendList[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode and self.radar.getThreatRateFrom(ID) ~= 5 then
                goto continue2
             end
             if isIDFiltered and self.idFilter[ID%1000] ~= true then
