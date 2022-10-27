@@ -649,9 +649,9 @@ elseif stress[2] >= stress[1] and
             <div class="map-center" style="transform: translate(-50%, -50%) rotateX(]]..yDelta..[[deg) rotateY(0deg) rotateZ(]]..xDelta..[[deg);"></div>
             ]]
 
-            for BodyId in pairs(atlas[0]) do
+            for BodyId in pairs(stellarObjects) do
                --local planetBody = helios[v.bodyId]
-               local v = atlas[0][BodyId]
+               local v = stellarObjects[BodyId]
                local planetName = v.name[1]
                local typeplanet = v.type[1]
                local center = vec3(v.center)
