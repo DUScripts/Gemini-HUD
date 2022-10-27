@@ -275,6 +275,9 @@ function mWeapons:onUpdate()
       local fireReady = weaponData:match('"fireReady":(.-),')
       local outOfZone = weaponData:match('"outOfZone":(.-),')
       local targetConstructID = weaponData:match('"constructId":"(.-)"')
+      local hitProbability = tonumber(weaponData:match('"hitProbability":(.-),'))
+      local hitP = math.ceil(hitProbability * 100)
+      local twoAmmo = false
       local animationChanged = animationTime > oldAnimationTime[weaponDataID]
       oldAnimationTime[weaponDataID] = animationTime
 
@@ -297,28 +300,33 @@ function mWeapons:onUpdate()
          ammoType1 = "KI"
       elseif ammoName:match("Thermic") then
          ammoType1 = "TH"
-         --elseif ammoName:match("stasis string ammo name") then
-         --ammoType1 = "Stasis"
+      elseif ammoName:match("Stasis") then
+         ammoType1 = "Stasis"
       end
 
       local ammoType2 = ""
       if ammoName:match("Precision") then
          ammoType2 = "Prec"
+         twoAmmo = true
       elseif ammoName:match("Heavy") then
          ammoType2 = "Heavy"
+         twoAmmo = true
       elseif ammoName:match("Agile") then
          ammoType2 = "Agile"
+         twoAmmo = true
       elseif ammoName:match("Defense") then
          ammoType2 = "Def"
+         twoAmmo = true
       end
 
-      --if ammoType1 == "Statis" then
-      --weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. ammoType1 .. '"')
-      --else
-      --weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. ammoType2 .. ' ' .. ammoType1 .. '"')
-      --end
-      weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. ammoType2 .. ' ' .. ammoType1 .. '"')
+      if twoAmmo == true then
+      weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. hitP .. ' ' .. ammoType2 .. ' ' .. ammoType1 .. '"')
+      else
+      weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. hitP .. ' ' .. ammoType1 .. '"')
+      end
+
       weaponData = weaponData:gsub('"constructId":"(%d+(%d%d%d))","name":"(.?.?.?.?).-"', '"constructId":"%1","name":"%2 - %3"')
+
       if self.system.updateData(weaponDataID, weaponData) ~= 1 then
          self.system.print('update error')
       end
