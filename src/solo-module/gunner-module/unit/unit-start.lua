@@ -277,7 +277,6 @@ function mWeapons:onUpdate()
       local targetConstructID = weaponData:match('"constructId":"(.-)"')
       local hitProbability = tonumber(weaponData:match('"hitProbability":(.-),'))
       local hitP = math.ceil(hitProbability * 100)
-      local twoAmmo = false
       local animationChanged = animationTime > oldAnimationTime[weaponDataID]
       oldAnimationTime[weaponDataID] = animationTime
 
@@ -307,24 +306,15 @@ function mWeapons:onUpdate()
       local ammoType2 = ""
       if ammoName:match("Precision") then
          ammoType2 = "Prec"
-         twoAmmo = true
       elseif ammoName:match("Heavy") then
          ammoType2 = "Heavy"
-         twoAmmo = true
       elseif ammoName:match("Agile") then
          ammoType2 = "Agile"
-         twoAmmo = true
       elseif ammoName:match("Defense") then
          ammoType2 = "Def"
-         twoAmmo = true
       end
 
-      if twoAmmo == true then
-      weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. hitP .. ' ' .. ammoType2 .. ' ' .. ammoType1 .. '"')
-      else
-      weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. hitP .. ' ' .. ammoType1 .. '"')
-      end
-
+      weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. hitP .. '% ' .. ammoType1 .. ' ' .. ammoType2 .. '"')
       weaponData = weaponData:gsub('"constructId":"(%d+(%d%d%d))","name":"(.?.?.?.?).-"', '"constructId":"%1","name":"%2 - %3"')
 
       if self.system.updateData(weaponDataID, weaponData) ~= 1 then
