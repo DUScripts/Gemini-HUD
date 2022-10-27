@@ -350,6 +350,10 @@ while true do
                   sortestAliothPipeKey2Id = obj2;
                end
             end
+            closestPipeData.value = stellarObjects[sortestPipeKeyId].name[1] .. " - " .. stellarObjects[sortestPipeKey2Id].name[1]
+            --closestPipeDistData.value = string.format("%03.2f", nearestPipeDistance / 200000.0)
+            --closestAliothPipeData.value = stellarObjects[sortestAliothPipeKeyId].name[1] .. " - " .. stellarObjects[sortestAliothPipeKey2Id].name[1]
+            --closestAliothPipeDistData.value = string.format("%03.2f", nearestAliothPipeDistance / 200000.0)
             if i > 30 then
                i = 0
                coroutine.yield()
