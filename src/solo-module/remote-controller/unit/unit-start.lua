@@ -51,7 +51,8 @@ ccshp = ccshp1
 
 --FUEL
 maxFUEL = maxCCS
-FUEL_svg = maxFUEL * (Fuel_lvl * 0.01)
+fuel_lvl = json.decode(spacefueltank_1.getWidgetData()).percentage
+FUEL_svg = maxFUEL * (fuel_lvl * 0.01)
 
 AM_last_stress = 0
 EM_last_stress = 0
@@ -66,11 +67,41 @@ EM_stroke_color = 'rgb(66, 167, 245)'
 TH_stroke_color = 'rgb(66, 167, 245)'
 KI_stroke_color = 'rgb(66, 167, 245)'
 
-local stress = shield.getStressRatioRaw()
-AM_stress = stress[1]
-EM_stress = stress[2]
-KI_stress = stress[3]
-TH_stress = stress[4]
+function resistance_SVG()
+   local data2=shield.getResistances()
+   local AMres = math.floor(data2[1]/resMAX*100)
+   local EMres = math.floor(data2[2]/resMAX*100)
+   local KIres = math.floor(data2[3]/resMAX*100)
+   local THres = math.floor(data2[4]/resMAX*100)
+   if AMres > 0 then
+      AM_stroke_color = '#FFB12C'
+      AMstrokeWidth = 2
+   else
+      AM_stroke_color = 'rgb(66, 167, 245)'
+      AMstrokeWidth = 1
+   end
+   if EMres > 0 then
+      EM_stroke_color = '#FFB12C'
+      EMstrokeWidth = 2
+   else
+      EM_stroke_color = 'rgb(66, 167, 245)'
+      EMstrokeWidth = 1
+   end
+   if THres > 0 then
+      TH_stroke_color = '#FFB12C'
+      THstrokeWidth = 2
+   else
+      TH_stroke_color = 'rgb(66, 167, 245)'
+      THstrokeWidth = 1
+   end
+   if KIres > 0 then
+      KI_stroke_color = '#FFB12C'
+      KIstrokeWidth = 2
+   else
+      KI_stroke_color = 'rgb(66, 167, 245)'
+      KIstrokeWidth = 1
+   end
+end
 
 function damage_SVG()
    if damage > 0 then
@@ -143,6 +174,14 @@ if KI_svg > KI_last_stress then
    if KI_svg <= KI_stress then KI_svg = KI_stress end
 end
 end
+
+local stress = shield.getStressRatioRaw()
+AM_stress = stress[1]
+EM_stress = stress[2]
+KI_stress = stress[3]
+TH_stress = stress[4]
+
+ccs_SVG()
 
 function setTag(tag)
 local tag = tag:sub(5)
@@ -418,7 +457,6 @@ end
 lalt=false
 buttonC=false
 buttonSpace=false
---stress = {0,0,0,0}
 resMAX = shield.getResistancesPool()
 function getRes(stress, resMAX)
 local res = {0.15,0.15,0.15,0.15}
@@ -479,7 +517,7 @@ elseif stress[2] >= stress[1] and
       end
 
       brakeText = ""
-      if shield.getState() == 0 then
+      if shield.isActive() == 0 then
          shieldColor = "#fc033d"
       else
          shieldColor = "#2ebac9"
@@ -490,18 +528,13 @@ elseif stress[2] >= stress[1] and
       venttimemax = shield.getVentingMaxCooldown()
       resisttimemax = shield.getResistancesMaxCooldown()
 
-      local data2=shield.getResistances()
-      AMres = math.floor(data2[1]/resMAX*100)
-      EMres = math.floor(data2[2]/resMAX*100)
-      KIres = math.floor(data2[3]/resMAX*100)
-      THres = math.floor(data2[4]/resMAX*100)
---needs nil check (planet)
+      --needs nil check (planet)
       DepartureCenter = vec3(stellarObjects[Departure_export].center)
       DestinationCenter = vec3(stellarObjects[Destination_export].center)
       DepartureCenterName = stellarObjects[Departure_export].name[1]
       DestinationCenterName = stellarObjects[Destination_export].name[1]
       mybr=false
---needs redesign
+      --needs redesign
       html1 = [[
       <style>
       .main1 {
@@ -531,6 +564,161 @@ elseif stress[2] >= stress[1] and
          shieldAlarm = false
          alarmTimer = false
          t2=nil
+
+         function BodyParameters:getDistance(worldCoordinates)
+            return (vec3(worldCoordinates) - self.center):len()
+         end
+
+         function customDistance(distance)
+            local distanceS=''
+            if distance < 1000 then
+               distanceS = ''..string.format('%0.0f', distance)..' m'
+            elseif distance < 100000 then
+               distanceS = ''..string.format('%0.1f', distance/1000)..' km'
+            else
+               distanceS = ''..string.format('%0.2f', distance/200000)..' su'
+            end
+            return distanceS
+         end
+
+         local function signedAngleBetween(vec1, vec2, planeNormal)
+            local normVec1 = vec1:normalize()
+            local normVec2 = vec2:normalize()
+            local cosAngle = normVec1:dot(normVec2)
+            cosAngle = utils.clamp(cosAngle, -1, 1)
+            local angle = math.acos(cosAngle)
+            local crossProduct = vec1:cross(vec2)
+            if crossProduct:dot(planeNormal) < 0 then
+                return -angle - math.pi
+            else
+                return angle + math.pi
+            end
+        end
+        local function directionToBearing (direction, worldVertical)
+            local north = vec3(0, 0, 1)
+            local northOnGround = north:project_on_plane(worldVertical)
+            local directionOnGround = direction:project_on_plane(worldVertical)
+            return signedAngleBetween(northOnGround, directionOnGround, worldVertical)
+        end
+        function rotateX3D(point, theta)
+            theta = theta * math.pi / 180
+            local sinTheta = math.sin(theta);
+            local cosTheta = math.cos(theta);
+            local y = point.y * cosTheta - point.z * sinTheta
+            local z = point.z * cosTheta + point.y * sinTheta
+            point.y = y
+            point.z = z
+            return point
+        end
+        function rotateY3D(point, theta)
+            theta = theta * math.pi / 180
+            local sinTheta = math.sin(theta);
+            local cosTheta = math.cos(theta);
+            local x = point.x * cosTheta - point.y * sinTheta
+            local y = point.y * cosTheta + point.x * sinTheta
+            point.x = x
+            point.y = y
+            return point
+        end
+        function rotateZ3D(point, theta)
+            theta = theta * math.pi / 180
+            local sinTheta = math.sin(theta);
+            local cosTheta = math.cos(theta);
+            local x = point.x * cosTheta + point.z * sinTheta
+            local z = point.z * cosTheta - point.x * sinTheta
+            point.x = x
+            point.y = y
+            return point
+        end
+
+         --3D galaxy map
+         function drawMap()
+            local asteroid=""
+            local planet=""
+            local asterunits=""
+            local asternumbers=""
+            local html5 = ''
+
+            html5 = [[
+            <div class="system-map">
+            <div class="map-actual" style="transform: perspective(1920px) translateZ(-250px);">
+            <div class="map-center" style="transform: translate(-50%, -50%) rotateX(]]..yDelta..[[deg) rotateY(0deg) rotateZ(]]..xDelta..[[deg);"></div>
+            ]]
+
+            for BodyId in pairs(atlas[0]) do
+               --local planetBody = helios[v.bodyId]
+               local v = atlas[0][BodyId]
+               local planetName = v.name[1]
+               local typeplanet = v.type[1]
+               local center = vec3(v.center)
+               local distance = customDistance(vec3(shipPos - vec3(v.center)):len())
+
+               local coords = {x=center.x + (-center.x * mapScale), y=center.y + (-center.y * mapScale), z=center.z + (-center.z * mapScale)}
+               rotateY3D(coords, xDelta)
+               rotateX3D(coords, yDelta)
+               local mainPlanet = true;
+               local size = planetScale
+
+               if vec3(shipPos - vec3(v.center)):len() > 12000000 then
+                  size = planetScale
+               else
+                  size = aliothsize
+               end
+               local display = "block"
+               if string.find(typeplanet, 'MOON') ~= nil then
+                  size = moonScale
+                  display = "none"
+               end
+
+               local planet = [[
+               <div class="map-pin" style="display: ]]..display..[[; transform: translate(-50%, -50%) translateX(]]..coords.x..[[px) translateY(]]..coords.y..[[px) translateZ(]]..coords.z..[[px);">
+               <div class="pin-data" style="display: ]]..display..[[;">
+               <div class="name">]]..planetName..[[</div>
+               <div class="units">]]..distance..[[</div>
+               </div>
+               <div class="planet" style="width: ]]..(v.radius/size)..[[px; height: ]]..(v.radius/size)..[[px;"></div>
+               </div>
+               ]]
+
+               html5 = html5 .. planet
+            end
+
+            local shipPosition = construct.getWorldPosition()
+            local shipCoords = {x=shipPosition[1] + (-shipPosition[1] * mapScale), y=shipPosition[2] + (-shipPosition[2] * mapScale), z=shipPosition[3] + (-shipPosition[3] * mapScale)}
+            rotateY3D(shipCoords, xDelta)
+            rotateX3D(shipCoords, yDelta)
+
+            local playerPosition = [[
+            <div class="map-pin player" style="transform: translate(-50%, -50%) translateX(]]..shipCoords.x..[[px) translateY(]]..shipCoords.y..[[px) translateZ(]]..shipCoords.z..[[px);">
+            <div class="pin-data">
+            <div class="name"></div>
+            </div>
+            ]]..icons.player()..[[
+            </div>
+            ]]
+            html5 = html5.. playerPosition
+
+            if asteroidPOS ~= "" then
+               local shipPosition = asteroidcoord
+               local distance = customDistance(vec3(shipPosition - shipPos):len())
+               local asteroidC = {x=shipPosition.x + (-shipPosition.x * mapScale), y=shipPosition.y + (-shipPosition.y * mapScale), z=shipPosition.z + (-shipPosition.z * mapScale)}
+               rotateY3D(asteroidC, xDelta)
+               rotateX3D(asteroidC, yDelta)
+               local shipPosition = [[
+               <div class="map-pin" style="transform: translate(-50%, -50%) translateX(]]..asteroidC.x..[[px) translateY(]]..asteroidC.y..[[px) translateZ(]]..asteroidC.z..[[px);">
+               <div class="pin-data">
+               <div class="name">]]..markerName..[[</div>
+               <div class="units">]]..distance..[[</div>
+               </div>
+               <div class="warp-scan"></div>
+               </div>
+               ]]
+               html5 = html5..shipPosition..'</div></div>'
+            end
+            html5 = html5 .. '</div></div>'
+
+            return html5
+         end
 
          main1 = coroutine.create(closestPipe)
 
