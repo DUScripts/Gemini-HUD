@@ -637,9 +637,9 @@ elseif stress[2] >= stress[1] and
             local planet=""
             local asterunits=""
             local asternumbers=""
-            local html5 = ''
+            local galaxyMap = ''
 
-            html5 = [[
+            galaxyMap = [[
             <div class="system-map">
             <div class="map-actual" style="transform: perspective(1920px) translateZ(-250px);">
             <div class="map-center" style="transform: translate(-50%, -50%) rotateX(]]..yDelta..[[deg) rotateY(0deg) rotateZ(]]..xDelta..[[deg);"></div>
@@ -665,7 +665,7 @@ elseif stress[2] >= stress[1] and
                   size = aliothsize
                end
                local display = "block"
-               if string.find(typeplanet, 'MOON') ~= nil then
+               if typeplanet ~= 'Planet' then
                   size = moonScale
                   display = "none"
                end
@@ -680,7 +680,7 @@ elseif stress[2] >= stress[1] and
                </div>
                ]]
 
-               html5 = html5 .. planet
+               galaxyMap = galaxyMap .. planet
             end
 
             local shipPosition = construct.getWorldPosition()
@@ -696,15 +696,15 @@ elseif stress[2] >= stress[1] and
             ]]..icons.player()..[[
             </div>
             ]]
-            html5 = html5.. playerPosition
+            galaxyMap = galaxyMap.. playerPosition
 
             if asteroidPOS ~= "" then
-               local shipPosition = asteroidcoord
-               local distance = customDistance(vec3(shipPosition - shipPos):len())
-               local asteroidC = {x=shipPosition.x + (-shipPosition.x * mapScale), y=shipPosition.y + (-shipPosition.y * mapScale), z=shipPosition.z + (-shipPosition.z * mapScale)}
+               local aPosition = asteroidcoord
+               local distance = customDistance(vec3(aPosition - shipPos):len())
+               local asteroidC = {x=aPosition.x + (-aPosition.x * mapScale), y=aPosition.y + (-aPosition.y * mapScale), z=aPosition.z + (-aPosition.z * mapScale)}
                rotateY3D(asteroidC, xDelta)
                rotateX3D(asteroidC, yDelta)
-               local shipPosition = [[
+               local asteroid = [[
                <div class="map-pin" style="transform: translate(-50%, -50%) translateX(]]..asteroidC.x..[[px) translateY(]]..asteroidC.y..[[px) translateZ(]]..asteroidC.z..[[px);">
                <div class="pin-data">
                <div class="name">]]..markerName..[[</div>
@@ -713,12 +713,102 @@ elseif stress[2] >= stress[1] and
                <div class="warp-scan"></div>
                </div>
                ]]
-               html5 = html5..shipPosition..'</div></div>'
+               galaxyMap = galaxyMap..asteroid..'</div></div>'
             end
-            html5 = html5 .. '</div></div>'
+            galaxyMap = galaxyMap .. '</div></div>'
 
-            return html5
+            return galaxyMap
          end
+
+         mapGalaxy = [[
+                    <style>
+                    .system-map {
+                        position: absolute;
+                        top: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgba(7, 44, 82, .81);
+                        left: 0;
+                    }
+                    .planet {
+                        width: 20px;
+                        height: 20px;
+                        border-radius: 50%;
+                        border: 2px solid;
+                        box-sizing: border-box;
+                        background: rgba(148, 206, 255, .29);
+                    }
+                    .map-actual {
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        top: 0;
+                        left: 0;
+                        transform-style: preserve-3d;
+                    }
+                    .map-center {
+                        position: absolute;
+                        content: '';
+                        width: 2000px;
+                        height: 2000px;
+                        top: 50%;
+                        left: 50%;
+                        background: repeating-radial-gradient(rgba(0, 17, 35, .23), transparent 112px), repeating-radial-gradient(rgba(148, 206, 255, .34), transparent 75%);
+                        border-radius: 50%;
+                    }
+                    .map-pin {
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                    }
+                    .map-pin .icon,
+                    .map-pin .planet {
+                        height: 30px;
+                        width: 30px;
+                    }
+                    .pin-data {
+                        position: absolute;
+                        bottom: 100%;
+                        margin-bottom: 10px;
+                        white-space: nowrap;
+                        text-align: center;
+                        width: 200px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                    }
+                    .pin-data .name {
+                        font-size: 16px;
+                        color: white;
+                        line-height: 16px;
+                    }
+                    .pin-data .units {
+                        font-family: monospace;
+                        font-size: 14px;
+                        font-weight: bold;
+                        line-height: 14px;
+                    }
+                    .map-pin.player {
+                        filter: drop-shadow(0px 0px 20px #edf7ff);
+                    }
+                    .map-pin.player .icon {
+                        fill: #ffde56;
+                    }
+                    .con-size {
+                        width: 20px;
+                        text-align: center;
+                        background: #235f92;
+                        margin-right: 4px;
+                        color: white;
+                        height: 18px;
+                    }
+                    .warp-scan {
+                        width: 15px;
+                        height: 15px;
+                        border-radius: 50%;
+                        box-sizing: border-box;
+                        background: #ff3a56;
+                    }
+                    </style>]]
 
          main1 = coroutine.create(closestPipe)
 
