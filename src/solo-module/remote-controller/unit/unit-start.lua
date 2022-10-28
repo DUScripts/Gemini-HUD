@@ -222,8 +222,21 @@ asteroidPOS = db.getStringValue(15)
 else
 asteroidPOS = ''
 end
-markerName = "Asteroid" --export:
-if markerName == "" then markerName = "Asteroid" end
+GHUD_marker_name = "Asteroid" --export:
+GHUD_shield_auto_calibration = true --export: (AUTO/MANUAL) shield mode
+GHUD_shield_calibration_max = true --export: (MAX/50) calibration of the entire shield power by the largest resist based on DPS
+GHUD_departure_planet = 'Alioth' --export: Departure ID planet
+GHUD_destination_planet = 'Jago' --export: Destination ID planet
+GHUD_background_color = "#142027" --export: Backgroung color CFCS system
+GHUD_pipe_text_color = "#FFFFFF" --export: Pipe text color
+GHUD_pipe_Y = -0.1 --export:
+GHUD_pipe_X = 15.5 --export:
+GHUD_Y = 50 --export:
+GHUD_right_block_X = 30 --export:
+GHUD_left_block_X = 12 --export:
+collectgarbages = true --export:
+
+if GHUD_marker_name == "" then GHUD_marker_name = "Asteroid" end
 asteroidcoord = {}
 if asteroidPOS ~= "" then
 asteroidcoord = zeroConvertToWorldCoordinates(asteroidPOS)
@@ -487,35 +500,22 @@ elseif stress[2] >= stress[1] and
       end
       shoteCount = 0
       lastShotTime = system.getTime()
-      Shield_Auto_Calibration = true --export: (AUTO/MANUAL) shield mode
-      Shield_Calibration_Max = true --export: (MAX/50) calibration of the entire shield power by the largest resist based on DPS
-      Departure__Planet = 'Alioth' --export: Departure ID planet
-      Destination_Planet = 'Jago' --export: Destination ID planet
-      collectgarbages = true --export:
-      local GHUD_Background_Color = "#142027" --export: Backgroung color CFCS system
-      local GHUD_PipeText_Color = "#FFFFFF" --export: Pipe text color
-      local GHUD_PipeY = -0.1 --export:
-      local GHUD_PipeX = 15.5 --export:
-      local GHUD_Y = 50 --export:
-      local GHUD_TextY = 12 --export:
-      local GHUD_RightBlock_X = 30 --export:
-      local GHUD_LeftBlock_X = 12 --export:
       resCLWN = ""
       ventCLWN = ""
-      if Shield_Auto_Calibration
+      if GHUD_shield_auto_calibration
       then
-         if Shield_Calibration_Max then
+         if GHUD_shield_calibration_max then
             shieldText = "SHIELD (AUTO,MAX)"
          end
-         if not Shield_Calibration_Max then
+         if not GHUD_shield_calibration_max then
             shieldText = "SHIELD (AUTO,50)"
          end
       else
-         if Shield_Calibration_Max then
+         if GHUD_shield_calibration_max then
             shieldText = "SHIELD (MANUAL,MAX)"
          end
 
-         if not Shield_Calibration_Max then
+         if not GHUD_shield_calibration_max then
             shieldText = "SHIELD (MANUAL,50)"
          end
       end
@@ -711,7 +711,7 @@ elseif stress[2] >= stress[1] and
                local asteroid = [[
                <div class="map-pin" style="transform: translate(-50%, -50%) translateX(]]..asteroidC.x..[[px) translateY(]]..asteroidC.y..[[px) translateZ(]]..asteroidC.z..[[px);">
                <div class="pin-data">
-               <div class="name">]]..markerName..[[</div>
+               <div class="name">]]..GHUD_marker_name..[[</div>
                <div class="units">]]..distance..[[</div>
                </div>
                <div class="warp-scan"></div>

@@ -18,47 +18,39 @@
 HUD_version = '1.0.0'
 
 --LUA parameters
-friendly_IDs = {} -- put IDs here 34141,231231,31231 etc
-exportMode = true --export: Coordinate export mode
+GHUD_friendly_IDs = {} -- put IDs here 34141,231231,31231 etc
+GHUD_export_mode = true --export: Coordinate export mode
 targetSpeed = 29999 --export: Target speed
 GHUD_AR_sight_color = "rgb(0, 191, 255)" --export:
-GHUD_Weapons_Panels = 3 --export:
+GHUD_weapon_panels = 3 --export:
 GHUD_log_stats = true --export: Send target statistics to LUA channel
-GHUD_ShowAllies = true --export: Show allies
-GHUD_ShowEcho = true --export: Show targets echo
-GHUD_Notifications = true --export: LUA radar notifications
-GHUD_SafeNotifications = false --export: Show notifications in the safe zone
-GHUD_SelectBorder_Color = "#00b9c9" --export:
-GHUD_Allies_Count = 5 --export: Count of displayed allies. Selected ally will always be displayed
-GHUD_Allies_Color = "#0cf27b" --export:
-GHUD_Allied_Names_Color = "#0cf27b" --export:
+GHUD_show_allies = true --export: Show allies
+GHUD_allies_count = 5 --export: Count of displayed allies. Selected ally will always be displayed
+GHUD_allies_color = "#0cf27b" --export:
+GHUD_allied_names_color = "#0cf27b" --export:
 GHUD_AR_allies_border_size = 400 --export:
 GHUD_AR_allies_border_color = "#0cf27b" --export:
 GHUD_AR_allies_font_color = "#0cf27b" --export:
-GHUD_AR_allies_hold_only = false --export:
-GHUD_Targets_Color = "#fc033d" --export:
-GHUD_Locked_Opacity = 1 --export: 0-1
-GHUD_Target_Names_Color = "#fc033d" --export: Color for target names
-GHUD_Chance_Color = "#0cf27b"
-GHUD_Allies_Distance_Color = "#00b9c9" --export:
-GHUD_Distance_Color = "#00b9c9" --export:
-GHUD_Speed_Color = "#00b9c9" --export:
-GHUD_Angular_Color = "#bccc06"
-GHUD_Radial_Color = "#bccc06"
-GHUD_Count_Color = "#00b9c9" --export:
-GHUD_Yourship_ID_Color = "#fca503" --export:
-GHUD_Border_Color = "black" --export:
-GHUD_AlliesY = 0 --export: set to 0 if playing in fullscreen mode
-GHUD_SelectedY = 50 --export:
-GHUD_SelectedX = 37.4 --export:
-GHUD_SelectedTextY = 12 --export:
-GHUD_Windowed_Mode = false --export: adds 2 to the height GHUD_AlliesY
+GHUD_targets_color = "#fc033d" --export:
+GHUD_show_echoes = true --export: Show targets echo
+GHUD_notifications = true --export: LUA radar notifications
+GHUD_selected_border_color = "#00b9c9" --export:
+GHUD_locked_opacity = 1 --export: 0-1
+GHUD_target_names_color = "#fc033d" --export: Color for target names
+GHUD_allies_distance_color = "#00b9c9" --export:
+GHUD_distance_color = "#00b9c9" --export:
+GHUD_speed_color = "#00b9c9" --export:
+GHUD_count_color = "#00b9c9" --export:
+GHUD_your_ship_ID_color = "#fca503" --export:
+GHUD_border_color = "black" --export:
+GHUD_allies_Y = 0 --export: set to 0 if playing in fullscreen mode
+GHUD_windowed_mode = false --export: adds 2 to the height GHUD_allies_Y
 collectgarbages = true --export:
 
-GHUD_Allies_Count1 = GHUD_Allies_Count + 1
+GHUD_allies_count1 = GHUD_allies_count + 1
 
-if GHUD_Windowed_Mode then
-   GHUD_AlliesY = 2
+if GHUD_windowed_mode then
+   GHUD_allies_Y = 2
 end
 
 --vars
@@ -75,7 +67,6 @@ misses = {}
 hitAnimations = 0
 missAnimations = 0
 totalDamage = {}
-dHint = ''
 mRadar = {}
 mWeapons = {}
 size = {'XL','L','M','S','XS'}
@@ -114,7 +105,7 @@ system.print(''..shipName..': '..conID..'')
 conID = (""..conID..""):sub(-3)
 
 function checkWhitelist()
-   local whitelist = friendly_IDs
+   local whitelist = GHUD_friendly_IDs
    local set = {}
    for _, l in ipairs(whitelist) do set[l] = true end
    return set
@@ -336,19 +327,6 @@ function mWeapons:new(sys, weapons, weaponsPerPanel)
    return self
 end
 
---local time
-function seconds_to_clock(time_amount)
-   local start_seconds = time_amount
-   local start_minutes = math.modf(start_seconds/60)
-   local seconds = start_seconds - start_minutes*60
-   local start_hours = math.modf(start_minutes/60)
-   local minutes = start_minutes - start_hours*60
-   local start_days = math.modf(start_hours/24)
-   local hours = start_hours - start_days*24
-   local wrapped_time = {h=hours, m=minutes, s=seconds}
-   return string.format('%02.f:%02.f:%02.f', wrapped_time.h, wrapped_time.m, wrapped_time.s)
-end
-
 --weapon widget
 local oldAnimationTime = {}
 local oldWeaponStatus = {}
@@ -412,7 +390,7 @@ end
 
 radar.setSortMethod(1) --set default radar range mode for constructIds list main function
 
-mWeapons = mWeapons:new(system, weapon, GHUD_Weapons_Panels) --weapon widgets
+mWeapons = mWeapons:new(system, weapon, GHUD_weapon_panels) --weapon widgets
 mRadar = mRadar:new(system, radar, whitelist) --radar widget
 
 system.showScreen(1)
@@ -476,21 +454,23 @@ local function main()
                if radar.hasMatchingTransponder(v) == 0 and not whitelist[v] and size ~= "" and radar.getConstructDistance(v) < 600000 then --do not show far targets during warp and server lag
                   local name = radar.getConstructName(v)
                   if radar.isConstructAbandoned(v) == 0 then
-                     local msg = 'NEW TARGET: '..name..' - '..v..' - Size: '..size..' - Time: '..t_radarEnter[v].time1..'\n'..t_radarEnter[v].pos1..''
+                     local msg = 'NEW TARGET: '..name..' - '..v..' - Size: '..size..'\nYour pos: '..t_radarEnter[v].pos..''
                      table.insert(loglist, msg)
                   else
-                     local msg = 'NEW TARGET (abandoned): '..name..' - '..v..' - Size: '..size..' - Time: '..t_radarEnter[v].time1..'\n'..t_radarEnter[v].pos1..''
+                     local pos = radar.getConstructWorldPos(v)
+                     pos = '::pos{0,0,'..pos[1]..','..pos[2]..','..pos[3]..'}'
+                     local msg = 'NEW TARGET (abandoned): '..name..' - '..v..' - Size: '..size..'\nTarget pos:'..pos..''
                      table.insert(loglist, msg)
                   end
                end
                t_radarEnter[v] = nil
             end
          end
-         if GHUD_ShowEcho == true and size ~= "" then
+         if GHUD_show_echoes == true and size ~= "" then
             constructRow.widgetDist = math.ceil(radar.getConstructDistance(v) / 1000 * radarWidgetScale)
          end
          --radarlist
-         if GHUD_ShowAllies == true and size ~= "" then
+         if GHUD_show_allies == true and size ~= "" then
             if radar.hasMatchingTransponder(v) == 1 or whitelist[v] and radar.getThreatRateFrom(v) ~= 5 then  --remove attacking traitor from the allies HUD
                local name = radar.getConstructName(v)
                local dist = math.floor(radar.getConstructDistance(v))
@@ -502,7 +482,7 @@ local function main()
                local allID = (""..v..""):sub(-3) --cut construct IDs
                local nameA = ''..allID..' '..name..''
                friendlies = friendlies + 1
-               if radar.getTargetId(v) ~= v and friendlies < GHUD_Allies_Count1 then
+               if radar.getTargetId(v) ~= v and friendlies < GHUD_allies_count1 then
                   list = list..[[
                   <div class="table-row3 th3">
                   <div class="table-cell3">
@@ -510,7 +490,7 @@ local function main()
                   </div>
                   </div>]]
                end
-               if radar.getTargetId(v) == v and friendlies < GHUD_Allies_Count1 then
+               if radar.getTargetId(v) == v and friendlies < GHUD_allies_count1 then
                   list = list..[[
                   <div class="table-row3 th3S">
                   <div class="table-cell3S">
@@ -518,7 +498,7 @@ local function main()
                   </div>
                   </div>]]
                end
-               if radar.getTargetId(v) == v and friendlies >= GHUD_Allies_Count1 then
+               if radar.getTargetId(v) == v and friendlies >= GHUD_allies_count1 then
                   list = list..[[
                   <div class="table-row3 th3S">
                   <div class="table-cell3S">
@@ -563,7 +543,7 @@ local function main()
             end
          else
 
-            if GHUD_ShowEcho == true and size ~= "" then
+            if GHUD_show_echoes == true and size ~= "" then
                if radar.getConstructKind(v) == 5 then
                   table.insert(radarDynamic, constructRow)
                   if radarDynamicWidget[constructRow.widgetDist] ~= nil then
@@ -615,7 +595,7 @@ local function main()
             coroutine.yield()
          end
       end
-      if GHUD_ShowAllies == true then
+      if GHUD_show_allies == true then
          if friendlies > 0 then
             caption = "<alliescolor>Allies:</alliescolor><br><countcolor>"..friendlies.."</countcolor> <countcolor2>"..conID.."</countcolor2>"
          else
@@ -624,7 +604,7 @@ local function main()
          htmltext = htmlbasic .. [[
          <style>
          .th3>.table-cell3 {
-            color: ]]..GHUD_Allied_Names_Color..[[;
+            color: ]]..GHUD_allied_names_color..[[;
             font-weight: bold;
          }
          </style>
@@ -641,7 +621,7 @@ local function main()
       target = targetshtml .. [[
       <style>
       .th2>.table-cell2 {
-         color: ]]..GHUD_Target_Names_Color..[[;
+         color: ]]..GHUD_target_names_color..[[;
          font-weight: bold;
       }
       </style>
@@ -714,7 +694,7 @@ local function main()
       ]] .. lockList .. [[
       </div>]]
       --Echoes widget
-      if GHUD_ShowEcho == true then
+      if GHUD_show_echoes == true then
          local dynamic = ''
          for k,v in pairs(radarDynamicData) do
             dynamic = dynamic .. '<span style="left:'..k..'px;height:'..v..'px;"></span>'
@@ -741,8 +721,8 @@ local function main()
 
       hudver = hudvers .. [[<div class="hudversion">Gemini v]]..HUD_version..[[</div>]]
 
-      if GHUD_ShowEcho == true then
-         if GHUD_ShowAllies == true then
+      if GHUD_show_echoes == true then
+         if GHUD_show_allies == true then
             --system.setScreen(htmltext .. target .. locks .. hudver .. radarWidget ..statusSVG)
             gunnerHUD = htmltext .. target .. locks .. hudver .. radarWidget ..statusSVG
          else
@@ -752,7 +732,7 @@ local function main()
 
       else
 
-         if GHUD_ShowAllies == true then
+         if GHUD_show_allies == true then
             --system.setScreen(htmltext .. target .. locks .. hudver ..statusSVG)
             gunnerHUD = htmltext .. target .. locks .. hudver ..statusSVG
          else
@@ -769,7 +749,7 @@ lockhtml = [[<style>
 .table {
    display: table;
    background: ]]..GHUD_Background_Color..[[;
-   opacity: ]]..GHUD_Locked_Opacity..[[;
+   opacity: ]]..GHUD_locked_opacity..[[;
    left: 0;
    top: 5vh;
    position: fixed;
@@ -780,7 +760,7 @@ lockhtml = [[<style>
 .table-cell {
    display: table-cell;
    padding: 6px;
-   border: 1px solid ]]..GHUD_Border_Color..[[;
+   border: 1px solid ]]..GHUD_border_color..[[;
    color: white;
 }
 orangecolor {
@@ -806,49 +786,49 @@ targetshtml = [[<style>
 .table-cell2 {
    display: table-cell;
    padding: 6px;
-   border: 1px solid ]]..GHUD_Border_Color..[[;
+   border: 1px solid ]]..GHUD_border_color..[[;
    color: white;
 }
 .table-cellS {
    display: table-cell;
    padding: 6px;
-   border: 1px solid ]]..GHUD_SelectBorder_Color..[[;
+   border: 1px solid ]]..GHUD_selected_border_color..[[;
    color: white;
 }
 .thS>.table-cellS {
-   color: ]]..GHUD_Target_Names_Color..[[;
+   color: ]]..GHUD_target_names_color..[[;
    font-weight: bold;
 }
 distcolor {
    font-weight: bold;
-   color: ]]..GHUD_Distance_Color..[[;
+   color: ]]..GHUD_distance_color..[[;
 }
 distalliescolor {
    font-weight: bold;
-   color: ]]..GHUD_Allies_Distance_Color..[[;
+   color: ]]..GHUD_allies_distance_color..[[;
 }
 speedcolor {
    font-weight: bold;
-   color: ]]..GHUD_Speed_Color..[[;
+   color: ]]..GHUD_speed_color..[[;
    outline: 1px inset black;
 }
 countcolor {
    font-weight: bold;
-   color: ]]..GHUD_Count_Color..[[;
+   color: ]]..GHUD_count_color..[[;
 }
 countcolor2 {
    font-weight: bold;
-   color: ]]..GHUD_Yourship_ID_Color..[[;
+   color: ]]..GHUD_your_ship_ID_color..[[;
    float: right;
 }
 chancecolor {
    color: #6affb1;
 }
 targetscolor {
-   color: ]]..GHUD_Targets_Color..[[;
+   color: ]]..GHUD_targets_color..[[;
 }
 alliescolor {
-   color: ]]..GHUD_Allies_Color..[[;
+   color: ]]..GHUD_allies_color..[[;
 }
 .txgrenright {
    font-weight: bold;
@@ -862,7 +842,7 @@ htmlbasic = [[<style>
    background: ]]..GHUD_Background_Color..[[;
    font-weight: bold;
    position: fixed;
-   bottom: ]]..GHUD_AlliesY..[[vh;
+   bottom: ]]..GHUD_allies_Y..[[vh;
    left: 0;
 }
 .table-row3 {
@@ -872,18 +852,18 @@ htmlbasic = [[<style>
 .table-cell3 {
    display: table-cell;
    padding: 5px;
-   border: 1px solid ]]..GHUD_Border_Color..[[;
+   border: 1px solid ]]..GHUD_border_color..[[;
    color: white;
    font-weight: bold;
 }
 .table-cell3S {
    display: table-cell;
    padding: 5px;
-   border: 1px solid ]]..GHUD_SelectBorder_Color..[[;
+   border: 1px solid ]]..GHUD_selected_border_color..[[;
    color: white;
 }
 .th3S>.table-cell3S {
-   color: ]]..GHUD_Allied_Names_Color..[[;
+   color: ]]..GHUD_allied_names_color..[[;
    font-weight: bold;
 }</style>]]
 hudvers = [[
@@ -1128,7 +1108,7 @@ function start(unit, system, text)
 
    showMarker = true
 
-   if exportMode == true then
+   if GHUD_export_mode == true then
       system.print("---------------")
       system.print("The export mode is enabled ALT+G")
    else
@@ -1236,7 +1216,7 @@ function start(unit, system, text)
 end
 
 function inTEXT(unit, system, text)
-   if pos1 ~= 0 and string.find(text, "::pos") and pos2 == 0 and exportMode == false then
+   if pos1 ~= 0 and string.find(text, "::pos") and pos2 == 0 and GHUD_export_mode == false then
       --local lasttime = UTCscaner()
 
       pos2 = text
@@ -1294,7 +1274,7 @@ function inTEXT(unit, system, text)
       unit.setTimer("vectorhud", 0.02)
    end
 
-   if pos1 == 0 and string.find(text, "::pos") and exportMode == false then
+   if pos1 == 0 and string.find(text, "::pos") and GHUD_export_mode == false then
       pos1 = text
       databank.setStringValue(1, pos1)
       pos1time = math.floor(system.getUtcTime())
@@ -1338,7 +1318,7 @@ function inTEXT(unit, system, text)
       system.print("Coordinates have been deleted, set new coordinates")
    end
 
-   if exportMode == true and string.find(text, "/") and not string.find(text, "/::pos") then
+   if GHUD_export_mode == true and string.find(text, "/") and not string.find(text, "/::pos") then
       unit.stopTimer("marker")
       databank.clear()
       showMarker = true
@@ -1445,7 +1425,7 @@ function inTEXT(unit, system, text)
       --system.showScreen(1)
       unit.setTimer("vectorhud", 0.02)
    end
-   if exportMode == true and string.find(text, "/::pos") then
+   if GHUD_export_mode == true and string.find(text, "/::pos") then
       unit.stopTimer("marker")
       databank.clear()
       showMarker = true
@@ -1848,7 +1828,7 @@ function tickVector(unit, system, text)
          local worldpos = vec3(system.getCameraWorldPos())
          local p = (dist * forwvector + worldpos)
 
-         if pos1 ~= 0 and pos2 == 0 and exportMode == false then
+         if pos1 ~= 0 and pos2 == 0 and GHUD_export_mode == false then
 
             pos2 = '::pos{0,0,'..p.x..','..p.y..','..p.z..'}'
             databank.setStringValue(3, pos2)
@@ -1900,7 +1880,7 @@ function tickVector(unit, system, text)
             unit.setTimer("vectorhud", 0.02)
          end
 
-         if pos1 == 0 and exportMode == false then
+         if pos1 == 0 and GHUD_export_mode == false then
             pos1 = '::pos{0,0,'..p.x..','..p.y..','..p.z..'}'
             databank.setStringValue(1, pos1)
             pos1time = math.floor(UTCscaner(system))

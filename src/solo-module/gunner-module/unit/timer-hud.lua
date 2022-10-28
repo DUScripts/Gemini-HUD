@@ -109,7 +109,7 @@ end
 
 local AR_allies = ''
 for k,v in pairs(radarIDs) do --AR marks
-if radar.hasMatchingTransponder(v) == 1 and GHUD_AR_allies_hold_only == false then
+if radar.hasMatchingTransponder(v) == 1 then
    local pos = radar.getConstructWorldPos(v)
    local point = library.getPointOnScreen({pos[1],pos[2],pos[3]})
    if point[3] > 0 then --visible zone

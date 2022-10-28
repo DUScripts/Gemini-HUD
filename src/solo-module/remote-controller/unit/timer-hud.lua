@@ -193,7 +193,7 @@ end
                         local y2 = screenHeight*point1[2] - 50
                         AR_planets = AR_planets .. [[
                         <style>
-                        .]]..planet.name[1]..[[ {
+                        .pl]]..planet.name[1]..[[ {
                            position: absolute;
                            width: 100px;
                            height: 100px;
@@ -201,7 +201,7 @@ end
                            top: ]]..y2..[[px;
                         }
                         </style>
-                        <div class="]]..planet.name[1]..[["><?xml version="1.0" encoding="utf-8"?>
+                        <div class="pl]]..planet.name[1]..[["><?xml version="1.0" encoding="utf-8"?>
                         <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
                         <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #FFB12C; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
                         <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; white-space: pre; text-anchor: middle;" x="125" y="48.955">]]..planet.name[1]..[[</text>
@@ -213,7 +213,7 @@ end
                end
                drawonradar(safeWorldPos,"CENTRAL SZ")
                if asteroidPOS ~= "" then
-                  drawonradar(asteroidcoord,""..markerName.."")
+                  drawonradar(asteroidcoord,""..GHUD_marker_name.."")
                   local point1 = library.getPointOnScreen({asteroidcoord.x,asteroidcoord.y,asteroidcoord.z})
                   if point1[3] > 0 then --visible zone
                      local dist = vec3(shipPos - asteroidcoord):len()
@@ -232,7 +232,7 @@ end
                      local y2 = screenHeight*point1[2] - 50
                      AR_asteroid = [[
                      <style>
-                     .]].markerName..[[ {
+                     .marker]].GHUD_marker_name..[[ {
                         position: absolute;
                         width: 100px;
                         height: 100px;
@@ -240,10 +240,10 @@ end
                         top: ]]..y2..[[px;
                      }
                      </style>
-                     <div class="]]..markerName..[["><?xml version="1.0" encoding="utf-8"?>
+                     <div class="marker]]..GHUD_marker_name..[["><?xml version="1.0" encoding="utf-8"?>
                      <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
                      <ellipse style="fill: rgba(0, 0, 0, 0); stroke: red; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
-                     <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; white-space: pre; text-anchor: middle;" x="125" y="48.955">]]..markerName..[[</text>
+                     <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; white-space: pre; text-anchor: middle;" x="125" y="48.955">]]..GHUD_marker_name..[[</text>
                      <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; white-space: pre; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
                      <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle; white-space: pre;" x="125" y="240.424">]]..sdist..[[</text>
                      </svg></div>]]
