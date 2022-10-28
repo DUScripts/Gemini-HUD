@@ -217,8 +217,8 @@ math.sin(latitude));
 return vec3(planet.center) + (planet.radius + altitude) * planetxyz
 end
 
-if db.getStringValue(15) ~= "" then
-asteroidPOS = db.getStringValue(15)
+if databank.getStringValue(15) ~= "" then
+asteroidPOS = databank.getStringValue(15)
 else
 asteroidPOS = ''
 end
