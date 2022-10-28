@@ -265,10 +265,9 @@ end
             }
             .shield1 {
                position: absolute;
-               width: 900px;
-               top: 90%;
+               width: 1100px;
+               top: 89%;
                left: 50%;
-               opacity: 0.75;
                transform: translate(-50%, -50%);
                filter: drop-shadow(0 0 25px blue);
             }
