@@ -7,3 +7,5 @@ if text == "s" then
  if count == 1 and f1 == "f" then
     mRadar:onTextInput(text)
  end
+
+ inTEXT(unit,system,text)

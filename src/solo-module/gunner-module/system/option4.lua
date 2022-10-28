@@ -1,0 +1,2 @@
+start:
+mmode = not mmode
