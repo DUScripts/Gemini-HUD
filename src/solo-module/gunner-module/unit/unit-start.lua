@@ -1,19 +1,5 @@
 -- GEMINI FOUNDATION
 
--- Many thanks to:
---  W1zard for weapon and radar widgets
---  tiramon for closest pipe functions
---  SeM for the help with the coroutines
---  JayleBreak for planetref functions
---  Aranol for closest pos functions and 2D planet radar
---  Mistery for vector functions
---  Middings for brake distance function
---  IvanGrozny for Echoes widget, 3D space map, icons from his "Epic HUD"
---  Chelobek for target vector widget
-
--- Gemini HUD is the rebirth of the CFCS HUD (Custom Fire Control System)
--- Author: GeminiX (aka SneakySnake, DU Pirate)
-
 --Solo gunner seat
 HUD_version = '1.0.0'
 
@@ -232,7 +218,9 @@ function mRadar:new(sys, radar, friendList)
    self.friendList = friendList or {}
    self.onlyIdentified = false
    self.idFilter = {}
-   self:createWidget()
+   --self:createWidget()
+   self.radarPanel = self.system.createWidgetPanel('')
+   self.radarWidget = self.system.createWidget(self.radarPanel, self.radar.getWidgetType())
    self.updaterCoroutine = coroutine.create(function() self:updateLoop() end)
    return self
 end
@@ -337,6 +325,22 @@ local lastData = {}
 local timed = false
 
 --radar slot configurator
+-- for slot_name, slot in pairs(unit) do
+--    if
+--    type(slot) == "table"
+--    and type(slot.export) == "table"
+--    and slot.getElementClass
+--    then
+--       if string.find(slot.getElementClass(), 'Radar') ~= nil then
+--          if string.find(slot.getElementClass(), 'Space') ~= nil then
+--             radar_1 = slot
+--          else
+--             radar_2 = slot
+--          end
+--       end
+--    end
+-- end
+
 for slot_name, slot in pairs(unit) do
    if
    type(slot) == "table"
@@ -344,12 +348,14 @@ for slot_name, slot in pairs(unit) do
    and slot.getElementClass
    then
       if string.find(slot.getElementClass(), 'Radar') ~= nil then
-         if string.find(slot.getElementClass(), 'Space') ~= nil then
-            radar_1 = slot
-         else
-            radar_2 = slot
-         end
+         radar = slot
       end
+      if slot.getElementClass():lower():find("databank") then
+         databank = slot
+    end    
+    if slot.getElementClass():lower():find("screen") then
+         screen = slot
+    end
    end
 end
 
@@ -378,12 +384,10 @@ function ConvertLocalToWorld(x,y,z)
 end
 
 --Echoes startup configurator
-if radar_1.isOperational() == 0 then
-   radar=radar_2
+if radar.isOperational() == 0 then
    radarWidgetScale = 160
    radarWidgetScaleDisplay = '<div class="measures"><span>0 KM</span><span>2.5 KM</span><span>5 KM</span></div>'
 else
-   radar=radar_1
    radarWidgetScale = 2
    radarWidgetScaleDisplay = '<div class="measures"><span>0 SU</span><span>1 SU</span><span>2 SU</span></div>'
 end
@@ -423,22 +427,22 @@ local function main()
       radarDynamicWidget = {}
       radarStaticData = radarStaticWidget
       radarStaticWidget = {}
-      local worksInEnvironment = radar_1.isOperational()
+      local worksInEnvironment = radar.isOperational()
       if worksInEnvironment == 0 and atmovar == false then
-         mRadar:deleteWidget()
+         --mRadar:deleteWidget()
          atmovar=true
-         radar=radar_2
-         mRadar.radar=radar
-         mRadar:createWidgetNew()
+         --radar=radar_2
+         --mRadar.radar=radar
+         --mRadar:createWidgetNew()
          radarWidgetScale = 160
          radarWidgetScaleDisplay = '<div class="measures"><span>0 KM</span><span>2.5 KM</span><span>5 KM</span></div>'
       end
       if worksInEnvironment == 1 and atmovar == true then
-         mRadar:deleteWidget()
+         --mRadar:deleteWidget()
          atmovar=false
-         radar=radar_1
-         mRadar.radar=radar
-         mRadar:createWidgetNew()
+         --radar=radar_1
+         --mRadar.radar=radar
+         --mRadar:createWidgetNew()
          radarWidgetScale = 2
          radarWidgetScaleDisplay = '<div class="measures"><span>0 SU</span><span>1 SU</span><span>2 SU</span></div>'
       end
