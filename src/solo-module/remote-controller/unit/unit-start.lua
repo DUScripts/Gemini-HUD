@@ -412,6 +412,55 @@ else
 end
 end
 
+function getClosestPlanet(wp)
+local ClosestPlanet={}
+ClosestPlanet.distance=999999999999
+for BodyId in pairs(atlas[0]) do
+   local planet=atlas[0][BodyId]
+   local distance=(vec3(planet.center)-wp):len()
+   if math.min(ClosestPlanet.distance,distance)==distance then
+      ClosestPlanet.name=planet.name[1]
+      ClosestPlanet.distance=distance
+   end
+end
+return planet
+end
+
+function getClosestPlanet1(wp)
+local ClosestPlanet={}
+ClosestPlanet.distance=999999999999
+for BodyId in pairs(atlas[0]) do
+   local planet=atlas[0][BodyId]
+   local distance=(vec3(planet.center)-wp):len()
+   if math.min(ClosestPlanet.distance,distance)==distance then
+      ClosestPlanet.name=planet.name[1]
+      ClosestPlanet.distance=distance
+   end
+end
+return ClosestPlanet.name,ClosestPlanet.distance
+end
+
+function getClosestPipe1(wp,startLocation)
+local ClosestPlanet={}
+ClosestPlanet.pipedistance=999999999999
+for BodyId in pairs(atlas[0]) do
+   local stopLocation=atlas[0][BodyId]
+   local pipe=vec3(startLocation.center) - vec3(stopLocation.center)
+   local pipedistance=(wp - vec3(startLocation.center)):project_on_plane(pipe):len()
+   if math.min(ClosestPlanet.pipedistance,pipedistance)==pipedistance and (vec3(startLocation.center)-wp):len()<pipe:len() and (vec3(stopLocation.center)-wp):len()<pipe:len() then
+      ClosestPlanet.pipename=stopLocation.name[1]
+      ClosestPlanet.pipedistance=pipedistance
+   end
+end
+return ClosestPlanet.pipename, ClosestPlanet.pipedistance
+end
+
+function getSafeZoneDistance(wp)
+local CenterSafeZone = vec3(13771471, 7435803, -128971)
+local distance=math.floor(((wp-CenterSafeZone):len()-18000000))
+return distance
+end
+
 playerName = system.getPlayerName(unit.getMasterPlayerId())
 xDelta = -238
 yDelta = -108
@@ -424,8 +473,9 @@ warpScan = 0
 targetList = ''
 altb=false
 safew=''
+varcombat = core.getPvPTimer()
 function pD()
-pipeD = ''
+local pipeD = ''
 if nearestPipeDistance >= 100000 then
    pipeD = ''..string.format('%0.2f', nearestPipeDistance/200000)..' su'
 elseif nearestPipeDistance >= 1000 and nearestPipeDistance < 100000 then
@@ -434,11 +484,11 @@ else
    pipeD = ''..string.format('%0.0f', nearestPipeDistance)..' m'
 end
 if nearestPipeDistance >= 600000 then
-   return closestPipeData.value.. '<br>' .. '<greencolor1>'..pipeD..'</greencolor1>'
+   return closestPipeData.value.. '<br>' .. '<green1>'..pipeD..'</green1>'
 elseif nearestPipeDistance >= 400000 and nearestPipeDistance <= 600000 then
-   return closestPipeData.value.. '<br>' .. '<orangecolor>'..pipeD..'</orangecolor>'
+   return closestPipeData.value.. '<br>' .. '<orange1>'..pipeD..'</orange1>'
 elseif nearestPipeDistance < 400000 then
-   return closestPipeData.value.. '<br>' .. '<redcolor1>'..pipeD..'<redcolor1>'
+   return closestPipeData.value.. '<br>' .. '<red1>'..pipeD..'<red1>'
 end
 end
 
@@ -532,11 +582,18 @@ elseif stress[2] >= stress[1] and
       venttimemax = shield.getVentingMaxCooldown()
       resisttimemax = shield.getResistancesMaxCooldown()
 
-      --needs nil check (planet)
-      DepartureCenter = vec3(stellarObjects[Departure_export].center)
-      DestinationCenter = vec3(stellarObjects[Destination_export].center)
-      DepartureCenterName = stellarObjects[Departure_export].name[1]
-      DestinationCenterName = stellarObjects[Destination_export].name[1]
+      for BodyId in pairs(atlas[0]) do
+         local planet=atlas[0][BodyId]
+         if planet.name[1] == GHUD_destination_planet then
+            DestinationCenter = vec3(planet.center)
+            DestinationCenterName = planet.name[1]
+         end
+         if planet.name[1] == GHUD_departure_planet then
+            DepartureCenter = vec3(planet.center)
+            DepartureCenterName = planet.name[1]
+         end
+      end
+
       mybr=false
       --needs redesign
       html1 = [[
@@ -568,10 +625,7 @@ elseif stress[2] >= stress[1] and
          shieldAlarm = false
          alarmTimer = false
          t2=nil
-
-         function BodyParameters:getDistance(worldCoordinates)
-            return (vec3(worldCoordinates) - self.center):len()
-         end
+         coratinka=0
 
          function customDistance(distance)
             local distanceS=''
@@ -593,18 +647,18 @@ elseif stress[2] >= stress[1] and
             local angle = math.acos(cosAngle)
             local crossProduct = vec1:cross(vec2)
             if crossProduct:dot(planeNormal) < 0 then
-                return -angle - math.pi
+               return -angle - math.pi
             else
-                return angle + math.pi
+               return angle + math.pi
             end
-        end
-        local function directionToBearing (direction, worldVertical)
+         end
+         local function directionToBearing (direction, worldVertical)
             local north = vec3(0, 0, 1)
             local northOnGround = north:project_on_plane(worldVertical)
             local directionOnGround = direction:project_on_plane(worldVertical)
             return signedAngleBetween(northOnGround, directionOnGround, worldVertical)
-        end
-        function rotateX3D(point, theta)
+         end
+         function rotateX3D(point, theta)
             theta = theta * math.pi / 180
             local sinTheta = math.sin(theta);
             local cosTheta = math.cos(theta);
@@ -613,8 +667,8 @@ elseif stress[2] >= stress[1] and
             point.y = y
             point.z = z
             return point
-        end
-        function rotateY3D(point, theta)
+         end
+         function rotateY3D(point, theta)
             theta = theta * math.pi / 180
             local sinTheta = math.sin(theta);
             local cosTheta = math.cos(theta);
@@ -623,8 +677,8 @@ elseif stress[2] >= stress[1] and
             point.x = x
             point.y = y
             return point
-        end
-        function rotateZ3D(point, theta)
+         end
+         function rotateZ3D(point, theta)
             theta = theta * math.pi / 180
             local sinTheta = math.sin(theta);
             local cosTheta = math.cos(theta);
@@ -633,7 +687,7 @@ elseif stress[2] >= stress[1] and
             point.x = x
             point.y = y
             return point
-        end
+         end
 
          --3D galaxy map
          function drawMap()
@@ -725,94 +779,94 @@ elseif stress[2] >= stress[1] and
          end
 
          mapGalaxy = [[
-                    <style>
-                    .system-map {
-                        position: absolute;
-                        top: 0;
-                        width: 100%;
-                        height: 100%;
-                        background: rgba(7, 44, 82, .81);
-                        left: 0;
-                    }
-                    .planet {
-                        width: 20px;
-                        height: 20px;
-                        border-radius: 50%;
-                        border: 2px solid;
-                        box-sizing: border-box;
-                        background: rgba(148, 206, 255, .29);
-                    }
-                    .map-actual {
-                        position: absolute;
-                        width: 100%;
-                        height: 100%;
-                        top: 0;
-                        left: 0;
-                        transform-style: preserve-3d;
-                    }
-                    .map-center {
-                        position: absolute;
-                        content: '';
-                        width: 2000px;
-                        height: 2000px;
-                        top: 50%;
-                        left: 50%;
-                        background: repeating-radial-gradient(rgba(0, 17, 35, .23), transparent 112px), repeating-radial-gradient(rgba(148, 206, 255, .34), transparent 75%);
-                        border-radius: 50%;
-                    }
-                    .map-pin {
-                        position: absolute;
-                        top: 50%;
-                        left: 50%;
-                    }
-                    .map-pin .icon,
-                    .map-pin .planet {
-                        height: 30px;
-                        width: 30px;
-                    }
-                    .pin-data {
-                        position: absolute;
-                        bottom: 100%;
-                        margin-bottom: 10px;
-                        white-space: nowrap;
-                        text-align: center;
-                        width: 200px;
-                        left: 50%;
-                        transform: translateX(-50%);
-                    }
-                    .pin-data .name {
-                        font-size: 16px;
-                        color: white;
-                        line-height: 16px;
-                    }
-                    .pin-data .units {
-                        font-family: monospace;
-                        font-size: 14px;
-                        font-weight: bold;
-                        line-height: 14px;
-                    }
-                    .map-pin.player {
-                        filter: drop-shadow(0px 0px 20px #edf7ff);
-                    }
-                    .map-pin.player .icon {
-                        fill: #ffde56;
-                    }
-                    .con-size {
-                        width: 20px;
-                        text-align: center;
-                        background: #235f92;
-                        margin-right: 4px;
-                        color: white;
-                        height: 18px;
-                    }
-                    .warp-scan {
-                        width: 15px;
-                        height: 15px;
-                        border-radius: 50%;
-                        box-sizing: border-box;
-                        background: #ff3a56;
-                    }
-                    </style>]]
+         <style>
+         .system-map {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(7, 44, 82, .81);
+            left: 0;
+         }
+         .planet {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid;
+            box-sizing: border-box;
+            background: rgba(148, 206, 255, .29);
+         }
+         .map-actual {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            transform-style: preserve-3d;
+         }
+         .map-center {
+            position: absolute;
+            content: '';
+            width: 2000px;
+            height: 2000px;
+            top: 50%;
+            left: 50%;
+            background: repeating-radial-gradient(rgba(0, 17, 35, .23), transparent 112px), repeating-radial-gradient(rgba(148, 206, 255, .34), transparent 75%);
+            border-radius: 50%;
+         }
+         .map-pin {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+         }
+         .map-pin .icon,
+         .map-pin .planet {
+            height: 30px;
+            width: 30px;
+         }
+         .pin-data {
+            position: absolute;
+            bottom: 100%;
+            margin-bottom: 10px;
+            white-space: nowrap;
+            text-align: center;
+            width: 200px;
+            left: 50%;
+            transform: translateX(-50%);
+         }
+         .pin-data .name {
+            font-size: 16px;
+            color: white;
+            line-height: 16px;
+         }
+         .pin-data .units {
+            font-family: monospace;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 14px;
+         }
+         .map-pin.player {
+            filter: drop-shadow(0px 0px 20px #edf7ff);
+         }
+         .map-pin.player .icon {
+            fill: #ffde56;
+         }
+         .con-size {
+            width: 20px;
+            text-align: center;
+            background: #235f92;
+            margin-right: 4px;
+            color: white;
+            height: 18px;
+         }
+         .warp-scan {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            box-sizing: border-box;
+            background: #ff3a56;
+         }
+         </style>]]
 
          main1 = coroutine.create(closestPipe)
 

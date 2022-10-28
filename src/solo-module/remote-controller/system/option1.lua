@@ -1,1 +1,2 @@
+start:
 Displayradar = not Displayradar

@@ -655,7 +655,7 @@ local function main()
       --threat icon
       statusSVG = [[<style>.radarLockstatus {
          position: fixed;
-         top: 12%;
+         top: 13.5vh;
          left: 50%;
          transform: translate(-50%, -50%);
          background: transparent;
