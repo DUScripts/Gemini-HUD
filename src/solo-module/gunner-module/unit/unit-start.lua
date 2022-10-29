@@ -7,6 +7,7 @@ HUD_version = '1.0.0'
 GHUD_friendly_IDs = {} -- put IDs here 34141,231231,31231 etc
 GHUD_export_mode = true --export: Coordinate export mode
 targetSpeed = 29999 --export: Target speed
+GHUD_background_color = "#142027" --export:
 GHUD_AR_sight_color = "rgb(0, 191, 255)" --export:
 GHUD_weapon_panels = 3 --export:
 GHUD_log_stats = true --export: Send target statistics to LUA channel
@@ -752,7 +753,7 @@ end
 lockhtml = [[<style>
 .table {
    display: table;
-   background: ]]..GHUD_Background_Color..[[;
+   background: ]]..GHUD_background_color..[[;
    opacity: ]]..GHUD_locked_opacity..[[;
    left: 0;
    top: 5vh;
@@ -778,7 +779,7 @@ rightlocked {
 targetshtml = [[<style>
 .table2 {
    display: table;
-   background: ]]..GHUD_Background_Color..[[;
+   background: ]]..GHUD_background_color..[[;
    position: fixed;
    top: 0;
    left: 0;
@@ -843,7 +844,7 @@ alliescolor {
 htmlbasic = [[<style>
 .table3 {
    display: table;
-   background: ]]..GHUD_Background_Color..[[;
+   background: ]]..GHUD_background_color..[[;
    font-weight: bold;
    position: fixed;
    bottom: ]]..GHUD_allies_Y..[[vh;
