@@ -2307,7 +2307,9 @@ handlers:
     construct:
         onPvPTimer(active):
             lua: |
-                totalDamage = {}
+                if active == 0 then
+                    totalDamage = {}
+                end
     system:
         onUpdate:
             lua: |

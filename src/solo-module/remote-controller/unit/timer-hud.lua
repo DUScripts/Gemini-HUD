@@ -24,6 +24,8 @@ if (system.getTime() - lastShotTime) >= 40 then
    shoteCount = 0
 end
 
+varcombat = core.getPvPTimer()
+
 resisttime = shield.getResistancesCooldown()
 if resisttime ~= 0 then
    if resisttime < resisttimemax  then
@@ -40,8 +42,6 @@ if shield.isVenting() then
       ventCLWN = ""
    end
 end
-
-varcombat = core.getPvPTimer()
 
 fuel_lvl = json.decode(spacefueltank_1.getWidgetData()).percentage
 ---

@@ -1,2 +1,4 @@
 --false:
-totalDamage = {}
+if active == 0 then
+    totalDamage = {}
+end
