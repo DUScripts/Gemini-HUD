@@ -384,7 +384,7 @@ function ConvertLocalToWorld(x,y,z)
 end
 
 --Echoes startup configurator
-if radar.isOperational() == 0 then
+if radar.getOperationalState() == 0 then
    radarWidgetScale = 160
    radarWidgetScaleDisplay = '<div class="measures"><span>0 KM</span><span>2.5 KM</span><span>5 KM</span></div>'
 else
@@ -427,7 +427,7 @@ local function main()
       radarDynamicWidget = {}
       radarStaticData = radarStaticWidget
       radarStaticWidget = {}
-      local worksInEnvironment = radar.isOperational()
+      local worksInEnvironment = radar.getOperationalState()
       if worksInEnvironment == 0 and atmovar == false then
          --mRadar:deleteWidget()
          atmovar=true
