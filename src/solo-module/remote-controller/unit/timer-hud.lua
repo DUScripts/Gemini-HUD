@@ -162,6 +162,8 @@ if math.ceil(HP) <= 50 then
 
    AR_planets = ''
    AR_asteroid = ''
+   AR_pvpzone = ''
+   AR_safezone = ''
    if DisplayRadar==true then
       local x,y,z = table.unpack(construct.getWorldOrientationForward())
       local xoc = math.floor(math.atan(x, y)*180/math.pi+180)
@@ -307,6 +309,7 @@ if math.ceil(HP) <= 50 then
             if distsz < safeRadius then
                szsafe=true
                distS = mabs(distsz - safeRadius)
+               local vector1 = vectorLengthen(safeWorldPos, shipPos, distS)
                if distS > 100000 then
                   distS = ''..string.format('%0.2f', distS/200000)..' su'
                elseif distS > 1000 and distS < 100000 then
@@ -314,7 +317,9 @@ if math.ceil(HP) <= 50 then
                else
                   distS = ''..string.format('%0.0f', distS)..' m'
                end
-               return 'PVP ZONE: '..distS..''
+               --return 'PVP ZONE: '..distS..''
+               safeStatus = 'PVP ZONE: '..distS..''
+               safeVector = vector1
             end
 
             distp = vec3(shipPos):dist(vec3(closestPlanet.center))
@@ -322,6 +327,7 @@ if math.ceil(HP) <= 50 then
             if mabs(distp - szradius) < mabs(distsz - safeRadius) then
                safew='::pos{0,0,'..closestPlanet.center.x..','..closestPlanet.center.y..','..closestPlanet.center.z..'}'
                distS = mabs(distp - szradius)
+               local vector1 = vectorLengthen(vec3(closestPlanet.center), shipPos, distS)
                if distS > 100000 then
                   distS = ''..string.format('%0.2f', distS/200000)..' su'
                elseif distS > 1000 and distS < 100000 then
@@ -330,12 +336,17 @@ if math.ceil(HP) <= 50 then
                   distS = ''..string.format('%0.0f', distS)..' m'
                end
                if szsafe == true then
-                  return ''..closestPlanet.name[1]..' PVP: '..distS..''
+                  --return ''..closestPlanet.name[1]..' PVP: '..distS..''
+                  safeStatus = ''..closestPlanet.name[1]..' PVP: '..distS..''
+                  safeVector = vector1
                else
-                  return ''..closestPlanet.name[1]..' SAFE: '..distS..''
+                  --return ''..closestPlanet.name[1]..' SAFE: '..distS..''
+                  safeStatus = ''..closestPlanet.name[1]..' SAFE: '..distS..''
+                  safeVector = vector1
                end
             else
                distS = mabs(distsz - safeRadius)
+               local vector1 = vectorLengthen(safeWorldPos, shipPos, distS)
                if distS > 100000 then
                   distS = ''..string.format('%0.2f', distS/200000)..' su'
                elseif distS > 1000 and distS < 100000 then
@@ -343,13 +354,85 @@ if math.ceil(HP) <= 50 then
                else
                   distS = ''..string.format('%0.0f', distS)..' m'
                end
-               return 'SAFE ZONE: '..distS..''
+               --return 'SAFE ZONE: '..distS..''
+               safeStatus = 'SAFE ZONE: '..distS..''
+               safeVector = vector1
             end
          end
          if szsafe == true then
-            safetext='<green1>'..safeZone()..'</green1>'
+            safetext='<green1>'..safeStatus..'</green1>'
+            local point1 = library.getPointOnScreen({safeVector.x,safeVector.y,safeVector.z})
+            if point1[3] > 0 then --visible zone
+               local dist = vec3(shipPos - safeVector):len()
+               local sdist = ''
+               if dist >= 100000 then
+                  dist = string.format('%0.2f', dist/200000)
+                  sdist = 'SU'
+               elseif dist >= 1000 and dist < 100000 then
+                  dist = string.format('%0.1f', dist/1000)
+                  sdist = 'KM'
+               else
+                  dist = string.format('%0.0f', dist)
+                  sdist = 'M'
+               end
+               local x2 = screenWidth*point1[1] - 50
+               local y2 = screenHeight*point1[2] - 50
+               AR_pvpzone = [[
+               <style>
+               .pvpzoneAR {
+                  position: absolute;
+                  width: 100px;
+                  height: 100px;
+                  left: ]]..x2..[[px;
+                  top: ]]..y2..[[px;
+               }
+               </style>
+               <div class="pvpzoneAR"><?xml version="1.0" encoding="utf-8"?>
+               <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+               <ellipse style="fill: rgba(0, 0, 0, 0); stroke: red; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
+               <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">PVP ZONE</text>
+               <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
+               <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..sdist..[[</text>
+               </svg></div>]]
+            end
          else
-            safetext='<red1>'..safeZone()..'</red1>'
+            safetext='<red1>'..safeStatus..'</red1>'
+            if DisplayRadar==false then
+               local point1 = library.getPointOnScreen({safeVector.x,safeVector.y,safeVector.z})
+               if point1[3] > 0 then --visible zone
+                  local dist = vec3(shipPos - safeVector):len()
+                  local sdist = ''
+                  if dist >= 100000 then
+                     dist = string.format('%0.2f', dist/200000)
+                     sdist = 'SU'
+                  elseif dist >= 1000 and dist < 100000 then
+                     dist = string.format('%0.1f', dist/1000)
+                     sdist = 'KM'
+                  else
+                     dist = string.format('%0.0f', dist)
+                     sdist = 'M'
+                  end
+                  local x2 = screenWidth*point1[1] - 50
+                  local y2 = screenHeight*point1[2] - 50
+                  AR_safezone = [[
+                  <style>
+                  .safezoneAR {
+                     position: absolute;
+                     width: 100px;
+                     height: 100px;
+                     left: ]]..x2..[[px;
+                     top: ]]..y2..[[px;
+                  }
+                  </style>
+                  <div class="safezoneAR"><?xml version="1.0" encoding="utf-8"?>
+                  <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse style="fill: rgba(0, 0, 0, 0); stroke: red; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
+                  <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">SAFE ZONE</text>
+                  <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
+                  <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..sdist..[[</text>
+                  </svg></div>]]
+               end
+            end
          end
 
          if coratinka==1 then
@@ -532,7 +615,7 @@ if math.ceil(HP) <= 50 then
             color: #FFFFFF;
             font-size: 1.2em;
             font-weight: bold;
-            background: ]]..CFCS_background_color..[[;
+            background: ]]..GHUD_background_color..[[;
             border: 0.2px solid black;
          }
          .pipe {
@@ -542,13 +625,13 @@ if math.ceil(HP) <= 50 then
             padding-top: 2px;
             padding-bottom: 2px;
             position:fixed;
-            top: ]]..CFCS_pipe_Y..[[vh;
-            right: ]]..CFCS_pipe_X..[[vw;
+            top: ]]..GHUD_pipe_Y..[[vh;
+            right: ]]..GHUD_pipe_X..[[vw;
             text-align: center;
-            color: ]]..CFCS_pipe_text_color..[[;
+            color: ]]..GHUD_pipe_text_color..[[;
             font-size: 1.2em;
             font-weight: bold;
-            background: ]]..CFCS_background_color..[[;
+            background: ]]..GHUD_background_color..[[;
             border: 0.2px solid black;
          }
          </style>
@@ -556,6 +639,8 @@ if math.ceil(HP) <= 50 then
          ]]..warningmsg..[[
          ]]..AR_asteroid..[[
          ]]..AR_planets..[[
+         ]]..AR_pvpzone..[[
+         ]]..AR_safezone..[[
          ]]..message..[[
          <div class="safez">]]..safetext..[[</div>
          <div class="pipe">]]..pD()..[[</div>

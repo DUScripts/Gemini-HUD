@@ -203,8 +203,8 @@ math.sin(latitude));
 return vec3(planet.center) + (planet.radius + altitude) * planetxyz
 end
 
-if databank.getStringValue(15) ~= "" then
-asteroidPOS = databank.getStringValue(15)
+if databank_1.getStringValue(15) ~= "" then
+asteroidPOS = databank_1.getStringValue(15)
 else
 asteroidPOS = ''
 end
@@ -213,7 +213,7 @@ GHUD_shield_auto_calibration = true --export: (AUTO/MANUAL) shield mode
 GHUD_shield_calibration_max = true --export: (MAX/50) calibration of the entire shield power by the largest resist based on DPS
 GHUD_departure_planet = 'Alioth' --export: Departure ID planet
 GHUD_destination_planet = 'Jago' --export: Destination ID planet
-GHUD_background_color = "#142027" --export: Backgroung color CFCS system
+GHUD_background_color = "#142027" --export: Background color
 GHUD_pipe_text_color = "#FFFFFF" --export: Pipe text color
 GHUD_pipe_Y = -0.1 --export:
 GHUD_pipe_X = 15.5 --export:
@@ -507,6 +507,8 @@ end
 return resRatio
 end
 
+safeStatus = ''
+safeVector = 0
 lalt=false
 buttonC=false
 buttonSpace=false
@@ -612,6 +614,26 @@ elseif stress[2] >= stress[1] and
          alarmTimer = false
          t2=nil
          coratinka=0
+
+         -- прибавляет к вектору, из двух координат, кусочек длины
+         -- и воозращает координату окончания вектора, с учетом прибалвенной длины
+         function vectorLengthen(coordinateBegin, coordinateEnd, deltaLen)
+            local vector = makeVector(coordinateBegin, coordinateEnd)
+            --длина вектора
+            local lenVector = vec3(vector):len()
+            -- новая длина вектора
+            local newLen = lenVector + deltaLen
+            local factor = newLen / lenVector
+            --новый вектор с удлиненной координатой
+            local newVector = vector * factor
+            -- надо прибавить к первой начальной координате полученый вектор
+            local x = vec3(coordinateBegin).x + vec3(newVector).x
+            local y = vec3(coordinateBegin).y + vec3(newVector).y
+            local z = vec3(coordinateBegin).z + vec3(newVector).z
+            -- итого координата окончания удлиненного вектора
+            local resultCoordinate = vec3(x, y, z)
+            return resultCoordinate
+         end
 
          function customDistance(distance)
             local distanceS=''

@@ -6,8 +6,8 @@ if coroutine.status(main1) ~= "dead" and coroutine.status(main1) == "suspended" 
    --coroutine.xpcall(main1) -- resume debug coroutine
 end
 
+--local shipPos = vec3(construct.getWorldPosition())
 local id = radar.getTargetId()
-local shipPos = vec3(construct.getWorldPosition())
 if id ~= 0 then
    local sdist = ""
    local dist = radar.getConstructDistance(id)

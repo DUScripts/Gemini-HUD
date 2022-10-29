@@ -4,12 +4,6 @@ if string.sub((text),1,3) == 'tag' then
     unit.setTimer('tr',2)
 end
 
-if string.find(text,'m::pos') then
-    asteroidcoord = zeroConvertToWorldCoordinates(asteroidPOS)
-    asteroidPOS = text:sub(2)
-    databank.setStringValue(15,asteroidPOS)
-end
-
 if shield.getResistancesCooldown() == 0 then
     if text == "l" then
        system.print("LASER PROFILE: 50/50%")
@@ -40,7 +34,7 @@ if shield.getResistancesCooldown() == 0 then
     coratinka=1
     asteroidcoord = zeroConvertToWorldCoordinates(asteroidPOS)
     asteroidPOS = text:sub(2)
-    databank.setStringValue(15,asteroidPOS)
+    databank_1.setStringValue(15,asteroidPOS)
     system.print("The marker was added to the map and saved to the databank")
     function ct()
        while true do

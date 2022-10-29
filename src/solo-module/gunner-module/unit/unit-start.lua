@@ -350,12 +350,12 @@ for slot_name, slot in pairs(unit) do
       if string.find(slot.getElementClass(), 'Radar') ~= nil then
          radar = slot
       end
-      if slot.getElementClass():lower():find("databank") then
-         databank = slot
-    end    
-    if slot.getElementClass():lower():find("screen") then
-         screen = slot
-    end
+   --    if slot.getElementClass():lower():find("databank") then
+   --       databank = slot
+   --  end    
+   --  if slot.getElementClass():lower():find("screen") then
+   --       screen = slot
+   --  end
    end
 end
 
@@ -744,7 +744,7 @@ local function main()
             gunnerHUD = target .. locks .. hudver ..statusSVG
          end
       end
-      coroutine.yield()
+      --coroutine.yield()
    end
 end
 
@@ -987,7 +987,7 @@ function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero
 end
 
 function getPipeD(system)
-   if databank.getStringValue(1) ~= "" and databank.getStringValue(3) ~= "" then
+   if databank_1.getStringValue(1) ~= "" and databank_1.getStringValue(3) ~= "" then
       local distanceS = ""
 
       local length1 = -700 * 200000
@@ -1024,7 +1024,7 @@ function getPipeD(system)
 end
 
 function getPipeW(system)
-   if databank.getStringValue(1) ~= "" and databank.getStringValue(3) ~= "" then
+   if databank_1.getStringValue(1) ~= "" and databank_1.getStringValue(3) ~= "" then
       showMarker = false
 
       local length1 = -700 * 200000
@@ -1125,15 +1125,15 @@ function start(unit, system, text)
    meterMarker = 0
 
    if
-   databank.getStringValue(1) ~= "" and databank.getFloatValue(2) ~= 0 and databank.getStringValue(3) ~= "" and
-   databank.getFloatValue(4) ~= 0
+   databank_1.getStringValue(1) ~= "" and databank_1.getFloatValue(2) ~= 0 and databank_1.getStringValue(3) ~= "" and
+   databank_1.getFloatValue(4) ~= 0
    then
       system.print("Coordinates from DB are used!")
 
-      pos1 = databank.getStringValue(1)
-      pos2 = databank.getStringValue(3)
-      pos1time = databank.getFloatValue(2)
-      pos2time = databank.getFloatValue(4)
+      pos1 = databank_1.getStringValue(1)
+      pos2 = databank_1.getStringValue(3)
+      pos1time = databank_1.getFloatValue(2)
+      pos2time = databank_1.getFloatValue(4)
 
       pos11 = zeroConvertToWorldCoordinates(pos1, system)
 
@@ -1190,10 +1190,10 @@ function start(unit, system, text)
       --system.showScreen(1)
       unit.setTimer("vectorhud", 0.02)
    else
-      databank.clear()
+      databank_1.clear()
       blockTime = 0
-      databank.setFloatValue(2, blockTime)
-      databank.setFloatValue(4, blockTime)
+      databank_1.setFloatValue(2, blockTime)
+      databank_1.setFloatValue(4, blockTime)
       pos1 = 0
       pos2 = 0
       lasttime = 0
@@ -1224,9 +1224,9 @@ function inTEXT(unit, system, text)
       --local lasttime = UTCscaner()
 
       pos2 = text
-      databank.setStringValue(3, pos2)
+      databank_1.setStringValue(3, pos2)
       pos2time = math.floor(system.getUtcTime())
-      databank.setFloatValue(4, pos2time)
+      databank_1.setFloatValue(4, pos2time)
       system.print(text .. " pos2 saved")
 
       pos11 = zeroConvertToWorldCoordinates(pos1, system)
@@ -1264,14 +1264,14 @@ function inTEXT(unit, system, text)
 
       system.print("---------------")
       system.print("The coordinates are set manually!")
-      posExport1 = databank.getStringValue(1)
-      posExport2 = databank.getStringValue(3)
-      timeExport1 = math.floor(databank.getFloatValue(2))
-      timeExport2 = math.floor(databank.getFloatValue(4))
+      posExport1 = databank_1.getStringValue(1)
+      posExport2 = databank_1.getStringValue(3)
+      timeExport1 = math.floor(databank_1.getFloatValue(2))
+      timeExport2 = math.floor(databank_1.getFloatValue(4))
 
       system.print("The coordinates were exported to the screen")
 
-      screen.setHTML(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
+      screen_1.setHTML(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
       system.print("Target speed: " .. tspeed1 .. " km/h")
       unit.setTimer("marker", 1)
       --system.showScreen(1)
@@ -1280,19 +1280,19 @@ function inTEXT(unit, system, text)
 
    if pos1 == 0 and string.find(text, "::pos") and GHUD_export_mode == false then
       pos1 = text
-      databank.setStringValue(1, pos1)
+      databank_1.setStringValue(1, pos1)
       pos1time = math.floor(system.getUtcTime())
-      databank.setFloatValue(2, pos1time)
+      databank_1.setFloatValue(2, pos1time)
       system.print(text .. " pos1 saved")
    end
 
    if text == "n" then
       unit.stopTimer("marker")
-      databank.clear()
+      databank_1.clear()
       showMarker = true
       blockTime = 0
-      databank.setFloatValue(2, blockTime)
-      databank.setFloatValue(4, blockTime)
+      databank_1.setFloatValue(2, blockTime)
+      databank_1.setFloatValue(4, blockTime)
       pos1 = 0
       pos2 = 0
       lasttime = 0
@@ -1324,11 +1324,11 @@ function inTEXT(unit, system, text)
 
    if GHUD_export_mode == true and string.find(text, "/") and not string.find(text, "/::pos") then
       unit.stopTimer("marker")
-      databank.clear()
+      databank_1.clear()
       showMarker = true
       blockTime = 0
-      databank.setFloatValue(2, blockTime)
-      databank.setFloatValue(4, blockTime)
+      databank_1.setFloatValue(2, blockTime)
+      databank_1.setFloatValue(4, blockTime)
       pos1 = 0
       pos2 = 0
       lasttime = 0
@@ -1377,10 +1377,10 @@ function inTEXT(unit, system, text)
       system.print("---------------")
       --system.print(pos1.."/"..pos2.."/"..oldTime)
       system.print("The coordinates have been loaded successfully!")
-      databank.setStringValue(1, pos1)
-      databank.setFloatValue(2, pos1time)
-      databank.setStringValue(3, pos2)
-      databank.setFloatValue(4, pos2time)
+      databank_1.setStringValue(1, pos1)
+      databank_1.setFloatValue(2, pos1time)
+      databank_1.setStringValue(3, pos2)
+      databank_1.setFloatValue(4, pos2time)
 
       pos11 = zeroConvertToWorldCoordinates(pos1, system)
 
@@ -1431,11 +1431,11 @@ function inTEXT(unit, system, text)
    end
    if GHUD_export_mode == true and string.find(text, "/::pos") then
       unit.stopTimer("marker")
-      databank.clear()
+      databank_1.clear()
       showMarker = true
       blockTime = 0
-      databank.setFloatValue(2, blockTime)
-      databank.setFloatValue(4, blockTime)
+      databank_1.setFloatValue(2, blockTime)
+      databank_1.setFloatValue(4, blockTime)
       pos1 = 0
       pos2 = 0
       lasttime = 0
@@ -1484,10 +1484,10 @@ function inTEXT(unit, system, text)
       system.print("---------------")
       --system.print(pos1.."/"..pos2.."/"..oldTime)
       system.print("The coordinates have been loaded successfully!")
-      databank.setStringValue(1, pos1)
-      databank.setFloatValue(2, pos1time)
-      databank.setStringValue(3, pos2)
-      databank.setFloatValue(4, pos2time)
+      databank_1.setStringValue(1, pos1)
+      databank_1.setFloatValue(2, pos1time)
+      databank_1.setStringValue(3, pos2)
+      databank_1.setFloatValue(4, pos2time)
 
       pos11 = zeroConvertToWorldCoordinates(pos1, system)
 
@@ -1542,11 +1542,11 @@ function inTEXT(unit, system, text)
          system.print("Current target position - OFF")
       end
       local mar = tonumber((text):sub(4))
-      if databank.getStringValue(1) ~= "" and databank.getStringValue(3) ~= "" then
+      if databank_1.getStringValue(1) ~= "" and databank_1.getStringValue(3) ~= "" then
          local length2 = mar * 200000
 
-         local pos123 = databank.getStringValue(1)
-         local pos234 = databank.getStringValue(3)
+         local pos123 = databank_1.getStringValue(1)
+         local pos234 = databank_1.getStringValue(3)
 
          pos111 = zeroConvertToWorldCoordinates(pos123, system)
          pos222 = zeroConvertToWorldCoordinates(pos234, system)
@@ -1698,7 +1698,7 @@ function tickVector(unit, system, text)
    end
 
    function tickMarker(unit, system, text)
-      if databank.getStringValue(1) ~= "" or databank.getStringValue(3) ~= "" and databank.getFloatValue(2) == 0 or databank.getFloatValue(4) == 0 then
+      if databank_1.getStringValue(1) ~= "" or databank_1.getStringValue(3) ~= "" and databank_1.getFloatValue(2) == 0 or databank_1.getFloatValue(4) == 0 then
 
          pos11 = zeroConvertToWorldCoordinates(pos1, system)
          pos22 = zeroConvertToWorldCoordinates(pos2, system)
@@ -1731,7 +1731,7 @@ function tickVector(unit, system, text)
 
    function altUP(unit, system, text)
       if lalt == true then
-         if databank.getStringValue(1) ~= "" and databank.getStringValue(3) ~= "" then
+         if databank_1.getStringValue(1) ~= "" and databank_1.getStringValue(3) ~= "" then
             showMarker = false
             SU = SU + 2.5
             length = SU * 200000
@@ -1751,7 +1751,7 @@ function tickVector(unit, system, text)
 
    function altDOWN(unit, system, text)
       if lalt == true then
-         if databank.getStringValue(1) ~= "" and databank.getStringValue(3) ~= "" then
+         if databank_1.getStringValue(1) ~= "" and databank_1.getStringValue(3) ~= "" then
             showMarker = false
             SU = SU - 2.5
             length = SU * 200000
@@ -1771,7 +1771,7 @@ function tickVector(unit, system, text)
 
    function altRIGHT(unit, system, text)
       if lalt == true then
-         if databank.getStringValue(1) ~= "" and databank.getStringValue(3) ~= "" then
+         if databank_1.getStringValue(1) ~= "" and databank_1.getStringValue(3) ~= "" then
             showMarker = false
             SU = SU + 10
             length = SU * 200000
@@ -1791,7 +1791,7 @@ function tickVector(unit, system, text)
 
    function altLEFT(unit, system, text)
       if lalt == true then
-         if databank.getStringValue(1) ~= "" and databank.getStringValue(3) ~= "" then
+         if databank_1.getStringValue(1) ~= "" and databank_1.getStringValue(3) ~= "" then
             showMarker = false
             SU = SU - 10
             length = SU * 200000
@@ -1810,18 +1810,18 @@ function tickVector(unit, system, text)
    end
 
    function GEAR(unit, system, text)
-      posExport1 = databank.getStringValue(1)
-      posExport2 = databank.getStringValue(3)
-      --timeExport1 = tonumber(string.format('%0.0f',databank.getFloatValue(2)))
-      --timeExport2 = tonumber(string.format('%0.0f',databank.getFloatValue(2)))
-      timeExport1 = math.floor(databank.getFloatValue(2))
-      timeExport2 = math.floor(databank.getFloatValue(4))
+      posExport1 = databank_1.getStringValue(1)
+      posExport2 = databank_1.getStringValue(3)
+      --timeExport1 = tonumber(string.format('%0.0f',databank_1.getFloatValue(2)))
+      --timeExport2 = tonumber(string.format('%0.0f',databank_1.getFloatValue(2)))
+      timeExport1 = math.floor(databank_1.getFloatValue(2))
+      timeExport2 = math.floor(databank_1.getFloatValue(4))
 
       system.print("The coordinates were exported to the screen")
 
-      screen.setHTML(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
+      screen_1.setHTML(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
       --system.logInfo('testLua: ```'..posExport1..'/'..posExport2..'/'..timeExport..'```')
-      --screen.activate()
+      --screen_1.activate()
    end
 
    function radarPos(system,radar)
@@ -1835,9 +1835,9 @@ function tickVector(unit, system, text)
          if pos1 ~= 0 and pos2 == 0 and GHUD_export_mode == false then
 
             pos2 = '::pos{0,0,'..p.x..','..p.y..','..p.z..'}'
-            databank.setStringValue(3, pos2)
+            databank_1.setStringValue(3, pos2)
             pos2time = math.floor(system.getUtcTime())
-            databank.setFloatValue(4, pos2time)
+            databank_1.setFloatValue(4, pos2time)
             system.print(pos2 .." pos2 saved")
 
             pos11 = zeroConvertToWorldCoordinates(pos1, system)
@@ -1870,14 +1870,14 @@ function tickVector(unit, system, text)
 
             system.print("---------------")
             system.print("The coordinates are set manually!")
-            posExport1 = databank.getStringValue(1)
-            posExport2 = databank.getStringValue(3)
-            timeExport1 = math.floor(databank.getFloatValue(2))
-            timeExport2 = math.floor(databank.getFloatValue(4))
+            posExport1 = databank_1.getStringValue(1)
+            posExport2 = databank_1.getStringValue(3)
+            timeExport1 = math.floor(databank_1.getFloatValue(2))
+            timeExport2 = math.floor(databank_1.getFloatValue(4))
 
             system.print("The coordinates were exported to the screen")
 
-            screen.setHTML(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
+            screen_1.setHTML(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
             system.print("Target speed: " .. tspeed1 .. " km/h")
             --unit.setTimer("marker", 1)
             --system.showScreen(1)
@@ -1886,9 +1886,9 @@ function tickVector(unit, system, text)
 
          if pos1 == 0 and GHUD_export_mode == false then
             pos1 = '::pos{0,0,'..p.x..','..p.y..','..p.z..'}'
-            databank.setStringValue(1, pos1)
-            pos1time = math.floor(UTCscaner(system))
-            databank.setFloatValue(2, pos1time)
+            databank_1.setStringValue(1, pos1)
+            pos1time = math.floor(system.getUtcTime())
+            databank_1.setFloatValue(2, pos1time)
             system.print(pos1 .. " pos1 saved")
          end
       end
