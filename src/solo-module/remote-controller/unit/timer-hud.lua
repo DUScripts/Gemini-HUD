@@ -140,7 +140,7 @@ if math.ceil(HP) <= 50 then
       brakeDist = string.format(math.floor(dis))
       brakeS = "M"
    end
-
+   local closestPlanet = getClosestPlanet(shipPos)
    AR_planets = ''
    AR_asteroid = ''
    AR_pvpzone = ''
@@ -197,43 +197,45 @@ if math.ceil(HP) <= 50 then
 
             for BodyId in pairs(atlas[0]) do
                local planet=atlas[0][BodyId]
-               if (planet.type[1] == 'Planet' or planet.isSanctuary == true) then
-                  drawonradar(vec3(planet.center),planet.name[1])
-                  local point1 = library.getPointOnScreen({planet.center.x,planet.center.y,planet.center.z})
-                  if point1[3] > 0 then --visible zone
-                     local dist = vec3(shipPos - vec3(planet.center)):len()
-                     local sdist = ''
-                     if dist >= 100000 then
-                        dist = string.format('%0.2f', dist/200000)
-                        sdist = 'SU'
-                     elseif dist >= 1000 and dist < 100000 then
-                        dist = string.format('%0.1f', dist/1000)
-                        sdist = 'KM'
-                     else
-                        dist = string.format('%0.0f', dist)
-                        sdist = 'M'
+               if planet ~= closestPlanet then
+                  if (planet.type[1] == 'Planet' or planet.isSanctuary == true) then
+                     drawonradar(vec3(planet.center),planet.name[1])
+                     local point1 = library.getPointOnScreen({planet.center.x,planet.center.y,planet.center.z})
+                     if point1[3] > 0 then --visible zone
+                        local dist = vec3(shipPos - vec3(planet.center)):len()
+                        local sdist = ''
+                        if dist >= 100000 then
+                           dist = string.format('%0.2f', dist/200000)
+                           sdist = 'SU'
+                        elseif dist >= 1000 and dist < 100000 then
+                           dist = string.format('%0.1f', dist/1000)
+                           sdist = 'KM'
+                        else
+                           dist = string.format('%0.0f', dist)
+                           sdist = 'M'
+                        end
+                        local x2 = screenWidth*point1[1] - 50
+                        local y2 = screenHeight*point1[2] - 50
+                        AR_planets = AR_planets .. [[
+                        <style>
+                        .pl]]..planet.name[1]..[[ {
+                           position: absolute;
+                           width: 100px;
+                           height: 100px;
+                           left: ]]..x2..[[px;
+                           top: ]]..y2..[[px;
+                        }
+                        </style>
+                        <div class="pl]]..planet.name[1]..[["><?xml version="1.0" encoding="utf-8"?>
+                        <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+                        <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #FFB12C; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
+                        <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">]]..planet.name[1]..[[</text>
+                        <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
+                        <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..sdist..[[</text>
+                        </svg></div>]]
                      end
-                     local x2 = screenWidth*point1[1] - 50
-                     local y2 = screenHeight*point1[2] - 50
-                     AR_planets = AR_planets .. [[
-                     <style>
-                     .pl]]..planet.name[1]..[[ {
-                        position: absolute;
-                        width: 100px;
-                        height: 100px;
-                        left: ]]..x2..[[px;
-                        top: ]]..y2..[[px;
-                     }
-                     </style>
-                     <div class="pl]]..planet.name[1]..[["><?xml version="1.0" encoding="utf-8"?>
-                     <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
-                     <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #FFB12C; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
-                     <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">]]..planet.name[1]..[[</text>
-                     <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
-                     <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..sdist..[[</text>
-                     </svg></div>]]
                   end
-               end --end draw radar
+               end
             end
             drawonradar(safeWorldPos,"CENTRAL SZ")
             if asteroidPOS ~= "" then
@@ -256,7 +258,7 @@ if math.ceil(HP) <= 50 then
                   local y2 = screenHeight*point1[2] - 50
                   AR_asteroid = [[
                   <style>
-                  .marker]].GHUD_marker_name..[[ {
+                  .marker]]..GHUD_marker_name..[[ {
                      position: absolute;
                      width: 100px;
                      height: 100px;
@@ -280,7 +282,6 @@ if math.ceil(HP) <= 50 then
          end
 
          function safeZone()
-            local closestPlanet = getClosestPlanet(shipPos)
             local mabs = math.abs
             local safeRadius = 18000000
             local szradius = 500000
@@ -341,7 +342,7 @@ if math.ceil(HP) <= 50 then
             end
          end
          if szsafe == true then
-            safetext='<green1>'..safeStatus..'</green1>'
+            safetext='<red1>'..safeStatus..'</red1>'
             local point1 = library.getPointOnScreen({safeVector.x,safeVector.y,safeVector.z})
             if point1[3] > 0 then --visible zone
                local dist = vec3(shipPos - safeVector):len()
@@ -370,49 +371,47 @@ if math.ceil(HP) <= 50 then
                </style>
                <div class="pvpzoneAR"><?xml version="1.0" encoding="utf-8"?>
                <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
-               <ellipse style="fill: rgba(0, 0, 0, 0); stroke: red; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
+               <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #fc033d; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
                <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">PVP ZONE</text>
                <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
                <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..sdist..[[</text>
                </svg></div>]]
             end
          else
-            safetext='<red1>'..safeStatus..'</red1>'
-            if DisplayRadar==false then
-               local point1 = library.getPointOnScreen({safeVector.x,safeVector.y,safeVector.z})
-               if point1[3] > 0 then --visible zone
-                  local dist = vec3(shipPos - safeVector):len()
-                  local sdist = ''
-                  if dist >= 100000 then
-                     dist = string.format('%0.2f', dist/200000)
-                     sdist = 'SU'
-                  elseif dist >= 1000 and dist < 100000 then
-                     dist = string.format('%0.1f', dist/1000)
-                     sdist = 'KM'
-                  else
-                     dist = string.format('%0.0f', dist)
-                     sdist = 'M'
-                  end
-                  local x2 = screenWidth*point1[1] - 50
-                  local y2 = screenHeight*point1[2] - 50
-                  AR_safezone = [[
-                  <style>
-                  .safezoneAR {
-                     position: absolute;
-                     width: 100px;
-                     height: 100px;
-                     left: ]]..x2..[[px;
-                     top: ]]..y2..[[px;
-                  }
-                  </style>
-                  <div class="safezoneAR"><?xml version="1.0" encoding="utf-8"?>
-                  <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse style="fill: rgba(0, 0, 0, 0); stroke: red; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
-                  <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">SAFE ZONE</text>
-                  <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
-                  <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..sdist..[[</text>
-                  </svg></div>]]
+            safetext='<green1>'..safeStatus..'</green1>'
+            local point1 = library.getPointOnScreen({safeVector.x,safeVector.y,safeVector.z})
+            if point1[3] > 0 then --visible zone
+               local dist = vec3(shipPos - safeVector):len()
+               local sdist = ''
+               if dist >= 100000 then
+                  dist = string.format('%0.2f', dist/200000)
+                  sdist = 'SU'
+               elseif dist >= 1000 and dist < 100000 then
+                  dist = string.format('%0.1f', dist/1000)
+                  sdist = 'KM'
+               else
+                  dist = string.format('%0.0f', dist)
+                  sdist = 'M'
                end
+               local x2 = screenWidth*point1[1] - 50
+               local y2 = screenHeight*point1[2] - 50
+               AR_safezone = [[
+               <style>
+               .safezoneAR {
+                  position: absolute;
+                  width: 100px;
+                  height: 100px;
+                  left: ]]..x2..[[px;
+                  top: ]]..y2..[[px;
+               }
+               </style>
+               <div class="safezoneAR"><?xml version="1.0" encoding="utf-8"?>
+               <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+               <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #07e88e; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
+               <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">SAFE ZONE</text>
+               <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
+               <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..sdist..[[</text>
+               </svg></div>]]
             end
          end
 
