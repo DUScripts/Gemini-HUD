@@ -661,19 +661,19 @@ if math.ceil(HP) <= 50 then
          <div class="shield1"><?xml version="1.0" encoding="utf-8"?>
          <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
          <defs>
-         <linearGradient id="AM_gradient" x1="100%"; x2="0%";>
+         <linearGradient id="AM_gradient" x1="100%" x2="0%">
          <stop stop-color="#fc033d" offset="]]..AM_svg..[[" />
          <stop stop-color="rgb(15, 100, 212)" offset="0" />
          </linearGradient>
-         <linearGradient id="EM_gradient" x1="100%"; x2="0%";>
+         <linearGradient id="EM_gradient" x1="100%" x2="0%">
          <stop stop-color="#fc033d" offset="]]..EM_svg..[[" />
          <stop stop-color="rgb(15, 100, 212)" offset="0" />
          </linearGradient>
-         <linearGradient id="TH_gradient" x1="100%"; x2="0%";>
+         <linearGradient id="TH_gradient" x1="100%" x2="0%">
          <stop stop-color="#fc033d" offset="]]..TH_svg..[[" />
          <stop stop-color="rgb(15, 100, 212)" offset="0" />
          </linearGradient>
-         <linearGradient id="KI_gradient" x1="100%"; x2="0%";>
+         <linearGradient id="KI_gradient" x1="100%" x2="0%">
          <stop stop-color="#fc033d" offset="]]..KI_svg..[[" />
          <stop stop-color="rgb(15, 100, 212)" offset="0" />
          </linearGradient>
