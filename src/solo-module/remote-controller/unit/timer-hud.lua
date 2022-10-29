@@ -133,6 +133,7 @@ if math.ceil(HP) <= 50 then
    local m0 = core.getConstructMass()
    local v0 = vec3(construct.getWorldVelocity())
    local speed = math.floor(v0):len() * 3.6)
+   local maxSpeed = math.floor(construct.getMaxSpeed() * 3.6)
    local controllerData = json.decode(unit.getData())
    local maxBrakeThrust = controllerData.maxBrake
    local dis = 0.0
@@ -572,6 +573,10 @@ if math.ceil(HP) <= 50 then
          white1 {
             color: white;
          }
+         mspeed {
+            color: white;
+            opacity: 0.25;
+         }
          blue1 {
             color: rgb(0, 191, 255);
          }
@@ -645,7 +650,7 @@ if math.ceil(HP) <= 50 then
          <div class="safez">]]..safetext..[[</div>
          <div class="pipe">]]..pD()..[[</div>
          <div class="center1"></div>
-         <div class="right1"><it>THRUST</it><br><div class="thrust1">]]..thrust1..[[</div><orange1>%</orange1><br><it>SPEED</it><br><div class="speed1">]]..speed..[[</div><orange1>KM/H</orange1><br><it>ACCEL</it><br><div class="accel1">]]..accel..[[</div><orange1>G</orange1><br><it>BRAKE-DISTANCE</it><br><div class="brakedist">]]..brakeDist..[[</div><orange1>]]..brakeS..[[</orange1></div>
+         <div class="right1"><it>THRUST</it><br><div class="thrust1">]]..thrust1..[[</div><orange1>%</orange1><br><it>SPEED</it><br><div class="speed1">]]..speed..[[</div><orange1>KM/H</orange1><mspeed> ]]..maxSpeed..[[</mspeed><br><it>ACCEL</it><br><div class="accel1">]]..accel..[[</div><orange1>G</orange1><br><it>BRAKE-DISTANCE</it><br><div class="brakedist">]]..brakeDist..[[</div><orange1>]]..brakeS..[[</orange1></div>
          <div class="left1"><it>SHIELD</it><div class="shield2"><svg viewBox="0 0 100 100" fill="none" stroke="]]..shieldColor..[[" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
          <path d="M 50 60 C 50 60 58 56 58 50 L 58 43 L 50 40 L 42 43 L 42 50 C 42 56 50 60 50 60 Z"/>
          </svg></div><br><div class="shieldtext">]]..formatted_hp..[[</div><orange1>%</orange1><br><it>FUEL</it><div class="fuel1"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
