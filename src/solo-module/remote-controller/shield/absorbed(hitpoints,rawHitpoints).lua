@@ -29,7 +29,7 @@ if shield.getResistancesCooldown() == 0 and shoteCount >= 5 and GHUD_shield_auto
             if res[1] > 0 then
                AM_stroke_color = '#FFB12C'
                AMstrokeWidth = 2
-               unit.setTimer('AM')
+               unit.setTimer('AM',0.16)
             else
                AM_stroke_color = 'rgb(66, 167, 245)'
                AMstrokeWidth = 1
@@ -37,7 +37,7 @@ if shield.getResistancesCooldown() == 0 and shoteCount >= 5 and GHUD_shield_auto
             if res[2] > 0 then
                EM_stroke_color = '#FFB12C'
                EMstrokeWidth = 2
-               unit.setTimer('EM')
+               unit.setTimer('EM',0.16)
             else
                EM_stroke_color = 'rgb(66, 167, 245)'
                EMstrokeWidth = 1
@@ -45,7 +45,7 @@ if shield.getResistancesCooldown() == 0 and shoteCount >= 5 and GHUD_shield_auto
             if res[3] > 0 then
                KI_stroke_color = '#FFB12C'
                KIstrokeWidth = 2
-               unit.setTimer('KI')
+               unit.setTimer('KI',0.16)
             else
                KI_stroke_color = 'rgb(66, 167, 245)'
                KIstrokeWidth = 1
@@ -53,7 +53,7 @@ if shield.getResistancesCooldown() == 0 and shoteCount >= 5 and GHUD_shield_auto
             if res[4] > 0 then
                TH_stroke_color = '#FFB12C'
                THstrokeWidth = 2
-               unit.setTimer('TH')
+               unit.setTimer('TH',0.16)
             else
                TH_stroke_color = 'rgb(66, 167, 245)'
                THstrokeWidth = 1
@@ -78,7 +78,7 @@ if shield.getResistancesCooldown() == 0 and shoteCount >= 5 and GHUD_shield_auto
             if re[1] > 0 then
                AM_stroke_color = '#FFB12C'
                AMstrokeWidth = 2
-               unit.setTimer('AM')
+               unit.setTimer('AM',0.16)
             else
                AM_stroke_color = 'rgb(66, 167, 245)'
                AMstrokeWidth = 1
@@ -86,7 +86,7 @@ if shield.getResistancesCooldown() == 0 and shoteCount >= 5 and GHUD_shield_auto
             if re[2] > 0 then
                EM_stroke_color = '#FFB12C'
                EMstrokeWidth = 2
-               unit.setTimer('EM')
+               unit.setTimer('EM',0.16)
             else
                EM_stroke_color = 'rgb(66, 167, 245)'
                EMstrokeWidth = 1
@@ -94,7 +94,7 @@ if shield.getResistancesCooldown() == 0 and shoteCount >= 5 and GHUD_shield_auto
             if re[3] > 0 then
                KI_stroke_color = '#FFB12C'
                KIstrokeWidth = 2
-               unit.setTimer('KI')
+               unit.setTimer('KI',0.16)
             else
                KI_stroke_color = 'rgb(66, 167, 245)'
                KIstrokeWidth = 1
@@ -102,7 +102,7 @@ if shield.getResistancesCooldown() == 0 and shoteCount >= 5 and GHUD_shield_auto
             if re[4] > 0 then
                TH_stroke_color = '#FFB12C'
                THstrokeWidth = 2
-               unit.setTimer('TH')
+               unit.setTimer('TH',0.16)
             else
                TH_stroke_color = 'rgb(66, 167, 245)'
                THstrokeWidth = 1
