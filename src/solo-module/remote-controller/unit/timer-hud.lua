@@ -124,8 +124,6 @@ if math.ceil(HP) <= 50 then
          shieldAlarm = false
       end
    end
-   ---
-   resistance_SVG()
    local thrust1 = math.floor(unit.getThrottle())
    --brake distance
    local accel = math.floor((json.decode(unit.getWidgetData()).acceleration/9.80665)*10)/10
@@ -696,6 +694,10 @@ if math.ceil(HP) <= 50 then
          <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -219.543004, -41.161256)"><tspan x="351.543" y="319.558">EM</tspan></text>
          <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -219.543004, -86.161257)"><tspan x="351.543" y="319.558">AM</tspan></text>
          <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 20px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 1.25px; text-anchor: middle;" transform="matrix(1, 0, 0, 1, -93.528017, -62.474306)"><tspan x="352" y="320">]]..formatted_hp..[[%</tspan></text>
+         ]]..AM_res..[[
+         ]]..EM_res..[[
+         ]]..KI_res..[[
+         ]]..TH_res..[[
          </svg></div>
          <div class="dotsight"><?xml version="1.0" encoding="utf-8"?>
          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">

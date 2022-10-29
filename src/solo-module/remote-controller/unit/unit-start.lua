@@ -11,11 +11,6 @@ stellarObjects = atlas[0]
 shipPos = vec3(construct.getWorldPosition())
 safeWorldPos = vec3({13771471,7435803,-128971})
 
-AMstrokeWidth = 1
-EMstrokeWidth = 1
-THstrokeWidth = 1
-KIstrokeWidth = 1
-
 --shield
 damageLine = ''
 ccsLineHit = ''
@@ -48,46 +43,56 @@ AM_svg = 0
 EM_svg = 0
 TH_svg = 0
 KI_svg = 0
-AM_stroke_color = 'rgb(66, 167, 245)'
-EM_stroke_color = 'rgb(66, 167, 245)'
-TH_stroke_color = 'rgb(66, 167, 245)'
-KI_stroke_color = 'rgb(66, 167, 245)'
 
 function resistance_SVG()
-   local data2=shield.getResistances()
-   local AMres = math.floor(data2[1]/resMAX*100)
-   local EMres = math.floor(data2[2]/resMAX*100)
-   local KIres = math.floor(data2[3]/resMAX*100)
-   local THres = math.floor(data2[4]/resMAX*100)
-   if AMres > 0 then
+   local res = shield.getResistances()
+   if res[1] > 0 then
       AM_stroke_color = '#FFB12C'
       AMstrokeWidth = 2
    else
       AM_stroke_color = 'rgb(66, 167, 245)'
       AMstrokeWidth = 1
    end
-   if EMres > 0 then
+   if res[2] > 0 then
       EM_stroke_color = '#FFB12C'
       EMstrokeWidth = 2
    else
       EM_stroke_color = 'rgb(66, 167, 245)'
       EMstrokeWidth = 1
    end
-   if THres > 0 then
-      TH_stroke_color = '#FFB12C'
-      THstrokeWidth = 2
-   else
-      TH_stroke_color = 'rgb(66, 167, 245)'
-      THstrokeWidth = 1
-   end
-   if KIres > 0 then
+   if res[3] > 0 then
       KI_stroke_color = '#FFB12C'
       KIstrokeWidth = 2
    else
       KI_stroke_color = 'rgb(66, 167, 245)'
       KIstrokeWidth = 1
    end
+   if res[4] > 0 then
+      TH_stroke_color = '#FFB12C'
+      THstrokeWidth = 2
+   else
+      TH_stroke_color = 'rgb(66, 167, 245)'
+      THstrokeWidth = 1
+   end
 end
+
+resistance_SVG()
+am=0
+am_x = -50
+am_opacity = 1
+em=0
+em_x = 0
+em_opacity = 1
+ki=0
+ki_x = 0
+ki_opacity = 1
+th=0
+th_x = 0
+th_opacity = 1
+AM_res = ''
+EM_res = ''
+KI_res = ''
+TH_res = ''
 
 function damage_SVG()
    if damage > 0 then
