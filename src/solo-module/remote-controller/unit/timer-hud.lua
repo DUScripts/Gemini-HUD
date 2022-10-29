@@ -24,24 +24,6 @@ if (system.getTime() - lastShotTime) >= 40 then
    shoteCount = 0
 end
 
-if GHUD_shield_auto_calibration
-then
-   if GHUD_shield_calibration_max then
-      shieldText = "SHIELD (AUTO,MAX)"
-   end
-   if not GHUD_shield_calibration_max then
-      shieldText = "SHIELD (AUTO,50)"
-   end
-else
-   if GHUD_shield_calibration_max then
-      shieldText = "SHIELD (MANUAL,MAX)"
-   end
-
-   if not GHUD_shield_calibration_max then
-      shieldText = "SHIELD (MANUAL,50)"
-   end
-end
-
 resisttime = shield.getResistancesCooldown()
 if resisttime ~= 0 then
    if resisttime < resisttimemax  then

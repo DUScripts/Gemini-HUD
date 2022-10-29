@@ -76,6 +76,41 @@ function resistance_SVG()
    end
 end
 
+function actionRes(res)
+   if res[1] > 0 then
+      AM_stroke_color = '#FFB12C'
+      AMstrokeWidth = 2
+      unit.setTimer('AM',0.016)
+   else
+      AM_stroke_color = 'rgb(66, 167, 245)'
+      AMstrokeWidth = 1
+   end
+   if res[2] > 0 then
+      EM_stroke_color = '#FFB12C'
+      EMstrokeWidth = 2
+      unit.setTimer('EM',0.016)
+   else
+      EM_stroke_color = 'rgb(66, 167, 245)'
+      EMstrokeWidth = 1
+   end
+   if res[3] > 0 then
+      KI_stroke_color = '#FFB12C'
+      KIstrokeWidth = 2
+      unit.setTimer('KI',0.016)
+   else
+      KI_stroke_color = 'rgb(66, 167, 245)'
+      KIstrokeWidth = 1
+   end
+   if res[4] > 0 then
+      TH_stroke_color = '#FFB12C'
+      THstrokeWidth = 2
+      unit.setTimer('TH',0.016)
+   else
+      TH_stroke_color = 'rgb(66, 167, 245)'
+      THstrokeWidth = 1
+   end
+end
+
 resistance_SVG()
 am=0
 am_x = -50
