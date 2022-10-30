@@ -87,7 +87,7 @@ if string.sub(tag, 1, 1) == 'w' then
           opacity: ]]..target[tag].opacity..[[;
           background-color: ]]..GHUD_radar_notification_background_color..[[;
           border: 2px solid black;
-          ]]..GHUD_border_radius..[[
+          border-radius: ]]..GHUD_border_radius..[[;
           padding: 12px;
           margin-top: -2px;
           font-weight: bold;
@@ -113,7 +113,7 @@ if string.sub(tag, 1, 1) == 'w' then
              unit.stopTimer(tag)
           end
        end
-    end--ghud stylee check
+    end--ghud style check
     if GHUD_radar_notifications_style == 2 then
         if target[tag].left > 80 then target[tag].left = target.left - 0.25 end
         if target[tag].left < 80 then target[tag].left = 80 end
@@ -127,7 +127,7 @@ if string.sub(tag, 1, 1) == 'w' then
            opacity: ]]..target[tag].opacity..[[;
            background-color: ]]..GHUD_radar_notification_background_color..[[;
            border: 2px solid black;
-           ]]..GHUD_border_radius..[[
+           border-radius: ]]..GHUD_border_radius..[[;
            padding: 12px;
            margin-top: -2px;
            font-weight: bold;
@@ -152,5 +152,5 @@ if string.sub(tag, 1, 1) == 'w' then
               unit.stopTimer(tag)
            end
         end
-     end--ghud stylee check
+     end--ghud style check
  end

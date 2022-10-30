@@ -38,9 +38,9 @@ GHUD_windowed_mode = false --export: adds 2 to the height GHUD_allies_Y
 collectgarbages = true --export:
 
 if GHUD_radar_notification_border_radius == true then
-   GHUD_ border_radius = 'border-radius: 15px;'
+   GHUD_ border_radius = '15px'
 else
-   GHUD_ border_radius = ''
+   GHUD_ border_radius = 'none'
 end
 
 GHUD_allies_count1 = GHUD_allies_count + 1
