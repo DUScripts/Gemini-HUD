@@ -10,6 +10,9 @@ targetSpeed = 29999 --export: Target speed
 GHUD_background_color = "#142027" --export:
 GHUD_AR_sight_color = "rgb(0, 191, 255)" --export:
 GHUD_weapon_panels = 3 --export:
+GHUD_radar_notifications_style = 1 --export:
+GHUD_radar_notification_background_color = '#FFB12C' --export:
+GHUD_radar_notification_border_radius = true --export: 
 GHUD_log_stats = true --export: Send target statistics to LUA channel
 GHUD_show_allies = true --export: Show allies
 GHUD_allies_count = 5 --export: Count of displayed allies. Selected ally will always be displayed
@@ -33,6 +36,12 @@ GHUD_border_color = "black" --export:
 GHUD_allies_Y = 0 --export: set to 0 if playing in fullscreen mode
 GHUD_windowed_mode = false --export: adds 2 to the height GHUD_allies_Y
 collectgarbages = true --export:
+
+if GHUD_radar_notification_border_radius == true then
+   GHUD_ border_radius = 'border-radius: 15px;'
+else
+   GHUD_ border_radius = ''
+end
 
 GHUD_allies_count1 = GHUD_allies_count + 1
 
@@ -86,6 +95,10 @@ radarStaticData = {}
 radarDynamicWidget = {}
 radarDynamicData = {}
 radarWidget = ''
+targets = {}
+target = {}
+count = 0
+cnt = 0
 shipName = core.getConstructName()
 conID = core.getConstructId()
 system.print(''..shipName..': '..conID..'')
@@ -461,6 +474,14 @@ local function main()
                   if radar.isConstructAbandoned(v) == 0 then
                      local msg = 'NEW TARGET: '..name..' - '..v..' - Size: '..size..'\nYour pos: '..t_radarEnter[v].pos..''
                      table.insert(loglist, msg)
+                     --hud notidications
+                     if cnt < 10 then --max 10 notifications
+                     cnt = cnt + 1
+                     count = count + 1
+                     local a = 'a'..cnt
+                     target[a] = {left = 100, opacity = 1, name1 = name, size1 = size, id = v%1000, one = true, check = true, delay = 0}
+                     unit.setTimer(a,0.016)
+                     end
                   else
                      local pos = radar.getConstructWorldPos(v)
                      pos = '::pos{0,0,'..pos[1]..','..pos[2]..','..pos[3]..'}'

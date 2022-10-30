@@ -136,6 +136,7 @@ end
 
 local hitsHUD = ''
 local missesHUD = ''
+local targetsHUD = ''
 
 for k,v in pairs(hits) do
    if hits[k] ~= nil then
@@ -148,6 +149,11 @@ for k,v in pairs(misses) do
 missesHUD = missesHUD .. misses[k].html
    end
 end
+
+for k,v in pairs(targets) do
+   targetsHUD = targetsHUD .. v
+end
+targets = {}
 
 local htmlHUD = [[
    <html>
@@ -164,6 +170,7 @@ local htmlHUD = [[
    ]]..sight..[[
    ]]..missesHUD..[[
    ]]..hitsHUD..[[
+   ]]..targetsHUD..[[   
    ]]..gunnerHUD..[[
    </body>
    </html>

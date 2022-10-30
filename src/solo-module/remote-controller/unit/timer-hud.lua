@@ -140,7 +140,7 @@ if math.ceil(HP) <= 50 then
       brakeDist = string.format(math.floor(dis))
       brakeS = "M"
    end
-   local closestPlanet = getClosestPlanet(shipPos)
+   --local closestPlanet = getClosestPlanet(shipPos)
    AR_planets = ''
    AR_asteroid = ''
    AR_pvpzone = ''
