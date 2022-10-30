@@ -487,6 +487,14 @@ local function main()
                      pos = '::pos{0,0,'..pos[1]..','..pos[2]..','..pos[3]..'}'
                      local msg = 'NEW TARGET (abandoned): '..name..' - '..v..' - Size: '..size..'\nTarget pos:'..pos..''
                      table.insert(loglist, msg)
+                     --hud notidications
+                     if cnt < 10 then --max 10 notifications
+                        cnt = cnt + 1
+                        count = count + 1
+                        local a = 'a'..cnt
+                        target[a] = {left = 100, opacity = 1, name1 = name, size1 = size, id = v%1000, one = true, check = true, delay = 0}
+                        unit.setTimer(a,0.016)
+                     end
                   end
                end
                t_radarEnter[v] = nil
