@@ -359,12 +359,12 @@ for slot_name, slot in pairs(unit) do
       if string.find(slot.getElementClass(), 'Radar') ~= nil then
          radar = slot
       end
-   --    if slot.getElementClass():lower():find("databank") then
-   --       databank = slot
-   --  end    
-   --  if slot.getElementClass():lower():find("screen") then
-   --       screen = slot
-   --  end
+      --    if slot.getElementClass():lower():find("databank") then
+      --       databank = slot
+      --  end
+      --  if slot.getElementClass():lower():find("screen") then
+      --       screen = slot
+      --  end
    end
 end
 
@@ -470,12 +470,12 @@ function main()
                      local msg = 'NEW TARGET: '..name..' - '..v..' - Size: '..size..'\nYour pos: '..t_radarEnter[v].pos..''
                      table.insert(loglist, msg)
                      if count < 10 then --max 10 notifications
-                     count = count + 1
-                     if target[count] == nil then
-                     target[count] = {left = 100, opacity = 1, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0}
+                        count = count + 1
+                        if target[count] == nil then
+                           target[count] = {left = 100, opacity = 1, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0}
+                        end
+                        system.playSound('enter.mp3')
                      end
-                     system.playSound('enter.mp3')
-                  end
                   else
                      local pos = radar.getConstructWorldPos(v)
                      pos = '::pos{0,0,'..pos[1]..','..pos[2]..','..pos[3]..'}'
@@ -484,7 +484,7 @@ function main()
                      if count < 10 then --max 10 notifications
                         count = count + 1
                         if target[count] == nil then
-                        target[count] = {left = 100, opacity = 1, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0}
+                           target[count] = {left = 100, opacity = 1, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0}
                         end
                      end
                      system.playSound('sonar.mp3')
@@ -1916,7 +1916,167 @@ function tickVector(unit, system, text)
    end
 
    start(unit,system,text)
-   
+
+   local preloader = [[
+   <html>
+   <style>
+   .imgLogo {
+      position: relative;
+      margin-top: 8vh;
+      height: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      background-image: url("assets.prod.novaquark.com/3014/36dec597-dbf2-46a4-95c7-8e135dd77889.png");
+      background-size: 25vw;
+      background-repeat: no-repeat;
+      background-position: center center;
+      transition: background 800ms ease-in 800ms;
+   }
+
+   .text {
+      top: 0;
+      left: 0;
+      width: fit-content;
+      position: relative;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      font-size: 40px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: bold;
+      color: white;
+      transition: background 800ms ease-in 800ms;
+   }
+
+   .fade-in {
+      animation: fadeIn ease 3s;
+      -webkit-animation: fadeIn ease 3s;
+      -moz-animation: fadeIn ease 3s;
+      -o-animation: fadeIn ease 3s;
+      -ms-animation: fadeIn ease 3s;
+   }
+
+   @keyframes fadeIn {
+      0% {
+         opacity: 0;
+      }
+
+      100% {
+         opacity: 1;
+      }
+   }
+
+   @-moz-keyframes fadeIn {
+      0% {
+         opacity: 0;
+      }
+
+      100% {
+         opacity: 1;
+      }
+   }
+
+   @-webkit-keyframes fadeIn {
+      0% {
+         opacity: 0;
+      }
+
+      100% {
+         opacity: 1;
+      }
+   }
+
+   @-o-keyframes fadeIn {
+      0% {
+         opacity: 0;
+      }
+
+      100% {
+         opacity: 1;
+      }
+   }
+
+   @-ms-keyframes fadeIn {
+      0% {
+         opacity: 0;
+      }
+
+      100% {
+         opacity: 1;
+      }
+   }
+
+   .spinner {
+      top: 30px;
+      width: 70px;
+      text-align: center;
+      position: relative;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 0;
+   }
+
+   .spinner>div {
+      width: 18px;
+      height: 18px;
+      background-color: #14dbcb;
+      border-radius: 100%;
+      display: inline-block;
+      -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+      animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+   }
+
+   .spinner .bounce1 {
+      -webkit-animation-delay: -0.32s;
+      animation-delay: -0.32s;
+   }
+
+   .spinner .bounce2 {
+      -webkit-animation-delay: -0.16s;
+      animation-delay: -0.16s;
+   }
+
+   @-webkit-keyframes sk-bouncedelay {
+
+      0%,
+      80%,
+      100% {
+         -webkit-transform: scale(0)
+      }
+
+      40% {
+         -webkit-transform: scale(1.0)
+      }
+   }
+
+   @keyframes sk-bouncedelay {
+
+      0%,
+      80%,
+      100% {
+         -webkit-transform: scale(0);
+         transform: scale(0);
+      }
+
+      40% {
+         -webkit-transform: scale(1.0);
+         transform: scale(1.0);
+      }
+   }
+   </style>
+   <body>
+   <div class="imgLogo fade-in"></div>
+   <div class="text fade-in">GEMINI FOUNDATION</div>
+   <div class="spinner">
+   <div class="bounce1"></div>
+   <div class="bounce2"></div>
+   <div class="bounce3"></div>
+   </div>
+   </body>
+   </html>
+   ]]
+   system.setScreen(preloader)
    unit.setTimer("delay", 1)
 
    --clean performance
