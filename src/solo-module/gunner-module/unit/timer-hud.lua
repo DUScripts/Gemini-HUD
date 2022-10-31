@@ -157,8 +157,8 @@ for k,v in pairs(lastHitTime) do
          font-family: verdana;
          font-style: normal;
          font-weight: bold;
-         color: yellow;
-         text-shadow: 4px 0 1px orange, 0 1px 1px #000, -1px 0 1px #000, 0 -1px 1px #000;
+         color: #FFB12C;
+         text-shadow: 4px 0 1px #FFB12C, 0 1px 1px #000, -1px 0 1px #000, 0 -1px 1px #000;
          opacity: ]]..lastHitTime[k].hitOpacity..[[;
          transform: translate(-50%, -50%);
       }
@@ -196,8 +196,8 @@ for k,v in pairs(lastMissTime) do
          font-family: verdana;
          font-style: normal;
          font-weight: bold;
-         color: red;
-         text-shadow: 4px 0 1px orange, 0 1px 1px #000, -1px 0 1px #000, 0 -1px 1px #000;
+         color: #fc033d;
+         text-shadow: 4px 0 1px #fc033d, 0 1px 1px #000, -1px 0 1px #000, 0 -1px 1px #000;
          opacity: ]]..lastMissTime[k].missOpacity..[[;
          transform: translate(-50%, -50%);
       }
