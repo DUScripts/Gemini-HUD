@@ -519,7 +519,7 @@ end
 end
 
 shipName = core.getConstructName()
-conID = string.format("%03d", core.getConstructId()%1000)
+conID = tostring(core.getConstructId()):sub(-3)
 bhelper = false
 system.showHelper(0)
 distS = ''
