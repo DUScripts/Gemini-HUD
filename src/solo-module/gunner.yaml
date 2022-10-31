@@ -29,10 +29,6 @@ handlers:
             args: ['hud']
             lua: |
 
-        
-        onTimer(timerid):
-            lua: |
-                tickVector(unit,system,text)        
         onTimer:
             args: ['vectorhud']
             lua: |
@@ -64,8 +60,7 @@ handlers:
         onTimer:
             args: ['delay']
             lua: |
-                if firstload == 0 then firstload1=firstload1+1 end
-                if firstload1==5 then --5 sec radar delay for 1st run all targets fix
+                if (system.getTime() - startTime) > 5 then
                 firstload = 1
                 unit.setTimer("hud", 0.016) --main
                 if GHUD_log_stats then
@@ -104,135 +99,107 @@ handlers:
         onHit(targetId,damage):
             lua: |
                 local damage1 = damage
-                local randomNumber = math.random(10000, 1000000)
                 hitAnimations = hitAnimations + 1
-                lastHitTime['w'..damage1..randomNumber] = {damage = damage1, time = 0, hitOpacity = 1, anims = hitAnimations}
+                lastHitTime[hitAnimations] = {damage = damage1, time = 0, hitOpacity = 1, anims = hitAnimations}
                 if totalDamage[targetId] ~= nil then --target damage calculation concept
                     totalDamage[targetId].damage = totalDamage[targetId].damage + damage1
                 else
                     totalDamage[targetId] = {damage = damage1}
                 end
-                unit.setTimer('w'..damage1..randomNumber, 0.016)
         onMissed(targetId):
             lua: |
-                local miss = math.random(10000,1000000)
                 missAnimations = missAnimations + 1
-                lastMissTime['k'..miss] = {time = 0, missOpacity = 1, anims = missAnimations}
-                unit.setTimer('k'..miss, 0.016)
+                lastMissTime[missAnimations] = {time = 0, missOpacity = 1, anims = missAnimations}
     weapon_2:
         onHit(targetId,damage):
             lua: |
                 local damage1 = damage
-                local randomNumber = math.random(10000, 1000000)
                 hitAnimations = hitAnimations + 1
-                lastHitTime['w'..damage1..randomNumber] = {damage = damage1, time = 0, hitOpacity = 1, anims = hitAnimations}
+                lastHitTime[hitAnimations] = {damage = damage1, time = 0, hitOpacity = 1, anims = hitAnimations}
                 if totalDamage[targetId] ~= nil then --target damage calculation concept
                     totalDamage[targetId].damage = totalDamage[targetId].damage + damage1
                 else
                     totalDamage[targetId] = {damage = damage1}
                 end
-                unit.setTimer('w'..damage1..randomNumber, 0.016)
         onMissed(targetId):
             lua: |
-                local miss = math.random(10000,1000000)
                 missAnimations = missAnimations + 1
-                lastMissTime['k'..miss] = {time = 0, missOpacity = 1, anims = missAnimations}
-                unit.setTimer('k'..miss, 0.016)
+                lastMissTime[missAnimations] = {time = 0, missOpacity = 1, anims = missAnimations}
     weapon_3:
         onHit(targetId,damage):
             lua: |
                 local damage1 = damage
-                local randomNumber = math.random(10000, 1000000)
                 hitAnimations = hitAnimations + 1
-                lastHitTime['w'..damage1..randomNumber] = {damage = damage1, time = 0, hitOpacity = 1, anims = hitAnimations}
+                lastHitTime[hitAnimations] = {damage = damage1, time = 0, hitOpacity = 1, anims = hitAnimations}
                 if totalDamage[targetId] ~= nil then --target damage calculation concept
                     totalDamage[targetId].damage = totalDamage[targetId].damage + damage1
                 else
                     totalDamage[targetId] = {damage = damage1}
                 end
-                unit.setTimer('w'..damage1..randomNumber, 0.016)
         onMissed(targetId):
             lua: |
-                local miss = math.random(10000,1000000)
                 missAnimations = missAnimations + 1
-                lastMissTime['k'..miss] = {time = 0, missOpacity = 1, anims = missAnimations}
-                unit.setTimer('k'..miss, 0.016)
+                lastMissTime[missAnimations] = {time = 0, missOpacity = 1, anims = missAnimations}
     weapon_4:
         onHit(targetId,damage):
             lua: |
                 local damage1 = damage
-                local randomNumber = math.random(10000, 1000000)
                 hitAnimations = hitAnimations + 1
-                lastHitTime['w'..damage1..randomNumber] = {damage = damage1, time = 0, hitOpacity = 1, anims = hitAnimations}
+                lastHitTime[hitAnimations] = {damage = damage1, time = 0, hitOpacity = 1, anims = hitAnimations}
                 if totalDamage[targetId] ~= nil then --target damage calculation concept
                     totalDamage[targetId].damage = totalDamage[targetId].damage + damage1
                 else
                     totalDamage[targetId] = {damage = damage1}
                 end
-                unit.setTimer('w'..damage1..randomNumber, 0.016)
         onMissed(targetId):
             lua: |
-                local miss = math.random(10000,1000000)
                 missAnimations = missAnimations + 1
-                lastMissTime['k'..miss] = {time = 0, missOpacity = 1, anims = missAnimations}
-                unit.setTimer('k'..miss, 0.016)
+                lastMissTime[missAnimations] = {time = 0, missOpacity = 1, anims = missAnimations}
     weapon_5:
         onHit(targetId,damage):
             lua: |
                 local damage1 = damage
-                local randomNumber = math.random(10000, 1000000)
                 hitAnimations = hitAnimations + 1
-                lastHitTime['w'..damage1..randomNumber] = {damage = damage1, time = 0, hitOpacity = 1, anims = hitAnimations}
+                lastHitTime[hitAnimations] = {damage = damage1, time = 0, hitOpacity = 1, anims = hitAnimations}
                 if totalDamage[targetId] ~= nil then --target damage calculation concept
                     totalDamage[targetId].damage = totalDamage[targetId].damage + damage1
                 else
                     totalDamage[targetId] = {damage = damage1}
                 end
-                unit.setTimer('w'..damage1..randomNumber, 0.016)
         onMissed(targetId):
             lua: |
-                local miss = math.random(10000,1000000)
                 missAnimations = missAnimations + 1
-                lastMissTime['k'..miss] = {time = 0, missOpacity = 1, anims = missAnimations}
-                unit.setTimer('k'..miss, 0.016)
+                lastMissTime[missAnimations] = {time = 0, missOpacity = 1, anims = missAnimations}
     weapon_6:
         onHit(targetId,damage):
             lua: |
                 local damage1 = damage
-                local randomNumber = math.random(10000, 1000000)
                 hitAnimations = hitAnimations + 1
-                lastHitTime['w'..damage1..randomNumber] = {damage = damage1, time = 0, hitOpacity = 1, anims = hitAnimations}
+                lastHitTime[hitAnimations] = {damage = damage1, time = 0, hitOpacity = 1, anims = hitAnimations}
                 if totalDamage[targetId] ~= nil then --target damage calculation concept
                     totalDamage[targetId].damage = totalDamage[targetId].damage + damage1
                 else
                     totalDamage[targetId] = {damage = damage1}
                 end
-                unit.setTimer('w'..damage1..randomNumber, 0.016)
         onMissed(targetId):
             lua: |
-                local miss = math.random(10000,1000000)
                 missAnimations = missAnimations + 1
-                lastMissTime['k'..miss] = {time = 0, missOpacity = 1, anims = missAnimations}
-                unit.setTimer('k'..miss, 0.016)
+                lastMissTime[missAnimations] = {time = 0, missOpacity = 1, anims = missAnimations}
     weapon_7:
         onHit(targetId,damage):
             lua: |
                 local damage1 = damage
-                local randomNumber = math.random(10000, 1000000)
                 hitAnimations = hitAnimations + 1
-                lastHitTime['w'..damage1..randomNumber] = {damage = damage1, time = 0, hitOpacity = 1, anims = hitAnimations}
+                lastHitTime[hitAnimations] = {damage = damage1, time = 0, hitOpacity = 1, anims = hitAnimations}
                 if totalDamage[targetId] ~= nil then --target damage calculation concept
                     totalDamage[targetId].damage = totalDamage[targetId].damage + damage1
                 else
                     totalDamage[targetId] = {damage = damage1}
                 end
-                unit.setTimer('w'..damage1..randomNumber, 0.016)
         onMissed(targetId):
             lua: |
-                local miss = math.random(10000,1000000)
                 missAnimations = missAnimations + 1
-                lastMissTime['k'..miss] = {time = 0, missOpacity = 1, anims = missAnimations}
-                unit.setTimer('k'..miss, 0.016)
+                lastMissTime[missAnimations] = {time = 0, missOpacity = 1, anims = missAnimations}
     construct:
         onPvPTimer(active):
             lua: |

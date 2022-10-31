@@ -10,9 +10,9 @@ targetSpeed = 29999 --export: Target speed
 GHUD_background_color = "#142027" --export:
 GHUD_AR_sight_color = "rgb(0, 191, 255)" --export:
 GHUD_weapon_panels = 3 --export:
-GHUD_radar_notifications_style = 1 --export:
-GHUD_radar_notification_background_color = '#FFB12C' --export:
-GHUD_radar_notification_border_radius = true --export: 
+--GHUD_radar_notifications_style = 1 --export:
+GHUD_radar_notifications_background_color = 'rgba(255, 177, 44, 0.8)' --export:
+GHUD_radar_notifications_border_radius = false --export:
 GHUD_log_stats = true --export: Send target statistics to LUA channel
 GHUD_show_allies = true --export: Show allies
 GHUD_allies_count = 5 --export: Count of displayed allies. Selected ally will always be displayed
@@ -37,7 +37,7 @@ GHUD_allies_Y = 0 --export: set to 0 if playing in fullscreen mode
 GHUD_windowed_mode = false --export: adds 2 to the height GHUD_allies_Y
 collectgarbages = true --export:
 
-if GHUD_radar_notification_border_radius == true then
+if GHUD_radar_notifications_border_radius == true then
    GHUD_border_radius = '15px'
 else
    GHUD_border_radius = 'none'
@@ -56,6 +56,7 @@ radarIDs = {}
 idN = 0
 screenHeight = system.getScreenHeight()
 screenWidth = system.getScreenWidth()
+startTime = syste.getTime()
 lastHitTime = {}
 lastMissTime = {}
 hits = {}
@@ -80,7 +81,6 @@ endload = 0
 lastspeed = 0
 znak = '' --target speed icon
 firstload = 0
-firstload1 = 0
 constructSelected = 0
 probil = 0
 playerName = system.getPlayerName(unit.getMasterPlayerId())
@@ -98,7 +98,6 @@ radarWidget = ''
 targets = {}
 target = {}
 count = 0
-cnt = 0
 shipName = core.getConstructName()
 conID = core.getConstructId()
 system.print(''..shipName..': '..conID..'')
@@ -154,39 +153,35 @@ function mRadar:updateStep()
    local i = 0
    for str in constructList do
       i = i + 1
-      -- if i%pauseAfter==0 then
-      --    coroutine.yield()
-      -- end
+      if i%pauseAfter==0 then
+         coroutine.yield()
+      end
       local ID = tonumber(str:match('"constructId":"([%d]*)"'))
       local size = radar.getConstructCoreSize(ID)
       local locked = radar.isConstructIdentified(ID)
       local alive = radar.isConstructAbandoned(ID)
       local selectedTarget = radar.getTargetId(ID)
-      if locked == 1 or alive == 0 or selectedTarget == ID then --show only locked or alive or selected targets
+      if locked == 1 or alive == 0 or selectedTarget == ID and size ~= "" then --show only locked or alive or selected targets
          if defaultSize == 'ALL' then --default mode
             if (self.friendList[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode and self.radar.getThreatRateFrom(ID) ~= 5 then  --show attacking traitor on widget
                goto continue1
             end
-            if isIDFiltered and self.idFilter[ID%1000] ~= true then
+            if isIDFiltered and self.idFilter[tostring(ID):sub(-3)] ~= true then
                goto continue1
             end
-            resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. string.format("%03d", ID%1000) .. ' - %1"')
+            resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. string.format("%03d", tostring(ID):sub(-3)) .. ' - %1"')
             ::continue1::
          end
          if defaultSize ~= 'ALL' and size == defaultSize then --sorted
             if (self.friendList[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode and self.radar.getThreatRateFrom(ID) ~= 5 then
                goto continue2
             end
-            if isIDFiltered and self.idFilter[ID%1000] ~= true then
+            if isIDFiltered and self.idFilter[tostring(ID):sub(-3)] ~= true then
                goto continue2
             end
             resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. string.format("%03d", ID%1000) .. ' - %1"')
             ::continue2::
          end
-      end
-      if i > 50 then
-         i = 0
-         coroutine.yield()
       end
    end
    local filterMsg = (isIDFiltered and ''..focus..' - FOCUS - ' or '') .. (self.friendlyMode and ''..defaultSize..' - Friends' or ''..defaultSize..' - Enemies')
@@ -415,7 +410,7 @@ system.showScreen(1)
 unit.setTimer("radar",0.05)
 
 --main gunner function
-local function main()
+function main()
    while true do
       local i = 0
       local htmltext = ""
@@ -474,26 +469,22 @@ local function main()
                   if radar.isConstructAbandoned(v) == 0 then
                      local msg = 'NEW TARGET: '..name..' - '..v..' - Size: '..size..'\nYour pos: '..t_radarEnter[v].pos..''
                      table.insert(loglist, msg)
-                     --hud notidications
-                     if cnt < 10 then --max 10 notifications
-                     cnt = cnt + 1
+                     if count < 10 then --max 10 notifications
                      count = count + 1
-                     local a = 'a'..cnt
-                     target[a] = {left = 100, opacity = 1, name1 = name, size1 = size, id = v%1000, one = true, check = true, delay = 0}
-                     unit.setTimer(a,0.016)
+                     if target[count] == nil then
+                     target[count] = {left = 100, opacity = 1, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0}
                      end
+                  end
                   else
                      local pos = radar.getConstructWorldPos(v)
                      pos = '::pos{0,0,'..pos[1]..','..pos[2]..','..pos[3]..'}'
                      local msg = 'NEW TARGET (abandoned): '..name..' - '..v..' - Size: '..size..'\nTarget pos:'..pos..''
                      table.insert(loglist, msg)
-                     --hud notidications
-                     if cnt < 10 then --max 10 notifications
-                        cnt = cnt + 1
+                     if count < 10 then --max 10 notifications
                         count = count + 1
-                        local a = 'a'..cnt
-                        target[a] = {left = 100, opacity = 1, name1 = name, size1 = size, id = v%1000, one = true, check = true, delay = 0}
-                        unit.setTimer(a,0.016)
+                        if target[count] == nil then
+                        target[count] = {left = 100, opacity = 1, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0}
+                        end
                      end
                   end
                end
@@ -513,7 +504,7 @@ local function main()
                else
                   dist = ''..dist..'m'
                end
-               local allID = (""..v..""):sub(-3) --cut construct IDs
+               local allID = tostring(v):sub(-3) --cut construct IDs
                local nameA = ''..allID..' '..name..''
                friendlies = friendlies + 1
                if radar.getTargetId(v) ~= v and friendlies < GHUD_allies_count1 then
@@ -554,7 +545,7 @@ local function main()
             else
                dist = ''..dist..'m'
             end
-            local IDT = (""..v..""):sub(-3)
+            local IDT = tostring(v):sub(-3)
             local nameIDENT = ''..IDT..' '..name..''
             local nameT = string.sub((""..nameIDENT..""),1,11)
             --table.insert(radarTarget, constructRow)
@@ -605,7 +596,7 @@ local function main()
             else
                dist = ''..dist..'m'
             end
-            local loclIDT = (""..v..""):sub(-3)
+            local loclIDT = tostring(v):sub(-3)
             local nameLOCK = ''..loclIDT..' '..name..''
             if radar.getThreatRateFrom(v) == 5 then
                countAttacked = countAttacked + 1
@@ -774,7 +765,7 @@ local function main()
             gunnerHUD = target .. locks .. hudver ..statusSVG
          end
       end
-      --coroutine.yield()
+      coroutine.yield()
    end
 end
 
@@ -990,8 +981,6 @@ htmlRadar = [[
    background: #ff3a56;
 }
 </style>]]
-
-main1 = coroutine.create(main)
 
 --interception concept
 function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero for this.
@@ -1925,8 +1914,7 @@ function tickVector(unit, system, text)
    end
 
    start(unit,system,text)
-
-   unit.setTimer("data", 0.1)
+   
    unit.setTimer("delay", 1)
 
    --clean performance

@@ -75,7 +75,7 @@ if id ~= 0 then
       <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 26px; font-style: italic; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px;" transform="matrix(1, 0, 0, 1, 241.470998, 244.195302)"><tspan x="254.529" y="36.003">KM/H</tspan></text>
       <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 26px; font-style: italic; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: end;" transform="matrix(1, 0, 0, 1, -154.09122, 244.195302)"><tspan x="254.529" y="36.003">]]..sdist..[[</tspan></text>
       <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 26px; font-style: italic; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" transform="matrix(1, 0, 0, 1, 43.882192, 510.395305)"><tspan x="254.529" y="36.003">DAMAGE</tspan></text>
-      <text style="fill: #cf0c47; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" transform="matrix(1, 0, 0, 1, 45.470986, 44.611463)"><tspan x="254.529" y="60.003">]].. id%1000 ..[[</tspan></text>
+      <text style="fill: #cf0c47; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" transform="matrix(1, 0, 0, 1, 45.470986, 44.611463)"><tspan x="254.529" y="60.003">]].. tostring(id):sub(-3) ..[[</tspan></text>
       <text style="fill: white; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: end;" y="310.246" x="101.677">]]..dist..[[</text>
       <text style="fill: ]]..speedcolor..[[; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px;" y="310.246" x="496">]]..speed .. znak..[[</text>
       </svg></div>]]
@@ -128,15 +128,94 @@ if radar.hasMatchingTransponder(v) == 1 then
       <div class="id]]..v..[["><?xml version="1.0" encoding="utf-8"?>
       <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
       <rect x="235" y="235" width="30" height="30" style="fill: rgba(0,0,0,0); stroke: ]]..GHUD_AR_allies_border_color..[[; stroke-width: 2"/>
-      <text style="fill: ]]..GHUD_AR_allies_font_color..[[; font-family: Arial, sans-serif; font-size: 28px; font-weight: 700; text-anchor: middle;" transform="matrix(0.609174, 0, 0, 0.609176, 250.000005, 231)">]].. v%1000 .. [[</text>
+      <text style="fill: ]]..GHUD_AR_allies_font_color..[[; font-family: Arial, sans-serif; font-size: 28px; font-weight: 700; text-anchor: middle;" transform="matrix(0.609174, 0, 0, 0.609176, 250.000005, 231)">]].. tostring(v):sub(-3) .. [[</text>
       </svg></div>]]
    end
 end
 end
 
+--hit/miss animations, radar contacts animations
 local hitsHUD = ''
 local missesHUD = ''
 local targetsHUD = ''
+
+for k,v in pairs(lastHitTime) do
+   if lastHitTime[k] ~= nil then
+      lastHitTime[k].time = lastHitTime[k].time + 0.025
+      lastHitTime[k].hitOpacity = lastHitTime[k].hitOpacity - 0.01
+      local top = 45 - lastHitTime[k].time*3.25
+      local right = 56.5 + lastHitTime[k].time*2
+      if lastHitTime[k].hitOpacity <= 0 then lastHitTime[k].hitOpacity = 0 end
+      local hit = [[
+      <style>
+      .]]..tag..[[ {
+         top: ]]..top..[[vh;
+         left: ]]..right..[[%;
+         position: absolute;
+         text-alight: center;
+         font-size: 40px;
+         font-family: verdana;
+         font-style: normal;
+         font-weight: bold;
+         color: yellow;
+         text-shadow: 4px 0 1px orange, 0 1px 1px #000, -1px 0 1px #000, 0 -1px 1px #000;
+         opacity: ]]..lastHitTime[k].hitOpacity..[[;
+         transform: translate(-50%, -50%);
+      }
+      </style>
+      <div class="]]..tag..[[">HIT ]]..lastHitTime[k].damage..[[ HP</div>]]
+      hits[tag] = {html = hit}
+   
+      if lastHitTime[k].time >= 2 then
+         hits[tag] = {html = ''}
+         if lastHitTime[k].anims == hitAnimations then
+            hits[k] = nil
+            hits = {}
+            hitAnimations = 0
+            lastHitTime = {}
+         end
+      end
+   end
+end
+
+for k,v in pairs(lastMissTime) do
+   if lastMissTime[k] ~= nil then
+      lastMissTime[k].time = lastMissTime[k].time + 0.025
+      lastMissTime[k].missOpacity = lastMissTime[k].missOpacity - 0.01
+      local top = 45 - lastMissTime[k].time*3.25
+      local left = 47.5 - lastMissTime[k].time*2
+      if lastMissTime[k].missOpacity <= 0 then lastMissTime[k].missOpacity = 0 end
+      local miss = [[
+      <style>
+      .]]..tag..[[ {
+         top: ]]..top..[[vh;
+         left: ]]..left..[[%;
+         position: absolute;
+         text-alight: center;
+         font-size: 40px;
+         font-family: verdana;
+         font-style: normal;
+         font-weight: bold;
+         color: red;
+         text-shadow: 4px 0 1px orange, 0 1px 1px #000, -1px 0 1px #000, 0 -1px 1px #000;
+         opacity: ]]..lastMissTime[k].missOpacity..[[;
+         transform: translate(-50%, -50%);
+      }
+      </style>
+      <div class="]]..tag..[[">MISS</div>]]
+      misses[tag] = {html = miss}
+   
+      if lastMissTime[k].time >= 2 then
+         misses[tag] = {html = ''}
+         if lastMissTime[k].anims == missAnimations then
+           misses[k] = nil
+            misses = {}
+            missAnimations = 0
+            lastMissTime = {}
+         end
+      end
+   end
+end
 
 for k,v in pairs(hits) do
    if hits[k] ~= nil then
@@ -151,9 +230,45 @@ missesHUD = missesHUD .. misses[k].html
 end
 
 for k,v in pairs(targets) do
-   targetsHUD = targetsHUD .. v
+   if target[k] ~= nil then
+      if target[k].left > 80 and target[k].one == true then target[k].left = target[k].left - 0.3 end
+      if target[k].left <= 80 then target[k].left = 80 target[k].one = false end
+      local div = [[
+         <style>
+         .a]]..k..[[ {
+         position: relative;
+         color: black;
+         top: 25vh;
+         left: ]]..target[k].left..[[%;
+         opacity: ]]..target[k].opacity..[[;
+         background-color: ]]..GHUD_radar_notificafions_background..[[;
+         border: 2px solid black;
+         padding: 12px;
+         margin-top: -2px;
+         font-weight: bold;
+         font-size: 20px;
+         text-align: left;
+         }
+         </style>
+         <div class="a]]..k..[[">[]]..target[k].size1..[[] ]]..target[k].id..[[ - ]]..target[k].name1..[[</div>]]
+         target[k] = {html = div}
+         if target[k].one == false then
+            target[k].delay = target[k].delay + 1
+            if target[k].delay >= 100 then
+               target[k].opacity = target[k].opacity - 0.01
+               --Mac os notifications style
+               --if target[k].left <= 108 then target[k].left = target[k].left + 0.3 end
+               --if target[k].opacity <= 0 and target[k].left >= 100 then
+               if target[k].opacity <= 0 and target[k].cnt == count then
+                  target[k] = nil
+                  target = {}
+                  targets = {}
+                  count = 0
+               end
+            end
+         end
+   end
 end
-targets = {}
 
 local htmlHUD = [[
    <html>
