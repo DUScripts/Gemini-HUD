@@ -101,7 +101,7 @@ count = 0
 shipName = core.getConstructName()
 conID = core.getConstructId()
 system.print(''..shipName..': '..conID..'')
-conID = (""..conID..""):sub(-3)
+conID = string.format("%03d", core.getConstructId()%1000)
 
 function checkWhitelist()
    local whitelist = GHUD_friendly_IDs
@@ -166,17 +166,17 @@ function mRadar:updateStep()
             if (self.friendList[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode and self.radar.getThreatRateFrom(ID) ~= 5 then  --show attacking traitor on widget
                goto continue1
             end
-            if isIDFiltered and self.idFilter[tostring(ID):sub(-3)] ~= true then
+            if isIDFiltered and self.idFilter[string.format("%03d", ID%1000)] ~= true then
                goto continue1
             end
-            resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. string.format("%03d", tostring(ID):sub(-3)) .. ' - %1"')
+            resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. string.format("%03d", string.format("%03d", ID%1000)) .. ' - %1"')
             ::continue1::
          end
          if defaultSize ~= 'ALL' and size == defaultSize then --sorted
             if (self.friendList[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode and self.radar.getThreatRateFrom(ID) ~= 5 then
                goto continue2
             end
-            if isIDFiltered and self.idFilter[tostring(ID):sub(-3)] ~= true then
+            if isIDFiltered and self.idFilter[string.format("%03d", ID%1000)] ~= true then
                goto continue2
             end
             resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. string.format("%03d", ID%1000) .. ' - %1"')
@@ -472,7 +472,7 @@ function main()
                      if count < 10 then --max 10 notifications
                      count = count + 1
                      if target[count] == nil then
-                     target[count] = {left = 100, opacity = 1, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0}
+                     target[count] = {left = 100, opacity = 1, name1 = name, size1 = size, id = string.format("%03d", v%1000), one = true, check = true, delay = 0}
                      end
                   end
                   else
@@ -483,7 +483,7 @@ function main()
                      if count < 10 then --max 10 notifications
                         count = count + 1
                         if target[count] == nil then
-                        target[count] = {left = 100, opacity = 1, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0}
+                        target[count] = {left = 100, opacity = 1, name1 = name, size1 = size, id = string.format("%03d", v%1000), one = true, check = true, delay = 0}
                         end
                      end
                   end
@@ -504,7 +504,7 @@ function main()
                else
                   dist = ''..dist..'m'
                end
-               local allID = tostring(v):sub(-3) --cut construct IDs
+               local allID = string.format("%03d", v%1000)
                local nameA = ''..allID..' '..name..''
                friendlies = friendlies + 1
                if radar.getTargetId(v) ~= v and friendlies < GHUD_allies_count1 then
@@ -545,7 +545,7 @@ function main()
             else
                dist = ''..dist..'m'
             end
-            local IDT = tostring(v):sub(-3)
+            local IDT = string.format("%03d", v%1000)
             local nameIDENT = ''..IDT..' '..name..''
             local nameT = string.sub((""..nameIDENT..""),1,11)
             --table.insert(radarTarget, constructRow)
@@ -596,7 +596,7 @@ function main()
             else
                dist = ''..dist..'m'
             end
-            local loclIDT = tostring(v):sub(-3)
+            local loclIDT = string.format("%03d", v%1000)
             local nameLOCK = ''..loclIDT..' '..name..''
             if radar.getThreatRateFrom(v) == 5 then
                countAttacked = countAttacked + 1
