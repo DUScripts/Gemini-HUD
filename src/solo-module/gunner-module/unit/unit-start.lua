@@ -474,6 +474,7 @@ function main()
                      if target[count] == nil then
                      target[count] = {left = 100, opacity = 1, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0}
                      end
+                     system.playSound('enter.mp3')
                   end
                   else
                      local pos = radar.getConstructWorldPos(v)
@@ -486,6 +487,7 @@ function main()
                         target[count] = {left = 100, opacity = 1, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0}
                         end
                      end
+                     system.playSound('sonar.mp3')
                   end
                end
                t_radarEnter[v] = nil

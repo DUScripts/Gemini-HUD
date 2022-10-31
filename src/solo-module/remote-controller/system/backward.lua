@@ -5,4 +5,5 @@ if buttonC==true and shield.getResistancesCooldown() == 0 then
    shield.setResistances(resMAX/4,resMAX/4,resMAX/4,resMAX/4)
    local res = {1,1,1,1}
    actionRes(res)
+   system.playSound('shieldNewResists.mp3')
 end

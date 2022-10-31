@@ -4,32 +4,6 @@ if string.sub((text),1,3) == 'tag' then
    unit.setTimer('tr',2)
 end
 
-if shield.getResistancesCooldown() == 0 then
-   if text == "l" then
-      system.print("LASER PROFILE: 50/50%")
-      shield.setResistances(0,resMAX/2,0,resMAX/2)
-      local res = {0,1,0,1}
-      actionRes(res)
-   end
-   if text == "c" then
-      system.print("CANNON PROFILE: 50/50%")
-      shield.setResistances(0,0,resMAX/2,resMAX/2)
-      local res = {0,0,1,1}
-      actionRes(res)
-   end
-   if text == "m" then
-      system.print("MISSILE PROFILE: 50/50%")
-      shield.setResistances(resMAX/2,0,resMAX/2,0)
-      local res = {1,0,1,0}
-      actionRes(res)
-   end
-   if text == "r" then
-      system.print("RAILGUN PROFILE: 50/50%")
-      shield.setResistances(resMAX/2,resMAX/2,0,0)
-      local res = {1,1,0,0}
-      actionRes(res)
-   end
-end
 if text =="drop" then
    local listships = core.getDockedConstructs()
    for i=1, #listships do

@@ -27,8 +27,10 @@ if shield.getResistancesCooldown() == 0 and shoteCount >= 5 and GHUD_shield_auto
          if shield.setResistances(res[1],res[2],res[3],res[4]) == 1 then
             system.print("Shield power has been set to max stress")
             actionRes(res)
+            system.playSound('shieldNewResists.mp3')
          else
             system.print("ERR2")
+            system.playSound('shieldResistError.mp3')
          end
       end
    else
@@ -45,8 +47,10 @@ if shield.getResistancesCooldown() == 0 and shoteCount >= 5 and GHUD_shield_auto
          if shield.setResistances(re1,re2,re3,re4) == 1 then
             system.print("Shield power has been split 50/50%")
             actionRes(re)
+            system.playSound('shieldNewResists.mp3')
          else
             system.print("ERR3")
+            system.playSound('shieldResistError.mp3')
          end
       end
    end
