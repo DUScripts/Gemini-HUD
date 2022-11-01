@@ -922,5 +922,8 @@ elseif stress[2] >= stress[1] and
 
          transponder.deactivate() --transponder server bug fix
          unit.setTimer('tr',2)
-
-         unit.setTimer("hud",0.02)
+         unit.setTimer('hud',0.02)
+         unit.setTimer('prealarm',2)
+         if collectgarbages == true then
+            unit.setTimer("cleaner",30)
+         end
