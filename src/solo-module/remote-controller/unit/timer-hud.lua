@@ -29,7 +29,7 @@ varcombat = core.getPvPTimer()
 resisttime = shield.getResistancesCooldown()
 if resisttime ~= 0 then
    if resisttime < resisttimemax  then
-      resCLWN = math.floor(resisttime).. 's'
+      resCLWN = math.floor(resisttime)
    end
 else
    resCLWN = ""
@@ -37,9 +37,9 @@ end
 if shield.isVenting() then
    venttime = shield.getVentingCooldown()
    if venttime < venttimemax and venttime ~= 0 then
-      ventCLWN = math.floor(venttime).. 's'
+      resCLWN = math.floor(venttime)
    else
-      ventCLWN = ""
+      resCLWN = ""
    end
 end
 
@@ -669,6 +669,10 @@ if math.ceil(HP) <= 50 then
          <path style="fill: url(#TH_gradient); stroke: ]]..TH_stroke_color..[[; stroke-width: ]]..THstrokeWidth..[[;" d="M 315 225 L 325 215 L 415 215 L 355 250 L 315 225 Z"/>
          <path style="fill: url(#KI_gradient); stroke: ]]..KI_stroke_color..[[; stroke-width: ]]..KIstrokeWidth..[[;" d="M 355 250 L 415 285 L 325 285 L 315 275 L 355 250 Z"/>
          <path style="fill: url(#EM_gradient); stroke: ]]..EM_stroke_color..[[; stroke-width: ]]..EMstrokeWidth..[[;" d="M 85 260 L 95 250 L 185 250 L 125 285 L 85 260 Z" transform="matrix(-1, 0, 0, -1, 270.000006, 535.000011)"/>
+         <polygon style="fill: #142027; stroke: rgb(66, 167, 245); stroke-linejoin: round; stroke-linecap: round;" points="244 225 249 231 261 231 266 225"></polygon>
+         <polygon style="fill: #142027; stroke: rgb(66, 167, 245); stroke-linejoin: round; stroke-linecap: round;" points="242.71400451660156 259.74798583984375 247.71400451660156 265.74798583984375 267.714 265.748 272.7139892578125 259.74798583984375" transform="matrix(-1, 0, 0, -1, 512.713989, 534.747986)"></polygon>
+         <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 4.5px; font-weight: 700; text-anchor: middle;" transform="matrix(1, 0, 0, 1, -1.542758, -0.533447)"><tspan x="256.796" y="230.112">]]..resCLWN..[[</tspan></text>
+         <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; text-anchor: middle;" x="255.048" y="273.416">]]..shieldStatus..[[</text>
          <text style="fill: rgb(66, 167, 245); font-family: Arial, sans-serif; font-weight: bold; font-size: 3.2px;" x="252" y="223.591">CCS</text>
          <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -0.542236, -41.161256)"><tspan x="351.543" y="319.558">KI</tspan></text>
          <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -4.542999, -86.161257)"><tspan x="351.543" y="319.558">TH</tspan></text>

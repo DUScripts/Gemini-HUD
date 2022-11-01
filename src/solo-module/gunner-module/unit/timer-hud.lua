@@ -21,7 +21,8 @@ if id ~= 0 then
       dist = string.format('%0.0f', dist)
       sdist = 'M'
    end
-   local name = radar.getConstructName(id)
+   local nameFull = radar.getConstructName(id)
+   local name = string.sub((""..nameFull..""),1,11)
    local size = radar.getConstructCoreSize(id)
    local speed = 'LOCK REQUIRED'
    newcolor = 'white'
@@ -148,7 +149,7 @@ for k,v in pairs(lastHitTime) do
       if lastHitTime[k].hitOpacity <= 0 then lastHitTime[k].hitOpacity = 0 end
       local hit = [[
       <style>
-      .]]..tag..[[ {
+      .hit]]..k..[[ {
          top: ]]..top..[[vh;
          left: ]]..right..[[%;
          position: absolute;
@@ -163,11 +164,11 @@ for k,v in pairs(lastHitTime) do
          transform: translate(-50%, -50%);
       }
       </style>
-      <div class="]]..tag..[[">HIT ]]..lastHitTime[k].damage..[[ HP</div>]]
-      hits[tag] = {html = hit}
+      <div class="hit]]..k..[[">HIT ]]..lastHitTime[k].damage..[[ HP</div>]]
+      hits[k] = {html = hit}
    
       if lastHitTime[k].time >= 2 then
-         hits[tag] = {html = ''}
+         hits[k] = {html = ''}
          if lastHitTime[k].anims == hitAnimations then
             hits[k] = nil
             hits = {}
@@ -187,7 +188,7 @@ for k,v in pairs(lastMissTime) do
       if lastMissTime[k].missOpacity <= 0 then lastMissTime[k].missOpacity = 0 end
       local miss = [[
       <style>
-      .]]..tag..[[ {
+      .miss]]..k..[[ {
          top: ]]..top..[[vh;
          left: ]]..left..[[%;
          position: absolute;
@@ -202,11 +203,11 @@ for k,v in pairs(lastMissTime) do
          transform: translate(-50%, -50%);
       }
       </style>
-      <div class="]]..tag..[[">MISS</div>]]
-      misses[tag] = {html = miss}
+      <div class="miss]]..k..[[">MISS</div>]]
+      misses[k] = {html = miss}
    
       if lastMissTime[k].time >= 2 then
-         misses[tag] = {html = ''}
+         misses[k] = {html = ''}
          if lastMissTime[k].anims == missAnimations then
            misses[k] = nil
             misses = {}
@@ -229,20 +230,20 @@ missesHUD = missesHUD .. misses[k].html
    end
 end
 
-for k,v in pairs(targets) do
+for k,v in pairs(target) do
    if target[k] ~= nil then
       if target[k].left > 80 and target[k].one == true then target[k].left = target[k].left - 0.3 end
       if target[k].left <= 80 then target[k].left = 80 target[k].one = false end
       local div = [[
          <style>
-         .a]]..k..[[ {
+         .targ]]..k..[[ {
          position: relative;
-         color: black;
-         top: 25vh;
+         color: ]]..GHUD_radar_notifications_text_color..[[;
+         top: ]]..GHUD_radar_notifications_Y..[[vh;
          left: ]]..target[k].left..[[%;
          opacity: ]]..target[k].opacity..[[;
-         background-color: ]]..GHUD_radar_notificafions_background..[[;
-         border: 2px solid black;
+         background-color: ]]..GHUD_radar_notifications_background_color..[[;
+         border: 2px solid ]]..GHUD_radar_notifications_border_color..[[;
          padding: 12px;
          margin-top: -2px;
          font-weight: bold;
@@ -250,7 +251,7 @@ for k,v in pairs(targets) do
          text-align: left;
          }
          </style>
-         <div class="a]]..k..[[">[]]..target[k].size1..[[] ]]..target[k].id..[[ - ]]..target[k].name1..[[</div>]]
+         <div class="targ]]..k..[[">[]]..target[k].size1..[[] ]]..target[k].id..[[ - ]]..target[k].name1..[[</div>]]
          target[k] = {html = div}
          if target[k].one == false then
             target[k].delay = target[k].delay + 1
@@ -267,6 +268,12 @@ for k,v in pairs(targets) do
                end
             end
          end
+   end
+end
+
+for k,v in pairs(targets) do
+   if targets[k] ~= nil then
+      targetsHUD = targetsHUD .. targets[k].html
    end
 end
 

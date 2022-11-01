@@ -11,8 +11,11 @@ GHUD_background_color = "#142027" --export:
 GHUD_AR_sight_color = "rgb(0, 191, 255)" --export:
 GHUD_weapon_panels = 3 --export:
 --GHUD_radar_notifications_style = 1 --export:
-GHUD_radar_notifications_background_color = 'rgba(255, 177, 44, 0.8)' --export:
 GHUD_radar_notifications_border_radius = false --export:
+GHUD_radar_notifications_border_color = 'black' --export:
+GHUD_radar_notifications_text_color = 'black' --export:
+GHUD_radar_notifications_background_color = 'rgb(255, 177, 44)' --export:
+GHUD_radar_notifications_Y = 25 --export:
 GHUD_log_stats = true --export: Send target statistics to LUA channel
 GHUD_show_allies = true --export: Show allies
 GHUD_allies_count = 5 --export: Count of displayed allies. Selected ally will always be displayed
@@ -99,9 +102,9 @@ targets = {}
 target = {}
 count = 0
 shipName = core.getConstructName()
-conID = core.getConstructId()
-system.print(''..shipName..': '..conID..'')
-conID = tostring(core.getConstructId()):sub(-3)
+local scID = core.getConstructId()
+system.print(''..shipName..': '..scID..'')
+conID = tostring(scID):sub(-3)
 
 function checkWhitelist()
    local whitelist = GHUD_friendly_IDs
@@ -549,7 +552,7 @@ function main()
             end
             local IDT = tostring(v):sub(-3)
             local nameIDENT = ''..IDT..' '..name..''
-            local nameT = string.sub((""..nameIDENT..""),1,11)
+            --local nameT = string.sub((""..nameIDENT..""),1,11)
             --table.insert(radarTarget, constructRow)
             isILock = true
             speed = math.floor(radar.getConstructSpeed(v) * 3.6)
@@ -984,8 +987,11 @@ htmlRadar = [[
 }
 </style>]]
 
---interception concept
-function zeroConvertToWorldCoordinates(pos, system) -- Many thanks to SilverZero for this.
+--interception concept, be careful
+--Dear programmer:
+--When I wrote this code, only God and I know how the next code works, don't try to edit it!
+
+function zeroConvertToWorldCoordinates(pos, system)
    local num = " *([+-]?%d+%.?%d*e?[+-]?%d*)"
    local posPattern = "::pos{" .. num .. "," .. num .. "," .. num .. "," .. num .. "," .. num .. "}"
    local systemId, bodyId, latitude, longitude, altitude = string.match(pos, posPattern)
@@ -1125,7 +1131,7 @@ function start(unit, system, text)
    mmode = true
    lalt = false
 
-   system.createWidgetPanel("Target Vector")
+   --system.createWidgetPanel("Target Vector")
    deg2rad = math.pi / 180
    rad2deg = 180 / math.pi
    ms2kmh = 3600 / 1000

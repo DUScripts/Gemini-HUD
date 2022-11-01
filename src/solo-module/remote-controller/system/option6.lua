@@ -16,7 +16,7 @@ if varcombat > 300 and shield.getResistancesCooldown() == 0 and not GHUD_shield_
              actionRes(res)
             system.playSound('shieldNewResists.mp3')
           else
-             system.print("ERR2")
+             system.print("ERR4")
              system.playSound('shieldResistError.mp3')
           end
        end
@@ -36,7 +36,7 @@ if varcombat > 300 and shield.getResistancesCooldown() == 0 and not GHUD_shield_
              actionRes(re)
             system.playSound('shieldNewResists.mp3')
           else
-             system.print("ERR3")
+             system.print("ERR5")
              system.playSound('shieldResistError.mp3')
           end
        end

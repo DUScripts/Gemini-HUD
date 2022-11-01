@@ -116,13 +116,13 @@ am=0
 am_x = -50
 am_opacity = 1
 em=0
-em_x = 0
+em_x = -50
 em_opacity = 1
 ki=0
-ki_x = 0
+ki_x = 339
 ki_opacity = 1
 th=0
-th_x = 0
+th_x = 339
 th_opacity = 1
 AM_res = ''
 EM_res = ''
@@ -573,13 +573,13 @@ elseif stress[2] >= stress[1] and
             res = {0,0,0,resMAX}
          else
             system.print("ERR1")
+            system.playSound('shieldResistError.mp3')
          end
          return res
       end
       shoteCount = 0
       lastShotTime = system.getTime()
       resCLWN = ""
-      ventCLWN = ""
       if GHUD_shield_auto_calibration
       then
          if GHUD_shield_calibration_max then
@@ -601,8 +601,10 @@ elseif stress[2] >= stress[1] and
       brakeText = ""
       if shield.isActive() == 0 then
          shieldColor = "#fc033d"
+         shieldStatus = "ACTIVE"
       else
          shieldColor = "#2ebac9"
+         shieldStatus = "DEACTIVE"
       end
 
       resisttime = 0

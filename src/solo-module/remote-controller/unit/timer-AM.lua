@@ -1,8 +1,8 @@
 am = am + 2
-if am_x <= 0 then
+if am_x >= -50 then
     am_x = am_x + 3
 end
-if am_x > 0 then am_x = 0 end
+if am_x >= 0 then am_x = 0 end
 AM_res = [[
     <g transform="matrix(1, 0, 0, 1, ]]..am_x..[[, 0)">
     <rect x="82" y="199" width="45" height="12" style="stroke: black; stroke-width: 1.5px; fill: rgb(242, 166, 4);" rx="6"/>
