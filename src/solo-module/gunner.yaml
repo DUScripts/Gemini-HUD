@@ -62,7 +62,10 @@ handlers:
             lua: |
                 if (system.getTime() - startTime) > 5 then
                 firstload = 1
-                unit.setTimer("hud", 0.016) --main
+                t_radarEnter = {}
+                main1 = coroutine.create(main)
+                unit.setTimer("data", 0.1)
+                unit.setTimer("hud", 0.016)
                 if GHUD_log_stats then
                     unit.setTimer("logger", 0.5)
                 end
@@ -83,7 +86,6 @@ handlers:
         onEnter(id):
             lua: |
                 if zone == "false" and GHUD_notifications == true then
-                    system.playSound('enter.mp3')
                     if firstload==1 then
                     if GHUD_log_stats then
                         t_radarEnter[id] = {pos = system.getWaypointFromPlayerPos()}
