@@ -106,7 +106,6 @@ else
       </svg></div>]]
    end
 end
-end
 
 local AR_allies = ''
 for k,v in pairs(radarIDs) do --AR marks

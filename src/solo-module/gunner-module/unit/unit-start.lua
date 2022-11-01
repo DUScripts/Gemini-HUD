@@ -343,8 +343,8 @@ local timed = false
 --    and type(slot.export) == "table"
 --    and slot.getElementClass
 --    then
---       if string.find(slot.getElementClass(), 'Radar') ~= nil then
---          if string.find(slot.getElementClass(), 'Space') ~= nil then
+--       if string.find(slot.getClass(), 'Radar') ~= nil then
+--          if string.find(slot.getClass(), 'Space') ~= nil then
 --             radar_1 = slot
 --          else
 --             radar_2 = slot
@@ -359,13 +359,13 @@ for slot_name, slot in pairs(unit) do
    and type(slot.export) == "table"
    and slot.getElementClass
    then
-      if string.find(slot.getElementClass(), 'Radar') ~= nil then
+      if string.find(slot.getClass(), 'Radar') ~= nil then
          radar = slot
       end
-      --    if slot.getElementClass():lower():find("databank") then
+      --    if slot.getClass():lower():find("databank") then
       --       databank = slot
       --  end
-      --  if slot.getElementClass():lower():find("screen") then
+      --  if slot.getClass():lower():find("screen") then
       --       screen = slot
       --  end
    end
