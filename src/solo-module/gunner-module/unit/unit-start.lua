@@ -607,14 +607,14 @@ function main()
                countAttacked = countAttacked + 1
                lockList = lockList..[[
                <div class="table-row th">
-               <div class="table-cell">
+               <div class="lockedT">
                <redcolor1>]]..'['..size..'] '..nameLOCK.. [[</redcolor1><br><distcolor>]] ..dist.. [[</distcolor>
                </div>
                </div>]]
             else
                lockList = lockList..[[
                <div class="table-row th">
-               <div class="table-cell">
+               <div class="lockedT">
                <orangecolor>]]..'['..size..'] '..nameLOCK.. [[</orangecolor><br><distcolor>]] ..dist.. [[</distcolor>
                </div>
                </div>]]
@@ -791,6 +791,13 @@ lockhtml = [[<style>
    display: table-cell;
    padding: 6px;
    border: 1px solid ]]..GHUD_border_color..[[;
+   color: white;
+}
+.lockedT {
+   display: table-cell;
+   padding: 6px;
+   border: 1px solid ]]..GHUD_border_color..[[;
+   border-top: none;
    color: white;
 }
 orangecolor {
