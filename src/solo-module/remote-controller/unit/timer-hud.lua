@@ -38,6 +38,7 @@ if shield.isVenting() then
    venttime = shield.getVentingCooldown()
    if venttime < venttimemax and venttime ~= 0 then
       resCLWN = math.floor(venttime)
+      shieldStatus = "VENTING"
    else
       resCLWN = ""
    end
