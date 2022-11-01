@@ -28,7 +28,6 @@ GHUD_targets_color = "#fc033d" --export:
 GHUD_show_echoes = true --export: Show targets echo
 GHUD_notifications = true --export: Radar notifications + LUA char notification
 GHUD_selected_border_color = "#00b9c9" --export:
-GHUD_locked_opacity = 1 --export: 0-1
 GHUD_target_names_color = "#fc033d" --export: Color for target names
 GHUD_allies_distance_color = "#00b9c9" --export:
 GHUD_distance_color = "#00b9c9" --export:
@@ -543,7 +542,7 @@ function main()
          local radspeed = 0
          local angspeed = 0
          if radar.isConstructIdentified(v) == 1 and size ~= "" then
-            local name = radar.getConstructName(v)
+            local name = string.sub((""..radar.getConstructName(v)..""),1,11)
             local dist = math.floor(radar.getConstructDistance(v))
             if dist >= 1000 then
                dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
@@ -779,7 +778,6 @@ lockhtml = [[<style>
 .table {
    display: table;
    background: ]]..GHUD_background_color..[[;
-   opacity: ]]..GHUD_locked_opacity..[[;
    left: 0;
    top: 5vh;
    position: fixed;

@@ -21,8 +21,7 @@ if id ~= 0 then
       dist = string.format('%0.0f', dist)
       sdist = 'M'
    end
-   local nameFull = radar.getConstructName(id)
-   local name = string.sub((""..nameFull..""),1,11)
+   local name = string.sub((""..radar.getConstructName(id)..""),1,11)
    local size = radar.getConstructCoreSize(id)
    local speed = 'LOCK REQUIRED'
    newcolor = 'white'
@@ -231,8 +230,8 @@ end
 
 for k,v in pairs(target) do
    if target[k] ~= nil then
-      if target[k].left > 80 and target[k].one == true then target[k].left = target[k].left - 0.3 end
-      if target[k].left <= 80 then target[k].left = 80 target[k].one = false end
+      if target[k].left > 85 and target[k].one == true then target[k].left = target[k].left - 0.3 end
+      if target[k].left <= 85 then target[k].left = 85 target[k].one = false end
       local div = [[
          <style>
          .targ]]..k..[[ {
@@ -250,7 +249,7 @@ for k,v in pairs(target) do
          text-align: left;
          }
          </style>
-         <div class="targ]]..k..[[">[]]..target[k].size1..[[] ]]..target[k].id..[[ - ]]..target[k].name1..[[</div>]]
+         <div class="targ]]..k..[[">[]]..target[k].size1..[[] ]]..target[k].id..[[ ]]..target[k].name1..[[</div>]]
          target[k] = {html = div}
          if target[k].one == false then
             target[k].delay = target[k].delay + 1
