@@ -1,6 +1,8 @@
 radarIDs = radar_1.getConstructIds()
 idN = #radarIDs
 
+mRadar:onUpdate()
+
 if coroutine.status(main1) ~= "dead" and coroutine.status(main1) == "suspended" then
    coroutine.resume(main1)
    --coroutine.xpcall(main1) -- resume debug coroutine

@@ -25,7 +25,7 @@ GHUD_AR_allies_border_size = 400 --export:
 GHUD_AR_allies_border_color = "#0cf27b" --export:
 GHUD_AR_allies_font_color = "#0cf27b" --export:
 GHUD_targets_color = "#fc033d" --export:
-GHUD_show_echoes = true --export: Show targets echo
+GHUD_show_echoes = false --export: Show targets echo. Has a negative impact on performance with a large targets count!
 GHUD_notifications = true --export: Radar notifications + LUA char notification
 GHUD_selected_border_color = "#00b9c9" --export:
 GHUD_target_names_color = "#fc033d" --export: Color for target names
@@ -37,7 +37,7 @@ GHUD_your_ship_ID_color = "#fca503" --export:
 GHUD_border_color = "black" --export:
 GHUD_allies_Y = 0 --export: set to 0 if playing in fullscreen mode
 GHUD_windowed_mode = false --export: adds 2 to the height GHUD_allies_Y
-collectgarbages = true --export:
+collectgarbages = false --export: Experimental
 
 if GHUD_radar_notifications_border_radius == true then
    GHUD_border_radius = '15px'
@@ -49,6 +49,12 @@ GHUD_allies_count1 = GHUD_allies_count + 1
 
 if GHUD_windowed_mode then
    GHUD_allies_Y = 2
+end
+
+if GHUD_show_echoes == true then
+   statusY = 13.5
+else
+   statusY = 6
 end
 
 --vars
@@ -115,7 +121,7 @@ function checkWhitelist()
 end
 
 whitelist = checkWhitelist() --load IDs
-local pauseAfter = 500 --radar widget coroutine
+local pauseAfter = 100 --radar widget coroutine
 
 --radar widget
 function defaultRadar()
@@ -446,8 +452,10 @@ function main()
                t_radarEnter[v] = nil
             end
          end
-         if GHUD_show_echoes == true and size ~= "" then
-            constructRow.widgetDist = math.ceil(radar_1.getConstructDistance(v) / 1000 * radarWidgetScale)
+         if GHUD_show_echoes == true then
+            if size ~= "" then
+               constructRow.widgetDist = math.ceil(radar_1.getConstructDistance(v) / 1000 * radarWidgetScale)
+            end
          end
          --radarlist
          if GHUD_show_allies == true and size ~= "" then
@@ -523,20 +531,22 @@ function main()
             end
          else
 
-            if GHUD_show_echoes == true and size ~= "" then
-               if radar_1.getConstructKind(v) == 5 then
-                  table.insert(radarDynamic, constructRow)
-                  if radarDynamicWidget[constructRow.widgetDist] ~= nil then
-                     radarDynamicWidget[constructRow.widgetDist] = radarDynamicWidget[constructRow.widgetDist] + 1
+            if GHUD_show_echoes == true then
+               if size ~= "" then
+                  if radar_1.getConstructKind(v) == 5 then
+                     table.insert(radarDynamic, constructRow)
+                     if radarDynamicWidget[constructRow.widgetDist] ~= nil then
+                        radarDynamicWidget[constructRow.widgetDist] = radarDynamicWidget[constructRow.widgetDist] + 1
+                     else
+                        radarDynamicWidget[constructRow.widgetDist] = 1
+                     end
                   else
-                     radarDynamicWidget[constructRow.widgetDist] = 1
-                  end
-               else
-                  table.insert(radarStatic, constructRow)
-                  if radarStaticWidget[constructRow.widgetDist] ~= nil then
-                     radarStaticWidget[constructRow.widgetDist] = radarStaticWidget[constructRow.widgetDist] + 1
-                  else
-                     radarStaticWidget[constructRow.widgetDist] = 1
+                     table.insert(radarStatic, constructRow)
+                     if radarStaticWidget[constructRow.widgetDist] ~= nil then
+                        radarStaticWidget[constructRow.widgetDist] = radarStaticWidget[constructRow.widgetDist] + 1
+                     else
+                        radarStaticWidget[constructRow.widgetDist] = 1
+                     end
                   end
                end
             end
@@ -636,9 +646,9 @@ function main()
       statusSVG = [[<style>.radarLockstatus {
          position: fixed;
          background: transparent;
-         width: 6em; 
+         width: 6em;
          padding: 1vh;
-         top: 13.5vh;
+         top: ]]..statusY..[[vh;
          left: 50%;
          transform: translateX(-50%);
          text-align: center;
@@ -1715,81 +1725,81 @@ function tickVector(unit, system, text)
 
    function altUP(unit, system, text)
       --if lalt == true then
-         if databank_1.getStringValue(1) ~= "" and databank_1.getStringValue(3) ~= "" then
-            showMarker = false
-            SU = SU + 2.5
-            length = SU * 200000
+      if databank_1.getStringValue(1) ~= "" and databank_1.getStringValue(3) ~= "" then
+         showMarker = false
+         SU = SU + 2.5
+         length = SU * 200000
 
-            pos11 = zeroConvertToWorldCoordinates(pos1, system)
-            pos22 = zeroConvertToWorldCoordinates(pos2, system)
+         pos11 = zeroConvertToWorldCoordinates(pos1, system)
+         pos22 = zeroConvertToWorldCoordinates(pos2, system)
 
-            resultVector = vectorLengthen(pos11, pos22, length)
-            Waypoint = getPos4Vector(resultVector)
+         resultVector = vectorLengthen(pos11, pos22, length)
+         Waypoint = getPos4Vector(resultVector)
 
-            system.setWaypoint(Waypoint)
+         system.setWaypoint(Waypoint)
 
-            system.print(Waypoint .. " waypoint " .. SU .. " su")
-         end
+         system.print(Waypoint .. " waypoint " .. SU .. " su")
+      end
       --end
    end
 
    function altDOWN(unit, system, text)
       --if lalt == true then
-         if databank_1.getStringValue(1) ~= "" and databank_1.getStringValue(3) ~= "" then
-            showMarker = false
-            SU = SU - 2.5
-            length = SU * 200000
+      if databank_1.getStringValue(1) ~= "" and databank_1.getStringValue(3) ~= "" then
+         showMarker = false
+         SU = SU - 2.5
+         length = SU * 200000
 
-            pos11 = zeroConvertToWorldCoordinates(pos1, system)
-            pos22 = zeroConvertToWorldCoordinates(pos2, system)
+         pos11 = zeroConvertToWorldCoordinates(pos1, system)
+         pos22 = zeroConvertToWorldCoordinates(pos2, system)
 
-            resultVector = vectorLengthen(pos11, pos22, length)
-            Waypoint = getPos4Vector(resultVector)
+         resultVector = vectorLengthen(pos11, pos22, length)
+         Waypoint = getPos4Vector(resultVector)
 
-            system.setWaypoint(Waypoint)
+         system.setWaypoint(Waypoint)
 
-            system.print(Waypoint .. " waypoint " .. SU .. " su")
-         end
+         system.print(Waypoint .. " waypoint " .. SU .. " su")
+      end
       --end
    end
 
    function altRIGHT(unit, system, text)
       --if lalt == true then
-         if databank_1.getStringValue(1) ~= "" and databank_1.getStringValue(3) ~= "" then
-            showMarker = false
-            SU = SU + 10
-            length = SU * 200000
+      if databank_1.getStringValue(1) ~= "" and databank_1.getStringValue(3) ~= "" then
+         showMarker = false
+         SU = SU + 10
+         length = SU * 200000
 
-            pos11 = zeroConvertToWorldCoordinates(pos1, system)
-            pos22 = zeroConvertToWorldCoordinates(pos2, system)
+         pos11 = zeroConvertToWorldCoordinates(pos1, system)
+         pos22 = zeroConvertToWorldCoordinates(pos2, system)
 
-            resultVector = vectorLengthen(pos11, pos22, length)
-            Waypoint = getPos4Vector(resultVector)
+         resultVector = vectorLengthen(pos11, pos22, length)
+         Waypoint = getPos4Vector(resultVector)
 
-            system.setWaypoint(Waypoint)
+         system.setWaypoint(Waypoint)
 
-            system.print(Waypoint .. " waypoint " .. SU .. " su")
-         end
+         system.print(Waypoint .. " waypoint " .. SU .. " su")
+      end
       --end
    end
 
    function altLEFT(unit, system, text)
       --if lalt == true then
-         if databank_1.getStringValue(1) ~= "" and databank_1.getStringValue(3) ~= "" then
-            showMarker = false
-            SU = SU - 10
-            length = SU * 200000
+      if databank_1.getStringValue(1) ~= "" and databank_1.getStringValue(3) ~= "" then
+         showMarker = false
+         SU = SU - 10
+         length = SU * 200000
 
-            pos11 = zeroConvertToWorldCoordinates(pos1, system)
-            pos22 = zeroConvertToWorldCoordinates(pos2, system)
+         pos11 = zeroConvertToWorldCoordinates(pos1, system)
+         pos22 = zeroConvertToWorldCoordinates(pos2, system)
 
-            resultVector = vectorLengthen(pos11, pos22, length)
-            Waypoint = getPos4Vector(resultVector)
+         resultVector = vectorLengthen(pos11, pos22, length)
+         Waypoint = getPos4Vector(resultVector)
 
-            system.setWaypoint(Waypoint)
+         system.setWaypoint(Waypoint)
 
-            system.print(Waypoint .. " waypoint " .. SU .. " su")
-         end
+         system.print(Waypoint .. " waypoint " .. SU .. " su")
+      end
       --end
    end
 
@@ -1816,7 +1826,7 @@ function tickVector(unit, system, text)
          local worldpos = vec3(system.getCameraWorldPos())
          local p = (dist * forwvector + worldpos)
 
-         if pos1 ~= 0 and pos2 == 0 and GHUD_export_mode == false then
+         if pos1 ~= 0 and pos2 == 0 then
 
             pos2 = '::pos{0,0,'..p.x..','..p.y..','..p.z..'}'
             databank_1.setStringValue(3, pos2)
@@ -1866,14 +1876,55 @@ function tickVector(unit, system, text)
             --unit.setTimer("marker", 1)
             --system.showScreen(1)
             unit.setTimer("vectorhud", 0.02)
-         end
+         else
+            if pos1 == 0 then
+               pos1 = '::pos{0,0,'..p.x..','..p.y..','..p.z..'}'
+               databank_1.setStringValue(1, pos1)
+               pos1time = math.floor(system.getUtcTime())
+               databank_1.setFloatValue(2, pos1time)
+               system.print(pos1 .. " pos1 saved")
+            else
+               if pos1 ~= 0 and pos2 ~= 0 then
+                  unit.stopTimer("marker")
+                  databank_1.clear()
+                  showMarker = true
+                  blockTime = 0
+                  databank_1.setFloatValue(2, blockTime)
+                  databank_1.setFloatValue(4, blockTime)
+                  pos1 = 0
+                  pos2 = 0
+                  lasttime = 0
+                  pos1time = 0
+                  pos2time = 0
+                  meterMarker = 0
+                  meterMarker1 = 0
+                  SU = 10
 
-         if pos1 == 0 and GHUD_export_mode == false then
-            pos1 = '::pos{0,0,'..p.x..','..p.y..','..p.z..'}'
-            databank_1.setStringValue(1, pos1)
-            pos1time = math.floor(system.getUtcTime())
-            databank_1.setFloatValue(2, pos1time)
-            system.print(pos1 .. " pos1 saved")
+                  --system.showScreen(0)
+                  unit.stopTimer("vectorhud")
+                  vectorHUD = ''
+                  Pos1 = 0
+                  Pos2 = 0
+                  privMySignAngleR = 0
+                  privMySignAngleUp = 0
+                  privTargetSignAngleR = 0
+                  privTargetSignAngleUp = 0
+                  targetVector = vec3.new(0, 0, 0)
+                  targetTracker = false
+                  myAngleR = 0
+                  myAngleUp = 0
+                  targetAngleR = 0
+                  targetAngleUp = 0
+
+                  system.print("---------------")
+                  unit.stopTimer("vectorhud")
+                  pos1 = '::pos{0,0,'..p.x..','..p.y..','..p.z..'}'
+                  databank_1.setStringValue(1, pos1)
+                  pos1time = math.floor(system.getUtcTime())
+                  databank_1.setFloatValue(2, pos1time)
+                  system.print(pos1 .. " pos1 saved")
+               end
+            end
          end
       end
    end
