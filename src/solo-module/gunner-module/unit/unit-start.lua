@@ -4,21 +4,21 @@
 HUD_version = '1.0.0'
 
 --LUA parameters
+--GHUD_radar_notifications_style = 1 --export:
 GHUD_friendly_IDs = {} -- put IDs here 34141,231231,31231 etc
 GHUD_export_mode = false --export: Coordinate export mode
 targetSpeed = 29999 --export: Target speed
-GHUD_background_color = "#142027" --export:
-GHUD_AR_sight_color = "rgb(0, 191, 255)" --export:
-GHUD_weapon_panels = 3 --export:
---GHUD_radar_notifications_style = 1 --export:
+GHUD_background_color = "#142027" --export: Background HUD color
+GHUD_AR_sight_color = "rgb(0, 191, 255)" --export: AR sight color
+GHUD_weapon_panels = 3 --export: Weapons widget group 3x2 or 2x3
 GHUD_radar_notifications_border_radius = true --export:
 GHUD_radar_notifications_border_color = 'black' --export:
 GHUD_radar_notifications_text_color = 'black' --export:
 GHUD_radar_notifications_background_color = 'rgb(255, 177, 44)' --export:
 GHUD_radar_notifications_Y = 10 --export:
-GHUD_log_stats = true --export: Send target statistics to LUA channel
+GHUD_log_stats = true --export: Radar and LUA chat new targets notofications
 GHUD_show_allies = true --export: Show allies
-GHUD_allies_count = 5 --export: Count of displayed allies. Selected ally will always be displayed
+GHUD_allies_count = 5 --export: Max count of displayed allies. Selected ally will always be displayed
 GHUD_allies_color = "#0cf27b" --export:
 GHUD_allied_names_color = "#0cf27b" --export:
 GHUD_AR_allies_border_size = 400 --export:
@@ -37,7 +37,7 @@ GHUD_your_ship_ID_color = "#fca503" --export:
 GHUD_border_color = "black" --export:
 GHUD_allies_Y = 0 --export: set to 0 if playing in fullscreen mode
 GHUD_windowed_mode = false --export: adds 2 to the height GHUD_allies_Y
-collectgarbages = false --export: Experimental
+collectgarbages = false --export: experimental
 
 if GHUD_radar_notifications_border_radius == true then
    GHUD_border_radius = '15px'
