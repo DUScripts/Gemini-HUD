@@ -59,7 +59,7 @@ radarIDs = {}
 idN = 0
 screenHeight = system.getScreenHeight()
 screenWidth = system.getScreenWidth()
-startTime = syste.getArkTime()
+startTime = system.getArkTime()
 lastHitTime = {}
 lastMissTime = {}
 hits = {}
@@ -288,7 +288,7 @@ function mWeapons:onUpdate()
       oldFireReady[weaponDataID] = fireReady
       OldoutOfZone[weaponDataID] = outOfZone
       oldTargetConstruct[weaponDataID] = targetConstructID
-      oldHitProbability[weaponDataID] == hitProbability
+      oldHitProbability[weaponDataID] = hitProbability
 
       local ammoName = weaponData:match('"ammoName":"(.-)"')
 
@@ -379,7 +379,7 @@ radarWidgetScaleDisplay = '<div class="measures"><span>0 SU</span><span>1 SU</sp
 radar_1.setSortMethod(1) --set default radar range mode for constructIds list main function
 
 mWeapons = mWeapons:new(system, weapon, GHUD_weapon_panels) --weapon widgets
-mRadar = mRadar:new(system, radar, whitelist) --radar widget
+mRadar = mRadar:new(system, radar_1, whitelist) --radar widget
 
 system.showScreen(1)
 unit.setTimer("radar",0.05)
