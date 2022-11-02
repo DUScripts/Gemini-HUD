@@ -1,6 +1,6 @@
 start:
 buttonC=true
-altDOWN(unit,system,text)
+if shift == true then altDOWN(unit,system,text) end
 
 stop:
 buttonC=false

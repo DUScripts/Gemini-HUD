@@ -1,7 +1,7 @@
 start:
 buttonSpace=true
 if buttonC==true then mRadar:stopC() end
-altUP(unit,system,text)
+if shift == true then altUP(unit,system,text) end
 
 stop:
 buttonSpace=false

@@ -115,7 +115,7 @@ if math.ceil(HP) <= 50 then
    local v0 = vec3(construct.getWorldVelocity())
    local speed = math.floor(v0):len() * 3.6)
    local maxSpeed = math.floor(construct.getMaxSpeed() * 3.6)
-   local controllerData = json.decode(unit.getData())
+   local controllerData = json.decode(unit.getWidgetData())
    local maxBrakeThrust = controllerData.maxBrake
    local dis = 0.0
    local v = v0:len()
@@ -203,7 +203,7 @@ if math.ceil(HP) <= 50 then
                      drawonradar(vec3(planet.center),planet.name[1])
                      local point1 = library.getPointOnScreen({planet.center.x,planet.center.y,planet.center.z})
                      if point1[3] > 0 then --visible zone
-                        local dist = vec3(shipPos - vec3(planet.center)):len()
+                        local dist = vec3(vec3(construct.getWorldPosition()) - vec3(planet.center)):len()
                         local sdist = ''
                         if dist >= 100000 then
                            dist = string.format('%0.2f', dist/200000)
@@ -243,7 +243,7 @@ if math.ceil(HP) <= 50 then
                drawonradar(asteroidcoord,""..GHUD_marker_name.."")
                local point1 = library.getPointOnScreen({asteroidcoord.x,asteroidcoord.y,asteroidcoord.z})
                if point1[3] > 0 then --visible zone
-                  local dist = vec3(shipPos - asteroidcoord):len()
+                  local dist = vec3(vec3(construct.getWorldPosition()) - asteroidcoord):len()
                   local sdist = ''
                   if dist >= 100000 then
                      dist = string.format('%0.2f', dist/200000)
@@ -288,11 +288,11 @@ if math.ceil(HP) <= 50 then
             local szradius = 500000
             local distsz, distp = math.huge
             local szsafe = false
-            local distsz = vec3(shipPos):dist(safeWorldPos)
+            local distsz = vec3(vec3(construct.getWorldPosition())):dist(safeWorldPos)
             if distsz < safeRadius then
                szsafe=true
                distS = mabs(distsz - safeRadius)
-               local vector1 = vectorLengthen(safeWorldPos, shipPos, distS)
+               local vector1 = vectorLengthen(safeWorldPos, vec3(construct.getWorldPosition()), distS)
                if distS > 100000 then
                   distS = ''..string.format('%0.2f', distS/200000)..' su'
                elseif distS > 1000 and distS < 100000 then
@@ -305,12 +305,12 @@ if math.ceil(HP) <= 50 then
                safeVector = vector1
             end
 
-            distp = vec3(shipPos):dist(vec3(closestPlanet.center))
+            distp = vec3(construct.getWorldPosition()):dist(vec3(closestPlanet.center))
             if distp < szradius then szsafe = true else szsafe = false end
             if mabs(distp - szradius) < mabs(distsz - safeRadius) then
                safew='::pos{0,0,'..closestPlanet.center.x..','..closestPlanet.center.y..','..closestPlanet.center.z..'}'
                distS = mabs(distp - szradius)
-               local vector1 = vectorLengthen(vec3(closestPlanet.center), shipPos, distS)
+               local vector1 = vectorLengthen(vec3(closestPlanet.center), vec3(construct.getWorldPosition()), distS)
                if distS > 100000 then
                   distS = ''..string.format('%0.2f', distS/200000)..' su'
                elseif distS > 1000 and distS < 100000 then
@@ -329,7 +329,7 @@ if math.ceil(HP) <= 50 then
                end
             else
                distS = mabs(distsz - safeRadius)
-               local vector1 = vectorLengthen(safeWorldPos, shipPos, distS)
+               local vector1 = vectorLengthen(safeWorldPos, vec3(construct.getWorldPosition()), distS)
                if distS > 100000 then
                   distS = ''..string.format('%0.2f', distS/200000)..' su'
                elseif distS > 1000 and distS < 100000 then
@@ -346,7 +346,7 @@ if math.ceil(HP) <= 50 then
             safetext='<red1>'..safeStatus..'</red1>'
             local point1 = library.getPointOnScreen({safeVector.x,safeVector.y,safeVector.z})
             if point1[3] > 0 then --visible zone
-               local dist = vec3(shipPos - safeVector):len()
+               local dist = vec3(vec3(construct.getWorldPosition()) - safeVector):len()
                local sdist = ''
                if dist >= 100000 then
                   dist = string.format('%0.2f', dist/200000)
@@ -382,7 +382,7 @@ if math.ceil(HP) <= 50 then
             safetext='<green1>'..safeStatus..'</green1>'
             local point1 = library.getPointOnScreen({safeVector.x,safeVector.y,safeVector.z})
             if point1[3] > 0 then --visible zone
-               local dist = vec3(shipPos - safeVector):len()
+               local dist = vec3(vec3(construct.getWorldPosition()) - safeVector):len()
                local sdist = ''
                if dist >= 100000 then
                   dist = string.format('%0.2f', dist/200000)

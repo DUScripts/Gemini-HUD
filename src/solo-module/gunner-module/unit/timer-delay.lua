@@ -5,7 +5,7 @@ if (system.getTime() - startTime) > 5 then
    unit.setTimer("data", 0.1)
    unit.setTimer("hud", 0.016)
    if GHUD_log_stats then
-      unit.setTimer("logger", 0.5)
+      unit.setTimer("logger", 0.2)
    end
    unit.stopTimer("delay")
 end

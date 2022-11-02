@@ -1,2 +1,2 @@
 start:
-GEAR(unit,system,text)
+radarPos(system,radar)

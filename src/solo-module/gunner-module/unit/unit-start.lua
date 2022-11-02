@@ -5,17 +5,17 @@ HUD_version = '1.0.0'
 
 --LUA parameters
 GHUD_friendly_IDs = {} -- put IDs here 34141,231231,31231 etc
-GHUD_export_mode = true --export: Coordinate export mode
+GHUD_export_mode = false --export: Coordinate export mode
 targetSpeed = 29999 --export: Target speed
 GHUD_background_color = "#142027" --export:
 GHUD_AR_sight_color = "rgb(0, 191, 255)" --export:
 GHUD_weapon_panels = 3 --export:
 --GHUD_radar_notifications_style = 1 --export:
-GHUD_radar_notifications_border_radius = false --export:
+GHUD_radar_notifications_border_radius = true --export:
 GHUD_radar_notifications_border_color = 'black' --export:
 GHUD_radar_notifications_text_color = 'black' --export:
 GHUD_radar_notifications_background_color = 'rgb(255, 177, 44)' --export:
-GHUD_radar_notifications_Y = 25 --export:
+GHUD_radar_notifications_Y = 10 --export:
 GHUD_log_stats = true --export: Send target statistics to LUA channel
 GHUD_show_allies = true --export: Show allies
 GHUD_allies_count = 5 --export: Count of displayed allies. Selected ally will always be displayed
@@ -54,11 +54,12 @@ end
 --vars
 atlas = require("atlas")
 shift = false
+lalt = false
 radarIDs = {}
 idN = 0
 screenHeight = system.getScreenHeight()
 screenWidth = system.getScreenWidth()
-startTime = syste.getTime()
+startTime = syste.getArkTime()
 lastHitTime = {}
 lastMissTime = {}
 hits = {}
@@ -68,7 +69,7 @@ missAnimations = 0
 totalDamage = {}
 mRadar = {}
 mWeapons = {}
-size = {'XL','L','M','S','XS'}
+size = {'XL','L','M','S','XS','ALL'}
 defaultSize = 'ALL'
 sizeState = 6
 focus = ''
@@ -85,7 +86,8 @@ znak = '' --target speed icon
 firstload = 0
 constructSelected = 0
 probil = 0
-playerName = system.getPlayerName(unit.getMasterPlayerId())
+playerName = system.getPlayerName(player.getId())
+shipPos = vec3(construct.getWorldPosition())
 warpScan = 0 --for 3D map
 t_radarEnter = {}
 loglist = {}
@@ -100,8 +102,8 @@ radarWidget = ''
 targets = {}
 target = {}
 count = 0
-shipName = core.getConstructName()
-local scID = core.getConstructId()
+shipName = construct.getName()
+local scID = construct.getId()
 system.print(''..shipName..': '..scID..'')
 conID = tostring(scID):sub(-3)
 
@@ -149,7 +151,7 @@ end
 
 function mRadar:updateStep()
    local resultList = {}
-   local data = radar.getWidgetData()
+   local data = self.radar.getWidgetData()
    local constructList = data:gmatch('({"constructId":".-%b{}.-})')
    local isIDFiltered = next(self.idFilter) ~= nil
    local i = 0
@@ -159,16 +161,16 @@ function mRadar:updateStep()
          coroutine.yield()
       end
       local ID = tonumber(str:match('"constructId":"([%d]*)"'))
-      local size = radar.getConstructCoreSize(ID)
-      local locked = radar.isConstructIdentified(ID)
-      local alive = radar.isConstructAbandoned(ID)
-      local selectedTarget = radar.getTargetId(ID)
+      local size = self.radar.getConstructCoreSize(ID)
+      local locked = self.radar.isConstructIdentified(ID)
+      local alive = self.radar.isConstructAbandoned(ID)
+      local selectedTarget = self.radar.getTargetId(ID)
       if locked == 1 or alive == 0 or selectedTarget == ID and size ~= "" then --show only locked or alive or selected targets
          if defaultSize == 'ALL' then --default mode
             if (self.friendList[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode and self.radar.getThreatRateFrom(ID) ~= 5 then  --show attacking traitor on widget
                goto continue1
             end
-            if isIDFiltered and self.idFilter[tostring(ID):sub(-3)] ~= true then
+            if isIDFiltered and self.idFilter[ID%1000] ~= true then
                goto continue1
             end
             resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. tostring(ID):sub(-3) .. ' - %1"')
@@ -178,7 +180,7 @@ function mRadar:updateStep()
             if (self.friendList[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode and self.radar.getThreatRateFrom(ID) ~= 5 then
                goto continue2
             end
-            if isIDFiltered and self.idFilter[tostring(ID):sub(-3)] ~= true then
+            if isIDFiltered and self.idFilter[ID%1000] ~= true then
                goto continue2
             end
             resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. tostring(ID):sub(-3) .. ' - %1"')
@@ -230,8 +232,10 @@ function mRadar:new(sys, radar, friendList)
    self.onlyIdentified = false
    self.idFilter = {}
    --self:createWidget()
+   self.dataID = self.system.createData(self.radar.getWidgetData())
    self.radarPanel = self.system.createWidgetPanel('')
    self.radarWidget = self.system.createWidget(self.radarPanel, self.radar.getWidgetType())
+   self.system.addDataToWidget(self.dataID, self.radarWidget)
    self.updaterCoroutine = coroutine.create(function() self:updateLoop() end)
    return self
 end
@@ -241,6 +245,13 @@ function mRadar:stopC()
 end
 
 --weapon widgets
+local oldAnimationTime = {}
+local oldWeaponStatus = {}
+local oldFireReady = {}
+local OldoutOfZone = {}
+local oldTargetConstruct = {}
+local oldHitProbability = {}
+
 function mWeapons:createWidgets()
    if not (type(self.weapons) == 'table' and #self.weapons > 0) then
       return
@@ -250,7 +261,7 @@ function mWeapons:createWidgets()
       if (i-1) % self.weaponsPerPanel == 0 then
          widgetPanelID = self.system.createWidgetPanel('')
       end
-      local weaponDataID = self.system.createData(weap.getData())
+      local weaponDataID = self.system.createData(weap.getWidgetData())
       self.weaponData[weaponDataID] = weap
       oldAnimationTime[weaponDataID] = 0
       self.system.addDataToWidget(weaponDataID, self.system.createWidget(widgetPanelID, weap.getWidgetType()))
@@ -265,18 +276,19 @@ function mWeapons:onUpdate()
       local fireReady = weaponData:match('"fireReady":(.-),')
       local outOfZone = weaponData:match('"outOfZone":(.-),')
       local targetConstructID = weaponData:match('"constructId":"(.-)"')
-      local hitProbability = tonumber(weaponData:match('"hitProbability":(.-),'))
-      local hitP = math.ceil(hitProbability * 100)
+      local hitProbability = weaponData:match('"hitProbability":(.-),')
+      local hitP = math.ceil(tonumber(hitProbability) * 100)
       local animationChanged = animationTime > oldAnimationTime[weaponDataID]
       oldAnimationTime[weaponDataID] = animationTime
 
-      if weaponStatus == oldWeaponStatus[weaponDataID] and oldTargetConstruct[weaponDataID] == targetConstructID and oldFireReady[weaponDataID] == fireReady and OldoutOfZone[weaponDataID] == outOfZone and not animationChanged then
+      if weaponStatus == oldWeaponStatus[weaponDataID] and oldTargetConstruct[weaponDataID] == targetConstructID and oldFireReady[weaponDataID] == fireReady and OldoutOfZone[weaponDataID] == outOfZone and oldHitProbability[weaponDataID] == hitProbability and not animationChanged then
          goto continue
       end
       oldWeaponStatus[weaponDataID] = weaponStatus
       oldFireReady[weaponDataID] = fireReady
       OldoutOfZone[weaponDataID] = outOfZone
       oldTargetConstruct[weaponDataID] = targetConstructID
+      oldHitProbability[weaponDataID] == hitProbability
 
       local ammoName = weaponData:match('"ammoName":"(.-)"')
 
@@ -304,8 +316,10 @@ function mWeapons:onUpdate()
          ammoType2 = "Def"
       end
 
-      weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. hitP .. '% ' .. ammoType1 .. ' ' .. ammoType2 .. '"')
-      weaponData = weaponData:gsub('"constructId":"(%d+(%d%d%d))","name":"(.?.?.?.?).-"', '"constructId":"%1","name":"%2 - %3"')
+      --weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. hitP .. '% ' .. ammoType1 .. ' ' .. ammoType2 .. '"')
+      --weaponData = weaponData:gsub('"constructId":"(%d+(%d%d%d))","name":"(.?.?.?.?).-"', '"constructId":"%1","name":"%2 - %3"')
+      weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. hitP .. '%% - ' .. ammoType1 .. ' ' .. ammoType2 .. '"')
+      weaponData = weaponData:gsub('"constructId":"(%d+(%d%d%d))","name":"(.?.?.?.?.?.?.?.?.?.?.?.?.?.?).-"', '"constructId":"%1","name":"%2 - %3"')
 
       if self.system.updateData(weaponDataID, weaponData) ~= 1 then
          self.system.print('update error')
@@ -324,50 +338,6 @@ function mWeapons:new(sys, weapons, weaponsPerPanel)
    self.weaponData = {}
    self:createWidgets()
    return self
-end
-
---weapon widget
-local oldAnimationTime = {}
-local oldWeaponStatus = {}
-local oldFireReady = {}
-local OldoutOfZone = {}
-local oldTargetConstruct = {}
-local lastData = {}
-local timed = false
-
---radar slot configurator
--- for slot_name, slot in pairs(unit) do
---    if
---    type(slot) == "table"
---    and type(slot.export) == "table"
---    and slot.getElementClass
---    then
---       if string.find(slot.getClass(), 'Radar') ~= nil then
---          if string.find(slot.getClass(), 'Space') ~= nil then
---             radar_1 = slot
---          else
---             radar_2 = slot
---          end
---       end
---    end
--- end
-
-for slot_name, slot in pairs(unit) do
-   if
-   type(slot) == "table"
-   and type(slot.export) == "table"
-   and slot.getElementClass
-   then
-      if string.find(slot.getClass(), 'Radar') ~= nil then
-         radar = slot
-      end
-      --    if slot.getClass():lower():find("databank") then
-      --       databank = slot
-      --  end
-      --  if slot.getClass():lower():find("screen") then
-      --       screen = slot
-      --  end
-   end
 end
 
 --debug coroutine
@@ -395,15 +365,18 @@ function ConvertLocalToWorld(x,y,z)
 end
 
 --Echoes startup configurator
-if radar.getOperationalState() == 0 then
-   radarWidgetScale = 160
-   radarWidgetScaleDisplay = '<div class="measures"><span>0 KM</span><span>2.5 KM</span><span>5 KM</span></div>'
-else
-   radarWidgetScale = 2
-   radarWidgetScaleDisplay = '<div class="measures"><span>0 SU</span><span>1 SU</span><span>2 SU</span></div>'
-end
+-- if radar_1.getOperationalState() == 0 then
+--    radarWidgetScale = 160
+--    radarWidgetScaleDisplay = '<div class="measures"><span>0 KM</span><span>2.5 KM</span><span>5 KM</span></div>'
+-- else
+--    radarWidgetScale = 2
+--    radarWidgetScaleDisplay = '<div class="measures"><span>0 SU</span><span>1 SU</span><span>2 SU</span></div>'
+-- end
 
-radar.setSortMethod(1) --set default radar range mode for constructIds list main function
+radarWidgetScale = 2
+radarWidgetScaleDisplay = '<div class="measures"><span>0 SU</span><span>1 SU</span><span>2 SU</span></div>'
+
+radar_1.setSortMethod(1) --set default radar range mode for constructIds list main function
 
 mWeapons = mWeapons:new(system, weapon, GHUD_weapon_panels) --weapon widgets
 mRadar = mRadar:new(system, radar, whitelist) --radar widget
@@ -425,7 +398,7 @@ function main()
       local islockList = ""
       local caption = ""
       local captionL = ""
-      local target = ""
+      local target1 = ""
       local locks = ""
       local statusSVG = ""
       local captionText = ""
@@ -438,37 +411,15 @@ function main()
       radarDynamicWidget = {}
       radarStaticData = radarStaticWidget
       radarStaticWidget = {}
-      local worksInEnvironment = radar.getOperationalState()
-      if worksInEnvironment == 0 and atmovar == false then
-         --mRadar:deleteWidget()
-         atmovar=true
-         --radar=radar_2
-         --mRadar.radar=radar
-         --mRadar:createWidgetNew()
-         radarWidgetScale = 160
-         radarWidgetScaleDisplay = '<div class="measures"><span>0 KM</span><span>2.5 KM</span><span>5 KM</span></div>'
-      end
-      if worksInEnvironment == 1 and atmovar == true then
-         --mRadar:deleteWidget()
-         atmovar=false
-         --radar=radar_1
-         --mRadar.radar=radar
-         --mRadar:createWidgetNew()
-         radarWidgetScale = 2
-         radarWidgetScaleDisplay = '<div class="measures"><span>0 SU</span><span>1 SU</span><span>2 SU</span></div>'
-      end
-
-      --local radarIDs = radar.getConstructIds()
-      --local idN = #radarIDs
       for k,v in pairs(radarIDs) do
          i = i + 1
-         local size = radar.getConstructCoreSize(v)
+         local size = radar_1.getConstructCoreSize(v)
          local constructRow = {}
          if GHUD_log_stats then
             if t_radarEnter[v] ~= nil then
-               if radar.hasMatchingTransponder(v) == 0 and not whitelist[v] and size ~= "" and radar.getConstructDistance(v) < 600000 then --do not show far targets during warp and server lag
-                  local name = radar.getConstructName(v)
-                  if radar.isConstructAbandoned(v) == 0 then
+               if radar_1.hasMatchingTransponder(v) == 0 and not whitelist[v] and size ~= "" and radar_1.getConstructDistance(v) < 600000 then --do not show far targets during warp and server lag
+                  local name = radar_1.getConstructName(v)
+                  if radar_1.isConstructAbandoned(v) == 0 then
                      local msg = 'NEW TARGET: '..name..' - '..v..' - Size: '..size..'\nYour pos: '..t_radarEnter[v].pos..''
                      table.insert(loglist, msg)
                      if count < 10 then --max 10 notifications
@@ -479,7 +430,7 @@ function main()
                         system.playSound('enter.mp3')
                      end
                   else
-                     local pos = radar.getConstructWorldPos(v)
+                     local pos = radar_1.getConstructWorldPos(v)
                      pos = '::pos{0,0,'..pos[1]..','..pos[2]..','..pos[3]..'}'
                      local msg = 'NEW TARGET (abandoned): '..name..' - '..v..' - Size: '..size..'\nTarget pos:'..pos..''
                      table.insert(loglist, msg)
@@ -496,13 +447,13 @@ function main()
             end
          end
          if GHUD_show_echoes == true and size ~= "" then
-            constructRow.widgetDist = math.ceil(radar.getConstructDistance(v) / 1000 * radarWidgetScale)
+            constructRow.widgetDist = math.ceil(radar_1.getConstructDistance(v) / 1000 * radarWidgetScale)
          end
          --radarlist
          if GHUD_show_allies == true and size ~= "" then
-            if radar.hasMatchingTransponder(v) == 1 or whitelist[v] and radar.getThreatRateFrom(v) ~= 5 then  --remove attacking traitor from the allies HUD
-               local name = radar.getConstructName(v)
-               local dist = math.floor(radar.getConstructDistance(v))
+            if radar_1.hasMatchingTransponder(v) == 1 or whitelist[v] and radar_1.getThreatRateFrom(v) ~= 5 then  --remove attacking traitor from the allies HUD
+               local name = radar_1.getConstructName(v)
+               local dist = math.floor(radar_1.getConstructDistance(v))
                if dist >= 1000 then
                   dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
                else
@@ -511,7 +462,7 @@ function main()
                local allID = tostring(v):sub(-3)
                local nameA = ''..allID..' '..name..''
                friendlies = friendlies + 1
-               if radar.getTargetId(v) ~= v and friendlies < GHUD_allies_count1 then
+               if radar_1.getTargetId(v) ~= v and friendlies < GHUD_allies_count1 then
                   list = list..[[
                   <div class="table-row3 th3">
                   <div class="table-cell3">
@@ -519,7 +470,7 @@ function main()
                   </div>
                   </div>]]
                end
-               if radar.getTargetId(v) == v and friendlies < GHUD_allies_count1 then
+               if radar_1.getTargetId(v) == v and friendlies < GHUD_allies_count1 then
                   list = list..[[
                   <div class="table-row3 th3S">
                   <div class="table-cell3S">
@@ -527,7 +478,7 @@ function main()
                   </div>
                   </div>]]
                end
-               if radar.getTargetId(v) == v and friendlies >= GHUD_allies_count1 then
+               if radar_1.getTargetId(v) == v and friendlies >= GHUD_allies_count1 then
                   list = list..[[
                   <div class="table-row3 th3S">
                   <div class="table-cell3S">
@@ -541,9 +492,9 @@ function main()
          local speed = 0
          local radspeed = 0
          local angspeed = 0
-         if radar.isConstructIdentified(v) == 1 and size ~= "" then
-            local name = string.sub((""..radar.getConstructName(v)..""),1,11)
-            local dist = math.floor(radar.getConstructDistance(v))
+         if radar_1.isConstructIdentified(v) == 1 and size ~= "" then
+            local name = string.sub((""..radar_1.getConstructName(v)..""),1,11)
+            local dist = math.floor(radar_1.getConstructDistance(v))
             if dist >= 1000 then
                dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
             else
@@ -554,8 +505,8 @@ function main()
             --local nameT = string.sub((""..nameIDENT..""),1,11)
             --table.insert(radarTarget, constructRow)
             isILock = true
-            speed = math.floor(radar.getConstructSpeed(v) * 3.6)
-            if radar.getTargetId(v) == v then
+            speed = math.floor(radar_1.getConstructSpeed(v) * 3.6)
+            if radar_1.getTargetId(v) == v then
                islockList = islockList..[[
                <div class="table-row2 thS">
                <div class="table-cellS">
@@ -573,7 +524,7 @@ function main()
          else
 
             if GHUD_show_echoes == true and size ~= "" then
-               if radar.getConstructKind(v) == 5 then
+               if radar_1.getConstructKind(v) == 5 then
                   table.insert(radarDynamic, constructRow)
                   if radarDynamicWidget[constructRow.widgetDist] ~= nil then
                      radarDynamicWidget[constructRow.widgetDist] = radarDynamicWidget[constructRow.widgetDist] + 1
@@ -591,10 +542,10 @@ function main()
             end
          end
          --lockstatus
-         if radar.getThreatRateFrom(v) ~= 1 and size ~= "" then
+         if radar_1.getThreatRateFrom(v) ~= 1 and size ~= "" then
             countLock = countLock + 1
-            local name = radar.getConstructName(v)
-            local dist = math.floor(radar.getConstructDistance(v))
+            local name = radar_1.getConstructName(v)
+            local dist = math.floor(radar_1.getConstructDistance(v))
             if dist >= 1000 then
                dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
             else
@@ -602,7 +553,7 @@ function main()
             end
             local loclIDT = tostring(v):sub(-3)
             local nameLOCK = ''..loclIDT..' '..name..''
-            if radar.getThreatRateFrom(v) == 5 then
+            if radar_1.getThreatRateFrom(v) == 5 then
                countAttacked = countAttacked + 1
                lockList = lockList..[[
                <div class="table-row th">
@@ -647,7 +598,7 @@ function main()
          </div>]]
       end
       caption = "<targetscolor>Targets:</targetscolor>"
-      target = targetshtml .. [[
+      target1 = targetshtml .. [[
       <style>
       .th2>.table-cell2 {
          color: ]]..GHUD_target_names_color..[[;
@@ -684,11 +635,12 @@ function main()
       --threat icon
       statusSVG = [[<style>.radarLockstatus {
          position: fixed;
+         background: transparent;
+         width: 6em; 
+         padding: 1vh;
          top: 13.5vh;
          left: 50%;
-         transform: translate(-50%, -50%);
-         background: transparent;
-         width: 6em;
+         transform: translateX(-50%);
          text-align: center;
          fill: ]]..captionLcolor..[[;
       }
@@ -748,25 +700,25 @@ function main()
          radarWidget = ''
       end
 
-      hudver = hudvers .. [[<div class="hudversion">Gemini v]]..HUD_version..[[</div>]]
+      hudver = hudvers .. [[<div class="hudversion">GHUD v]]..HUD_version..[[</div>]]
 
       if GHUD_show_echoes == true then
          if GHUD_show_allies == true then
-            --system.setScreen(htmltext .. target .. locks .. hudver .. radarWidget ..statusSVG)
-            gunnerHUD = htmltext .. target .. locks .. hudver .. radarWidget ..statusSVG
+            --system.setScreen(htmltext .. target1 .. locks .. hudver .. radarWidget ..statusSVG)
+            gunnerHUD = htmltext .. target1 .. locks .. hudver .. radarWidget ..statusSVG
          else
-            --system.setScreen(target .. locks .. hudver .. radarWidget ..statusSVG)
-            gunnerHUD = target .. locks .. hudver .. radarWidget ..statusSVG
+            --system.setScreen(target1 .. locks .. hudver .. radarWidget ..statusSVG)
+            gunnerHUD = target1 .. locks .. hudver .. radarWidget ..statusSVG
          end
 
       else
 
          if GHUD_show_allies == true then
-            --system.setScreen(htmltext .. target .. locks .. hudver ..statusSVG)
-            gunnerHUD = htmltext .. target .. locks .. hudver ..statusSVG
+            --system.setScreen(htmltext .. target1 .. locks .. hudver ..statusSVG)
+            gunnerHUD = htmltext .. target1 .. locks .. hudver ..statusSVG
          else
-            --system.setScreen(target .. locks .. hudver ..statusSVG)
-            gunnerHUD = target .. locks .. hudver ..statusSVG
+            --system.setScreen(target1 .. locks .. hudver ..statusSVG)
+            gunnerHUD = target1 .. locks .. hudver ..statusSVG
          end
       end
       coroutine.yield()
@@ -907,8 +859,8 @@ hudvers = [[
    position: fixed;
    bottom: 2.7vh;
    color: white;
-   right: 8.1vw;
-   font-family: 'Open Sans';
+   right: 9.25vw;
+   font-family: v;
    letter-spacing: 0.5px;
    font-size: 1.4em;
    font-weight: bold;
@@ -1034,7 +986,7 @@ function getPipeD(system)
       local DestinationCenter = vectorLengthen(pos111, pos222, length1)
       local DepartureCenter = vectorLengthen(pos111, pos222, length2)
 
-      local worldPos = vec3(core.getConstructWorldPos())
+      local worldPos = vec3(construct.getWorldPosition())
       local pipe = (DestinationCenter - DepartureCenter):normalize()
       local r = (worldPos - DepartureCenter):dot(pipe) / pipe:dot(pipe)
       if r <= 0. then
@@ -1071,7 +1023,7 @@ function getPipeW(system)
       local DestinationCenter = vectorLengthen(pos111, pos222, length1)
       local DepartureCenter = vectorLengthen(pos111, pos222, length2)
 
-      local worldPos = vec3(core.getConstructWorldPos())
+      local worldPos = vec3(construct.getWorldPosition())
       local pipe = (DestinationCenter - DepartureCenter):normalize()
       local r = (worldPos - DepartureCenter):dot(pipe) / pipe:dot(pipe)
       if r <= 0. then
@@ -1134,7 +1086,7 @@ function start(unit, system, text)
    tspeed = 0
    tspeed1 = 0
    mmode = true
-   lalt = false
+   --lalt = false
 
    --system.createWidgetPanel("Target Vector")
    deg2rad = math.pi / 180
@@ -1594,10 +1546,10 @@ end
 function tickVector(unit, system, text)
    if targetTracker == true and targetVector.x ~= 0 and targetVector.y ~= 0 and targetVector.z ~= 0 then
       local pipeDist = getPipeD(system)
-      local worldOrintUp = vec3(core.getConstructWorldOrientationUp()):normalize()
-      local worldOrintRight = vec3(core.getConstructWorldOrientationRight()):normalize()
-      local worldOrintForw = vec3(core.getConstructWorldOrientationForward()):normalize()
-      local mySpeedVectorNorm = vec3(core.getWorldVelocity()):normalize()
+      local worldOrintUp = vec3(construct.getWorldOrientationUp()):normalize()
+      local worldOrintRight = vec3(construct.getWorldOrientationRight()):normalize()
+      local worldOrintForw = vec3(construct.getWorldOrientationForward()):normalize()
+      local mySpeedVectorNorm = vec3(construct.getWorldVelocity()):normalize()
       local projectedWorldUp = mySpeedVectorNorm:project_on_plane(worldOrintUp)
       local projectedWorldR = mySpeedVectorNorm:project_on_plane(worldOrintRight)
       local projectedWorldF = mySpeedVectorNorm:project_on_plane(worldOrintForw)
@@ -1705,7 +1657,7 @@ function tickVector(unit, system, text)
          text-align: center;
          background: #142027;
          color: white;
-         font-family: "Lucida" Grande, sans-serif;
+         font-family: verdana;
          font-size: 1em;
          border-radius: 2vh;
          border: 0.2vh solid;
@@ -1762,7 +1714,7 @@ function tickVector(unit, system, text)
    end
 
    function altUP(unit, system, text)
-      if lalt == true then
+      --if lalt == true then
          if databank_1.getStringValue(1) ~= "" and databank_1.getStringValue(3) ~= "" then
             showMarker = false
             SU = SU + 2.5
@@ -1778,11 +1730,11 @@ function tickVector(unit, system, text)
 
             system.print(Waypoint .. " waypoint " .. SU .. " su")
          end
-      end
+      --end
    end
 
    function altDOWN(unit, system, text)
-      if lalt == true then
+      --if lalt == true then
          if databank_1.getStringValue(1) ~= "" and databank_1.getStringValue(3) ~= "" then
             showMarker = false
             SU = SU - 2.5
@@ -1798,11 +1750,11 @@ function tickVector(unit, system, text)
 
             system.print(Waypoint .. " waypoint " .. SU .. " su")
          end
-      end
+      --end
    end
 
    function altRIGHT(unit, system, text)
-      if lalt == true then
+      --if lalt == true then
          if databank_1.getStringValue(1) ~= "" and databank_1.getStringValue(3) ~= "" then
             showMarker = false
             SU = SU + 10
@@ -1818,11 +1770,11 @@ function tickVector(unit, system, text)
 
             system.print(Waypoint .. " waypoint " .. SU .. " su")
          end
-      end
+      --end
    end
 
    function altLEFT(unit, system, text)
-      if lalt == true then
+      --if lalt == true then
          if databank_1.getStringValue(1) ~= "" and databank_1.getStringValue(3) ~= "" then
             showMarker = false
             SU = SU - 10
@@ -1838,7 +1790,7 @@ function tickVector(unit, system, text)
 
             system.print(Waypoint .. " waypoint " .. SU .. " su")
          end
-      end
+      --end
    end
 
    function GEAR(unit, system, text)
@@ -1857,9 +1809,9 @@ function tickVector(unit, system, text)
    end
 
    function radarPos(system,radar)
-      local id = radar.getTargetId()
+      local id = radar_1.getTargetId()
       if id ~= 0 then
-         local dist = radar.getConstructDistance(id)
+         local dist = radar_1.getConstructDistance(id)
          local forwvector = vec3(system.getCameraWorldForward())
          local worldpos = vec3(system.getCameraWorldPos())
          local p = (dist * forwvector + worldpos)
@@ -1939,7 +1891,7 @@ function tickVector(unit, system, text)
       margin-right: auto;
       text-align: center;
       background-image: url("assets.prod.novaquark.com/3014/36dec597-dbf2-46a4-95c7-8e135dd77889.png");
-      background-size: 25vw;
+      background-size: 400px;
       background-repeat: no-repeat;
       background-position: center center;
       transition: background 800ms ease-in 800ms;

@@ -356,7 +356,7 @@ while true do
       i = i + 1
       if (stellarObjects[obj].type[1] == 'Planet' or stellarObjects[obj].isSanctuary == true) then
          local planetCenter = vec3(stellarObjects[obj].center)
-         local distance = vec3(shipPos - planetCenter):len()
+         local distance = vec3(vec3(construct.getWorldPosition()) - planetCenter):len()
 
          if (smallestDistance == nil or distance < smallestDistance) then
             smallestDistance = distance;
@@ -377,7 +377,7 @@ while true do
          for obj2 in pairs(stellarObjects) do
             i = i + 1
             if (obj2 > obj and (stellarObjects[obj2].type[1] == 'Planet' or stellarObjects[obj2].isSanctuary == true)) then
-               pipeDistance = calcDistanceStellar(stellarObjects[obj], stellarObjects[obj2], shipPos)
+               pipeDistance = calcDistanceStellar(stellarObjects[obj], stellarObjects[obj2], vec3(construct.getWorldPosition()))
                if nearestPipeDistance == nil or pipeDistance < nearestPipeDistance then
                   nearestPipeDistance = pipeDistance;
                   sortestPipeKeyId = obj;
@@ -411,7 +411,7 @@ function drawonradar(coordonate,PlaneteName)
 local constructUp = vec3(construct.getWorldOrientationUp())
 local constructForward = vec3(construct.getWorldOrientationForward())
 local constructRight = vec3(construct.getWorldOrientationRight())
-local ConstructWorldPos = shipPos
+local ConstructWorldPos = vec3(construct.getWorldPosition())
 local ToCible=coordonate-ConstructWorldPos
 local Xcoord = mySignedAngleBetween(ToCible, constructForward, constructUp)/math.pi --*RadarR
 local Ycoord = mySignedAngleBetween(ToCible, constructForward, constructRight)/math.pi --*RadarR+RadarY
@@ -487,7 +487,7 @@ local distance=math.floor(((wp-CenterSafeZone):len()-18000000))
 return distance
 end
 
-playerName = system.getPlayerName(unit.getMasterPlayerId())
+playerName = system.getPlayerName(player.getId())
 xDelta = -238
 yDelta = -108
 mapScale = .99999
@@ -518,8 +518,8 @@ elseif nearestPipeDistance < 400000 then
 end
 end
 
-shipName = core.getConstructName()
-conID = tostring(core.getConstructId()):sub(-3)
+shipName = construct.getName()
+conID = tostring(construct.getId()):sub(-3)
 bhelper = false
 system.showHelper(0)
 distS = ''
@@ -759,7 +759,7 @@ elseif stress[2] >= stress[1] and
                local planetName = v.name[1]
                local typeplanet = v.type[1]
                local center = vec3(v.center)
-               local distance = customDistance(vec3(shipPos - vec3(v.center)):len())
+               local distance = customDistance(vec3(vec3(construct.getWorldPosition()) - vec3(v.center)):len())
 
                local coords = {x=center.x + (-center.x * mapScale), y=center.y + (-center.y * mapScale), z=center.z + (-center.z * mapScale)}
                rotateY3D(coords, xDelta)
@@ -767,7 +767,7 @@ elseif stress[2] >= stress[1] and
                local mainPlanet = true;
                local size = planetScale
 
-               if vec3(shipPos - vec3(v.center)):len() > 12000000 then
+               if vec3(vec3(construct.getWorldPosition()) - vec3(v.center)):len() > 12000000 then
                   size = planetScale
                else
                   size = aliothsize
@@ -808,7 +808,7 @@ elseif stress[2] >= stress[1] and
 
             if asteroidPOS ~= "" then
                local aPosition = asteroidcoord
-               local distance = customDistance(vec3(aPosition - shipPos):len())
+               local distance = customDistance(vec3(aPosition - vec3(construct.getWorldPosition())):len())
                local asteroidC = {x=aPosition.x + (-aPosition.x * mapScale), y=aPosition.y + (-aPosition.y * mapScale), z=aPosition.z + (-aPosition.z * mapScale)}
                rotateY3D(asteroidC, xDelta)
                rotateX3D(asteroidC, yDelta)

@@ -1,2 +1,2 @@
 start:
-altLEFT(unit,system,text)
+if shift == true then altLEFT(unit,system,text) end
