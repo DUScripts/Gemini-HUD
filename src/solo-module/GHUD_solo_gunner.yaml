@@ -82,7 +82,7 @@ handlers:
                 idN = 0
                 screenHeight = system.getScreenHeight()
                 screenWidth = system.getScreenWidth()
-                startTime = syste.getArkTime()
+                startTime = system.getArkTime()
                 lastHitTime = {}
                 lastMissTime = {}
                 hits = {}
@@ -311,7 +311,7 @@ handlers:
                     oldFireReady[weaponDataID] = fireReady
                     OldoutOfZone[weaponDataID] = outOfZone
                     oldTargetConstruct[weaponDataID] = targetConstructID
-                    oldHitProbability[weaponDataID] == hitProbability
+                    oldHitProbability[weaponDataID] = hitProbability
 
                     local ammoName = weaponData:match('"ammoName":"(.-)"')
 
@@ -402,7 +402,7 @@ handlers:
                 radar_1.setSortMethod(1) --set default radar range mode for constructIds list main function
 
                 mWeapons = mWeapons:new(system, weapon, GHUD_weapon_panels) --weapon widgets
-                mRadar = mRadar:new(system, radar, whitelist) --radar widget
+                mRadar = mRadar:new(system, radar_1, whitelist) --radar widget
 
                 system.showScreen(1)
                 unit.setTimer("radar",0.05)
@@ -2416,7 +2416,7 @@ handlers:
         onTimer:
             args: ['delay']
             lua: |
-                if (system.getTime() - startTime) > 5 then
+                if (system.getArkTime() - startTime) > 5 then
                 firstload = 1
                 t_radarEnter = {}
                 main1 = coroutine.create(main)
@@ -2430,7 +2430,7 @@ handlers:
         onTimer:
             args: ['data']
             lua: |
-                local data = weapon_1.getData()
+                local data = weapon_1.getWidgetData()
                 zone = data:match('"outOfZone":(.-),')
                 --local hitP = tonumber(data:match('"hitProbability":(.-),'))
                 --probil = math.ceil(hitP * 100)
