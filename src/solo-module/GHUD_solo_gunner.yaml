@@ -372,9 +372,9 @@ handlers:
                     end
 
                     --weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. hitP .. '% ' .. ammoType1 .. ' ' .. ammoType2 .. '"')
-                    --weaponData = weaponData:gsub('"constructId":"(%d+(%d%d%d))","name":"(.?.?.?.?).-"', '"constructId":"%1","name":"%2 - %3"')
+                    weaponData = weaponData:gsub('"constructId":"(%d+(%d%d%d))","name":"(.?.?.?.?).-"', '"constructId":"%1","name":"%2 - %3"')
                     weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. hitP .. '%% - ' .. ammoType1 .. ' ' .. ammoType2 .. '"')
-                    weaponData = weaponData:gsub('"constructId":"(%d+(%d%d%d))","name":"(.?.?.?.?.?.?.?.?.?.?.?.?.?.?).-"', '"constructId":"%1","name":"%2 - %3"')
+                    --weaponData = weaponData:gsub('"constructId":"(%d+(%d%d%d))","name":"(.?.?.?.?.?.?.?.?.?.?.?.?.?.?).-"', '"constructId":"%1","name":"%2 - %3"')
 
                     if self.system.updateData(weaponDataID, weaponData) ~= 1 then
                         self.system.print('update error')
