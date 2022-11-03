@@ -32,7 +32,7 @@ handlers:
                 GHUD_export_mode = false --export: Coordinate export mode
                 targetSpeed = 29999 --export: Target speed
                 GHUD_background_color = "#142027" --export: Background HUD color
-                GHUD_AR_sight_color = "rgb(0, 191, 255)" --export: AR sight color
+                GHUD_AR_sight_color = "rgba(0, 191, 255, 0.7)" --export: AR sight color
                 GHUD_radar_notifications_border_radius = true --export:
                 GHUD_radar_notifications_border_color = 'black' --export:
                 GHUD_radar_notifications_text_color = 'black' --export:
