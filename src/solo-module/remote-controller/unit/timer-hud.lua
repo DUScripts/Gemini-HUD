@@ -58,7 +58,8 @@ if math.ceil(HP) <= 50 then
       text-align: center;
       background: #142027;
       color: #fc033d;
-      font-family: "Lucida" Grande, sans-serif;
+      font-family: verdana;
+      font-weight: bold;
       font-size: 1.5em;
       border-radius: 5vh;
       border: 0.2vh solid;
@@ -95,7 +96,8 @@ if math.ceil(HP) <= 50 then
             background: #142027;
             color: #fc033d;
             opacity: ]]..blink..[[;
-            font-family: "Lucida" Grande, sans-serif;
+            font-family: verdana;
+            font-weight: bold;
             font-size: 1.5em;
             border-radius: 5vh;
             border: 0.2vh solid;

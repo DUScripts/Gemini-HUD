@@ -1,2 +1,2 @@
 start:
-Displayradar = not Displayradar
+if lalt == false then Displayradar = not Displayradar end

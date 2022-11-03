@@ -4,18 +4,22 @@
 HUD_version = '1.0.0'
 
 --LUA parameters
---GHUD_radar_notifications_style = 1 --export:
-GHUD_friendly_IDs = {} -- put IDs here 34141,231231,31231 etc
+GHUD_radarWidget_on_top = true --export:
+GHUD_weapon_panels = 3 --export: Set 3 or 2
 GHUD_export_mode = false --export: Coordinate export mode
 targetSpeed = 29999 --export: Target speed
 GHUD_background_color = "#142027" --export: Background HUD color
 GHUD_AR_sight_color = "rgb(0, 191, 255)" --export: AR sight color
-GHUD_weapon_panels = 3 --export: Weapons widget group 3x2 or 2x3
 GHUD_radar_notifications_border_radius = true --export:
 GHUD_radar_notifications_border_color = 'black' --export:
 GHUD_radar_notifications_text_color = 'black' --export:
 GHUD_radar_notifications_background_color = 'rgb(255, 177, 44)' --export:
 GHUD_radar_notifications_Y = 10 --export:
+GHUD_show_hits = true --export:
+GHUD_show_misses = true --export:
+GHUD_hits_misses_Y = 80 --export:
+GHUD_hit_X = 56.5 --export:
+GHUD_miss_X = 47.5 --export:
 GHUD_log_stats = true --export: Radar and LUA chat new targets notofications
 GHUD_show_allies = true --export: Show allies
 GHUD_allies_count = 5 --export: Max count of displayed allies. Selected ally will always be displayed
@@ -27,17 +31,18 @@ GHUD_AR_allies_font_color = "#0cf27b" --export:
 GHUD_targets_color = "#fc033d" --export:
 GHUD_show_echoes = false --export: Show targets echo. Has a negative impact on performance with a large targets count!
 GHUD_notifications = true --export: Radar notifications + LUA char notification
-GHUD_selected_border_color = "#00b9c9" --export:
+GHUD_selected_border_color = "rgb(0, 191, 255)" --export:
 GHUD_target_names_color = "#fc033d" --export: Color for target names
-GHUD_allies_distance_color = "#00b9c9" --export:
-GHUD_distance_color = "#00b9c9" --export:
-GHUD_speed_color = "#00b9c9" --export:
-GHUD_count_color = "#00b9c9" --export:
+GHUD_allies_distance_color = "rgb(0, 191, 255)" --export:
+GHUD_distance_color = "rgb(0, 191, 255)" --export:
+GHUD_speed_color = "rgb(0, 191, 255)" --export:
+GHUD_count_color = "rgb(0, 191, 255)" --export:
 GHUD_your_ship_ID_color = "#fca503" --export:
 GHUD_border_color = "black" --export:
 GHUD_allies_Y = 0 --export: set to 0 if playing in fullscreen mode
 GHUD_windowed_mode = false --export: adds 2 to the height GHUD_allies_Y
 collectgarbages = false --export: experimental
+--GHUD_radar_notifications_mac_os_style = false
 
 if GHUD_radar_notifications_border_radius == true then
    GHUD_border_radius = '15px'
@@ -85,7 +90,6 @@ sight = ''
 buttonSpace = false
 buttonC = false
 atmovar = false
-speedcolor = ""
 endload = 0
 lastspeed = 0
 znak = '' --target speed icon
@@ -98,6 +102,7 @@ warpScan = 0 --for 3D map
 t_radarEnter = {}
 loglist = {}
 radarTarget = nil
+newWhitelist = {}
 radarStatic = {}
 radarDynamic = {}
 radarStaticWidget = {}
@@ -113,11 +118,31 @@ local scID = construct.getId()
 system.print(''..shipName..': '..scID..'')
 conID = tostring(scID):sub(-3)
 
+GHUD_friendly_IDs = {}
+
+local dbkeys = getNbKeys()
+
+if dbkeys > 0 then
+   for i = 1, dbkeys do
+      table.insert(GHUD_friendly_IDs,databank_2.getIntValue(i))
+   end
+   system.print('Databank whitelist loaded')
+end
+
 function checkWhitelist()
    local whitelist = GHUD_friendly_IDs
    local set = {}
    for _, l in ipairs(whitelist) do set[l] = true end
    return set
+end
+
+function table.contains(table, element)
+   for _, value in pairs(table) do
+      if value == element then
+         return true
+      end
+   end
+   return false
 end
 
 whitelist = checkWhitelist() --load IDs
@@ -173,7 +198,7 @@ function mRadar:updateStep()
       local selectedTarget = self.radar.getTargetId(ID)
       if locked == 1 or alive == 0 or selectedTarget == ID and size ~= "" then --show only locked or alive or selected targets
          if defaultSize == 'ALL' then --default mode
-            if (self.friendList[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode and self.radar.getThreatRateFrom(ID) ~= 5 then  --show attacking traitor on widget
+            if (whitelist[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode and self.radar.getThreatRateFrom(ID) ~= 5 then  --show attacking traitor on widget
                goto continue1
             end
             if isIDFiltered and self.idFilter[ID%1000] ~= true then
@@ -183,7 +208,7 @@ function mRadar:updateStep()
             ::continue1::
          end
          if defaultSize ~= 'ALL' and size == defaultSize then --sorted
-            if (self.friendList[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode and self.radar.getThreatRateFrom(ID) ~= 5 then
+            if (whitelist[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode and self.radar.getThreatRateFrom(ID) ~= 5 then
                goto continue2
             end
             if isIDFiltered and self.idFilter[ID%1000] ~= true then
@@ -228,13 +253,12 @@ function mRadar:toggleFriendlyMode()
    self.friendlyMode = not self.friendlyMode
 end
 
-function mRadar:new(sys, radar, friendList)
+function mRadar:new(sys, radar, )
    local mRadar = {}
    setmetatable(mRadar, self)
    self.system = sys
    self.radar = radar
    self.friendlyMode = false
-   self.friendList = friendList or {}
    self.onlyIdentified = false
    self.idFilter = {}
    --self:createWidget()
@@ -384,8 +408,13 @@ radarWidgetScaleDisplay = '<div class="measures"><span>0 SU</span><span>1 SU</sp
 
 radar_1.setSortMethod(1) --set default radar range mode for constructIds list main function
 
-mWeapons = mWeapons:new(system, weapon, GHUD_weapon_panels) --weapon widgets
-mRadar = mRadar:new(system, radar_1, whitelist) --radar widget
+if GHUD_radarWidget_on_top == true then
+   mRadar = mRadar:new(system, radar_1) --radar widget
+   mWeapons = mWeapons:new(system, weapon, GHUD_weapon_panels) --weapon widgets
+else
+   mWeapons = mWeapons:new(system, weapon, GHUD_weapon_panels) 
+   mRadar = mRadar:new(system, radar_1)
+end
 
 system.showScreen(1)
 unit.setTimer("radar",0.05)
@@ -501,7 +530,7 @@ function main()
          local radspeed = 0
          local angspeed = 0
          if radar_1.isConstructIdentified(v) == 1 and size ~= "" then
-            local name = string.sub((""..radar_1.getConstructName(v)..""),1,11)
+            local name = radar_1.getConstructName(v)
             local dist = math.floor(radar_1.getConstructDistance(v))
             if dist >= 1000 then
                dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
@@ -554,7 +583,7 @@ function main()
          --lockstatus
          if radar_1.getThreatRateFrom(v) ~= 1 and size ~= "" then
             countLock = countLock + 1
-            local name = radar_1.getConstructName(v)
+            local name = string.sub((""..radar_1.getConstructName(v)..""),1,11)
             local dist = math.floor(radar_1.getConstructDistance(v))
             if dist >= 1000 then
                dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
@@ -626,21 +655,21 @@ function main()
       --threat status
       if countLock == 0 then
          captionL = "LOCK"
-         captionLcolor = "#6affb1"
+         captionLcolor = "#0cf27b"
          captionText = "OK"
          okcolor = captionLcolor
       else
          captionL = "LOCKED:"
-         captionLcolor = "#fca503"
+         captionLcolor = "#FFB12C"
          captionText = countLock
-         okcolor = "#2ebac9"
+         okcolor = "rgb(0, 191, 255)"
       end
       --attackers count
       if countAttacked > 0 then
          captionL = "ATTACKED:"
          captionLcolor = "#fc033d"
          captionText = countAttacked
-         okcolor = "#2ebac9"
+         okcolor = "rgb(0, 191, 255)"
       end
       --threat icon
       statusSVG = [[<style>.radarLockstatus {
@@ -1813,9 +1842,7 @@ function tickVector(unit, system, text)
 
       system.print("The coordinates were exported to the screen")
 
-      screen_1.setHTML(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
-      --system.logInfo('testLua: ```'..posExport1..'/'..posExport2..'/'..timeExport..'```')
-      --screen_1.activate()
+      screen_1.setCenteredText(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
    end
 
    function radarPos(system,radar)
