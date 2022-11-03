@@ -4,7 +4,7 @@
 HUD_version = '1.0.0'
 
 --LUA parameters
-GHUD_radarWidget_on_top = true --export:
+GHUD_radarWidget_on_top = false --export:
 GHUD_weapon_panels = 3 --export: Set 3 or 2
 GHUD_export_mode = false --export: Coordinate export mode
 targetSpeed = 29999 --export: Target speed
