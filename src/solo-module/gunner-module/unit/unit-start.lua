@@ -91,8 +91,10 @@ buttonSpace = false
 buttonC = false
 atmovar = false
 endload = 0
-lastspeed = 0
 znak = '' --target speed icon
+newcolor = "white"
+dist1=0
+dist3=0
 firstload = 0
 constructSelected = 0
 probil = 0
@@ -120,7 +122,7 @@ conID = tostring(scID):sub(-3)
 
 GHUD_friendly_IDs = {}
 
-local dbkeys = getNbKeys()
+local dbkeys = databank_2.getNbKeys()
 
 if dbkeys > 0 then
    for i = 1, dbkeys do
@@ -253,7 +255,7 @@ function mRadar:toggleFriendlyMode()
    self.friendlyMode = not self.friendlyMode
 end
 
-function mRadar:new(sys, radar, )
+function mRadar:new(sys, radar)
    local mRadar = {}
    setmetatable(mRadar, self)
    self.system = sys

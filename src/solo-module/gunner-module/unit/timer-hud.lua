@@ -8,6 +8,10 @@ if coroutine.status(main1) ~= "dead" and coroutine.status(main1) == "suspended" 
    --coroutine.xpcall(main1) -- resume debug coroutine
 end
 
+local data = weapon_1.getWidgetData()
+zone = data:match('"outOfZone":(.-),')
+probil = tonumber(data:match('"hitProbability":(.-),'))
+
 shipPos = vec3(construct.getWorldPosition())
 local id = radar_1.getTargetId()
 if id ~= 0 then
@@ -17,18 +21,14 @@ if id ~= 0 then
    local size = radar_1.getConstructCoreSize(id)
    local speed = 'UNKNOWN'
    local anchor = 'middle'
-   local newcolor = 'white'
    local damage = 0
    if totalDamage[id] ~= nil then --target damage calculation concept
       damage = string.format('%0.1f',totalDamage[id].damage * 0.000001)
    end
    if radar_1.isConstructIdentified(id) == 1 then
       speed = radar_1.getConstructSpeed(id)
-      if speed > lastspeed then newcolor = '#07e88e' znak = '↑' end
-      if speed < lastspeed then newcolor = '#fc033d' znak = '↓' end
-      if speed == lastspeed then newcolor = 'white' znak = '' end
-      lastspeed = speed
       speed = math.floor(speed * 3.6)
+      dist3 = speed
       anchor = 'start'
    end
    local pos1 = shipPos + dist * vec3(construct.getWorldOrientationForward())
@@ -85,8 +85,8 @@ if id ~= 0 then
       <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
       <defs>
       <linearGradient id="hit_gradient" x1="50%" y1="100%" x2="50%">
-      <stop stop-color="#07e88e" offset="]]..probil..[[" />
-      <stop stop-color="rgba(255, 255, 255, 0.25)" offset="0" />
+      <stop stop-color="#07e88e" stop-opacity="1" offset="]]..probil..[[" />
+      <stop stop-color="rgb(255, 255, 255)" stop-opacity="0.25" offset="0" />
       </linearGradient>
       </defs>
       <path style="fill: url(#hit_gradient);" d="M 275.231 484.732 C 274.524 488.711 271.058 491.508 267.154 491.508 C 266.675 491.508 266.191 491.465 265.705 491.379 C 185.949 477.179 122.822 414.052 108.621 334.296 C 107.825 329.83 110.802 325.564 115.268 324.769 C 119.729 323.975 124 326.95 124.794 331.416 C 137.793 404.422 195.578 462.207 268.583 475.205 C 273.051 476.001 276.026 480.266 275.231 484.732 Z M 115.268 275.231 C 115.754 275.318 116.239 275.36 116.717 275.36 C 120.621 275.36 124.087 272.563 124.794 268.584 C 137.793 195.578 195.578 137.793 268.583 124.795 C 273.049 124 276.026 119.734 275.23 115.269 C 274.435 110.802 270.166 107.829 265.704 108.622 C 185.948 122.822 122.821 185.949 108.62 265.705 C 107.825 270.171 110.802 274.436 115.268 275.231 Z M 484.732 324.769 C 480.273 323.976 476.001 326.951 475.206 331.416 C 462.207 404.422 404.422 462.208 331.417 475.206 C 326.951 476.001 323.974 480.267 324.77 484.733 C 325.477 488.712 328.942 491.509 332.847 491.509 C 333.326 491.509 333.81 491.466 334.296 491.38 C 414.052 477.18 477.179 414.052 491.38 334.296 C 492.175 329.83 489.198 325.564 484.732 324.769 Z M 431.492 156.892 L 443.109 168.508 C 467.609 195.152 484.78 228.629 491.38 265.703 C 492.176 270.169 489.199 274.435 484.733 275.23 C 480.27 276.026 476.001 273.049 475.207 268.583 C 469.206 234.887 453.664 204.43 431.49 180.126 L 419.873 168.51 C 395.57 146.336 365.113 130.793 331.417 124.793 C 326.951 123.998 323.974 119.732 324.77 115.266 C 325.565 110.8 329.839 107.825 334.296 108.619 C 371.37 115.22 404.848 132.39 431.492 156.892 Z"/>
