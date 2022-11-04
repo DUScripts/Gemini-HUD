@@ -45,11 +45,11 @@ TH_svg = 0
 KI_svg = 0
 
 if warpdrive ~= nil then
-   avWapr = warpdrive.getRequiredWarpCells()
+   avWarp = warpdrive.getRequiredWarpCells()
    totalWarp = warpdrive.getAvailableWarpCells()
    unit.setTimer('warp',1)
 else
-   avWapr = 0
+   avWarp = 0
    totalWarp = 0
 end
 
