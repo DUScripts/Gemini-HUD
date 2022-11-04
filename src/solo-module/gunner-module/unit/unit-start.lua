@@ -246,7 +246,7 @@ function mRadar:onTextInput(text)
    self:clearIDFilter()
    focus = text:sub(-3)
    defaultRadar()
-   if string.len(focus) == 'f' then
+   if focus == 'f' then
    system.print('Focus mode deactivated')
    else
       system.print('Focus ID: '..focus)
@@ -275,10 +275,6 @@ function mRadar:new(sys, radar)
    self.system.addDataToWidget(self.dataID, self.radarWidget)
    self.updaterCoroutine = coroutine.create(function() self:updateLoop() end)
    return self
-end
-
-function mRadar:stopC()
-   self:clearIDFilter(self.system.print("FOCUS MODE DEACTIVATED"))
 end
 
 --weapon widgets
