@@ -260,7 +260,7 @@ GHUD_pipe_X = 15.5 --export:
 GHUD_Y = 50 --export:
 GHUD_right_block_X = 30 --export:
 GHUD_left_block_X = 12 --export:
-collectgarbages = true --export:
+collectgarbages = false --export: experimental
 
 if GHUD_marker_name == "" then GHUD_marker_name = "Asteroid" end
 asteroidcoord = {}
