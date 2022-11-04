@@ -1082,7 +1082,7 @@ handlers:
                 end
 
                 fuel_lvl = json.decode(spacefueltank_1.getWidgetData()).percentage
-                
+
                 local warningmsg = ''
                 if math.ceil(HP) <= 50 then
                 warningmsg = [[<style>
@@ -1716,8 +1716,8 @@ handlers:
                         <text style="fill: rgb(66, 167, 245); font-family: Arial, sans-serif; font-weight: bold; font-size: 3.2px;" x="252" y="223.591">CCS</text>
                         <polygon style="fill: #142027; stroke: rgb(66, 167, 245); stroke-linejoin: round; stroke-linecap: round;" points="240 279.79998779296875 245 285.79998779296875 265 285.8 270 279.79998779296875"></polygon>
                         <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; text-anchor: middle;" x="255.28" y="284.311">]]..avWarp..[[/]]..totalWarp..[[</text>
-                        <path style="fill: rgb(20, 32, 39); stroke: rgb(66, 167, 245); stroke-linecap: round; stroke-linejoin: round;" d="M 214.73 280.481 L 219.73 286.481 L 234.73 286.481 L 229.73 280.481 L 214.73 280.481 Z" transform="matrix(-1, 0, 0, -1, 459.730011, 566.281006)"></path>
-                        <path style="fill: rgb(20, 32, 39); stroke: rgb(66, 167, 245); stroke-linecap: round; stroke-linejoin: round;" d="M 274.615 280.23 L 269.615 286.23 L 284.615 286.23 L 289.615 280.23 L 274.615 280.23 Z" transform="matrix(-1, 0, 0, -1, 554.615021, 566.029999)"></path>
+                        <path style="fill: #142027; stroke: rgb(66, 167, 245); stroke-linecap: round; stroke-linejoin: round;" d="M 214.73 280.481 L 219.73 286.481 L 234.73 286.481 L 229.73 280.481 L 214.73 280.481 Z" transform="matrix(-1, 0, 0, -1, 459.730011, 566.281006)"></path>
+                        <path style="fill: #142027; stroke: rgb(66, 167, 245); stroke-linecap: round; stroke-linejoin: round;" d="M 274.615 280.23 L 269.615 286.23 L 284.615 286.23 L 289.615 280.23 L 274.615 280.23 Z" transform="matrix(-1, 0, 0, -1, 554.615021, 566.029999)"></path>
                         <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 3.5px; font-weight: 700; text-anchor: middle;" x="235.218" y="284.182">WARP</text>
                         <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 3.5px; font-weight: 700; text-anchor: middle;" x="274.736" y="284.129">CELLS</text>
                         <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -0.542236, -41.161256)"><tspan x="351.543" y="319.558">KI</tspan></text>
