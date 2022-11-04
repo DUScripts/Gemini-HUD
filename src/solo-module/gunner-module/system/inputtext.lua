@@ -21,5 +21,6 @@ for k,v in pairs(radarIDs) do
  end
  newWhitelist = checkWhitelist()
  whitelist = newWhitelist
+ system.print('All targets have been added to the whitelist')
 end
 inTEXT(unit,system,text)
