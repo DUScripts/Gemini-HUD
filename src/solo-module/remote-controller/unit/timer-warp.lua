@@ -1,2 +1,2 @@
-avWapr = warpdrive.getRequiredWarpCells()
+avWarp = warpdrive.getRequiredWarpCells()
 totalWarp = warpdrive.getAvailableWarpCells()
