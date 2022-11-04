@@ -246,6 +246,11 @@ function mRadar:onTextInput(text)
    self:clearIDFilter()
    focus = text:sub(-3)
    defaultRadar()
+   if string.len(focus) == 'f' then
+   system.print('Focus mode deactivated')
+   else
+      system.print('Focus ID: '..focus)
+   end
    for id in text:gmatch('%D(%d%d%d)') do
       self:addIDFilter(tonumber(id))
    end
