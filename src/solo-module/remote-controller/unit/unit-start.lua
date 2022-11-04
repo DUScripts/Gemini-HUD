@@ -44,6 +44,15 @@ EM_svg = 0
 TH_svg = 0
 KI_svg = 0
 
+if warpdrive ~= nil then
+   avWapr = warpdrive.getRequiredWarpCells()
+   totalWarp = warpdrive.getAvailableWarpCells()
+   unit.setTimer('warp',1)
+else
+   avWapr = 0
+   totalWarp = 0
+end
+
 function resistance_SVG()
    local res = shield.getResistances()
    if res[1] > 0 then
