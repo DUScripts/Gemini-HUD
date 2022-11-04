@@ -41,46 +41,6 @@ handlers:
                 Nav.axisCommandManager:setupCustomTargetSpeedRanges(axisCommandId.longitudinal, {1000, 5000, 10000, 20000, 30000})
                 Nav.axisCommandManager:setTargetGroundAltitude(-1)
 
-                -- Parenting widget
-                --parentingPanelId = system.createWidgetPanel("Docking")
-                --parentingWidgetId = system.createWidget(parentingPanelId,"parenting")
-                --system.addDataToWidget(unit.getWidgetDataId(),parentingWidgetId)
-
-                -- Combat stress widget
-                --coreCombatStressPanelId = system.createWidgetPanel("Core combat stress")
-                --coreCombatStressgWidgetId = system.createWidget(coreCombatStressPanelId,"core_stress")
-                --system.addDataToWidget(core.getWidgetDataId(),coreCombatStressgWidgetId)
-
-                -- element widgets
-                -- For now we have to alternate between PVP and non-PVP widgets to have them on the same side.
-                --_autoconf.displayCategoryPanel(weapon, weapon_size, L_TEXT("ui_lua_widget_weapon", "Weapons"), "weapon", true)
-                --core.showWidget()
-                --_autoconf.displayCategoryPanel(radar, radar_size, L_TEXT("ui_lua_widget_periscope", "Periscope"), "periscope")
-                --placeRadar = true
-                --if atmofueltank_size > 0 then
-                    --_autoconf.displayCategoryPanel(atmofueltank, atmofueltank_size, L_TEXT("ui_lua_widget_atmofuel", "Atmo Fuel"), "fuel_container")
-                    --if placeRadar then
-                        --_autoconf.displayCategoryPanel(radar, radar_size, L_TEXT("ui_lua_widget_radar", "Radar"), "radar")
-                        --placeRadar = false
-                    --end
-                --end
-                --if spacefueltank_size > 0 then
-                    --_autoconf.displayCategoryPanel(spacefueltank, spacefueltank_size, L_TEXT("ui_lua_widget_spacefuel", "Space Fuel"), "fuel_container")
-                    --if placeRadar then
-                        --_autoconf.displayCategoryPanel(radar, radar_size, L_TEXT("ui_lua_widget_radar", "Radar"), "radar")
-                        --placeRadar = false
-                    --end
-                --end
-                --_autoconf.displayCategoryPanel(rocketfueltank, rocketfueltank_size, L_TEXT("ui_lua_widget_rocketfuel", "Rocket Fuel"), "fuel_container")
-                --if placeRadar then -- We either have only rockets or no fuel tanks at all, uncommon for usual vessels
-                    --_autoconf.displayCategoryPanel(radar, radar_size, L_TEXT("ui_lua_widget_radar", "Radar"), "radar")
-                    --placeRadar = false
-                --end
-                --if antigrav ~= nil then antigrav.showWidget() end
-                --if warpdrive ~= nil then warpdrive.showWidget() end
-                --if gyro ~= nil then gyro.showWidget() end
-                --if shield ~= nil then shield.showWidget() end
-
                 -- freeze the player in he is remote controlling the construct
                 if unit.isRemoteControlled() == 1 then
                     player.freeze(1)
@@ -143,7 +103,6 @@ handlers:
                 if warpdrive ~= nil then
                 avWarp = warpdrive.getRequiredWarpCells()
                 totalWarp = warpdrive.getAvailableWarpCells()
-                unit.setTimer('warp',1)
                 else
                 avWarp = 0
                 totalWarp = 0
@@ -1029,6 +988,9 @@ handlers:
                         unit.setTimer('tr',2)
                         unit.setTimer('hud',0.02)
                         unit.setTimer('prealarm',2)
+                        if warpdrive ~= nil then
+                            unit.setTimer('warp',35)
+                        end
                         if collectgarbages == true then
                             unit.setTimer("cleaner",30)
                         end
@@ -1754,6 +1716,7 @@ handlers:
                 alarmTimer = true
                 t2=false
                 end
+                avWarp = warpdrive.getRequiredWarpCells()
         onTimer:
             args: ['AM']
             lua: |
@@ -1877,7 +1840,6 @@ handlers:
         onTimer:
             args: ['warp']
             lua: |
-                avWarp = warpdrive.getRequiredWarpCells()
                 totalWarp = warpdrive.getAvailableWarpCells()
         onTimer:
             args: ['cleaner']

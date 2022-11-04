@@ -47,7 +47,6 @@ KI_svg = 0
 if warpdrive ~= nil then
    avWarp = warpdrive.getRequiredWarpCells()
    totalWarp = warpdrive.getAvailableWarpCells()
-   unit.setTimer('warp',1)
 else
    avWarp = 0
    totalWarp = 0
@@ -933,6 +932,9 @@ elseif stress[2] >= stress[1] and
          unit.setTimer('tr',2)
          unit.setTimer('hud',0.02)
          unit.setTimer('prealarm',2)
+         if warpdrive ~= nil then
+            unit.setTimer('warp',35)
+         end
          if collectgarbages == true then
             unit.setTimer("cleaner",30)
          end

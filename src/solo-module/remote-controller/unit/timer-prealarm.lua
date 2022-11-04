@@ -6,3 +6,4 @@ if shieldAlarm == true and alarmTimer == false then
 alarmTimer = true
 t2=false
 end
+avWarp = warpdrive.getRequiredWarpCells()
