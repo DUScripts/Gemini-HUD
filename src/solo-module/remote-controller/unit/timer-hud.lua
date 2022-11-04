@@ -660,7 +660,7 @@ if math.ceil(HP) <= 50 then
          <stop stop-color="rgb(15, 100, 212)" offset="0" />
          </linearGradient>
          </defs>
-         <rect x="145" y="225" width="210" height="50" style="fill: #3b3c3d; stroke: rgb(15, 100, 212);" bx:origin="0.5 0.5"/>
+         <rect x="145" y="225" width="210" height="50" style="fill: #142027; stroke: rgb(15, 100, 212);" bx:origin="0.5 0.5"/>
          <rect x="145" y="225" width="]]..svghp..[[" height="50" style="fill: rgb(15, 100, 212); stroke: rgb(15, 100, 212);" bx:origin="0.5 0.5"/>
          ]]..damageLine..[[
          ]]..ccsLineHit..[[
