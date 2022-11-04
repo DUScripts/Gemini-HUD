@@ -45,7 +45,7 @@ if shield.isVenting() then
 end
 
 fuel_lvl = json.decode(spacefueltank_1.getWidgetData()).percentage
----
+
 local warningmsg = ''
 if math.ceil(HP) <= 50 then
    warningmsg = [[<style>
@@ -677,10 +677,12 @@ if math.ceil(HP) <= 50 then
          <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 4.5px; font-weight: 700; text-anchor: middle;" transform="matrix(1, 0, 0, 1, -1.542758, -0.533447)"><tspan x="256.796" y="230.112">]]..resCLWN..[[</tspan></text>
          <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; text-anchor: middle;" x="255.048" y="273.416">]]..shieldStatus..[[</text>
          <text style="fill: rgb(66, 167, 245); font-family: Arial, sans-serif; font-weight: bold; font-size: 3.2px;" x="252" y="223.591">CCS</text>
-         <polygon style="fill: #142027; stroke: rgb(66, 167, 245); stroke-linejoin: round; stroke-linecap: round;" points="240 279.8 244.77499389648438 285.8290100097656 264.7749938964844 285.8290100097656 270 279.79998779296875"></polygon>
-         <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; text-anchor: middle;" x="255.28" y="284.311">]]..avWapr..[[/]]..totalWarp..[[</text>
-         <text style="fill: rgb(66, 167, 245); font-family: Arial, sans-serif; font-weight: bold; font-size: 3.2px; " x="270.092" y="284.585" transform="matrix(1, 0, 0, 1, -1.440212, 0.330109)">CELLS</text>
-         <text style="fill: rgb(66, 167, 245); font-family: Arial, sans-serif; font-weight: bold; font-size: 3.2px; " x="232.452" y="284.303" transform="matrix(1, 0, 0, 1, -1.451996, 0.612091)">WARP</text>
+         <polygon style="fill: #142027; stroke: rgb(66, 167, 245); stroke-linejoin: round; stroke-linecap: round;" points="240 279.79998779296875 245 285.79998779296875 265 285.8 270 279.79998779296875"></polygon>
+         <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; text-anchor: middle;" x="255.28" y="284.311">]]..avWarp..[[/]]..totalWarp..[[</text>
+         <path style="fill: rgb(20, 32, 39); stroke: rgb(66, 167, 245); stroke-linecap: round; stroke-linejoin: round;" d="M 214.73 280.481 L 219.73 286.481 L 234.73 286.481 L 229.73 280.481 L 214.73 280.481 Z" transform="matrix(-1, 0, 0, -1, 459.730011, 566.281006)"></path>
+         <path style="fill: rgb(20, 32, 39); stroke: rgb(66, 167, 245); stroke-linecap: round; stroke-linejoin: round;" d="M 274.615 280.23 L 269.615 286.23 L 284.615 286.23 L 289.615 280.23 L 274.615 280.23 Z" transform="matrix(-1, 0, 0, -1, 554.615021, 566.029999)"></path>
+         <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 3.5px; font-weight: 700; text-anchor: middle;" x="235.218" y="284.182">WARP</text>
+         <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 3.5px; font-weight: 700; text-anchor: middle;" x="274.736" y="284.129">CELLS</text>
          <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -0.542236, -41.161256)"><tspan x="351.543" y="319.558">KI</tspan></text>
          <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -4.542999, -86.161257)"><tspan x="351.543" y="319.558">TH</tspan></text>
          <text style="fill: rgb(255, 252, 252); font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -219.543004, -41.161256)"><tspan x="351.543" y="319.558">EM</tspan></text>
