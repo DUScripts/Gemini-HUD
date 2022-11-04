@@ -418,9 +418,6 @@ else
    mRadar = mRadar:new(system, radar_1)
 end
 
-system.showScreen(1)
-unit.setTimer("radar",0.05)
-
 --main gunner function
 function main()
    while true do
@@ -1296,7 +1293,7 @@ function inTEXT(unit, system, text)
 
       system.print("The coordinates were exported to the screen")
 
-      screen_1.setHTML(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
+      screen_1.setCenteredText(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
       system.print("Target speed: " .. tspeed1 .. " km/h")
       unit.setTimer("marker", 1)
       --system.showScreen(1)
@@ -1900,7 +1897,7 @@ function tickVector(unit, system, text)
 
             system.print("The coordinates were exported to the screen")
 
-            screen_1.setHTML(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
+            screen_1.setCenteredText(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
             system.print("Target speed: " .. tspeed1 .. " km/h")
             --unit.setTimer("marker", 1)
             --system.showScreen(1)
@@ -2119,6 +2116,7 @@ function tickVector(unit, system, text)
    </body>
    </html>
    ]]
+   system.showScreen(1)
    system.setScreen(preloader)
    unit.setTimer("delay", 1)
 

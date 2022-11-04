@@ -11,4 +11,15 @@ if text == "clear" then
    whitelist = newWhitelist
    system.print('Databank whitelist cleared')
 end
+if text == "addall" then
+   local keys = databank_2.getNbKeys()
+   local keyCount = keys
+for k,v in pairs(radarIDs) do
+    keyCount = keyCount + 1
+    databank_2.setIntValue(keyCount,v)
+    table.insert(GHUD_friendly_IDs,v)
+ end
+ newWhitelist = checkWhitelist()
+ whitelist = newWhitelist
+end
 inTEXT(unit,system,text)

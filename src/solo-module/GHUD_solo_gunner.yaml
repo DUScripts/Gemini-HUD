@@ -441,9 +441,6 @@ handlers:
                 mRadar = mRadar:new(system, radar_1)
                 end
 
-                system.showScreen(1)
-                unit.setTimer("radar",0.05)
-
                 --main gunner function
                 function main()
                 while true do
@@ -1319,7 +1316,7 @@ handlers:
 
                     system.print("The coordinates were exported to the screen")
 
-                    screen_1.setHTML(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
+                    screen_1.setCenteredText(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
                     system.print("Target speed: " .. tspeed1 .. " km/h")
                     unit.setTimer("marker", 1)
                     --system.showScreen(1)
@@ -1923,7 +1920,7 @@ handlers:
 
                             system.print("The coordinates were exported to the screen")
 
-                            screen_1.setHTML(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
+                            screen_1.setCenteredText(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
                             system.print("Target speed: " .. tspeed1 .. " km/h")
                             --unit.setTimer("marker", 1)
                             --system.showScreen(1)
@@ -2142,6 +2139,7 @@ handlers:
                 </body>
                 </html>
                 ]]
+                system.showScreen(1)
                 system.setScreen(preloader)
                 unit.setTimer("delay", 1)
 
@@ -2303,7 +2301,7 @@ handlers:
                     <div class="id]]..v..[["><?xml version="1.0" encoding="utf-8"?>
                     <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
                     <rect x="235" y="235" width="30" height="30" style="fill: rgba(0,0,0,0); stroke: ]]..GHUD_AR_allies_border_color..[[; stroke-width: 2"/>
-                    <text style="fill: ]]..GHUD_AR_allies_font_color..[[; font-family: Arial, sans-serif; font-size: 28px; font-weight: 700; text-anchor: middle;" transform="matrix(0.609174, 0, 0, 0.609176, 250.000005, 231)">]].. tostring(v):sub(-3) .. [[</text>
+                    <text style="fill: ]]..GHUD_AR_allies_font_color..[[; font-family: Arial, sans-serif; font-size: 28px; font-weight: 700; text-anchor: middle;" transform="matrix(0.609174, 0, 0, 0.609176, 250.000005, 227)">]].. tostring(v):sub(-3) .. [[</text>
                     </svg></div>]]
                 end
                 end
@@ -2694,16 +2692,11 @@ handlers:
                 if shift == true then
                 local id = radar_1.getTargetId()
                 if id ~= 0 then
-                    local db = databank_2.getKeyList()
                     local keys = databank_2.getNbKeys()
-                    local check = table.contains(GHUD_friendly_IDs, id)
-                    if check == true then
+                    if whitelist[id] == true then
 
-                        for k,v in pairs(db) do
-                        if databank_2.getIntValue(k) == 1 then databank_2.clearValue(k) end
-                        end
                         for i = 1, #GHUD_friendly_IDs do
-                        if GHUD_friendly_IDs[i] == id then table.remove(GHUD_friendly_IDs,i) end
+                        if GHUD_friendly_IDs[i] == id then table.remove(GHUD_friendly_IDs,i) databank_2.clearValue(i) end
                         end
                         system.print(id..' ID has been removed from the whitelist databank')
                     else
@@ -2819,6 +2812,17 @@ handlers:
                 newWhitelist = checkWhitelist()
                 whitelist = newWhitelist
                 system.print('Databank whitelist cleared')
+                end
+                if text == "addall" then
+                local keys = databank_2.getNbKeys()
+                local keyCount = keys
+                for k,v in pairs(radarIDs) do
+                    keyCount = keyCount + 1
+                    databank_2.setIntValue(keyCount,v)
+                    table.insert(GHUD_friendly_IDs,v)
+                end
+                newWhitelist = checkWhitelist()
+                whitelist = newWhitelist
                 end
                 inTEXT(unit,system,text)
   
