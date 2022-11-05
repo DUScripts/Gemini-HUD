@@ -19,7 +19,6 @@ GHUD_shield_empty_background_layer_color = 'black'
 GHUD_shield_stroke_color = 'rgb(0, 191, 255)'
 GHUD_shield_text_color = 'rgb(255, 252, 252)'
 GHUD_shield_text_stroke_color = 'rgb(0, 0, 0)'
-GHUD_shield
 GHUD_right_block_X = 65
 GHUD_left_block_X = 65
 GHUD_background_color = '#142027' --export: Background color
