@@ -7,7 +7,7 @@ if coroutine.status(main1) ~= "dead" and coroutine.status(main1) == "suspended" 
    coroutine.resume(main1)
    --coroutine.xpcall(main1) -- resume debug coroutine
 end
-
+local sight = ''
 local data = weapon_1.getWidgetData()
 zone = data:match('"outOfZone":(.-),')
 probil = tonumber(data:match('"hitProbability":(.-),'))
@@ -311,6 +311,17 @@ local htmlHUD = [[
       padding:0;
       overflow: hidden;
    }
+   .pos1 {
+     position: absolute;
+     left: 50%;
+     top: 55%;
+     text-align:center;
+     font-size: 20px;
+     font-style: verdana;
+     font-weight: bold;
+     color: white;
+     transform: translate(-50%, -50%);
+   }
    </style>
    <body>
    ]]..AR_allies..[[
@@ -320,6 +331,7 @@ local htmlHUD = [[
    ]]..missesHUD..[[
    ]]..hitsHUD..[[
    ]]..sight..[[
+      <div class="pos1">]]..pp1..[[</div>
    </body>
    </html>
 ]]

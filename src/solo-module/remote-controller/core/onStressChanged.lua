@@ -1,8 +1,8 @@
 local stress = core.getCoreStress()
 if stress > last_core_stress then
     local newstress = stress - last_core_stress
-    local stresschange = newstress/core.getmaxCoreStress()*100
-    CCS = stress/core.getmaxCoreStress() * 100
+    local stresschange = newstress/core.getMaxCoreStress()*100
+    CCS = stress/core.getMaxCoreStress() * 100
     ccshp1 = maxCCS * (CCS * 0.01)
     ccshit = maxCCS * (stresschange*0.01)
     last_core_stress = stress

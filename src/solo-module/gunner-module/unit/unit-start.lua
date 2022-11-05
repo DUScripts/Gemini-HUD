@@ -24,7 +24,7 @@ GHUD_log_stats = true --export: Radar and LUA chat new targets notofications
 GHUD_show_allies = true --export: Show allies
 GHUD_allies_count = 5 --export: Max count of displayed allies. Selected ally will always be displayed
 GHUD_allies_color = "#0cf27b" --export:
-GHUD_allied_names_color = "#0cf27b" --export:
+GHUD_allied_names_color = "rgb(0, 191, 255)" --export:
 GHUD_AR_allies_border_size = 400 --export:
 GHUD_AR_allies_border_color = "#0cf27b" --export:
 GHUD_AR_allies_font_color = "#0cf27b" --export:
@@ -86,7 +86,6 @@ sizeState = 6
 focus = ''
 gunnerHUD = ''
 vectorHUD = ''
-sight = ''
 buttonSpace = false
 buttonC = false
 atmovar = false
@@ -115,6 +114,7 @@ radarWidget = ''
 targets = {}
 target = {}
 count = 0
+pp1 = ''
 shipName = construct.getName()
 local scID = construct.getId()
 system.print(''..shipName..': '..scID..'')
@@ -310,7 +310,7 @@ function mWeapons:onUpdate()
       local outOfZone = weaponData:match('"outOfZone":(.-),')
       local targetConstructID = weaponData:match('"constructId":"(.-)"')
       local hitProbability = weaponData:match('"hitProbability":(.-),')
-      local hitP = math.ceil(tonumber(hitProbability) * 100)
+      local hitP = math.floor(tonumber(hitProbability) * 100)
       local animationChanged = animationTime > oldAnimationTime[weaponDataID]
       oldAnimationTime[weaponDataID] = animationTime
 
@@ -1310,6 +1310,7 @@ function inTEXT(unit, system, text)
    end
 
    if text == "n" then
+      pp1 = ''
       unit.stopTimer("marker")
       databank_1.clear()
       showMarker = true
@@ -1716,6 +1717,7 @@ function tickVector(unit, system, text)
             opacity: 0.5
          }     .vectorLine{position:absolute;transform-origin: 100% 0%;width: 50px;height:0.15em;}</style>]]
          --system.setScreen([[<html><head>]] .. style .. [[</head><body>]] .. targetVectorWidget .. [[]] .. html1 .. [[</body></html>]])
+         if (system.getUtcTime() - pos2time) > 4 then pp1 = '' end
          vectorHUD = [[<html><head>]] .. style .. [[</head><body>]] .. targetVectorWidget .. [[]] .. html1 .. [[</body></html>]]
       end
    end
@@ -1900,12 +1902,14 @@ function tickVector(unit, system, text)
 
             screen_1.setCenteredText(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
             system.print("Target speed: " .. tspeed1 .. " km/h")
+            pp1 = tspeed1..' km/h'
             --unit.setTimer("marker", 1)
             --system.showScreen(1)
             unit.setTimer("vectorhud", 0.02)
          else
             if pos1 == 0 then
                pos1 = '::pos{0,0,'..p.x..','..p.y..','..p.z..'}'
+               pp1 = 'pos1 saved'
                databank_1.setStringValue(1, pos1)
                pos1time = math.floor(system.getUtcTime())
                databank_1.setFloatValue(2, pos1time)
@@ -1946,6 +1950,7 @@ function tickVector(unit, system, text)
                   system.print("---------------")
                   unit.stopTimer("vectorhud")
                   pos1 = '::pos{0,0,'..p.x..','..p.y..','..p.z..'}'
+                  pp1 = 'pos1 saved'
                   databank_1.setStringValue(1, pos1)
                   pos1time = math.floor(system.getUtcTime())
                   databank_1.setFloatValue(2, pos1time)

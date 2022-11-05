@@ -20,7 +20,6 @@ if GHUD_shield_calibration_max == true then
     system.print('Shield max stress mode activated')
  end
 end
-end
 
 if GHUD_shield_auto_calibration
 then

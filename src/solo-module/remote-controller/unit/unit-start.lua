@@ -4,7 +4,32 @@
 HUD_version = '1.0.0'
 
 --LUA parameters
-
+GHUD_marker_name = 'Asteroid' --export:
+GHUD_shield_auto_calibration = true --export: (AUTO/MANUAL) shield mode
+GHUD_shield_calibration_max = true --export: (MAX/50) calibration of the entire shield power by the largest resist based on DPS
+GHUD_departure_planet = 'Alioth' --export: Departure ID planet
+GHUD_destination_planet = 'Jago' --export: Destination ID planet
+GHUD_shield_panel_size = 1300
+GHUD_shield_panel_Y = 87
+GHUD_active_resists_border_color = '#07e88e'
+GHUD_shield_panel_opacity = 1
+GHUD_shield_background_color = '#142027'
+GHUD_shield_background2_color = 'black'
+GHUD_shield_empty_background_layer_color = 'black'
+GHUD_shield_stroke_color = 'rgb(0, 191, 255)'
+GHUD_shield_text_color = 'rgb(255, 252, 252)'
+GHUD_shield_text_stroke_color = 'rgb(0, 0, 0)'
+GHUD_shield
+GHUD_right_block_X = 65
+GHUD_left_block_X = 65
+GHUD_background_color = '#142027' --export: Background color
+GHUD_pipe_text_color = '#FFFFFF' --export: Pipe text color
+GHUD_pipe_Y = 0 --export:
+GHUD_pipe_X = 15.5 --export:
+GHUD_Y = 50 --export:
+GHUD_right_block_X = 30 --export:
+GHUD_left_block_X = 12 --export:
+collectgarbages = false --export: experimental
 --vars
 atlas = require("atlas")
 stellarObjects = atlas[0]
@@ -24,7 +49,7 @@ svghp = maxSHP * (HP * 0.01)
 --CCS
 ccshit = 0
 maxCCS = 139.5
-coreMaxStress = core.getmaxCoreStress()
+coreMaxStress = core.getMaxCoreStress()
 last_core_stress = core.getCoreStress()
 CCS = last_core_stress/coreMaxStress * 100
 ccshp1 = maxCCS * (CCS * 0.01)
@@ -55,71 +80,72 @@ end
 function resistance_SVG()
    local res = shield.getResistances()
    if res[1] > 0 then
-      AM_stroke_color = '#FFB12C'
+      AM_stroke_color = GHUD_active_resists_border_color
       AMstrokeWidth = 2
    else
-      AM_stroke_color = 'rgb(66, 167, 245)'
+      AM_stroke_color = GHUD_shield_stroke_color
       AMstrokeWidth = 1
    end
    if res[2] > 0 then
-      EM_stroke_color = '#FFB12C'
+      EM_stroke_color = GHUD_active_resists_border_color
       EMstrokeWidth = 2
    else
-      EM_stroke_color = 'rgb(66, 167, 245)'
+      EM_stroke_color = GHUD_shield_stroke_color
       EMstrokeWidth = 1
    end
    if res[3] > 0 then
-      KI_stroke_color = '#FFB12C'
+      KI_stroke_color = GHUD_active_resists_border_color
       KIstrokeWidth = 2
    else
-      KI_stroke_color = 'rgb(66, 167, 245)'
+      KI_stroke_color = GHUD_shield_stroke_color
       KIstrokeWidth = 1
    end
    if res[4] > 0 then
-      TH_stroke_color = '#FFB12C'
+      TH_stroke_color = GHUD_active_resists_border_color
       THstrokeWidth = 2
    else
-      TH_stroke_color = 'rgb(66, 167, 245)'
+      TH_stroke_color = GHUD_shield_stroke_color
       THstrokeWidth = 1
    end
 end
 
 function actionRes(res)
    if res[1] > 0 then
-      AM_stroke_color = '#FFB12C'
+      AM_stroke_color = GHUD_active_resists_border_color
       AMstrokeWidth = 2
       unit.setTimer('AM',0.016)
    else
-      AM_stroke_color = 'rgb(66, 167, 245)'
+      AM_stroke_color = GHUD_shield_stroke_color
       AMstrokeWidth = 1
    end
    if res[2] > 0 then
-      EM_stroke_color = '#FFB12C'
+      EM_stroke_color = GHUD_active_resists_border_color
       EMstrokeWidth = 2
       unit.setTimer('EM',0.016)
    else
-      EM_stroke_color = 'rgb(66, 167, 245)'
+      EM_stroke_color = GHUD_shield_stroke_color
       EMstrokeWidth = 1
    end
    if res[3] > 0 then
-      KI_stroke_color = '#FFB12C'
+      KI_stroke_color = GHUD_active_resists_border_color
       KIstrokeWidth = 2
       unit.setTimer('KI',0.016)
    else
-      KI_stroke_color = 'rgb(66, 167, 245)'
+      KI_stroke_color = GHUD_shield_stroke_color
       KIstrokeWidth = 1
    end
    if res[4] > 0 then
-      TH_stroke_color = '#FFB12C'
+      TH_stroke_color = GHUD_active_resists_border_color
       THstrokeWidth = 2
       unit.setTimer('TH',0.016)
    else
-      TH_stroke_color = 'rgb(66, 167, 245)'
+      TH_stroke_color = GHUD_shield_stroke_color
       THstrokeWidth = 1
    end
 end
 
 resistance_SVG()
+
 am=0
 am_x = -50
 am_opacity = 1
@@ -256,19 +282,6 @@ asteroidPOS = databank_1.getStringValue(15)
 else
 asteroidPOS = ''
 end
-GHUD_marker_name = "Asteroid" --export:
-GHUD_shield_auto_calibration = true --export: (AUTO/MANUAL) shield mode
-GHUD_shield_calibration_max = true --export: (MAX/50) calibration of the entire shield power by the largest resist based on DPS
-GHUD_departure_planet = 'Alioth' --export: Departure ID planet
-GHUD_destination_planet = 'Jago' --export: Destination ID planet
-GHUD_background_color = "#142027" --export: Background color
-GHUD_pipe_text_color = "#FFFFFF" --export: Pipe text color
-GHUD_pipe_Y = -0.1 --export:
-GHUD_pipe_X = 15.5 --export:
-GHUD_Y = 50 --export:
-GHUD_right_block_X = 30 --export:
-GHUD_left_block_X = 12 --export:
-collectgarbages = false --export: experimental
 
 if GHUD_marker_name == "" then GHUD_marker_name = "Asteroid" end
 asteroidcoord = {}
@@ -356,59 +369,56 @@ return calcDistance(origCenter, destCenter, currenLocation)
 end
 
 function closestPipe()
-while true do
-   local smallestDistance = nil;
-   local nearestPlanet = nil;
-   local i = 0
-   for obj in pairs(stellarObjects) do
-      i = i + 1
-      if (stellarObjects[obj].type[1] == 'Planet' or stellarObjects[obj].isSanctuary == true) then
-         local planetCenter = vec3(stellarObjects[obj].center)
-         local distance = vec3(vec3(construct.getWorldPosition()) - planetCenter):len()
+   while true do
+      local smallestDistance = nil;
+      local nearestPlanet = nil;
+      local i = 0
+      for obj in pairs(stellarObjects) do
+         i = i + 1
+         if (stellarObjects[obj].type[1] == 'Planet' or stellarObjects[obj].isSanctuary == true) then
+            local planetCenter = vec3(stellarObjects[obj].center)
+            local distance = vec3(vec3(construct.getWorldPosition()) - planetCenter):len()
 
-         if (smallestDistance == nil or distance < smallestDistance) then
-            smallestDistance = distance;
-            nearestPlanet = obj;
+            if (smallestDistance == nil or distance < smallestDistance) then
+               smallestDistance = distance
+               nearestPlanet = obj
+            end
+         end
+         if i > 30 then
+            i = 0
+            coroutine.yield()
          end
       end
-      if i > 30 then
-         i = 0
-         coroutine.yield()
-      end
-   end
-   i = 0
-   closestPlanet = stellarObjects[nearestPlanet]
-   nearestPipeDistance = nil
-   nearestAliothPipeDistance= nil
-   for obj in pairs(stellarObjects) do
-      if (stellarObjects[obj].type[1] == 'Planet' or stellarObjects[obj].isSanctuary == true) then
-         for obj2 in pairs(stellarObjects) do
-            i = i + 1
-            if (obj2 > obj and (stellarObjects[obj2].type[1] == 'Planet' or stellarObjects[obj2].isSanctuary == true)) then
-               pipeDistance = calcDistanceStellar(stellarObjects[obj], stellarObjects[obj2], vec3(construct.getWorldPosition()))
-               if nearestPipeDistance == nil or pipeDistance < nearestPipeDistance then
-                  nearestPipeDistance = pipeDistance;
-                  sortestPipeKeyId = obj;
-                  sortestPipeKey2Id = obj2;
-               end
-               if stellarObjects[obj].name[1] == "Alioth" and (nearestAliothPipeDistance == nil or pipeDistance < nearestAliothPipeDistance) then
-                  nearestAliothPipeDistance = pipeDistance;
-                  sortestAliothPipeKeyId = obj;
-                  sortestAliothPipeKey2Id = obj2;
+      i = 0
+      closestPlanet = stellarObjects[nearestPlanet]
+      nearestPipeDistance = nil
+      nearestAliothPipeDistance= nil
+      for obj in pairs(stellarObjects) do
+         i = i + 1
+         if (stellarObjects[obj].type[1] == 'Planet' or stellarObjects[obj].isSanctuary == true) then
+            for obj2 in pairs(stellarObjects) do
+               if (obj2 > obj and (stellarObjects[obj2].type[1] == 'Planet' or stellarObjects[obj2].isSanctuary == true)) then
+                  pipeDistance = calcDistanceStellar(stellarObjects[obj], stellarObjects[obj2], vec3(construct.getWorldPosition()))
+                  if nearestPipeDistance == nil or pipeDistance < nearestPipeDistance then
+                     nearestPipeDistance = pipeDistance;
+                     sortestPipeKeyId = obj;
+                     sortestPipeKey2Id = obj2;
+                  end
+                  if stellarObjects[obj].name[1] == "Alioth" and (nearestAliothPipeDistance == nil or pipeDistance < nearestAliothPipeDistance) then
+                     nearestAliothPipeDistance = pipeDistance
+                     sortestAliothPipeKeyId = obj
+                     sortestAliothPipeKey2Id = obj2
+                  end
                end
             end
-            closestPipeData.value = stellarObjects[sortestPipeKeyId].name[1] .. " - " .. stellarObjects[sortestPipeKey2Id].name[1]
-            --closestPipeDistData.value = string.format("%03.2f", nearestPipeDistance / 200000.0)
-            --closestAliothPipeData.value = stellarObjects[sortestAliothPipeKeyId].name[1] .. " - " .. stellarObjects[sortestAliothPipeKey2Id].name[1]
-            --closestAliothPipeDistData.value = string.format("%03.2f", nearestAliothPipeDistance / 200000.0)
-            if i > 30 then
-               i = 0
-               coroutine.yield()
-            end
+         end
+         closestPipeData = stellarObjects[sortestPipeKeyId].name[1] .. " - " .. stellarObjects[sortestPipeKey2Id].name[1]
+         if i > 30 then
+            i = 0
+            coroutine.yield()
          end
       end
    end
-end
 end
 
 --2D Planet radar and AR planets
@@ -490,7 +500,7 @@ return ClosestPlanet.pipename, ClosestPlanet.pipedistance
 end
 
 function getSafeZoneDistance(wp)
-local CenterSafeZone = vec3(13771471, 7435803, -128971)
+local CenterSafeZone = safeWorldPos
 local distance=math.floor(((wp-CenterSafeZone):len()-18000000))
 return distance
 end
@@ -507,8 +517,9 @@ warpScan = 0
 targetList = ''
 altb=false
 safew=''
-varcombat = core.getPvPTimer()
+varcombat = construct.getPvPTimer()
 function pD()
+   if closestPlanet ~= nil then
 local pipeD = ''
 if nearestPipeDistance >= 100000 then
    pipeD = ''..string.format('%0.2f', nearestPipeDistance/200000)..' su'
@@ -518,11 +529,14 @@ else
    pipeD = ''..string.format('%0.0f', nearestPipeDistance)..' m'
 end
 if nearestPipeDistance >= 600000 then
-   return closestPipeData.value.. '<br>' .. '<green1>'..pipeD..'</green1>'
+   return closestPipeData.. '<br>' .. '<green1>'..pipeD..'</green1>'
 elseif nearestPipeDistance >= 400000 and nearestPipeDistance <= 600000 then
-   return closestPipeData.value.. '<br>' .. '<orange1>'..pipeD..'</orange1>'
+   return closestPipeData.. '<br>' .. '<orange1>'..pipeD..'</orange1>'
 elseif nearestPipeDistance < 400000 then
-   return closestPipeData.value.. '<br>' .. '<red1>'..pipeD..'<red1>'
+   return closestPipeData.. '<br>' .. '<red1>'..pipeD..'<red1>'
+end
+else
+   return ""
 end
 end
 
@@ -535,6 +549,8 @@ safetext=''
 szsafe=true
 tz1=0
 tz2=0
+brakeS = ''
+brakeDist = ''
 
 function indexSort(tbl)
 local idx = {}
@@ -556,7 +572,8 @@ return resRatio
 end
 
 safeStatus = ''
-safeVector = 0
+safeVector = {0,0,0}
+zoneDist = ''
 lalt=false
 buttonC=false
 buttonSpace=false
@@ -586,8 +603,9 @@ elseif stress[2] >= stress[1] and
          return res
       end
       shoteCount = 0
-      lastShotTime = system.getTime()
+      lastShotTime = system.getArkTime()
       resCLWN = ""
+      
       if GHUD_shield_auto_calibration
       then
          if GHUD_shield_calibration_max then
@@ -600,7 +618,7 @@ elseif stress[2] >= stress[1] and
          if GHUD_shield_calibration_max then
             shieldText = "SHIELD (MANUAL,MAX)"
          end
-
+      
          if not GHUD_shield_calibration_max then
             shieldText = "SHIELD (MANUAL,50)"
          end
@@ -664,6 +682,13 @@ elseif stress[2] >= stress[1] and
          alarmTimer = false
          t2=nil
          coratinka=0
+
+         function makeVector(coordinateBegin, coordinateEnd)
+            local x = vec3(coordinateEnd).x - vec3(coordinateBegin).x
+            local y = vec3(coordinateEnd).y - vec3(coordinateBegin).y
+            local z = vec3(coordinateEnd).z - vec3(coordinateBegin).z
+            return vec3(x, y, z)
+         end
 
          -- прибавляет к вектору, из двух координат, кусочек длины
          -- и воозращает координату окончания вектора, с учетом прибалвенной длины
@@ -931,10 +956,11 @@ elseif stress[2] >= stress[1] and
          transponder.deactivate() --transponder server bug fix
          unit.setTimer('tr',2)
          unit.setTimer('hud',0.02)
+         unit.setTimer('brake',0.15)
          unit.setTimer('prealarm',2)
          if warpdrive ~= nil then
             unit.setTimer('warp',35)
          end
          if collectgarbages == true then
-            unit.setTimer("cleaner",30)
+            unit.setTimer('cleaner',30)
          end
