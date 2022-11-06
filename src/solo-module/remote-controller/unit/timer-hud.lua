@@ -30,9 +30,9 @@ resisttime = shield.getResistancesCooldown()
 if resisttime ~= 0 then
    if resisttime < resisttimemax  then
       resCLWN = math.floor(resisttime)
-else
-   resCLWN = ""
-end
+   else
+      resCLWN = ""
+   end
 end
 
 if shield.isVenting() then
@@ -40,6 +40,7 @@ if shield.isVenting() then
    if venttime < venttimemax and venttime ~= 0 then
       resCLWN = math.floor(venttime)
       shieldStatus = "VENTING"
+   end
 end
 
 local warningmsg = ''
@@ -100,89 +101,24 @@ if math.ceil(HP) <= 50 then
             border-color: #fca503;
             </style>
             <div class="warningmsg">SHIELD LOW!</div>]]
-      else
-         shieldAlarm = false
-      end
-   end
-   local thrust1 = math.floor(unit.getThrottle())
-   local accel = math.floor((json.decode(unit.getWidgetData()).acceleration/9.80665)*10)/10
-   
-   local speed = math.floor(v0:len() * 3.6)
-   local maxSpeed = math.floor(construct.getMaxSpeed() * 3.6)
-   --local closestPlanet = getClosestPlanet(shipPos)
-   AR_planets = ''
-   AR_asteroid = ''
-   AR_pvpzone = ''
-   AR_safezone = ''
-
-         function safeZone()
-            if closestPlanet ~= nil then
-               local WorldPos = vec3(construct.getWorldPosition())
-               local mabs = math.abs
-               local safeRadius = 18000000
-               local szradius = 500000
-               local distsz, distp = math.huge
-               szsafe = false
-               distsz = vec3(WorldPos):dist(safeWorldPos)
-               if distsz < safeRadius then
-                  szsafe=true
-                  distS = mabs(distsz - safeRadius)
-                  local vector1 = vectorLengthen(safeWorldPos, WorldPos, distS)
-                  if distS > 100000 then
-                     distS = ''..string.format('%0.2f', distS/200000)..' su'
-                  elseif distS > 1000 and distS < 100000 then
-                     distS = ''..string.format('%0.1f', distS/1000)..' km'
-                  else
-                     distS = ''..string.format('%0.0f', distS)..' m'
-                  end
-                  local a1 = 'PvP ZONE'
-                  local a2 = distS
-                  return a1, vector1, a2
-               end
-         
-               distp = vec3(WorldPos):dist(vec3(closestPlanet.center))
-               if distp < szradius then szsafe = true else szsafe = false end
-               if mabs(distp - szradius) < mabs(distsz - safeRadius) then
-                  distS = mabs(distp - szradius)
-                  local vector1 = vectorLengthen(vec3(closestPlanet.center), WorldPos, distS)
-                  if distS > 100000 then
-                     distS = ''..string.format('%0.2f', distS/200000)..' su'
-                  elseif distS > 1000 and distS < 100000 then
-                     distS = ''..string.format('%0.1f', distS/1000)..' km'
-                  else
-                     distS = ''..string.format('%0.0f', distS)..' m'
-                  end
-                  if szsafe == true then
-                     local a1 = ''..closestPlanet.name[1]..' PVP: '..distS..''
-                     local a2 = distS
-                     return a1, vector1, a2
-                  else
-                     local a1 = ''..closestPlanet.name[1]..' SAFE: '..distS..''
-                     local a2 = distS
-                     return a1, vector1, a2
-                  end
-               else
-                  distS = mabs(distsz - safeRadius)
-                  local vector1 = vectorLengthen(WorldPos, safeWorldPos, distS)
-                  if distS > 100000 then
-                     distS = ''..string.format('%0.2f', distS/200000)..' su'
-                  elseif distS > 1000 and distS < 100000 then
-                     distS = ''..string.format('%0.1f', distS/1000)..' km'
-                  else
-                     distS = ''..string.format('%0.0f', distS)..' m'
-                  end
-                  local a1 = 'SAFE ZONE'
-                  local a2 = distS
-                  return a1, vector1, a2
-               end
-         
-            end
+         else
+            shieldAlarm = false
          end
+      end
+      local thrust1 = math.floor(unit.getThrottle())
+      local accel = math.floor((json.decode(unit.getWidgetData()).acceleration/9.80665)*10)/10
+      local speed = math.floor(vec3(construct.getWorldVelocity()):len() * 3.6)
+      local maxSpeed = math.floor(construct.getMaxSpeed() * 3.6)
+      --local closestPlanet = getClosestPlanet(shipPos)
+      local AR_planets = ''
+      local AR_asteroid = ''
+      local AR_pvpzone = ''
+      local AR_safezone = ''
 
-         safeStatus, safeVector, zoneDist = safeZone()
-
+      local safeStatus, safeVector, zoneDist = safeZone()
+      if zoneDist ~= nil then
          if szsafe == true then
-            safetext='<red1>'..safeStatus..'<br>'..zoneDist..'</red1>'
+            safetext=''..safeStatus..'<br><green1>'..zoneDist..'</green1>'
             local point1 = library.getPointOnScreen({safeVector.x,safeVector.y,safeVector.z})
             if point1[3] > 0 then --visible zone
                local dist = vec3(vec3(construct.getWorldPosition()) - safeVector):len()
@@ -218,7 +154,7 @@ if math.ceil(HP) <= 50 then
                </svg></div>]]
             end
          else
-            safetext='<green1>'..safeStatus..'<br>'..zoneDist..'</green1>'
+            safetext=''..safeStatus..'<br><green1>'..zoneDist..'</green1>'
             local point1 = library.getPointOnScreen({safeVector.x,safeVector.y,safeVector.z})
             if point1[3] > 0 then --visible zone
                local dist = vec3(vec3(construct.getWorldPosition()) - safeVector):len()
@@ -254,410 +190,411 @@ if math.ceil(HP) <= 50 then
                </svg></div>]]
             end
          end
+      end
 
-         if DisplayRadar==true then
-            local x,y,z = table.unpack(construct.getWorldOrientationForward())
-            local xoc = math.floor(math.atan(x, y)*180/math.pi+180)
-            local yoc = math.floor(math.atan(y, z)*180/math.pi+180)
-            local XY = [[
-            <style>
-            .XY {
-               position: absolute;
-               left: 2%;
-               top: 26%;
-               color: #FFB12C;
-               font-size:18px;
-               font-family: verdana;
-               font-weight: bold;
-               text-align: left;
-            }</style>
-            <div class="XY">X: ]]..xoc..[[<br>Y: ]]..yoc..[[</div>]]
-            message=[[
-            <style>
-            .svg {
-               position:absolute;
-               left: 0;
-               top: 6vh;
-               height: 100vh;
-               width: 100vw;
-               .wptxt {
+      if DisplayRadar==true then
+         local x,y,z = table.unpack(construct.getWorldOrientationForward())
+         local xoc = math.floor(math.atan(x, y)*180/math.pi+180)
+         local yoc = math.floor(math.atan(y, z)*180/math.pi+180)
+         local XY = [[
+         <style>
+         .XY {
+            position: absolute;
+            left: 2%;
+            top: 26%;
+            color: #FFB12C;
+            font-size:18px;
+            font-family: verdana;
+            font-weight: bold;
+            text-align: left;
+         }</style>
+         <div class="XY">X: ]]..xoc..[[<br>Y: ]]..yoc..[[</div>]]
+         message=[[
+         <style>
+         .svg {
+            position:absolute;
+            left: 0;
+            top: 6vh;
+            height: 100vh;
+            width: 100vw;
+            .wptxt {
+               fill: white;
+               font-size: ]].. screenHeight/80 ..[[;
+               font-family: sans-serif;
+               text-anchor: end;
+               .shiptxt {
                   fill: white;
                   font-size: ]].. screenHeight/80 ..[[;
                   font-family: sans-serif;
-                  text-anchor: end;
-                  .shiptxt {
-                     fill: white;
-                     font-size: ]].. screenHeight/80 ..[[;
-                     font-family: sans-serif;
-                     text-anchor: start;
-                  }
-                  </style>]]
-                  message=message..[[<svg class="svg">]]
-                  svgradar=""
-                  RadarX=screenWidth*1/6
-                  RadarY=screenWidth*1/6
-                  RadarR=screenWidth*1/6
-      
-                  svgradar=svgradar..string.format([[<line x1="%f" y1="%f" x2="%f" y2="%f" stroke-width="2" stroke="black" />]],RadarX,RadarY-RadarR,RadarX,RadarY+RadarR)
-                  svgradar=svgradar..string.format([[<line x1="%f" y1="%f" x2="%f" y2="%f" stroke-width="2" stroke="black" />]],RadarX-RadarR,RadarY,RadarX+RadarR,RadarY)
-                  svgradar=svgradar..string.format([[<circle  cx="%f" cy="%f" r="%f" stroke="black" fill="transparent" stroke-width="5"/>]],
-                  RadarX,RadarY,RadarR/2)
-                  svgradar=svgradar..string.format([[<circle  cx="%f" cy="%f" r="%f" stroke="black" fill-opacity="0.2" fill="green" stroke-width="5"/>]],
-                  RadarX,RadarY,RadarR)
-      
-                  for BodyId in pairs(atlas[0]) do
-                     local planet=atlas[0][BodyId]
-                     if planet ~= closestPlanet then
-                        if (planet.type[1] == 'Planet' or planet.isSanctuary == true) then
-                           drawonradar(vec3(planet.center),planet.name[1])
-                           local point1 = library.getPointOnScreen({planet.center[1],planet.center[2],planet.center[3]})
-                           if point1[3] > 0 then --visible zone
-                              local dist = vec3(vec3(construct.getWorldPosition()) - vec3(planet.center)):len()
-                              local sdist = ''
-                              if dist >= 100000 then
-                                 dist = string.format('%0.2f', dist/200000)
-                                 sdist = 'SU'
-                              elseif dist >= 1000 and dist < 100000 then
-                                 dist = string.format('%0.1f', dist/1000)
-                                 sdist = 'KM'
-                              else
-                                 dist = string.format('%0.0f', dist)
-                                 sdist = 'M'
-                              end
-                              local x2 = screenWidth*point1[1] - 50
-                              local y2 = screenHeight*point1[2] - 50
-                              AR_planets = AR_planets .. [[
-                              <style>
-                              .pl]]..planet.name[1]..[[ {
-                                 position: absolute;
-                                 width: 100px;
-                                 height: 100px;
-                                 left: ]]..x2..[[px;
-                                 top: ]]..y2..[[px;
-                              }
-                              </style>
-                              <div class="pl]]..planet.name[1]..[["><?xml version="1.0" encoding="utf-8"?>
-                              <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
-                              <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #FFB12C; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
-                              <text style="fill: ]]..GHUD_shield_stroke_color..[[; font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">]]..planet.name[1]..[[</text>
-                              <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
-                              <text style="fill: ]]..GHUD_shield_stroke_color..[[; font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..sdist..[[</text>
-                              </svg></div>]]
+                  text-anchor: start;
+               }
+               </style>]]
+               message=message..[[<svg class="svg">]]
+               svgradar=""
+               RadarX=screenWidth*1/6
+               RadarY=screenWidth*1/6
+               RadarR=screenWidth*1/6
+
+               svgradar=svgradar..string.format([[<line x1="%f" y1="%f" x2="%f" y2="%f" stroke-width="2" stroke="black" />]],RadarX,RadarY-RadarR,RadarX,RadarY+RadarR)
+               svgradar=svgradar..string.format([[<line x1="%f" y1="%f" x2="%f" y2="%f" stroke-width="2" stroke="black" />]],RadarX-RadarR,RadarY,RadarX+RadarR,RadarY)
+               svgradar=svgradar..string.format([[<circle  cx="%f" cy="%f" r="%f" stroke="black" fill="transparent" stroke-width="5"/>]],
+               RadarX,RadarY,RadarR/2)
+               svgradar=svgradar..string.format([[<circle  cx="%f" cy="%f" r="%f" stroke="black" fill-opacity="0.2" fill="green" stroke-width="5"/>]],
+               RadarX,RadarY,RadarR)
+
+               for BodyId in pairs(atlas[0]) do
+                  local planet=atlas[0][BodyId]
+                  if planet ~= closestPlanet then
+                     if (planet.type[1] == 'Planet' or planet.isSanctuary == true) then
+                        drawonradar(vec3(planet.center),planet.name[1])
+                        local point1 = library.getPointOnScreen({planet.center[1],planet.center[2],planet.center[3]})
+                        if point1[3] > 0 then --visible zone
+                           local dist = vec3(vec3(construct.getWorldPosition()) - vec3(planet.center)):len()
+                           local sdist = ''
+                           if dist >= 100000 then
+                              dist = string.format('%0.2f', dist/200000)
+                              sdist = 'SU'
+                           elseif dist >= 1000 and dist < 100000 then
+                              dist = string.format('%0.1f', dist/1000)
+                              sdist = 'KM'
+                           else
+                              dist = string.format('%0.0f', dist)
+                              sdist = 'M'
                            end
+                           local x2 = screenWidth*point1[1] - 50
+                           local y2 = screenHeight*point1[2] - 50
+                           AR_planets = AR_planets .. [[
+                           <style>
+                           .pl]]..planet.name[1]..[[ {
+                              position: absolute;
+                              width: 100px;
+                              height: 100px;
+                              left: ]]..x2..[[px;
+                              top: ]]..y2..[[px;
+                           }
+                           </style>
+                           <div class="pl]]..planet.name[1]..[["><?xml version="1.0" encoding="utf-8"?>
+                           <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+                           <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #FFB12C; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
+                           <text style="fill: ]]..GHUD_shield_stroke_color..[[; font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">]]..planet.name[1]..[[</text>
+                           <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
+                           <text style="fill: ]]..GHUD_shield_stroke_color..[[; font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..sdist..[[</text>
+                           </svg></div>]]
                         end
                      end
                   end
-                  drawonradar(safeVector,safeStatus)
-                  if asteroidPOS ~= "" then
-                     drawonradar(asteroidcoord,""..GHUD_marker_name.."")
-                     local point1 = library.getPointOnScreen({asteroidcoord.x,asteroidcoord.y,asteroidcoord.z})
-                     if point1[3] > 0 then --visible zone
-                        local dist = vec3(vec3(construct.getWorldPosition()) - asteroidcoord):len()
-                        local sdist = ''
-                        if dist >= 100000 then
-                           dist = string.format('%0.2f', dist/200000)
-                           sdist = 'SU'
-                        elseif dist >= 1000 and dist < 100000 then
-                           dist = string.format('%0.1f', dist/1000)
-                           sdist = 'KM'
-                        else
-                           dist = string.format('%0.0f', dist)
-                           sdist = 'M'
-                        end
-                        local x2 = screenWidth*point1[1] - 50
-                        local y2 = screenHeight*point1[2] - 50
-                        AR_asteroid = [[
-                        <style>
-                        .marker]]..GHUD_marker_name..[[ {
-                           position: absolute;
-                           width: 100px;
-                           height: 100px;
-                           left: ]]..x2..[[px;
-                           top: ]]..y2..[[px;
-                        }
-                        </style>
-                        <div class="marker]]..GHUD_marker_name..[["><?xml version="1.0" encoding="utf-8"?>
-                        <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
-                        <ellipse style="fill: rgba(0, 0, 0, 0); stroke: red; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
-                        <text style="fill: ]]..GHUD_shield_stroke_color..[[; font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">]]..GHUD_marker_name..[[</text>
-                        <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
-                        <text style="fill: ]]..GHUD_shield_stroke_color..[[; font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..sdist..[[</text>
-                        </svg></div>]]
-                     end
-                  end --end asteroid
-                  message=message..svgradar..XY
-                  message=message.."</svg>"
-               else
-                  message = ''
                end
-      
-         if coratinka==1 then
-            if coroutine.status(ck) ~= "dead" and coroutine.status(ck) == "suspended" then
-               coroutine.resume(ck)
+               drawonradar(safeVector,safeStatus)
+               if asteroidPOS ~= "" then
+                  drawonradar(asteroidcoord,""..GHUD_marker_name.."")
+                  local point1 = library.getPointOnScreen({asteroidcoord.x,asteroidcoord.y,asteroidcoord.z})
+                  if point1[3] > 0 then --visible zone
+                     local dist = vec3(vec3(construct.getWorldPosition()) - asteroidcoord):len()
+                     local sdist = ''
+                     if dist >= 100000 then
+                        dist = string.format('%0.2f', dist/200000)
+                        sdist = 'SU'
+                     elseif dist >= 1000 and dist < 100000 then
+                        dist = string.format('%0.1f', dist/1000)
+                        sdist = 'KM'
+                     else
+                        dist = string.format('%0.0f', dist)
+                        sdist = 'M'
+                     end
+                     local x2 = screenWidth*point1[1] - 50
+                     local y2 = screenHeight*point1[2] - 50
+                     AR_asteroid = [[
+                     <style>
+                     .marker]]..GHUD_marker_name..[[ {
+                        position: absolute;
+                        width: 100px;
+                        height: 100px;
+                        left: ]]..x2..[[px;
+                        top: ]]..y2..[[px;
+                     }
+                     </style>
+                     <div class="marker]]..GHUD_marker_name..[["><?xml version="1.0" encoding="utf-8"?>
+                     <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+                     <ellipse style="fill: rgba(0, 0, 0, 0); stroke: red; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
+                     <text style="fill: ]]..GHUD_shield_stroke_color..[[; font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">]]..GHUD_marker_name..[[</text>
+                     <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
+                     <text style="fill: ]]..GHUD_shield_stroke_color..[[; font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..sdist..[[</text>
+                     </svg></div>]]
+                  end
+               end --end asteroid
+               message=message..svgradar..XY
+               message=message.."</svg>"
+            else
+               message = ''
             end
-         end
 
-         local htmlHUD = [[
-         <html>
-         <style>
-         html,body {
-            margin:0;
-            padding:0;
-            overflow: hidden;
-         }
-         .shield1 {
-            position: absolute;
-            width: ]]..GHUD_shield_panel_size..[[px;
-            top: ]]..GHUD_shield_Y..[[%;
-            opacity: ]]..GHUD_shield_panel_opacity..[[;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            filter: drop-shadow(0 0 25px blue);
-         }
-         .center1 {
-            position: relative;
-            margin-left: 50%;
-            margin-top: calc(]]..GHUD_Y..[[vh - 68px);
-            color: white;
-         }
-         .right1 {
-            color: ]]..GHUD_shield_stroke_color..[[;
-            position: absolute;
-            left: ]]..GHUD_right_block_X..[[%;
-            text-align:left;
-            font-size:18px;
-            font-family: verdana;
-            font-weight: bold;
-            text-shadow: 1px 0 1px #000,
-            0 1px 1px #000,
-            -1px 0 1px #000,
-            0 -1px 1px #000;
-         }
-         .thrust1 {
-            color: white;
-            position: absolute;
-            width: 100%;
-            display: flex;
-            font-size:20px;
-            justify-content: flex-end;
-            left: -101%;
-            margin-top: -1px;
-         }
-         .speed1 {
-            color: white;
-            position: absolute;
-            width: 100%;
-            display: flex;
-            font-size:20px;
-            justify-content: flex-end;
-            left: -101%;
-            margin-top: -1px;
-         }
-         .accel1 {
-            color: white;
-            position: absolute;
-            width: 100%;
-            display: flex;
-            font-size:20px;
-            justify-content: flex-end;
-            left: -101%;
-            margin-top: -1.5px;
-         }
-         .brakedist {
-            color: white;
-            position: absolute;
-            width: 100%;
-            display: flex;
-            font-size:20px;
-            justify-content: flex-end;
-            left: -101%;
-            margin-top: -1.5px;
-         }
-         .left1 {
-            color: ]]..GHUD_shield_stroke_color..[[;
-            position: absolute;
-            right: ]]..GHUD_left_block_X..[[%;
-            text-align: right;
-            font-size:18px;
-            font-family: verdana;
-            font-weight: bold;
-            text-shadow: 1px 0 1px #000,
-            0 1px 1px #000,
-            -1px 0 1px #000,
-            0 -1px 1px #000;
-         }
-         .shieldtext {
-            color: white;
-            position: absolute;
-            width: 100%;
-            display: flex;
-            justify-content: flex-end;
-            font-size:20px;
-            margin-left: -23px;
-            margin-top: -1px;
-         }
-         .fueltext {
-            color: white;
-            position: absolute;
-            width: 100%;
-            display: flex;
-            justify-content: flex-end;
-            font-size:20px;
-            margin-left: -23px;
-            margin-top: -1px;
-         }
-         .shield2 {
-            position: absolute;
-            margin-top: calc(-100% + 5px);
-            margin-left: 40%;
-            width: 120px;
-            height: 100px;
-         }
-         .fuel1 {
-            position: absolute;
-            margin-top:calc(-100% + 5px);
-            margin-left: 40%;
-            width: 120px;
-            height: 120px;
-         }
-         red1 {
-            color: #fc033d;
-         }
-         green1 {
-            color: #07e88e;
-         }
-         white1 {
-            color: white;
-         }
-         mspeed {
-            color: white;
-            opacity: 0.25;
-         }
-         blue1 {
-            color: ]]..GHUD_shield_stroke_color..[[;
-         }
-         it {
-            font-style: italic;
-         }
-         orange1 {
-            color: #FFB12C;
-         }
-         .sight1 {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-         }
-         .sight2 {
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-         }
-         .safez {
-            width: auto;
-            padding: 5px;
-            position:fixed;
-            top: 0;
-            right: 0;
-            text-align: right;
-            color: #FFFFFF;
-            text-align: center;
-            font-size: 1.2em;
-            font-weight: bold;
-            background: ]]..GHUD_background_color..[[;
-            border: 1px solid black;
-         }
-         .pipe {
-            width: auto;
-            padding: 5px;
-            position:fixed;
-            top: ]]..GHUD_pipe_Y..[[vh;
-            right: ]]..GHUD_pipe_X..[[vw;
-            text-align: center;
-            color: ]]..GHUD_pipe_text_color..[[;
-            font-size: 1.2em;
-            font-weight: bold;
-            background: ]]..GHUD_background_color..[[;
-            border: 1px solid black;
-         }
-         </style>
-         <body>
-         ]]..warningmsg..[[
-         ]]..AR_asteroid..[[
-         ]]..AR_planets..[[
-         ]]..AR_pvpzone..[[
-         ]]..AR_safezone..[[
-         ]]..message..[[
-         <div class="safez">]]..safetext..[[</div>
-         <div class="pipe">]]..pD()..[[</div>
-         <div class="center1"></div>
-         <div class="right1"><it>THRUST</it><br><div class="thrust1">]]..thrust1..[[</div><orange1>%</orange1><br><it>SPEED</it><br><div class="speed1">]]..speed..[[</div><orange1>KM/H</orange1><mspeed> ]]..maxSpeed..[[</mspeed><br><it>ACCEL</it><br><div class="accel1">]]..accel..[[</div><orange1>G</orange1><br><it>BRAKE-DISTANCE</it><br><div class="brakedist">]]..brakeDist..[[</div><orange1>]]..brakeS..[[</orange1></div>
-         <div class="left1"><it>SHIELD</it><div class="shield2"><svg viewBox="0 0 100 100" fill="none" stroke="]]..shieldColor..[[" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-         <path d="M 50 60 C 50 60 58 56 58 50 L 58 43 L 50 40 L 42 43 L 42 50 C 42 56 50 60 50 60 Z"/>
-         </svg></div><br><div class="shieldtext">]]..formatted_hp..[[</div><orange1>%</orange1><br><it>FUEL</it><div class="fuel1"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-         <g fill="none" fill-rule="evenodd" transform="matrix(1, 0, 0, 1, -18, -4.5)">
-         <path d="M68 63c3.038 0 5.5-2.493 5.5-5.567 0-2.05-1.833-5.861-5.5-11.433-3.667 5.572-5.5 9.383-5.5 11.433C62.5 60.507 64.962 63 68 63z" fill="#FFB12C"/>
-         </g>
-         </svg></div><br><div class="fueltext">]]..fuel_lvl..[[</div><orange1>%</orange1></div>
-         <div class="shield1"><?xml version="1.0" encoding="utf-8"?>
-         <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
-         <defs>
-         <linearGradient id="AM_gradient" x1="100%" x2="0%">
-         <stop stop-color="#fc033d" offset="]]..AM_svg..[[" />
-         <stop stop-color="]]..GHUD_shield_background_color..[[" offset="0" />
-         </linearGradient>
-         <linearGradient id="EM_gradient" x1="100%" x2="0%">
-         <stop stop-color="#fc033d" offset="]]..EM_svg..[[" />
-         <stop stop-color="]]..GHUD_shield_background_color..[[" offset="0" />
-         </linearGradient>
-         <linearGradient id="TH_gradient" x1="100%" x2="0%">
-         <stop stop-color="#fc033d" offset="]]..TH_svg..[[" />
-         <stop stop-color="]]..GHUD_shield_background_color..[[" offset="0" />
-         </linearGradient>
-         <linearGradient id="KI_gradient" x1="100%" x2="0%">
-         <stop stop-color="#fc033d" offset="]]..KI_svg..[[" />
-         <stop stop-color="]]..GHUD_shield_background_color..[[" offset="0" />
-         </linearGradient>
-         </defs>
-         <rect x="145" y="225" width="210" height="50" style="fill: ]]..GHUD_shield_empty_background_layer_color..[[; stroke: ]]..GHUD_shield_background_color..[[;" bx:origin="0.5 0.5"/>
-         <rect x="145" y="225" width="]]..svghp..[[" height="50" style="fill: ]]..GHUD_shield_background_color..[[; stroke: ]]..GHUD_shield_background_color..[[;" bx:origin="0.5 0.5"/>
-         ]]..damageLine..[[
-         ]]..ccsLineHit..[[
-         <rect x="180.2" y="220.2" width="]]..ccshp..[[" height="4.8" style="fill: white; stroke: white; stroke-width:0;"/>
-         <path style="fill: rgba(0, 0, 0, 0); stroke: ]]..GHUD_shield_stroke_color..[[;" d="M 180.249 220.227 L 319.749 220.175 L 315.834 225 L 184.159 225 L 180.249 220.227 Z"/>
-         <rect x="180.2" y="275" width="]]..FUEL_svg..[[" height="4.8" style="fill: #FFB12C; stroke: #FFB12C; stroke-width:0;"/>
-         <path style="fill: rgba(0,0,0,0); stroke: ]]..GHUD_shield_stroke_color..[[;" d="M 180.2 275.052 L 319.7 275 L 315.785 279.825 L 184.11 279.825 L 180.2 275.052 Z" transform="matrix(-1, 0, 0, -1, 499.900004, 554.825024)"/>
-         <path style="fill: url(#AM_gradient); stroke: ]]..AM_stroke_color..[[; stroke-width: ]]..AMstrokeWidth..[[;" d="M 125 215 L 185 250 L 95 250 L 85 240 L 125 215 Z" transform="matrix(-1, 0, 0, -1, 270.000006, 465.00001)"/>
-         <path style="fill: url(#TH_gradient); stroke: ]]..TH_stroke_color..[[; stroke-width: ]]..THstrokeWidth..[[;" d="M 315 225 L 325 215 L 415 215 L 355 250 L 315 225 Z"/>
-         <path style="fill: url(#KI_gradient); stroke: ]]..KI_stroke_color..[[; stroke-width: ]]..KIstrokeWidth..[[;" d="M 355 250 L 415 285 L 325 285 L 315 275 L 355 250 Z"/>
-         <path style="fill: url(#EM_gradient); stroke: ]]..EM_stroke_color..[[; stroke-width: ]]..EMstrokeWidth..[[;" d="M 85 260 L 95 250 L 185 250 L 125 285 L 85 260 Z" transform="matrix(-1, 0, 0, -1, 270.000006, 535.000011)"/>
-         <polygon style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linejoin: round; stroke-linecap: round;" points="244 225 249 231 261 231 266 225"></polygon>
-         <polygon style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linejoin: round; stroke-linecap: round;" points="242.71400451660156 259.74798583984375 247.71400451660156 265.74798583984375 267.714 265.748 272.7139892578125 259.74798583984375" transform="matrix(-1, 0, 0, -1, 512.713989, 534.747986)"></polygon>
-         <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 4.5px; font-weight: 700; text-anchor: middle;" transform="matrix(1, 0, 0, 1, -1.542758, -0.533447)"><tspan x="256.796" y="230.112">]]..resCLWN..[[</tspan></text>
-         <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; text-anchor: middle;" x="255.048" y="273.416">]]..shieldStatus..[[</text>
-         <text style="fill: ]]..GHUD_shield_stroke_color..[[; font-family: Arial, sans-serif; font-weight: bold; font-size: 3.2px;" x="252" y="223.591">CCS</text>
-         <polygon style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linejoin: round; stroke-linecap: round;" points="240 279.79998779296875 245 285.79998779296875 265 285.8 270 279.79998779296875"></polygon>
-         <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; text-anchor: middle;" x="255.28" y="284.311">]]..avWarp..[[/]]..totalWarp..[[</text>
-         <path style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linecap: round; stroke-linejoin: round;" d="M 214.73 280.481 L 219.73 286.481 L 234.73 286.481 L 229.73 280.481 L 214.73 280.481 Z" transform="matrix(-1, 0, 0, -1, 459.730011, 566.281006)"></path>
-         <path style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linecap: round; stroke-linejoin: round;" d="M 274.615 280.23 L 269.615 286.23 L 284.615 286.23 L 289.615 280.23 L 274.615 280.23 Z" transform="matrix(-1, 0, 0, -1, 554.615021, 566.029999)"></path>
-         <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 3.5px; font-weight: 700; text-anchor: middle;" x="235.218" y="284.182">WARP</text>
-         <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 3.5px; font-weight: 700; text-anchor: middle;" x="274.736" y="284.129">CELLS</text>
-         <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: ]]..GHUD_shield_text_stroke_color..[[; stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -0.542236, -41.161256)"><tspan x="351.543" y="319.558">KI</tspan></text>
-         <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: ]]..GHUD_shield_text_stroke_color..[[; stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -4.542999, -86.161257)"><tspan x="351.543" y="319.558">TH</tspan></text>
-         <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: ]]..GHUD_shield_text_stroke_color..[[; stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -219.543004, -41.161256)"><tspan x="351.543" y="319.558">EM</tspan></text>
-         <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: ]]..GHUD_shield_text_stroke_color..[[; stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -219.543004, -86.161257)"><tspan x="351.543" y="319.558">AM</tspan></text>
-         <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 20px; font-weight: 700; paint-order: stroke; stroke: ]]..GHUD_shield_text_stroke_color..[[; stroke-width: 1.25px; text-anchor: middle;" transform="matrix(1, 0, 0, 1, -93.528017, -62.474306)"><tspan x="352" y="320">]]..formatted_hp..[[%</tspan></text>
-         ]]..AM_res..[[
-         ]]..EM_res..[[
-         ]]..KI_res..[[
-         ]]..TH_res..[[
-         </svg></div>
-         </body>
-         </html>]]
+            if coratinka==1 then
+               if coroutine.status(ck) ~= "dead" and coroutine.status(ck) == "suspended" then
+                  coroutine.resume(ck)
+               end
+            end
 
-         if map == 0 then system.setScreen(htmlHUD) end
+            local htmlHUD = [[
+            <html>
+            <style>
+            html,body {
+               margin:0;
+               padding:0;
+               overflow: hidden;
+            }
+            .shield1 {
+               position: absolute;
+               width: ]]..GHUD_shield_panel_size..[[px;
+               top: ]]..GHUD_shield_panel_Y..[[%;
+               opacity: ]]..GHUD_shield_panel_opacity..[[;
+               left: 50%;
+               transform: translate(-50%, -50%);
+               filter: drop-shadow(0 0 25px blue);
+            }
+            .center1 {
+               position: relative;
+               margin-left: 50%;
+               margin-top: calc(]]..GHUD_Y..[[vh - 68px);
+               color: white;
+            }
+            .right1 {
+               color: ]]..GHUD_shield_stroke_color..[[;
+               position: absolute;
+               left: ]]..GHUD_right_block_X..[[%;
+               text-align:left;
+               font-size:18px;
+               font-family: verdana;
+               font-weight: bold;
+               text-shadow: 1px 0 1px #000,
+               0 1px 1px #000,
+               -1px 0 1px #000,
+               0 -1px 1px #000;
+            }
+            .thrust1 {
+               color: white;
+               position: absolute;
+               width: 100%;
+               display: flex;
+               font-size:20px;
+               justify-content: flex-end;
+               left: -101%;
+               margin-top: -1px;
+            }
+            .speed1 {
+               color: white;
+               position: absolute;
+               width: 100%;
+               display: flex;
+               font-size:20px;
+               justify-content: flex-end;
+               left: -101%;
+               margin-top: -1px;
+            }
+            .accel1 {
+               color: white;
+               position: absolute;
+               width: 100%;
+               display: flex;
+               font-size:20px;
+               justify-content: flex-end;
+               left: -101%;
+               margin-top: -1.5px;
+            }
+            .brakedist {
+               color: white;
+               position: absolute;
+               width: 100%;
+               display: flex;
+               font-size:20px;
+               justify-content: flex-end;
+               left: -101%;
+               margin-top: -1.5px;
+            }
+            .left1 {
+               color: ]]..GHUD_shield_stroke_color..[[;
+               position: absolute;
+               right: ]]..GHUD_left_block_X..[[%;
+               text-align: right;
+               font-size:18px;
+               font-family: verdana;
+               font-weight: bold;
+               text-shadow: 1px 0 1px #000,
+               0 1px 1px #000,
+               -1px 0 1px #000,
+               0 -1px 1px #000;
+            }
+            .shieldtext {
+               color: white;
+               position: absolute;
+               width: 100%;
+               display: flex;
+               justify-content: flex-end;
+               font-size:20px;
+               margin-left: -23px;
+               margin-top: -1px;
+            }
+            .fueltext {
+               color: white;
+               position: absolute;
+               width: 100%;
+               display: flex;
+               justify-content: flex-end;
+               font-size:20px;
+               margin-left: -23px;
+               margin-top: -1px;
+            }
+            .shield2 {
+               position: absolute;
+               margin-top: calc(-100% + 5px);
+               margin-left: 40%;
+               width: 120px;
+               height: 100px;
+            }
+            .fuel1 {
+               position: absolute;
+               margin-top:calc(-100% + 5px);
+               margin-left: 40%;
+               width: 120px;
+               height: 120px;
+            }
+            red1 {
+               color: #fc033d;
+            }
+            green1 {
+               color: #07e88e;
+            }
+            white1 {
+               color: white;
+            }
+            mspeed {
+               color: white;
+               opacity: 0.25;
+            }
+            blue1 {
+               color: ]]..GHUD_shield_stroke_color..[[;
+            }
+            it {
+               font-style: italic;
+            }
+            orange1 {
+               color: #FFB12C;
+            }
+            .sight1 {
+               position: absolute;
+               width: 200px;
+               height: 200px;
+               left: 50%;
+               top: 50%;
+               transform: translate(-50%, -50%);
+            }
+            .sight2 {
+               position: absolute;
+               width: 400px;
+               height: 400px;
+               left: 50%;
+               top: 50%;
+               transform: translate(-50%, -50%);
+            }
+            .safez {
+               width: auto;
+               padding: 5px;
+               position:fixed;
+               top: 0;
+               right: 0;
+               text-align: right;
+               color: #FFFFFF;
+               text-align: center;
+               font-size: 1.2em;
+               font-weight: bold;
+               background: ]]..GHUD_background_color..[[;
+               border: 1px solid black;
+            }
+            .pipe {
+               width: auto;
+               padding: 5px;
+               position:fixed;
+               top: ]]..GHUD_pipe_Y..[[vh;
+               right: ]]..GHUD_pipe_X..[[vw;
+               text-align: center;
+               color: ]]..GHUD_pipe_text_color..[[;
+               font-size: 1.2em;
+               font-weight: bold;
+               background: ]]..GHUD_background_color..[[;
+               border: 1px solid black;
+            }
+            </style>
+            <body>
+            ]]..warningmsg..[[
+            ]]..AR_asteroid..[[
+            ]]..AR_planets..[[
+            ]]..AR_pvpzone..[[
+            ]]..AR_safezone..[[
+            ]]..message..[[
+            <div class="safez">]]..safetext..[[</div>
+            <div class="pipe">]]..pD()..[[</div>
+            <div class="center1"></div>
+            <div class="right1"><it>THRUST</it><br><div class="thrust1">]]..thrust1..[[</div><orange1>%</orange1><br><it>SPEED</it><br><div class="speed1">]]..speed..[[</div><orange1>KM/H</orange1><mspeed> ]]..maxSpeed..[[</mspeed><br><it>ACCEL</it><br><div class="accel1">]]..accel..[[</div><orange1>G</orange1><br><it>BRAKE-DISTANCE</it><br><div class="brakedist">]]..brakeDist..[[</div><orange1>]]..brakeS..[[</orange1></div>
+            <div class="left1"><it>SHIELD</it><div class="shield2"><svg viewBox="0 0 100 100" fill="none" stroke="]]..shieldColor..[[" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 50 60 C 50 60 58 56 58 50 L 58 43 L 50 40 L 42 43 L 42 50 C 42 56 50 60 50 60 Z"/>
+            </svg></div><br><div class="shieldtext">]]..formatted_hp..[[</div><orange1>%</orange1><br><it>FUEL</it><div class="fuel1"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" fill-rule="evenodd" transform="matrix(1, 0, 0, 1, -18, -4.5)">
+            <path d="M68 63c3.038 0 5.5-2.493 5.5-5.567 0-2.05-1.833-5.861-5.5-11.433-3.667 5.572-5.5 9.383-5.5 11.433C62.5 60.507 64.962 63 68 63z" fill="#FFB12C"/>
+            </g>
+            </svg></div><br><div class="fueltext">]]..fuel_lvl..[[</div><orange1>%</orange1></div>
+            <div class="shield1"><?xml version="1.0" encoding="utf-8"?>
+            <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+            <defs>
+            <linearGradient id="AM_gradient" x1="100%" x2="0%">
+            <stop stop-color="#fc033d" offset="]]..AM_svg..[[" />
+            <stop stop-color="]]..GHUD_shield_background_color..[[" offset="0" />
+            </linearGradient>
+            <linearGradient id="EM_gradient" x1="100%" x2="0%">
+            <stop stop-color="#fc033d" offset="]]..EM_svg..[[" />
+            <stop stop-color="]]..GHUD_shield_background_color..[[" offset="0" />
+            </linearGradient>
+            <linearGradient id="TH_gradient" x1="100%" x2="0%">
+            <stop stop-color="#fc033d" offset="]]..TH_svg..[[" />
+            <stop stop-color="]]..GHUD_shield_background_color..[[" offset="0" />
+            </linearGradient>
+            <linearGradient id="KI_gradient" x1="100%" x2="0%">
+            <stop stop-color="#fc033d" offset="]]..KI_svg..[[" />
+            <stop stop-color="]]..GHUD_shield_background_color..[[" offset="0" />
+            </linearGradient>
+            </defs>
+            <rect x="145" y="225" width="210" height="50" style="fill: ]]..GHUD_shield_empty_background_layer_color..[[; stroke: ]]..GHUD_shield_background_color..[[;" bx:origin="0.5 0.5"/>
+            <rect x="145" y="225" width="]]..svghp..[[" height="50" style="fill: ]]..GHUD_shield_background_color..[[; stroke: ]]..GHUD_shield_background_color..[[;" bx:origin="0.5 0.5"/>
+            ]]..damageLine..[[
+            ]]..ccsLineHit..[[
+            <rect x="180.2" y="220.2" width="]]..ccshp..[[" height="4.8" style="fill: white; stroke: white; stroke-width:0;"/>
+            <path style="fill: rgba(0, 0, 0, 0); stroke: ]]..GHUD_shield_stroke_color..[[;" d="M 180.249 220.227 L 319.749 220.175 L 315.834 225 L 184.159 225 L 180.249 220.227 Z"/>
+            <rect x="180.2" y="275" width="]]..FUEL_svg..[[" height="4.8" style="fill: #FFB12C; stroke: #FFB12C; stroke-width:0;"/>
+            <path style="fill: rgba(0,0,0,0); stroke: ]]..GHUD_shield_stroke_color..[[;" d="M 180.2 275.052 L 319.7 275 L 315.785 279.825 L 184.11 279.825 L 180.2 275.052 Z" transform="matrix(-1, 0, 0, -1, 499.900004, 554.825024)"/>
+            <path style="fill: url(#AM_gradient); stroke: ]]..AM_stroke_color..[[; stroke-width: ]]..AMstrokeWidth..[[;" d="M 125 215 L 185 250 L 95 250 L 85 240 L 125 215 Z" transform="matrix(-1, 0, 0, -1, 270.000006, 465.00001)"/>
+            <path style="fill: url(#TH_gradient); stroke: ]]..TH_stroke_color..[[; stroke-width: ]]..THstrokeWidth..[[;" d="M 315 225 L 325 215 L 415 215 L 355 250 L 315 225 Z"/>
+            <path style="fill: url(#KI_gradient); stroke: ]]..KI_stroke_color..[[; stroke-width: ]]..KIstrokeWidth..[[;" d="M 355 250 L 415 285 L 325 285 L 315 275 L 355 250 Z"/>
+            <path style="fill: url(#EM_gradient); stroke: ]]..EM_stroke_color..[[; stroke-width: ]]..EMstrokeWidth..[[;" d="M 85 260 L 95 250 L 185 250 L 125 285 L 85 260 Z" transform="matrix(-1, 0, 0, -1, 270.000006, 535.000011)"/>
+            <polygon style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linejoin: round; stroke-linecap: round;" points="244 225 249 231 261 231 266 225"></polygon>
+            <polygon style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linejoin: round; stroke-linecap: round;" points="242.71400451660156 259.74798583984375 247.71400451660156 265.74798583984375 267.714 265.748 272.7139892578125 259.74798583984375" transform="matrix(-1, 0, 0, -1, 512.713989, 534.747986)"></polygon>
+            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 4.5px; font-weight: 700; text-anchor: middle;" transform="matrix(1, 0, 0, 1, -1.542758, -0.533447)"><tspan x="256.796" y="230.112">]]..resCLWN..[[</tspan></text>
+            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; text-anchor: middle;" x="255.048" y="273.416">]]..shieldStatus..[[</text>
+            <text style="fill: ]]..GHUD_shield_stroke_color..[[; font-family: Arial, sans-serif; font-weight: bold; font-size: 3.2px;" x="252" y="223.591">CCS</text>
+            <polygon style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linejoin: round; stroke-linecap: round;" points="240 279.79998779296875 245 285.79998779296875 265 285.8 270 279.79998779296875"></polygon>
+            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; text-anchor: middle;" x="255.28" y="284.311">]]..avWarp..[[/]]..totalWarp..[[</text>
+            <path style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linecap: round; stroke-linejoin: round;" d="M 214.73 280.481 L 219.73 286.481 L 234.73 286.481 L 229.73 280.481 L 214.73 280.481 Z" transform="matrix(-1, 0, 0, -1, 459.730011, 566.281006)"></path>
+            <path style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linecap: round; stroke-linejoin: round;" d="M 274.615 280.23 L 269.615 286.23 L 284.615 286.23 L 289.615 280.23 L 274.615 280.23 Z" transform="matrix(-1, 0, 0, -1, 554.615021, 566.029999)"></path>
+            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 3.5px; font-weight: 700; text-anchor: middle;" x="235.218" y="284.182">WARP</text>
+            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 3.5px; font-weight: 700; text-anchor: middle;" x="274.736" y="284.129">CELLS</text>
+            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: ]]..GHUD_shield_text_stroke_color..[[; stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -0.542236, -41.161256)"><tspan x="351.543" y="319.558">KI</tspan></text>
+            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: ]]..GHUD_shield_text_stroke_color..[[; stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -4.542999, -86.161257)"><tspan x="351.543" y="319.558">TH</tspan></text>
+            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: ]]..GHUD_shield_text_stroke_color..[[; stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -219.543004, -41.161256)"><tspan x="351.543" y="319.558">EM</tspan></text>
+            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: ]]..GHUD_shield_text_stroke_color..[[; stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -219.543004, -86.161257)"><tspan x="351.543" y="319.558">AM</tspan></text>
+            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 20px; font-weight: 700; paint-order: stroke; stroke: ]]..GHUD_shield_text_stroke_color..[[; stroke-width: 1.25px; text-anchor: middle;" transform="matrix(1, 0, 0, 1, -93.528017, -62.474306)"><tspan x="352" y="320">]]..formatted_hp..[[%</tspan></text>
+            ]]..AM_res..[[
+            ]]..EM_res..[[
+            ]]..KI_res..[[
+            ]]..TH_res..[[
+            </svg></div>
+            </body>
+            </html>]]
+
+            if map == 0 then system.setScreen(htmlHUD) end

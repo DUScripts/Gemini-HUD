@@ -22,10 +22,9 @@ BTC: 18HJbJBNeWs4ZZPYQ1hpjYt3BLb8VoiwXA<br/>
 TRX: TTEiRTWftQXJCu4h31KZThNZpXhPZjVRMp<br/>
 <br/>
 Animated shield bar (Work in progress): https://youtu.be/xfj97kRHDf4<br>
-HUD concept<br>
-![HUD concept1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/shield.png)<br/>
-![HUD concept2](https://github.com/Crusader93/Gemini-HUD/blob/master/images/concept.png)<br/>
+GHUD<br>
+![HUD concept1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/11.png)<br/>
+![HUD concept2](https://github.com/Crusader93/Gemini-HUD/blob/master/images/22.png)<br/>
 ![example1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/3.png)<br/>
-Beta CFCS (deprecated):<br/>
-![example2](https://github.com/Crusader93/Gemini-HUD/blob/master/images/1.png)<br/>
-![example3](https://github.com/Crusader93/Gemini-HUD/blob/master/images/2.png)<br/>
+Old (deprecated):<br/>
+![example1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/shield.png)<br/>

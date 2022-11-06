@@ -23,7 +23,7 @@ GHUD_miss_X = 47.5 --export:
 GHUD_log_stats = true --export: Radar and LUA chat new targets notofications
 GHUD_show_allies = true --export: Show allies
 GHUD_allies_count = 5 --export: Max count of displayed allies. Selected ally will always be displayed
-GHUD_allies_color = "#0cf27b" --export:
+GHUD_allies_color = "rgb(0, 191, 255)" --export:
 GHUD_allied_names_color = "rgb(0, 191, 255)" --export:
 GHUD_AR_allies_border_size = 400 --export:
 GHUD_AR_allies_border_color = "#0cf27b" --export:
@@ -247,7 +247,7 @@ function mRadar:onTextInput(text)
    focus = text:sub(-3)
    defaultRadar()
    if focus == 'f' then
-   system.print('Focus mode deactivated')
+      system.print('Focus mode deactivated')
    else
       system.print('Focus ID: '..focus)
    end
@@ -415,7 +415,7 @@ if GHUD_radarWidget_on_top == true then
    mRadar = mRadar:new(system, radar_1) --radar widget
    mWeapons = mWeapons:new(system, weapon, GHUD_weapon_panels) --weapon widgets
 else
-   mWeapons = mWeapons:new(system, weapon, GHUD_weapon_panels) 
+   mWeapons = mWeapons:new(system, weapon, GHUD_weapon_panels)
    mRadar = mRadar:new(system, radar_1)
 end
 
