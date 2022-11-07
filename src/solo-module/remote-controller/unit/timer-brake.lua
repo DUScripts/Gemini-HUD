@@ -1,4 +1,4 @@
-fuel_lvl = tonumber(json.decode(spacefueltank_1.getWidgetData()).percentage)
+fuel_lvl = math.ceil(spacefueltank_1.getItemsVolume()/spacefueltank_1.getMaxVolume() * 100)
 FUEL_svg = maxFUEL * (fuel_lvl * 0.01)
 local c = 8333.333
 local m0 = construct.getMass()

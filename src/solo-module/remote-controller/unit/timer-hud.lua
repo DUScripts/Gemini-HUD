@@ -25,44 +25,66 @@ if (system.getArkTime() - lastShotTime) >= 40 then
 end
 
 varcombat = construct.getPvPTimer()
-
 resisttime = shield.getResistancesCooldown()
 if resisttime ~= 0 then
-   if resisttime < resisttimemax  then
+   if resisttime < resisttimemax  then 
       resCLWN = math.floor(resisttime)
-   else
-      resCLWN = ""
    end
+else
+      resCLWN = ''
 end
 
 if shield.isVenting() then
    venttime = shield.getVentingCooldown()
    if venttime < venttimemax and venttime ~= 0 then
       resCLWN = math.floor(venttime)
-      shieldStatus = "VENTING"
+      shieldStatus = 'VENTING'
    end
 end
+
+if mybr == true then
+   brakeHUD = [[
+      <style>
+      .main1 {
+         position: absolute;
+         width: content;
+         padding: 10px;
+         top: ]]..GHUD_brake_Y..[[%;
+         left: 50%;
+         transform: translateX(-50%);
+         text-align: center;
+         background: #142027;
+         color: white;
+         font-family: "Lucida" Grande, sans-serif;
+         font-size: 1.5em;
+         border-radius: 5vh;
+         border: 4px solid #FFB12C;
+         </style>
+         <div class="main1">BRAKE ENGAGED</div>]]
+      else
+         brakeHUD = ''
+      end
 
 local warningmsg = ''
 if math.ceil(HP) <= 50 then
    warningmsg = [[<style>
    .warningmsg {
-      position: fixed;
-      top: 25%;
+      position: absolute;
+      top: ]]..GHUD_shield_warning_message_Y..[[%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 8em;
+      padding: 10px;
+      width: content;
       text-align: center;
       background: ]]..GHUD_shield_background2_color..[[;
       color: #fc033d;
-      font-family: verdana;
+      font-family: "Lucida" Grande, sans-serif;
       font-weight: bold;
-      font-size: 1.5em;
+      font-size: 1.25em;
       border-radius: 5vh;
-      border: 0.2vh solid;
-      border-color: #fca503;
+      border: 4px solid #FFB12C;
       </style>
-      <div class="warningmsg">SHIELD LOW!</div>]]
+      <div class="warningmsg">SHIELD LOW</div>]]
    end
 
    if t2 == true then
@@ -84,27 +106,28 @@ if math.ceil(HP) <= 50 then
       if alarmTimer == true then
          warningmsg = [[<style>
          .warningmsg {
-            position: fixed;
-            top: 25%;
+            position: absolute;
+            top: ]]..GHUD_shield_warning_message_Y..[[%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 8em;
+            padding: 10px;
+            width: content;
             text-align: center;
             background: ]]..GHUD_shield_background2_color..[[;
             color: #fc033d;
             opacity: ]]..blink..[[;
-            font-family: verdana;
+            font-family: "Lucida" Grande, sans-serif;
             font-weight: bold;
-            font-size: 1.5em;
+            font-size: 1.25em;
             border-radius: 5vh;
-            border: 0.2vh solid;
-            border-color: #fca503;
+            border: 4px solid #FFB12C;
             </style>
-            <div class="warningmsg">SHIELD LOW!</div>]]
+            <div class="warningmsg">SHIELD LOW</div>]]
+         end
          else
             shieldAlarm = false
          end
-      end
+
       local thrust1 = math.floor(unit.getThrottle())
       local accel = math.floor((json.decode(unit.getWidgetData()).acceleration/9.80665)*10)/10
       local speed = math.floor(vec3(construct.getWorldVelocity()):len() * 3.6)
@@ -116,7 +139,7 @@ if math.ceil(HP) <= 50 then
       local AR_safezone = ''
 
       local safeStatus, safeVector, zoneDist = safeZone()
-      if zoneDist ~= nil then
+
          if szsafe == true then
             safetext=''..safeStatus..'<br><green1>'..zoneDist..'</green1>'
             local point1 = library.getPointOnScreen({safeVector.x,safeVector.y,safeVector.z})
@@ -190,7 +213,6 @@ if math.ceil(HP) <= 50 then
                </svg></div>]]
             end
          end
-      end
 
       if DisplayRadar==true then
          local x,y,z = table.unpack(construct.getWorldOrientationForward())
@@ -530,13 +552,14 @@ if math.ceil(HP) <= 50 then
             ]]..AR_pvpzone..[[
             ]]..AR_safezone..[[
             ]]..message..[[
+            ]]..brakeHUD..[[
             <div class="safez">]]..safetext..[[</div>
             <div class="pipe">]]..pD()..[[</div>
             <div class="center1"></div>
-            <div class="right1"><it>THRUST</it><br><div class="thrust1">]]..thrust1..[[</div><orange1>%</orange1><br><it>SPEED</it><br><div class="speed1">]]..speed..[[</div><orange1>KM/H</orange1><mspeed> ]]..maxSpeed..[[</mspeed><br><it>ACCEL</it><br><div class="accel1">]]..accel..[[</div><orange1>G</orange1><br><it>BRAKE-DISTANCE</it><br><div class="brakedist">]]..brakeDist..[[</div><orange1>]]..brakeS..[[</orange1></div>
-            <div class="left1"><it>SHIELD</it><div class="shield2"><svg viewBox="0 0 100 100" fill="none" stroke="]]..shieldColor..[[" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+            <div class="right1">THRUST<br><div class="thrust1">]]..thrust1..[[</div><orange1>%</orange1><br>SPEED<br><div class="speed1">]]..speed..[[</div><orange1>KM/H</orange1><mspeed> ]]..maxSpeed..[[</mspeed><br>ACCEL<br><div class="accel1">]]..accel..[[</div><orange1>G</orange1><br>BRAKE-DISTANCE<br><div class="brakedist">]]..brakeDist..[[</div><orange1>]]..brakeS..[[</orange1></div>
+            <div class="left1">SHIELD<div class="shield2"><svg viewBox="0 0 100 100" fill="none" stroke="]]..shieldColor..[[" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
             <path d="M 50 60 C 50 60 58 56 58 50 L 58 43 L 50 40 L 42 43 L 42 50 C 42 56 50 60 50 60 Z"/>
-            </svg></div><br><div class="shieldtext">]]..formatted_hp..[[</div><orange1>%</orange1><br><it>FUEL</it><div class="fuel1"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            </svg></div><br><div class="shieldtext">]]..formatted_hp..[[</div><orange1>%</orange1><br>FUEL<div class="fuel1"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
             <g fill="none" fill-rule="evenodd" transform="matrix(1, 0, 0, 1, -18, -4.5)">
             <path d="M68 63c3.038 0 5.5-2.493 5.5-5.567 0-2.05-1.833-5.861-5.5-11.433-3.667 5.572-5.5 9.383-5.5 11.433C62.5 60.507 64.962 63 68 63z" fill="#FFB12C"/>
             </g>
@@ -573,17 +596,17 @@ if math.ceil(HP) <= 50 then
             <path style="fill: url(#TH_gradient); stroke: ]]..TH_stroke_color..[[; stroke-width: ]]..THstrokeWidth..[[;" d="M 315 225 L 325 215 L 415 215 L 355 250 L 315 225 Z"/>
             <path style="fill: url(#KI_gradient); stroke: ]]..KI_stroke_color..[[; stroke-width: ]]..KIstrokeWidth..[[;" d="M 355 250 L 415 285 L 325 285 L 315 275 L 355 250 Z"/>
             <path style="fill: url(#EM_gradient); stroke: ]]..EM_stroke_color..[[; stroke-width: ]]..EMstrokeWidth..[[;" d="M 85 260 L 95 250 L 185 250 L 125 285 L 85 260 Z" transform="matrix(-1, 0, 0, -1, 270.000006, 535.000011)"/>
-            <polygon style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linejoin: round; stroke-linecap: round;" points="244 225 249 231 261 231 266 225"></polygon>
-            <polygon style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linejoin: round; stroke-linecap: round;" points="242.71400451660156 259.74798583984375 247.71400451660156 265.74798583984375 267.714 265.748 272.7139892578125 259.74798583984375" transform="matrix(-1, 0, 0, -1, 512.713989, 534.747986)"></polygon>
-            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 4.5px; font-weight: 700; text-anchor: middle;" transform="matrix(1, 0, 0, 1, -1.542758, -0.533447)"><tspan x="256.796" y="230.112">]]..resCLWN..[[</tspan></text>
-            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; text-anchor: middle;" x="255.048" y="273.416">]]..shieldStatus..[[</text>
-            <text style="fill: ]]..GHUD_shield_stroke_color..[[; font-family: Arial, sans-serif; font-weight: bold; font-size: 3.2px;" x="252" y="223.591">CCS</text>
-            <polygon style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linejoin: round; stroke-linecap: round;" points="240 279.79998779296875 245 285.79998779296875 265 285.8 270 279.79998779296875"></polygon>
-            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; text-anchor: middle;" x="255.28" y="284.311">]]..avWarp..[[/]]..totalWarp..[[</text>
-            <path style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linecap: round; stroke-linejoin: round;" d="M 214.73 280.481 L 219.73 286.481 L 234.73 286.481 L 229.73 280.481 L 214.73 280.481 Z" transform="matrix(-1, 0, 0, -1, 459.730011, 566.281006)"></path>
-            <path style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linecap: round; stroke-linejoin: round;" d="M 274.615 280.23 L 269.615 286.23 L 284.615 286.23 L 289.615 280.23 L 274.615 280.23 Z" transform="matrix(-1, 0, 0, -1, 554.615021, 566.029999)"></path>
-            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 3.5px; font-weight: 700; text-anchor: middle;" x="235.218" y="284.182">WARP</text>
-            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 3.5px; font-weight: 700; text-anchor: middle;" x="274.736" y="284.129">CELLS</text>
+            <polygon style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linejoin: round; stroke-linecap: round;" points="239 225 244 231 256 231 261 225"></polygon>
+            <polygon style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linejoin: round; stroke-linecap: round;" points="235 269 240 275 260 275 265 269" transform="matrix(-1, 0, 0, -1, 500, 544)"></polygon>
+            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 4.5px; font-weight: 700; text-anchor: middle;" transform="matrix(1, 0, 0, 1, -1.542758, -0.533447)"><tspan x="251.796" y="230.112">]]..resCLWN..[[</tspan></text>
+            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; text-anchor: middle;" x="250.048" y="273.416">]]..shieldStatus..[[</text>
+            <text style="fill: ]]..GHUD_shield_stroke_color..[[; font-family: Arial, sans-serif; font-weight: bold; font-size: 3.2px; text-anchor: middle;" x="250" y="223.591">CCS</text>
+            <polygon style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linejoin: round; stroke-linecap: round;" points="235 279.8 240 285.8 260 285.8 265 279.8"></polygon>
+            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; text-anchor: middle;" x="250.28" y="284.311">]]..avWarp..[[/]]..totalWarp..[[</text>
+            <path style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linecap: round; stroke-linejoin: round;" d="M 220 279.8 L 225 285.8 L 240 285.8 L 235 279.8 L 220 279.8 Z" transform="matrix(-1, 0, 0, -1, 460, 565.599976)"></path>
+            <path style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linecap: round; stroke-linejoin: round;" d="M 265 279.8 L 260 285.8 L 275 285.8 L 280 279.8 L 265 279.8 Z" transform="matrix(-1, 0, 0, -1, 540, 565.599976)"></path>
+            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 3.5px; font-weight: 700; text-anchor: middle;" x="230.218" y="284.182">WARP</text>
+            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 3.5px; font-weight: 700; text-anchor: middle;" x="269.736" y="284.129">CELLS</text>
             <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: ]]..GHUD_shield_text_stroke_color..[[; stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -0.542236, -41.161256)"><tspan x="351.543" y="319.558">KI</tspan></text>
             <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: ]]..GHUD_shield_text_stroke_color..[[; stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -4.542999, -86.161257)"><tspan x="351.543" y="319.558">TH</tspan></text>
             <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: ]]..GHUD_shield_text_stroke_color..[[; stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -219.543004, -41.161256)"><tspan x="351.543" y="319.558">EM</tspan></text>

@@ -1,5 +1,5 @@
 start:
-if lalt==false then
+if lalt==true then
    local function getPipeDistance()
       local worldPos = shipPos
       local pipe = (DestinationCenter - DepartureCenter):normalize()

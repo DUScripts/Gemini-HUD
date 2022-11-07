@@ -1,5 +1,5 @@
 start:
-if buttonSpace==true then
+if lalt==true then
     if GHUD_shield_auto_calibration == true then
        GHUD_shield_auto_calibration = false
        system.print('Shield auto mode deactivated')
@@ -9,7 +9,7 @@ if buttonSpace==true then
     end
 end
 
-if buttonSpace==false then
+if lalt==false then
 if GHUD_shield_calibration_max == true then
     GHUD_shield_calibration_max = false
     system.print('Shield max stress mode deactivated')

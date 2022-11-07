@@ -9,24 +9,27 @@ GHUD_shield_auto_calibration = true --export: (AUTO/MANUAL) shield mode
 GHUD_shield_calibration_max = true --export: (MAX/50) calibration of the entire shield power by the largest resist based on DPS
 GHUD_departure_planet = 'Alioth' --export: Departure ID planet
 GHUD_destination_planet = 'Jago' --export: Destination ID planet
-GHUD_shield_panel_size = 1300
-GHUD_shield_panel_Y = 87
-GHUD_active_resists_border_color = '#07e88e'
-GHUD_shield_panel_opacity = 1
-GHUD_shield_background_color = '#142027'
-GHUD_shield_background2_color = 'black'
-GHUD_shield_empty_background_layer_color = 'black'
-GHUD_shield_stroke_color = 'rgb(0, 191, 255)'
-GHUD_shield_text_color = 'rgb(255, 252, 252)'
-GHUD_shield_text_stroke_color = 'rgb(0, 0, 0)'
-GHUD_right_block_X = 65
-GHUD_left_block_X = 65
+GHUD_shield_panel_size = 1300 --export:
+GHUD_shield_panel_Y = 87 --export:
+GHUD_active_resists_border_color = '#07e88e' --export:
+GHUD_shield_panel_opacity = 1 --export:
+GHUD_shield_background_color = '#142027' --export:
+GHUD_shield_background2_color = 'black' --export:
+GHUD_shield_empty_background_layer_color = 'rgba(0,0,0,0)' --export:
+GHUD_shield_stroke_color = 'rgb(0, 191, 255)' --export:
+GHUD_shield_text_color = 'rgb(255, 252, 252)' --export:
+GHUD_shield_text_stroke_color = '#FFB12C' --export:
+GHUD_right_block_X = 65 --export:
+GHUD_left_block_X = 65 --export:
 GHUD_background_color = '#142027' --export: Background color
 GHUD_pipe_text_color = '#FFFFFF' --export: Pipe text color
 GHUD_pipe_Y = 0 --export:
 GHUD_pipe_X = 15.5 --export:
 GHUD_Y = 50 --export:
+GHUD_shield_warning_message_Y = 25 --export:
+GHUD_brake_Y = 18 -- export:
 collectgarbages = false --export: experimental
+
 --vars
 atlas = require("atlas")
 stellarObjects = atlas[0]
@@ -54,7 +57,7 @@ ccshp = ccshp1
 
 --FUEL
 maxFUEL = maxCCS
-fuel_lvl = tonumber(json.decode(spacefueltank_1.getWidgetData()).percentage)
+fuel_lvl = math.ceil(spacefueltank_1.getItemsVolume()/spacefueltank_1.getMaxVolume() * 100)
 FUEL_svg = maxFUEL * (fuel_lvl * 0.01)
 
 AM_last_stress = 0
@@ -364,7 +367,7 @@ local destCenter = vec3(stellarObjectDestination.center)
 
 return calcDistance(origCenter, destCenter, currenLocation)
 end
-
+closestPlanet = stellarObjects[0]
 function closestPipe()
 while true do
    local smallestDistance = nil;
@@ -647,7 +650,6 @@ elseif stress[2] >= stress[1] and
       end
 
       function safeZone()
-         if closestPlanet ~= nil then
             local WorldPos = vec3(construct.getWorldPosition())
             local mabs = math.abs
             local safeRadius = 18000000
@@ -684,11 +686,11 @@ elseif stress[2] >= stress[1] and
                   distS = ''..string.format('%0.0f', distS)..' m'
                end
                if szsafe == true then
-                  local a1 = ''..closestPlanet.name[1]..' PVP: '..distS..''
+                  local a1 = ''..closestPlanet.name[1]..' PvP ZONE'
                   local a2 = distS
                   return a1, vector1, a2
                else
-                  local a1 = ''..closestPlanet.name[1]..' SAFE: '..distS..''
+                  local a1 = ''..closestPlanet.name[1]..' SAFE ZONE'
                   local a2 = distS
                   return a1, vector1, a2
                end
@@ -706,31 +708,9 @@ elseif stress[2] >= stress[1] and
                local a2 = distS
                return a1, vector1, a2
             end
-
-         end
       end
 
       mybr=false
-      --needs redesign
-      html1 = [[
-      <style>
-      .main1 {
-         position: fixed;
-         width: 11em;
-         padding: 1vh;
-         top: 1vh;
-         left: 50%;
-         transform: translateX(-50%);
-         text-align: center;
-         background: #142027;
-         color: white;
-         font-family: "Lucida" Grande, sans-serif;
-         font-size: 1.5em;
-         border-radius: 5vh;
-         border: 0.2vh solid;
-         border-color: #fca503;
-         </style>
-         <div class="main1">BRAKE ENGAGED</div>]]
          dis=0
          accel=0
          resString = ""
@@ -1011,12 +991,11 @@ elseif stress[2] >= stress[1] and
          }
          </style>]]
 
-         main1 = coroutine.create(closestPipe)
-
          transponder.deactivate() --transponder server bug fix
-         unit.setTimer('tr',2)
+         main1 = coroutine.create(closestPipe)
          unit.setTimer('hud',0.02)
          unit.setTimer('brake',0.15)
+         unit.setTimer('tr',2)
          unit.setTimer('prealarm',2)
          if warpdrive ~= nil then
             unit.setTimer('warp',35)

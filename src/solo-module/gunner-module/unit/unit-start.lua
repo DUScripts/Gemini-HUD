@@ -9,6 +9,7 @@ GHUD_weapon_panels = 3 --export: Set 3 or 2
 GHUD_export_mode = false --export: Coordinate export mode
 targetSpeed = 29999 --export: Target speed
 GHUD_background_color = "#142027" --export: Background HUD color
+GHUD_AR_sight_size = 100 --export:
 GHUD_AR_sight_color = "rgba(0, 191, 255, 0.7)" --export: AR sight color
 GHUD_radar_notifications_border_radius = true --export:
 GHUD_radar_notifications_border_color = 'black' --export:
@@ -17,7 +18,7 @@ GHUD_radar_notifications_background_color = 'rgb(255, 177, 44)' --export:
 GHUD_radar_notifications_Y = 10 --export:
 GHUD_show_hits = true --export:
 GHUD_show_misses = true --export:
-GHUD_hits_misses_Y = 80 --export:
+GHUD_hits_misses_Y = 76 --export:
 GHUD_hit_X = 56.5 --export:
 GHUD_miss_X = 47.5 --export:
 GHUD_log_stats = true --export: Radar and LUA chat new targets notofications
@@ -655,7 +656,7 @@ function main()
       --threat status
       if countLock == 0 then
          captionL = "LOCK"
-         captionLcolor = "#0cf27b"
+         captionLcolor = "#07e88e"
          captionText = "OK"
          okcolor = captionLcolor
       else
@@ -1641,7 +1642,7 @@ function tickVector(unit, system, text)
       targetVectorWidget =
       [[
 
-      <div class='circle' style='position:absolute;top:85%;left:43%;'>
+      <div class='circle' style='position:absolute;top:50%;left:3%;'>
       <div style='transform: translate(0px, -16px);color:#ffb750;'>]] ..
       string.format("%0.1f", myAngleR * rad2deg) ..
       [[°</div>
@@ -1652,12 +1653,12 @@ function tickVector(unit, system, text)
       string.format("%0.1f", myAngleR * rad2deg - targetAngleR * rad2deg) ..
       [[°</div>
       </div>
-      <div class='vectorLine' style='top:89.65%;left:43%;background:#ffb750;z-index:30;transform:rotate(]] ..
+      <div class='vectorLine' style='top:54.65%;left:3%;background:#ffb750;z-index:30;transform:rotate(]] ..
       myAngleR * rad2deg + 90 ..
       [[deg)'></div>
 
 
-      <div class='circle' style='position:absolute;top:85%;left:51%;'>
+      <div class='circle' style='position:absolute;top:50%;left:10%;'>
       <div style='transform: translate(0px, -16px);color:#ffb750;'>]] ..
       string.format("%0.1f", myAngleUp * rad2deg) ..
       [[°</div>
@@ -1671,23 +1672,23 @@ function tickVector(unit, system, text)
       ) ..
       [[°</div>
       </div>
-      <div class='vectorLine' style='top:89.65%;left:51%;background:#ffb750;z-index:30;transform:rotate(]] ..
+      <div class='vectorLine' style='top:54.65%;left:10%;background:#ffb750;z-index:30;transform:rotate(]] ..
       myAngleUp * rad2deg + 180 ..
       [[deg)'></div>
 
 
-      <div class='vectorLine' style='top:89.65%;left:43%;background:#f54425;z-index:29;transform:rotate(]] ..
+      <div class='vectorLine' style='top:54.65%;left:10%;background:#f54425;z-index:29;transform:rotate(]] ..
       targetAngleR * rad2deg + 90 ..
       [[deg)'></div>
-      <div class='vectorLine' style='top:89.65%;left:51%;background:#f54425;z-index:29;transform:rotate(]] ..
+      <div class='vectorLine' style='top:54.65%;left:10%;background:#f54425;z-index:29;transform:rotate(]] ..
       targetAngleUp * rad2deg + 180 ..
       [[deg)'></div>
       ]]
 
-      html1 =
+      local html1 =
       [[
       <style>
-      .main1 {
+      .main4 {
          position: fixed;
          width: auto;
          padding: 0.2vw;
@@ -1703,7 +1704,7 @@ function tickVector(unit, system, text)
          border: 0.2vh solid;
          border-color: #fca503;
          </style>
-         <div class="main1">]] ..
+         <div class="main4">]] ..
          pipeDist .. [[</div>]]
 
          style =
@@ -1716,9 +1717,8 @@ function tickVector(unit, system, text)
             border-radius: 50%;
             opacity: 0.5
          }     .vectorLine{position:absolute;transform-origin: 100% 0%;width: 50px;height:0.15em;}</style>]]
-         --system.setScreen([[<html><head>]] .. style .. [[</head><body>]] .. targetVectorWidget .. [[]] .. html1 .. [[</body></html>]])
          if (system.getUtcTime() - pos2time) > 4 then pp1 = '' end
-         vectorHUD = [[<html><head>]] .. style .. [[</head><body>]] .. targetVectorWidget .. [[]] .. html1 .. [[</body></html>]]
+         vectorHUD = style .. targetVectorWidget .. html1
       end
    end
 

@@ -57,8 +57,8 @@ if id ~= 0 then
       sight1 = [[
       .sight1 {
          position: absolute;
-         width: 200px;
-         height: 200px;
+         width: ]]..GHUD_AR_sight_size..[[px;
+         height: ]]..GHUD_AR_sight_size..[[px;
          left: ]]..x2..[[px;
          top: ]]..y2..[[px;
       }]]
@@ -111,8 +111,8 @@ else
       <style>
       .sight1 {
          position: absolute;
-         width: 200px;
-         height: 200px;
+         width: ]]..GHUD_AR_sight_size..[[px;
+         height: ]]..GHUD_AR_sight_size..[[px;
          left: ]]..x2..[[px;
          top: ]]..y2..[[px;
       }
@@ -177,7 +177,6 @@ if GHUD_show_hits == true then
             font-style: normal;
             font-weight: bold;
             color: #FFB12C;
-            text-shadow: 4px 0 1px #FFB12C, 0 1px 1px #000, -1px 0 1px #000, 0 -1px 1px #000;
             opacity: ]]..lastHitTime[k].hitOpacity..[[;
             transform: translate(-50%, -50%);
          }
@@ -218,7 +217,6 @@ if GHUD_show_misses == true then
             font-style: normal;
             font-weight: bold;
             color: #fc033d;
-            text-shadow: 4px 0 1px #fc033d, 0 1px 1px #000, -1px 0 1px #000, 0 -1px 1px #000;
             opacity: ]]..lastMissTime[k].missOpacity..[[;
             transform: translate(-50%, -50%);
          }
