@@ -21,7 +21,7 @@ if id ~= 0 then
    local size = radar_1.getConstructCoreSize(id)
    local speed = 'UNKNOWN'
    local anchor = 'middle'
-   local damage = 0
+   local damage = '0.0'
    if totalDamage[id] ~= nil then --target damage calculation concept
       damage = string.format('%0.1f',totalDamage[id].damage * 0.000001)
    end
@@ -161,7 +161,7 @@ if GHUD_show_hits == true then
    for k,v in pairs(lastHitTime) do
       if lastHitTime[k] ~= nil then
          lastHitTime[k].time = lastHitTime[k].time + 0.025
-         lastHitTime[k].hitOpacity = lastHitTime[k].hitOpacity - 0.01
+         lastHitTime[k].hitOpacity = lastHitTime[k].hitOpacity - 0.015
          local top = GHUD_hits_misses_Y - lastHitTime[k].time*3.25
          local right = GHUD_hit_X + lastHitTime[k].time*2
          if lastHitTime[k].hitOpacity <= 0 then lastHitTime[k].hitOpacity = 0 end
@@ -201,7 +201,7 @@ if GHUD_show_misses == true then
    for k,v in pairs(lastMissTime) do
       if lastMissTime[k] ~= nil then
          lastMissTime[k].time = lastMissTime[k].time + 0.025
-         lastMissTime[k].missOpacity = lastMissTime[k].missOpacity - 0.01
+         lastMissTime[k].missOpacity = lastMissTime[k].missOpacity - 0.015
          local top = GHUD_hits_misses_Y - lastMissTime[k].time*3.25
          local left = GHUD_miss_X - lastMissTime[k].time*2
          if lastMissTime[k].missOpacity <= 0 then lastMissTime[k].missOpacity = 0 end

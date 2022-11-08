@@ -26,8 +26,8 @@ GHUD_pipe_text_color = '#FFFFFF' --export: Pipe text color
 GHUD_pipe_Y = 0 --export:
 GHUD_pipe_X = 15.5 --export:
 GHUD_Y = 50 --export:
-GHUD_shield_warning_message_Y = 25 --export:
-GHUD_brake_Y = 18 -- export:
+GHUD_shield_warning_message_Y = 20 --export:
+GHUD_brake_Y = 1 -- export:
 collectgarbages = false --export: experimental
 
 --vars
@@ -257,7 +257,6 @@ local systemId, bodyId, latitude, longitude, altitude = string.match(pos, posPat
 
 if systemId==nil or bodyId==nil or latitude==nil or longitude==nil or altitude==nil then
    system.print("Invalid pos!")
-   destination_bm=""
    return vec3()
 end
 
@@ -420,6 +419,120 @@ while true do
    end
 end
 end
+closestPlanetT = stellarObjects[0]
+function closestPipe1(pos)
+   while true do
+      local smallestDistance = nil;
+      local nearestPlanet = nil;
+      local i = 0
+      for obj in pairs(stellarObjects) do
+         i = i + 1
+            local planetCenter = vec3(stellarObjects[obj].center)
+            local distance = vec3(pos - planetCenter):len()
+   
+            if (smallestDistance == nil or distance < smallestDistance) then
+               smallestDistance = distance
+               nearestPlanet = obj
+            end
+      end
+      i = 0
+      closestPlanetT = stellarObjects[nearestPlanet]
+      local nearestPipeDistance = nil
+      local nearestAliothPipeDistance= nil
+      for obj in pairs(stellarObjects) do
+         i = i + 1
+            for obj2 in pairs(stellarObjects) do
+               if (obj2 > obj and (stellarObjects[obj2].type[1] == 'Planet' or stellarObjects[obj2].isSanctuary == true)) then
+                  pipeDistance = calcDistanceStellar(stellarObjects[obj], stellarObjects[obj2], pos)
+                  if nearestPipeDistance == nil or pipeDistance < nearestPipeDistance then
+                     nearestPipeDistance = pipeDistance;
+                     sortestPipeKeyId = obj;
+                     sortestPipeKey2Id = obj2;
+                  end
+                  if stellarObjects[obj].name[1] == "Alioth" and (nearestAliothPipeDistance == nil or pipeDistance < nearestAliothPipeDistance) then
+                     nearestAliothPipeDistance = pipeDistance
+                     sortestAliothPipeKeyId = obj
+                     sortestAliothPipeKey2Id = obj2
+                  end
+               end
+            end
+         local distCP = vec3(pos):dist(vec3(closestPlanetT.center))
+         if distCP > 100000 then
+            distCP = ''..string.format('%0.2f', distCP/200000)..' su'
+         elseif distCP > 1000 and distCP < 100000 then
+            distCP = ''..string.format('%0.1f', distCP/1000)..' km'
+         else
+            distCP = ''..string.format('%0.0f', distCP)..' m'
+         end
+         local distS = vec3(stellarObjects[sortestPipeKeyId].center):dist(vec3(stellarObjects[sortestPipeKey2Id].center))
+         if distS > 100000 then
+            distS = ''..string.format('%0.2f', distS/200000)..' su'
+         elseif distS > 1000 and distS < 100000 then
+            distS = ''..string.format('%0.1f', distS/1000)..' km'
+         else
+            distS = ''..string.format('%0.0f', distS)..' m'
+         end
+         local closestpipe = stellarObjects[sortestPipeKeyId].name[1] .. " - " .. stellarObjects[sortestPipeKey2Id].name[1]
+         system.print('Closest planet: '..closestPlanetT.name[1]..' - '..distCP)
+         system.print('Closest pipe: '..closestpipe..' - '..distS)
+         coroutine.yield(pos)
+      end
+   end
+   end
+
+   function safeZone1(pos)
+      local WorldPos = pos
+      local mabs = math.abs
+      local safeRadius = 18000000
+      local szradius = 500000
+      local distsz, distp = math.huge
+      local szsafe = false
+      local distsz = vec3(WorldPos):dist(safeWorldPos)
+      if distsz < safeRadius then
+         szsafe=true
+         local distS = mabs(distsz - safeRadius)
+         if distS > 100000 then
+            distS = ''..string.format('%0.2f', distS/200000)..' su'
+         elseif distS > 1000 and distS < 100000 then
+            distS = ''..string.format('%0.1f', distS/1000)..' km'
+         else
+            distS = ''..string.format('%0.0f', distS)..' m'
+         end
+         local a1 = 'CENTRAL SZ, distance to PvP - '..distS
+         return a1
+      end
+
+      local distp = vec3(WorldPos):dist(vec3(closestPlanetT.center))
+      if distp < szradius then szsafe = true else szsafe = false end
+      if mabs(distp - szradius) < mabs(distsz - safeRadius) then
+         local distS = mabs(distp - szradius)
+         if distS > 100000 then
+            distS = ''..string.format('%0.2f', distS/200000)..' su'
+         elseif distS > 1000 and distS < 100000 then
+            distS = ''..string.format('%0.1f', distS/1000)..' km'
+         else
+            distS = ''..string.format('%0.0f', distS)..' m'
+         end
+         if szsafe == true then
+            local a1 = closestPlanetT.name[1]..' - SAFE zone, distance to PvP - '..distS
+            return a1
+         else
+            local a1 = 'PvP zone, closest SAFE zone - '..closestPlanetT.name[1]..' - '..distS
+            return a1
+         end
+      else
+         local distS = mabs(distsz - safeRadius)
+         if distS > 100000 then
+            distS = ''..string.format('%0.2f', distS/200000)..' su'
+         elseif distS > 1000 and distS < 100000 then
+            distS = ''..string.format('%0.1f', distS/1000)..' km'
+         else
+            distS = ''..string.format('%0.0f', distS)..' m'
+         end
+         local a1 = 'PvP zone, closest safe zone - Cenral SZ - '..distS
+         return a1
+      end
+end
 
 --2D Planet radar and AR planets
 screenHeight = system.getScreenHeight()
@@ -454,55 +567,6 @@ if crossProduct:dot(planeNormal) < 0 then
 else
    return angle
 end
-end
-
-function getClosestPlanet(wp)
-local ClosestPlanet={}
-ClosestPlanet.distance=999999999999
-for BodyId in pairs(atlas[0]) do
-   local planet=atlas[0][BodyId]
-   local distance=(vec3(planet.center)-wp):len()
-   if math.min(ClosestPlanet.distance,distance)==distance then
-      ClosestPlanet.name=planet.name[1]
-      ClosestPlanet.distance=distance
-   end
-end
-return planet
-end
-
-function getClosestPlanet1(wp)
-local ClosestPlanet={}
-ClosestPlanet.distance=999999999999
-for BodyId in pairs(atlas[0]) do
-   local planet=atlas[0][BodyId]
-   local distance=(vec3(planet.center)-wp):len()
-   if math.min(ClosestPlanet.distance,distance)==distance then
-      ClosestPlanet.name=planet.name[1]
-      ClosestPlanet.distance=distance
-   end
-end
-return ClosestPlanet.name,ClosestPlanet.distance
-end
-
-function getClosestPipe1(wp,startLocation)
-local ClosestPlanet={}
-ClosestPlanet.pipedistance=999999999999
-for BodyId in pairs(atlas[0]) do
-   local stopLocation=atlas[0][BodyId]
-   local pipe=vec3(startLocation.center) - vec3(stopLocation.center)
-   local pipedistance=(wp - vec3(startLocation.center)):project_on_plane(pipe):len()
-   if math.min(ClosestPlanet.pipedistance,pipedistance)==pipedistance and (vec3(startLocation.center)-wp):len()<pipe:len() and (vec3(stopLocation.center)-wp):len()<pipe:len() then
-      ClosestPlanet.pipename=stopLocation.name[1]
-      ClosestPlanet.pipedistance=pipedistance
-   end
-end
-return ClosestPlanet.pipename, ClosestPlanet.pipedistance
-end
-
-function getSafeZoneDistance(wp)
-local CenterSafeZone = safeWorldPos
-local distance=math.floor(((wp-CenterSafeZone):len()-18000000))
-return distance
 end
 
 playerName = system.getPlayerName(player.getId())
@@ -721,7 +785,6 @@ elseif stress[2] >= stress[1] and
          shieldAlarm = false
          alarmTimer = false
          t2=nil
-         coratinka=0
 
          function makeVector(coordinateBegin, coordinateEnd)
             local x = vec3(coordinateEnd).x - vec3(coordinateBegin).x

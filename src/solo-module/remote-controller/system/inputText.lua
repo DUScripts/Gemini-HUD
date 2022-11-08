@@ -151,6 +151,27 @@ if text == "m" and shield.getResistancesCooldown() == 0 then
    end
 end
 
+if text == "u" and shield.getResistancesCooldown() == 0 then
+   local resistance = shield.getResistances()
+   local res = {resMAX/4,resMAX/4,resMAX/4,resMAX/4}
+   if resistance[1] ~= res[1] or
+   resistance[2] ~= res[2] or
+   resistance[3] ~= res[3] or
+   resistance[4] ~= res[4] then
+      if shield.setResistances(resMAX/4,resMAX/4,resMAX/4,resMAX/4) == 1 then
+         system.print("UNIVERSAL PROFILE 25/25/25/25%")
+         actionRes(res)
+         system.playSound('shieldNewResists.mp3')
+      else
+         system.print("ERR6")
+         system.playSound('shieldResistError.mp3')
+      end
+   else
+      system.print("ERR7")
+      system.playSound('shieldResistError.mp3')
+   end
+end
+
 if text == "l" and shield.getResistancesCooldown() == 0 then
    local resistance = shield.getResistances()
    local res = {0,resMAX/2,0,resMAX/2}
@@ -181,49 +202,10 @@ if text =="drop" then
 end
 
 if string.find (text,'m::pos') then
-   coratinka=1
-   asteroidcoord = zeroConvertToWorldCoordinates(asteroidPOS)
    asteroidPOS = text:sub(2)
+   asteroidcoord = zeroConvertToWorldCoordinates(asteroidPOS)
    databank_1.setStringValue(15,asteroidPOS)
-   system.print("The marker was added to the map and saved to the databank")
-   function ct()
-      while true do
-         local i=0
-         local ClosestPlanet={}
-         destination_bm=asteroidPOS
-         destination_wp=zeroConvertToWorldCoordinates(destination_bm,system)
-         ClosestPlanet.globalpipedistance=999999999999
-
-         ClosestPlanet.name, ClosestPlanet.distance = getClosestPlanet1(destination_wp)
-         for BodyId in pairs(atlas[0]) do
-            i=i+1
-            local startLocation=atlas[0][BodyId]
-            ClosestPlanet.pipename, ClosestPlanet.pipedistance=getClosestPipe1(destination_wp, startLocation)
-            if ClosestPlanet.pipedistance<ClosestPlanet.globalpipedistance then
-               ClosestPlanet.globalpipedistance=ClosestPlanet.pipedistance
-               ClosestPlanet.globalpipestart=startLocation.name[1]
-               ClosestPlanet.globalpipestop=ClosestPlanet.pipename
-            end
-            if i > 5 then
-               i = 0
-               coroutine.yield()
-            end
-         end
-         local SafeZoneDistance=getSafeZoneDistance(destination_wp)
-         if SafeZoneDistance < 0 then
-            ClosestDSafeZoneMessage="in safe-zone!"
-         else
-            ClosestDSafeZoneMessage=customDistance(SafeZoneDistance).. " to safe-zone"
-
-         end
-         posmessage="Closest pipe: "..ClosestPlanet.globalpipestart.." - "..ClosestPlanet.globalpipestop.." ("..customDistance(ClosestPlanet.globalpipedistance).."), closest planet: "..ClosestPlanet.name.." ("..customDistance(ClosestPlanet.distance).."), "..ClosestDSafeZoneMessage
-         system.print(posmessage)
-
-         coroutine.yield()
-         coratinka=0
-      end
-
-
-   end
-   ck = coroutine.create(ct)
+   ck = coroutine.create(closestPipe1)
+   coroutine.resume(ck, asteroidcoord)
+   system.print(safeZone1(asteroidcoord))
 end

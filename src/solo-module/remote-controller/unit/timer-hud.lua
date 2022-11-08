@@ -350,12 +350,6 @@ if math.ceil(HP) <= 50 then
                message = ''
             end
 
-            if coratinka==1 then
-               if coroutine.status(ck) ~= "dead" and coroutine.status(ck) == "suspended" then
-                  coroutine.resume(ck)
-               end
-            end
-
             local htmlHUD = [[
             <html>
             <style>
@@ -371,7 +365,7 @@ if math.ceil(HP) <= 50 then
                opacity: ]]..GHUD_shield_panel_opacity..[[;
                left: 50%;
                transform: translate(-50%, -50%);
-               filter: drop-shadow(0 0 25px blue);
+               filter: drop-shadow(0 0 15px blue);
             }
             .center1 {
                position: relative;
@@ -556,10 +550,10 @@ if math.ceil(HP) <= 50 then
             <div class="safez">]]..safetext..[[</div>
             <div class="pipe">]]..pD()..[[</div>
             <div class="center1"></div>
-            <div class="right1">THRUST<br><div class="thrust1">]]..thrust1..[[</div><orange1>%</orange1><br>SPEED<br><div class="speed1">]]..speed..[[</div><orange1>KM/H</orange1><mspeed> ]]..maxSpeed..[[</mspeed><br>ACCEL<br><div class="accel1">]]..accel..[[</div><orange1>G</orange1><br>BRAKE-DISTANCE<br><div class="brakedist">]]..brakeDist..[[</div><orange1>]]..brakeS..[[</orange1></div>
-            <div class="left1">SHIELD<div class="shield2"><svg viewBox="0 0 100 100" fill="none" stroke="]]..shieldColor..[[" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+            <div class="right1"><it>THRUST</it><br><div class="thrust1">]]..thrust1..[[</div><orange1>%</orange1><br><it>SPEED</it><br><div class="speed1">]]..speed..[[</div><orange1>KM/H</orange1><mspeed> ]]..maxSpeed..[[</mspeed><br><it>ACCEL</it><br><div class="accel1">]]..accel..[[</div><orange1>G</orange1><br><it>BRAKE-DISTANCE</it><br><div class="brakedist">]]..brakeDist..[[</div><orange1>]]..brakeS..[[</orange1></div>
+            <div class="left1"><it>SHIELD</it><div class="shield2"><svg viewBox="0 0 100 100" fill="none" stroke="]]..shieldColor..[[" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
             <path d="M 50 60 C 50 60 58 56 58 50 L 58 43 L 50 40 L 42 43 L 42 50 C 42 56 50 60 50 60 Z"/>
-            </svg></div><br><div class="shieldtext">]]..formatted_hp..[[</div><orange1>%</orange1><br>FUEL<div class="fuel1"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            </svg></div><br><div class="shieldtext">]]..formatted_hp..[[</div><orange1>%</orange1><br><it>FUEL</it><div class="fuel1"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
             <g fill="none" fill-rule="evenodd" transform="matrix(1, 0, 0, 1, -18, -4.5)">
             <path d="M68 63c3.038 0 5.5-2.493 5.5-5.567 0-2.05-1.833-5.861-5.5-11.433-3.667 5.572-5.5 9.383-5.5 11.433C62.5 60.507 64.962 63 68 63z" fill="#FFB12C"/>
             </g>

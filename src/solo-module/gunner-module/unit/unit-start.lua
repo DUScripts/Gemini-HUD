@@ -1642,45 +1642,45 @@ function tickVector(unit, system, text)
       targetVectorWidget =
       [[
 
-      <div class='circle' style='position:absolute;top:50%;left:3%;'>
-      <div style='transform: translate(0px, -16px);color:#ffb750;'>]] ..
+      <div class='circle' style='position:absolute;top:50%;left:4%;'>
+      <div style='transform: translate(0px, -26px);color:#ffb750;'>]] ..
       string.format("%0.1f", myAngleR * rad2deg) ..
       [[°</div>
-      <div style='transform: translate(70px, -35px);color:#f54425;'>]] ..
+      <div style='transform: translate(70px, -45px);color:#f54425;'>]] ..
       string.format("%0.1f", targetAngleR * rad2deg) ..
       [[°</div>
-      <div style='transform: translate(20px, 70px);color:#f54425;'>Δ ]] ..
+      <div style='transform: translate(20px, 80px);color:#f54425;'>Δ ]] ..
       string.format("%0.1f", myAngleR * rad2deg - targetAngleR * rad2deg) ..
       [[°</div>
       </div>
-      <div class='vectorLine' style='top:54.65%;left:3%;background:#ffb750;z-index:30;transform:rotate(]] ..
+      <div class='vectorLine' style='top:54.65%;left:4%;background:#ffb750;z-index:30;transform:rotate(]] ..
       myAngleR * rad2deg + 90 ..
       [[deg)'></div>
 
 
-      <div class='circle' style='position:absolute;top:50%;left:10%;'>
-      <div style='transform: translate(0px, -16px);color:#ffb750;'>]] ..
+      <div class='circle' style='position:absolute;top:50%;left:12%;'>
+      <div style='transform: translate(0px, -26px);color:#ffb750;'>]] ..
       string.format("%0.1f", myAngleUp * rad2deg) ..
       [[°</div>
-      <div style='transform: translate(70px, -35px);color:#f54425;'>]] ..
+      <div style='transform: translate(70px, -45px);color:#f54425;'>]] ..
       string.format("%0.1f", targetAngleUp * rad2deg) ..
       [[°</div>
-      <div style='transform: translate(20px, 70px);color:#f54425;'>Δ ]] ..
+      <div style='transform: translate(20px, 80px);color:#f54425;'>Δ ]] ..
       string.format(
       "%0.1f",
       myAngleUp * rad2deg - targetAngleUp * rad2deg
       ) ..
       [[°</div>
       </div>
-      <div class='vectorLine' style='top:54.65%;left:10%;background:#ffb750;z-index:30;transform:rotate(]] ..
+      <div class='vectorLine' style='top:54.65%;left:12%;background:#ffb750;z-index:30;transform:rotate(]] ..
       myAngleUp * rad2deg + 180 ..
       [[deg)'></div>
 
 
-      <div class='vectorLine' style='top:54.65%;left:10%;background:#f54425;z-index:29;transform:rotate(]] ..
+      <div class='vectorLine' style='top:54.65%;left:4%;background:#f54425;z-index:29;transform:rotate(]] ..
       targetAngleR * rad2deg + 90 ..
       [[deg)'></div>
-      <div class='vectorLine' style='top:54.65%;left:10%;background:#f54425;z-index:29;transform:rotate(]] ..
+      <div class='vectorLine' style='top:54.65%;left:12%;background:#f54425;z-index:29;transform:rotate(]] ..
       targetAngleUp * rad2deg + 180 ..
       [[deg)'></div>
       ]]
@@ -1715,7 +1715,8 @@ function tickVector(unit, system, text)
             width: 100px;
             background-color: #555;
             border-radius: 50%;
-            opacity: 0.5
+            opacity: 0.5;
+            border: 4px solid white;
          }     .vectorLine{position:absolute;transform-origin: 100% 0%;width: 50px;height:0.15em;}</style>]]
          if (system.getUtcTime() - pos2time) > 4 then pp1 = '' end
          vectorHUD = style .. targetVectorWidget .. html1
