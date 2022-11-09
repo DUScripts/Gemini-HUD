@@ -422,37 +422,37 @@ end
 closestPlanetT = stellarObjects[0]
 function closestPipe1(pos)
    while true do
-      local smallestDistance = nil;
-      local nearestPlanet = nil;
+      local smallestDistance1 = nil;
+      local nearestPlanet1 = nil;
       local i = 0
       for obj in pairs(stellarObjects) do
          i = i + 1
             local planetCenter = vec3(stellarObjects[obj].center)
             local distance = vec3(pos - planetCenter):len()
    
-            if (smallestDistance == nil or distance < smallestDistance) then
-               smallestDistance = distance
-               nearestPlanet = obj
+            if (smallestDistance1 == nil or distance < smallestDistance1) then
+               smallestDistance1 = distance
+               nearestPlanet1 = obj
             end
       end
       i = 0
-      closestPlanetT = stellarObjects[nearestPlanet]
-      local nearestPipeDistance = nil
-      local nearestAliothPipeDistance= nil
+      closestPlanetT = stellarObjects[nearestPlanet1]
+      local nearestPipeDistance1 = nil
+      local nearestAliothPipeDistance1= nil
       for obj in pairs(stellarObjects) do
          i = i + 1
             for obj2 in pairs(stellarObjects) do
                if (obj2 > obj and (stellarObjects[obj2].type[1] == 'Planet' or stellarObjects[obj2].isSanctuary == true)) then
-                  pipeDistance = calcDistanceStellar(stellarObjects[obj], stellarObjects[obj2], pos)
-                  if nearestPipeDistance == nil or pipeDistance < nearestPipeDistance then
-                     nearestPipeDistance = pipeDistance;
-                     sortestPipeKeyId = obj;
-                     sortestPipeKey2Id = obj2;
+                  pipeDistance1 = calcDistanceStellar(stellarObjects[obj], stellarObjects[obj2], pos)
+                  if nearestPipeDistance1 == nil or pipeDistance1 < nearestPipeDistance1 then
+                     nearestPipeDistance1 = pipeDistance1;
+                     sortestPipeKeyId1 = obj;
+                     sortestPipeKey2Id1 = obj2;
                   end
-                  if stellarObjects[obj].name[1] == "Alioth" and (nearestAliothPipeDistance == nil or pipeDistance < nearestAliothPipeDistance) then
-                     nearestAliothPipeDistance = pipeDistance
-                     sortestAliothPipeKeyId = obj
-                     sortestAliothPipeKey2Id = obj2
+                  if stellarObjects[obj].name[1] == "Alioth" and (nearestAliothPipeDistance1 == nil or pipeDistance1 < nearestAliothPipeDistance1) then
+                     nearestAliothPipeDistance1 = pipeDistance1
+                     sortestAliothPipeKeyId1 = obj
+                     sortestAliothPipeKey2Id1 = obj2
                   end
                end
             end
@@ -465,14 +465,14 @@ function closestPipe1(pos)
             distCP = ''..string.format('%0.0f', distCP)..' m'
          end
          local distS = ''
-         if nearestPipeDistance >= 100000 then
-            distS = ''..string.format('%0.2f', nearestPipeDistance/200000)..' su'
-         elseif nearestPipeDistance >= 1000 and nearestPipeDistance < 100000 then
-            distS = ''..string.format('%0.1f', nearestPipeDistance/1000)..' km'
+         if nearestPipeDistance1 >= 100000 then
+            distS = ''..string.format('%0.2f', nearestPipeDistance1/200000)..' su'
+         elseif nearestPipeDistance1 >= 1000 and nearestPipeDistance1 < 100000 then
+            distS = ''..string.format('%0.1f', nearestPipeDistance1/1000)..' km'
          else
-            distS = ''..string.format('%0.0f', nearestPipeDistance)..' m'
+            distS = ''..string.format('%0.0f', nearestPipeDistance1)..' m'
          end
-         local closestpipe = stellarObjects[sortestPipeKeyId].name[1] .. " - " .. stellarObjects[sortestPipeKey2Id].name[1]
+         local closestpipe = stellarObjects[sortestPipeKeyId1].name[1] .. " - " .. stellarObjects[sortestPipeKey2Id1].name[1]
          system.print('Closest planet: '..closestPlanetT.name[1]..' - '..distCP)
          system.print('Closest pipe: '..closestpipe..' - '..distS)
          coroutine.yield(pos)
@@ -485,12 +485,12 @@ function closestPipe1(pos)
       local mabs = math.abs
       local safeRadius = 18000000
       local szradius = 500000
-      local distsz, distp = math.huge
-      local szsafe = false
-      local distsz = vec3(WorldPos):dist(safeWorldPos)
-      if distsz < safeRadius then
-         szsafe=true
-         local distS = mabs(distsz - safeRadius)
+      local distsz1, distp1 = math.huge
+      local szsafe1 = false
+      local distsz1 = vec3(WorldPos):dist(safeWorldPos)
+      if distsz1 < safeRadius then
+         szsafe1=true
+         local distS = mabs(distsz1 - safeRadius)
          if distS > 100000 then
             distS = ''..string.format('%0.2f', distS/200000)..' su'
          elseif distS > 1000 and distS < 100000 then
@@ -501,11 +501,11 @@ function closestPipe1(pos)
          local a1 = 'Central SZ, distance to PvP - '..distS
          return a1
       end
-
-      local distp = vec3(WorldPos):dist(vec3(closestPlanetT.center))
-      if distp < szradius then szsafe = true else szsafe = false end
-      if mabs(distp - szradius) < mabs(distsz - safeRadius) then
-         local distS = mabs(distp - szradius)
+  
+      local distp1 = vec3(WorldPos):dist(vec3(closestPlanetT.center))
+      if distp1 < szradius then szsafe1 = true else szsafe1 = false end
+      if mabs(distp1 - szradius) < mabs(distsz1 - safeRadius) then
+         local distS = mabs(distp1 - szradius)
          if distS > 100000 then
             distS = ''..string.format('%0.2f', distS/200000)..' su'
          elseif distS > 1000 and distS < 100000 then
@@ -513,7 +513,7 @@ function closestPipe1(pos)
          else
             distS = ''..string.format('%0.0f', distS)..' m'
          end
-         if szsafe == true then
+         if szsafe1 == true then
             local a1 = closestPlanetT.name[1]..' - SAFE zone, distance to PvP - '..distS
             return a1
          else
@@ -521,7 +521,7 @@ function closestPipe1(pos)
             return a1
          end
       else
-         local distS = mabs(distsz - safeRadius)
+         local distS = mabs(distsz1 - safeRadius)
          if distS > 100000 then
             distS = ''..string.format('%0.2f', distS/200000)..' su'
          elseif distS > 1000 and distS < 100000 then
@@ -532,7 +532,7 @@ function closestPipe1(pos)
          local a1 = 'PvP zone, closest safe zone - Central SZ - '..distS
          return a1
       end
-end
+  end
 
 --2D Planet radar and AR planets
 screenHeight = system.getScreenHeight()
