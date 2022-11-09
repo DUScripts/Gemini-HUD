@@ -464,13 +464,13 @@ function closestPipe1(pos)
          else
             distCP = ''..string.format('%0.0f', distCP)..' m'
          end
-         local distS = vec3(stellarObjects[sortestPipeKeyId].center):dist(vec3(stellarObjects[sortestPipeKey2Id].center))
-         if distS > 100000 then
-            distS = ''..string.format('%0.2f', distS/200000)..' su'
-         elseif distS > 1000 and distS < 100000 then
-            distS = ''..string.format('%0.1f', distS/1000)..' km'
+         local distS = ''
+         if nearestPipeDistance >= 100000 then
+            distS = ''..string.format('%0.2f', nearestPipeDistance/200000)..' su'
+         elseif nearestPipeDistance >= 1000 and nearestPipeDistance < 100000 then
+            distS = ''..string.format('%0.1f', nearestPipeDistance/1000)..' km'
          else
-            distS = ''..string.format('%0.0f', distS)..' m'
+            distS = ''..string.format('%0.0f', nearestPipeDistance)..' m'
          end
          local closestpipe = stellarObjects[sortestPipeKeyId].name[1] .. " - " .. stellarObjects[sortestPipeKey2Id].name[1]
          system.print('Closest planet: '..closestPlanetT.name[1]..' - '..distCP)
@@ -498,7 +498,7 @@ function closestPipe1(pos)
          else
             distS = ''..string.format('%0.0f', distS)..' m'
          end
-         local a1 = 'CENTRAL SZ, distance to PvP - '..distS
+         local a1 = 'Central SZ, distance to PvP - '..distS
          return a1
       end
 
@@ -529,7 +529,7 @@ function closestPipe1(pos)
          else
             distS = ''..string.format('%0.0f', distS)..' m'
          end
-         local a1 = 'PvP zone, closest safe zone - Cenral SZ - '..distS
+         local a1 = 'PvP zone, closest safe zone - Central SZ - '..distS
          return a1
       end
 end
@@ -672,18 +672,22 @@ elseif stress[2] >= stress[1] and
       if GHUD_shield_auto_calibration
       then
          if GHUD_shield_calibration_max then
-            shieldText = "SHIELD (AUTO,MAX)"
+            shieldText = "MAX - SHIELD"
+            shieldIcon = "A"
          end
          if not GHUD_shield_calibration_max then
-            shieldText = "SHIELD (AUTO,50)"
+            shieldText = "50/50 - SHIELD"
+            shieldIcon = "A"
          end
       else
          if GHUD_shield_calibration_max then
-            shieldText = "SHIELD (MANUAL,MAX)"
+            shieldText = "MAX - SHIELD"
+            shieldIcon = "M"
          end
 
          if not GHUD_shield_calibration_max then
-            shieldText = "SHIELD (MANUAL,50)"
+            shieldText = "50/50 - SHIELD"
+            shieldIcon = "M"
          end
       end
 

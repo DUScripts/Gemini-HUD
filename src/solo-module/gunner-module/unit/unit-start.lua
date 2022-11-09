@@ -1244,7 +1244,7 @@ function start(unit, system, text)
 end
 
 function inTEXT(unit, system, text)
-   if pos1 ~= 0 and string.find(text, "::pos") and pos2 == 0 and GHUD_export_mode == false then
+   if pos1 ~= 0 and string.find(text, "::pos") and not string.find(text, "m::pos") and pos2 == 0 and GHUD_export_mode == false then
       --local lasttime = UTCscaner()
 
       pos2 = text
@@ -1302,7 +1302,7 @@ function inTEXT(unit, system, text)
       unit.setTimer("vectorhud", 0.02)
    end
 
-   if pos1 == 0 and string.find(text, "::pos") and GHUD_export_mode == false then
+   if pos1 == 0 and string.find(text, "::pos") and not string.find(text, "m::pos") and GHUD_export_mode == false then
       pos1 = text
       databank_1.setStringValue(1, pos1)
       pos1time = math.floor(system.getUtcTime())
@@ -1689,20 +1689,19 @@ function tickVector(unit, system, text)
       [[
       <style>
       .main4 {
-         position: fixed;
+         position: absolute;
          width: auto;
-         padding: 0.2vw;
-         bottom: 3vh;
-         left: 49.7%;
-         transform: translateX(-50%);
+         padding: 5px;
+         top: 98%;
+         left: 50%;
+         transform: translate(-50%, -50%);
          text-align: center;
-         background: #142027;
+         background-color: #142027;
          color: white;
          font-family: verdana;
          font-size: 1em;
          border-radius: 2vh;
-         border: 0.2vh solid;
-         border-color: #fca503;
+         border: 4px solid #FFB12C;
          </style>
          <div class="main4">]] ..
          pipeDist .. [[</div>]]

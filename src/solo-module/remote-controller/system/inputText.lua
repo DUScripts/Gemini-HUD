@@ -203,6 +203,7 @@ end
 
 if string.find (text,'m::pos') then
    asteroidPOS = text:sub(2)
+   system.print(asteroidPOS)
    asteroidcoord = zeroConvertToWorldCoordinates(asteroidPOS)
    databank_1.setStringValue(15,asteroidPOS)
    ck = coroutine.create(closestPipe1)

@@ -214,6 +214,43 @@ if math.ceil(HP) <= 50 then
             end
          end
 
+         if asteroidcoord[1] ~= 0 then
+            local point1 = library.getPointOnScreen({asteroidcoord.x,asteroidcoord.y,asteroidcoord.z})
+            if point1[3] > 0 then --visible zone
+               local dist = vec3(vec3(construct.getWorldPosition()) - asteroidcoord):len()
+               local sdist = ''
+               if dist >= 100000 then
+                  dist = string.format('%0.2f', dist/200000)
+                  sdist = 'SU'
+               elseif dist >= 1000 and dist < 100000 then
+                  dist = string.format('%0.1f', dist/1000)
+                  sdist = 'KM'
+               else
+                  dist = string.format('%0.0f', dist)
+                  sdist = 'M'
+               end
+               local x = screenWidth*point1[1] - 50
+               local y = screenHeight*point1[2] - 50
+               AR_asteroid = [[
+               <style>
+               .marker]]..GHUD_marker_name..[[ {
+                  position: absolute;
+                  width: 100px;
+                  height: 100px;
+                  left: ]]..x..[[px;
+                  top: ]]..y..[[px;
+               }
+               </style>
+               <div class="marker]]..GHUD_marker_name..[["><?xml version="1.0" encoding="utf-8"?>
+               <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+               <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #c603fc; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
+               <text style="fill: ]]..GHUD_shield_stroke_color..[[; font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">]]..GHUD_marker_name..[[</text>
+               <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
+               <text style="fill: ]]..GHUD_shield_stroke_color..[[; font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..sdist..[[</text>
+               </svg></div>]]
+            end
+         end  
+
       if DisplayRadar==true then
          local x,y,z = table.unpack(construct.getWorldOrientationForward())
          local xoc = math.floor(math.atan(x, y)*180/math.pi+180)
@@ -307,43 +344,9 @@ if math.ceil(HP) <= 50 then
                   end
                end
                drawonradar(safeVector,safeStatus)
-               if asteroidPOS ~= "" then
+               if asteroidcoord[1] ~= 0 then
                   drawonradar(asteroidcoord,""..GHUD_marker_name.."")
-                  local point1 = library.getPointOnScreen({asteroidcoord.x,asteroidcoord.y,asteroidcoord.z})
-                  if point1[3] > 0 then --visible zone
-                     local dist = vec3(vec3(construct.getWorldPosition()) - asteroidcoord):len()
-                     local sdist = ''
-                     if dist >= 100000 then
-                        dist = string.format('%0.2f', dist/200000)
-                        sdist = 'SU'
-                     elseif dist >= 1000 and dist < 100000 then
-                        dist = string.format('%0.1f', dist/1000)
-                        sdist = 'KM'
-                     else
-                        dist = string.format('%0.0f', dist)
-                        sdist = 'M'
-                     end
-                     local x2 = screenWidth*point1[1] - 50
-                     local y2 = screenHeight*point1[2] - 50
-                     AR_asteroid = [[
-                     <style>
-                     .marker]]..GHUD_marker_name..[[ {
-                        position: absolute;
-                        width: 100px;
-                        height: 100px;
-                        left: ]]..x2..[[px;
-                        top: ]]..y2..[[px;
-                     }
-                     </style>
-                     <div class="marker]]..GHUD_marker_name..[["><?xml version="1.0" encoding="utf-8"?>
-                     <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
-                     <ellipse style="fill: rgba(0, 0, 0, 0); stroke: red; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
-                     <text style="fill: ]]..GHUD_shield_stroke_color..[[; font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">]]..GHUD_marker_name..[[</text>
-                     <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
-                     <text style="fill: ]]..GHUD_shield_stroke_color..[[; font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..sdist..[[</text>
-                     </svg></div>]]
-                  end
-               end --end asteroid
+               end
                message=message..svgradar..XY
                message=message.."</svg>"
             else
@@ -374,7 +377,7 @@ if math.ceil(HP) <= 50 then
                color: white;
             }
             .right1 {
-               color: ]]..GHUD_shield_stroke_color..[[;
+               color: rgb(0, 191, 255);
                position: absolute;
                left: ]]..GHUD_right_block_X..[[%;
                text-align:left;
@@ -427,7 +430,7 @@ if math.ceil(HP) <= 50 then
                margin-top: -1.5px;
             }
             .left1 {
-               color: ]]..GHUD_shield_stroke_color..[[;
+               color: rgb(0, 191, 255);
                position: absolute;
                right: ]]..GHUD_left_block_X..[[%;
                text-align: right;
@@ -551,8 +554,9 @@ if math.ceil(HP) <= 50 then
             <div class="pipe">]]..pD()..[[</div>
             <div class="center1"></div>
             <div class="right1"><it>THRUST</it><br><div class="thrust1">]]..thrust1..[[</div><orange1>%</orange1><br><it>SPEED</it><br><div class="speed1">]]..speed..[[</div><orange1>KM/H</orange1><mspeed> ]]..maxSpeed..[[</mspeed><br><it>ACCEL</it><br><div class="accel1">]]..accel..[[</div><orange1>G</orange1><br><it>BRAKE-DISTANCE</it><br><div class="brakedist">]]..brakeDist..[[</div><orange1>]]..brakeS..[[</orange1></div>
-            <div class="left1"><it>SHIELD</it><div class="shield2"><svg viewBox="0 0 100 100" fill="none" stroke="]]..shieldColor..[[" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+            <div class="left1"><it>]]..shieldText..[[</it><div class="shield2"><svg viewBox="0 0 100 100" fill="none" stroke="]]..shieldColor..[[" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
             <path d="M 50 60 C 50 60 58 56 58 50 L 58 43 L 50 40 L 42 43 L 42 50 C 42 56 50 60 50 60 Z"/>
+            <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 13px; font-weight: 700; stroke-width: 0px; text-anchor: middle;" x="50" y="53.737">]]..shieldIcon..[[</text>
             </svg></div><br><div class="shieldtext">]]..formatted_hp..[[</div><orange1>%</orange1><br><it>FUEL</it><div class="fuel1"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
             <g fill="none" fill-rule="evenodd" transform="matrix(1, 0, 0, 1, -18, -4.5)">
             <path d="M68 63c3.038 0 5.5-2.493 5.5-5.567 0-2.05-1.833-5.861-5.5-11.433-3.667 5.572-5.5 9.383-5.5 11.433C62.5 60.507 64.962 63 68 63z" fill="#FFB12C"/>
