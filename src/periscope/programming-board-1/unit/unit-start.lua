@@ -1,3 +1,4 @@
+-- slot1 is manual switch linked to the programming board 2
 periscope_border_color = 'rgba(255, 255, 255, 0.3)' --export:
 unit.hideWidget()
 flaunch = true
