@@ -2,6 +2,8 @@
 periscope_border_color = 'rgba(255, 255, 255, 0.3)' --export:
 unit.hideWidget()
 flaunch = true
+lalt = false
+zoom = false
 local periscope = [[
 <style>
 img {

@@ -2360,7 +2360,7 @@ handlers:
             lua: Nav:toggleBoosters()
         onActionStart:
             args: [stopengines]
-            lua: Nav.axisCommandManager:resetCommand(axisCommandId.longitudinal)
+            lua: if altb == false then Nav.axisCommandManager:resetCommand(axisCommandId.longitudinal) end
         onActionStart:
             args: [speedup]
             lua: Nav.axisCommandManager:updateCommandFromActionStart(axisCommandId.longitudinal, 5.0)
