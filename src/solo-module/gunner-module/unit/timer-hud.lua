@@ -334,4 +334,4 @@ html,body {
 </html>
 ]]
 
-system.setScreen(htmlHUD)
+if helper == false then system.setScreen(htmlHUD) end

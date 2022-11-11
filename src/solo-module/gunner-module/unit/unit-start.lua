@@ -115,6 +115,8 @@ radarWidget = ''
 targets = {}
 target = {}
 count = 0
+gearB = false
+helper = false
 pp1 = ''
 shipName = construct.getName()
 local scID = construct.getId()
@@ -1963,35 +1965,172 @@ function tickVector(unit, system, text)
 
    start(unit,system,text)
 
-   local preloader = [[
-   <html>
-   <style>
-   .imgLogo {
-      position: relative;
-      margin-top: 8vh;
-      height: 400px;
-      margin-left: auto;
-      margin-right: auto;
-      text-align: center;
-      background-image: url("assets.prod.novaquark.com/3014/36dec597-dbf2-46a4-95c7-8e135dd77889.png");
-      background-size: 400px;
-      background-repeat: no-repeat;
-      background-position: center center;
-      transition: background 800ms ease-in 800ms;
-   }
+   local opt1=system.getActionKeyName('option1')
+   local opt2=system.getActionKeyName('option2')
+   local opt3=system.getActionKeyName('option3')
+   local opt4=system.getActionKeyName('option4')
+   local opt5=system.getActionKeyName('option5')
+   local opt6=system.getActionKeyName('option6')
+   local opt7=system.getActionKeyName('option7')
+   local opt8=system.getActionKeyName('option8')
+   local opt9=system.getActionKeyName('option9')
+   local shifttext=system.getActionKeyName('lshift')
+   local geartext=system.getActionKeyName('gear')
+   local alttext=system.getActionKeyName('lalt')
+   local forwardtext=system.getActionKeyName('forward')
+   local backwardtext=system.getActionKeyName('backward')
+   local uptext=system.getActionKeyName('up')
+   local downtext=system.getActionKeyName('down')
+   local lefttext=system.getActionKeyName('left')
+   local antigravtext = system.getActionKeyName('antigravity')
+   local righttext=system.getActionKeyName('right')
+   local yawlefttext=system.getActionKeyName('yawleft')
+   local yawrighttext=system.getActionKeyName('yawright')
+   local braketext1=system.getActionKeyName('brake')
+   local lighttext=system.getActionKeyName('light')
 
+   helpHTML = [[
+      <html>
+<style>
+html, body {
+background-image: linear-gradient(
+  135deg,
+  hsl(240deg 33% 1%) 0%,
+  hsl(223deg 44% 10%) 33%,
+  hsl(295deg 38% 23%) 67%,
+  hsl(28deg 95% 34%) 100%
+);
+}
+.helperCenter{
+position: absolute;
+top: 50%;
+left: 50%;
+color: white;
+font-family: "Roboto Slab", serif;
+font-size: 1.5em;
+text-align: center;
+transform: translate(-50%, -50%);
+}
+ibold {
+font-weight: bold;
+}
+.helper1 {
+position: absolute;
+top: 2vh;
+left: 1vw;
+color: white;
+font-family: "Roboto Slab", serif;
+font-size: 1em;
+}
+.helper2 {
+position: absolute;
+top: 2vh;
+right: 1vw;
+color: white;
+font-family: "Roboto Slab", serif;
+font-size: 1em;
+}
+.helper3 {
+position: absolute;
+bottom: 2vh;
+left: 1vw;
+color: white;
+font-family: "Roboto Slab", serif;
+font-size: 1em;
+}
+.helper4 {
+position: absolute;
+bottom: 2vh;
+right: 1vw;
+color: white;
+font-family: "Roboto Slab", serif;
+font-size: 1em;
+}
+bdr {
+color: white;
+background-color: green;
+padding-right: 4px;
+padding-left: 4px;
+padding-top: 1.5px;
+padding-bottom: 1.5px;
+border-radius: 6px;
+border: 1.5px solid white;
+}
+luac {
+color: white;
+background-color: green;
+padding-right: 4px;
+padding-left: 4px;
+padding-top: 1.5px;
+padding-bottom: 1.5px;
+border: 1.5px solid white;
+}
+</style>
+<body>
+<div class="helper1">
+<ibold>RADAR WIDGET:</ibold><br><br>
+<bdr>]]..alttext..[[</bdr> + <bdr>]]..downtext..[[</bdr> : switch between friends/enemies<br>
+<br>
+<bdr>]]..alttext..[[</bdr> + <bdr>]]..uptext..[[</bdr> : construct size filter<br>
+<br>
+<bdr>]]..shifttext..[[</bdr> + <bdr>]]..opt1..[[</bdr> : add/remove selected target from whitelist<br>
+</div>
+
+<div class="helper2">
+<ibold>TARGET VECTOR:</ibold><br><br>
+<bdr>]]..geartext..[[</bdr> : set pos1/pos2 for radar selected target<br>
+<br>
+<bdr>]]..shifttext..[[</bdr> + <bdr>↓↑</bdr>: set pos1/pos2 for radar selected target<br>
+<br>
+<bdr>]]..shifttext..[[</bdr> + <bdr>←→</bdr>: move destination ±10 su<br>
+<br>
+<bdr>]]..shifttext..[[</bdr> + <bdr>]]..alttext..[[</bdr>: destination to the closest target pipe<br>
+<br>
+<bdr>]]..alttext..[[</bdr> + <bdr>G</bdr>: on/off export mode<br>
+<br>
+<bdr>]]..opt4..[[</bdr> : show/hide current target position (Works only when manually setting coordinates or in export mode)<br>
+<br>
+<bdr>]]..shifttext..[[</bdr> + <bdr>↓↑</bdr>: switch target position between current speed or targetSpeed from LUA parameters<br>
+</div>
+
+<div class="helper3">
+<ibold>RADAR WIDGET LUA COMMANDS:</ibold><br><br>
+<luac>f345</luac> : focus mode where 345 is target ID<br>
+<br>
+<luac>f</luac> : reset focus mode<br>
+<br>
+<luac>addall</luac> : add all radar targets to whitelist databank<br>
+<br>
+<luac>clear</luac> : clear all whitelist databank<br>
+</div>
+
+<div class="helper4">
+<ibold>TARGET VECTOR LUA COMMANDS:</ibold><br><br>
+<luac>n</luac> : reset pos1/pos2<br>
+<br>
+<luac>mar345</luac> : get position in LUA chat, where 345 is SU ahead of the target<br>
+<br>
+<luac>export</luac> : export coordinates to the screen in format -  pos1/time1/pos2/time2<br>
+</div>
+
+<div class="helperCenter">GEMINI FOUNDATION<br>
+Solo Gunner Module v]]..HUD_version..[[</div>
+</body>
+</html>
+   ]]
+
+   local preloader = [[
+      <html>
+   <style>
    .text {
-      top: 0;
-      left: 0;
-      width: fit-content;
-      position: relative;
-      margin-left: auto;
-      margin-right: auto;
-      text-align: center;
-      font-size: 40px;
-      font-family: Arial, Helvetica, sans-serif;
-      font-weight: bold;
-      color: white;
+      position: absolute;
+top: 50%;
+left: 50%;
+color: white;
+font-family: "Roboto Slab", serif;
+font-size: 1.5em;
+text-align: center;
+transform: translate(-50%, -50%);
       transition: background 800ms ease-in 800ms;
    }
 
@@ -2054,7 +2193,7 @@ function tickVector(unit, system, text)
    }
 
    .spinner {
-      top: 30px;
+      top: 60%;
       width: 70px;
       text-align: center;
       position: relative;
@@ -2112,16 +2251,14 @@ function tickVector(unit, system, text)
    }
    </style>
    <body>
-   <div class="imgLogo fade-in"></div>
-   <div class="text fade-in">GEMINI FOUNDATION</div>
+   <div class="text fade-in">GEMINI FOUNDATION<br>
+Solo Gunner Module v]]..HUD_version..[[</div>
    <div class="spinner">
    <div class="bounce1"></div>
    <div class="bounce2"></div>
    <div class="bounce3"></div>
-   </div>
    </body>
-   </html>
-   ]]
+   </html>]]
    system.showScreen(1)
    system.setScreen(preloader)
    unit.setTimer("delay", 1)

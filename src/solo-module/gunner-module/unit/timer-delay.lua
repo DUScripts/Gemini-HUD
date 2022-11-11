@@ -1,4 +1,4 @@
-if (system.getArkTime() - startTime) > 5 then
+if (system.getArkTime() - startTime) > 4 then
    firstload = 1
    t_radarEnter = {}
    main1 = coroutine.create(main)
