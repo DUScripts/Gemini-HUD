@@ -1988,7 +1988,7 @@ function tickVector(unit, system, text)
    local yawrighttext=system.getActionKeyName('yawright')
    local braketext1=system.getActionKeyName('brake')
    local lighttext=system.getActionKeyName('light')
-
+   system.print(''..geartext..' + ↑: HUD helper')
    helpHTML = [[
       <html>
 <style>
