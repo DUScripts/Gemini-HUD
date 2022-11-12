@@ -28,7 +28,7 @@ Controls:<br/>
 I highly recommend that you change your game controls: set buttons 1-8 instead of Options 1-8<br/>
 <br/>
 ![controls1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/controls.png)<br/>
-Use G + ↑ or G + ↓ to call a helpers.
+Use G + ↑ or G + ↓ to call a helpers.<br/>
 <br/>
 ![controls1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/controls.png)<br/>
 ![controls2](https://github.com/Crusader93/Gemini-HUD/blob/master/images/gunner.png)<br/>
