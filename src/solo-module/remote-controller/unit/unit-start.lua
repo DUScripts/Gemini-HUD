@@ -1218,7 +1218,7 @@ elseif stress[2] >= stress[1] and
               <ibold>Other:</ibold>
               <br>
               <br>
-              <bdr>]]..braketext1..[[</bdr> : lock brake<br>
+              <bdr>]]..braketext1..[[</bdr> + <bdr>]]..shifttext..[[</bdr> : lock brake<br>
               <br>
               <bdr>]]..opt1..[[</bdr> : show/hide planets and planetary periscope<br>
               <br>
