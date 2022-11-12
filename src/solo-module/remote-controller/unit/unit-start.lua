@@ -18,7 +18,9 @@ GHUD_shield_background2_color = 'black' --export:
 GHUD_shield_empty_background_layer_color = 'rgba(0,0,0,0)' --export:
 GHUD_shield_stroke_color = 'rgb(0, 191, 255)' --export:
 GHUD_shield_text_color = 'rgb(255, 252, 252)' --export:
-GHUD_shield_text_stroke_color = '#FFB12C' --export:
+GHUD_shield_text_stroke_color = 'rgb(0, 0, 0)' --export:
+GHUD_flight_indicator_size = 25 --export:
+GHUD_flight_indicator_color = 'rgb(198, 3, 252)' --export:
 GHUD_right_block_X = 65 --export:
 GHUD_left_block_X = 65 --export:
 GHUD_background_color = '#142027' --export: Background color
@@ -372,11 +374,12 @@ while true do
    local smallestDistance = nil;
    local nearestPlanet = nil;
    local i = 0
+   local pos = vec3(construct.getWorldPosition())
    for obj in pairs(stellarObjects) do
       i = i + 1
       if (stellarObjects[obj].type[1] == 'Planet' or stellarObjects[obj].isSanctuary == true) then
          local planetCenter = vec3(stellarObjects[obj].center)
-         local distance = vec3(vec3(construct.getWorldPosition()) - planetCenter):len()
+         local distance = vec3(pos - planetCenter):len()
 
          if (smallestDistance == nil or distance < smallestDistance) then
             smallestDistance = distance
@@ -397,7 +400,7 @@ while true do
       if (stellarObjects[obj].type[1] == 'Planet' or stellarObjects[obj].isSanctuary == true) then
          for obj2 in pairs(stellarObjects) do
             if (obj2 > obj and (stellarObjects[obj2].type[1] == 'Planet' or stellarObjects[obj2].isSanctuary == true)) then
-               pipeDistance = calcDistanceStellar(stellarObjects[obj], stellarObjects[obj2], vec3(construct.getWorldPosition()))
+               pipeDistance = calcDistanceStellar(stellarObjects[obj], stellarObjects[obj2], pos)
                if nearestPipeDistance == nil or pipeDistance < nearestPipeDistance then
                   nearestPipeDistance = pipeDistance;
                   sortestPipeKeyId = obj;
@@ -411,7 +414,11 @@ while true do
             end
          end
       end
+      if pos:dist(vec3(stellarObjects[sortestPipeKeyId].center)) < pos:dist(vec3(stellarObjects[sortestPipeKey2Id].center)) then
       closestPipeData = stellarObjects[sortestPipeKeyId].name[1] .. " - " .. stellarObjects[sortestPipeKey2Id].name[1]
+      else
+      closestPipeData = stellarObjects[sortestPipeKey2Id].name[1] .. " - " .. stellarObjects[sortestPipeKeyId].name[1]
+      end
       if i > 30 then
          i = 0
          coroutine.yield()
@@ -472,7 +479,12 @@ function closestPipe1(pos)
          else
             distS = ''..string.format('%0.0f', nearestPipeDistance1)..' m'
          end
-         local closestpipe = stellarObjects[sortestPipeKeyId1].name[1] .. " - " .. stellarObjects[sortestPipeKey2Id1].name[1]
+         local closestpipe = ''
+         if vec3(pos):dist(vec3(stellarObjects[sortestPipeKeyId1].center)) < vec3(pos):dist(vec3(stellarObjects[sortestPipeKey2Id1].center)) then
+            closestpipe = stellarObjects[sortestPipeKeyId1].name[1] .. " - " .. stellarObjects[sortestPipeKey2Id1].name[1]
+            else
+            closestpipe = stellarObjects[sortestPipeKey2Id1].name[1] .. " - " .. stellarObjects[sortestPipeKeyId1].name[1]
+         end
          system.print('Closest planet: '..closestPlanetT.name[1]..' - '..distCP)
          system.print('Closest pipe: '..closestpipe..' - '..distS)
          coroutine.yield(pos)
@@ -580,6 +592,8 @@ map = 0
 warpScan = 0
 targetList = ''
 altb=false
+upB = false
+downB = false
 safew=''
 varcombat = construct.getPvPTimer()
 function pD()
@@ -607,6 +621,8 @@ end
 shipName = construct.getName()
 conID = tostring(construct.getId()):sub(-3)
 bhelper = false
+helper = false
+helper1 = false
 system.showHelper(0)
 system.showScreen(1)
 unit.hideWidget()
@@ -669,13 +685,11 @@ elseif stress[2] >= stress[1] and
       lastShotTime = system.getArkTime()
       resCLWN = ""
 
-      if GHUD_shield_auto_calibration
-      then
+      if GHUD_shield_auto_calibration == true then
          if GHUD_shield_calibration_max then
             shieldText = "MAX - SHIELD"
             shieldIcon = "A"
-         end
-         if not GHUD_shield_calibration_max then
+         else
             shieldText = "50/50 - SHIELD"
             shieldIcon = "A"
          end
@@ -683,9 +697,7 @@ elseif stress[2] >= stress[1] and
          if GHUD_shield_calibration_max then
             shieldText = "MAX - SHIELD"
             shieldIcon = "M"
-         end
-
-         if not GHUD_shield_calibration_max then
+         else
             shieldText = "50/50 - SHIELD"
             shieldIcon = "M"
          end
@@ -724,57 +736,69 @@ elseif stress[2] >= stress[1] and
             local szradius = 500000
             local distsz, distp = math.huge
             szsafe = false
-            distsz = vec3(WorldPos):dist(safeWorldPos)
+            local distsz = vec3(WorldPos):dist(safeWorldPos)
             if distsz < safeRadius then
                szsafe=true
                distS = mabs(distsz - safeRadius)
+               local a3 = ''
                local vector1 = vectorLengthen(safeWorldPos, WorldPos, distS)
                if distS > 100000 then
-                  distS = ''..string.format('%0.2f', distS/200000)..' su'
+                  distS = string.format('%0.2f', distS/200000)
+                  a3 = 'su'
                elseif distS > 1000 and distS < 100000 then
-                  distS = ''..string.format('%0.1f', distS/1000)..' km'
+                  distS = string.format('%0.1f', distS/1000)
+                  a3 = 'km'
                else
-                  distS = ''..string.format('%0.0f', distS)..' m'
+                  distS = string.format('%0.0f', distS)
+                  a3 = 'm'
                end
                local a1 = 'PvP ZONE'
                local a2 = distS
-               return a1, vector1, a2
+               return a1, vector1, a2, a3
             end
 
             distp = vec3(WorldPos):dist(vec3(closestPlanet.center))
             if distp < szradius then szsafe = true else szsafe = false end
             if mabs(distp - szradius) < mabs(distsz - safeRadius) then
                distS = mabs(distp - szradius)
+               local a3 = ''
                local vector1 = vectorLengthen(vec3(closestPlanet.center), WorldPos, distS)
                if distS > 100000 then
-                  distS = ''..string.format('%0.2f', distS/200000)..' su'
+                  distS = string.format('%0.2f', distS/200000)
+                  a3 = 'su'
                elseif distS > 1000 and distS < 100000 then
-                  distS = ''..string.format('%0.1f', distS/1000)..' km'
+                  distS = string.format('%0.1f', distS/1000)
+                  a3 = 'km'
                else
-                  distS = ''..string.format('%0.0f', distS)..' m'
+                  distS = string.format('%0.0f', distS)
+                  a3 = 'm'
                end
                if szsafe == true then
                   local a1 = ''..closestPlanet.name[1]..' PvP ZONE'
                   local a2 = distS
-                  return a1, vector1, a2
+                  return a1, vector1, a2, a3
                else
                   local a1 = ''..closestPlanet.name[1]..' SAFE ZONE'
                   local a2 = distS
-                  return a1, vector1, a2
+                  return a1, vector1, a2, a3
                end
             else
                distS = mabs(distsz - safeRadius)
+               local a3 = ''
                local vector1 = vectorLengthen(WorldPos, safeWorldPos, distS)
                if distS > 100000 then
-                  distS = ''..string.format('%0.2f', distS/200000)..' su'
+                  distS = string.format('%0.2f', distS/200000)
+                  a3 = 'su'
                elseif distS > 1000 and distS < 100000 then
-                  distS = ''..string.format('%0.1f', distS/1000)..' km'
+                  distS = string.format('%0.1f', distS/1000)
+                  a3 = 'km'
                else
-                  distS = ''..string.format('%0.0f', distS)..' m'
+                  distS = string.format('%0.0f', distS)
+                  a3 = 'm'
                end
                local a1 = 'SAFE ZONE'
                local a2 = distS
-               return a1, vector1, a2
+               return a1, vector1, a2, a3
             end
       end
 
@@ -1057,6 +1081,200 @@ elseif stress[2] >= stress[1] and
             background: #ff3a56;
          }
          </style>]]
+
+         local opt1=system.getActionKeyName('option1')
+         local opt2=system.getActionKeyName('option2')
+         local opt3=system.getActionKeyName('option3')
+         local opt4=system.getActionKeyName('option4')
+         local opt5=system.getActionKeyName('option5')
+         local opt6=system.getActionKeyName('option6')
+         local opt7=system.getActionKeyName('option7')
+         local opt8=system.getActionKeyName('option8')
+         local opt9=system.getActionKeyName('option9')
+         local shifttext=system.getActionKeyName('lshift')
+         local geartext=system.getActionKeyName('gear')
+         local alttext=system.getActionKeyName('lalt')
+         local forwardtext=system.getActionKeyName('forward')
+         local backwardtext=system.getActionKeyName('backward')
+         local uptext=system.getActionKeyName('up')
+         local downtext=system.getActionKeyName('down')
+         local lefttext=system.getActionKeyName('left')
+         local antigravtext = system.getActionKeyName('antigravity')
+         local righttext=system.getActionKeyName('right')
+         local yawlefttext=system.getActionKeyName('yawleft')
+         local yawrighttext=system.getActionKeyName('yawright')
+         local braketext1=system.getActionKeyName('brake')
+         local lighttext=system.getActionKeyName('light')
+         system.print(''..geartext..' + ↑: HUD helper')
+      
+         helpHTML = [[
+            <html>
+        <style>
+          html,
+          body {
+            background-image: linear-gradient(to right bottom, #1a0a13, #1e0f1a, #201223, #21162c, #1e1b36, #322448, #4a2b58, #653265, #a43b65, #d35551, #e78431, #dabb10);
+          }
+          .helperCenter {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            color: white;
+            font-family: "Roboto Slab", serif;
+            font-size: 1.5em;
+            text-align: center;
+            transform: translate(-50%, -50%);
+          }
+          ibold {
+            font-weight: bold;
+          }
+          .topL {
+            position: absolute;
+            top: 1vh;
+            left: 1vw;
+            display: flex;
+          }
+          .bottomL {
+            position: absolute;
+            bottom: 1vh;
+            left: 1vw;
+            display: flex;
+          }
+          .helper1 {
+            color: white;
+            font-family: "Roboto Slab", serif;
+            font-size: 1em;
+          }
+          .helper2 {
+            margin-left: 2vw;
+            color: white;
+            font-family: "Roboto Slab", serif;
+            font-size: 1em;
+          }
+          .helper3 {
+            color: white;
+            font-family: "Roboto Slab", serif;
+            font-size: 1em;
+          }
+          .helper4 {
+            margin-left: 2vw;
+            color: white;
+            font-family: "Roboto Slab", serif;
+            font-size: 1em;
+          }
+          bdr {
+            color: white;
+            background-color: green;
+            padding-right: 4px;
+            padding-left: 4px;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            border-radius: 6px;
+            border: 2.5px solid white;
+          }
+          luac {
+            color: white;
+            background-color: green;
+            padding-right: 4px;
+            padding-left: 4px;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            border: 2.5px solid white;
+          }
+        </style>
+        <body>
+          <div class="topL">
+            <div class="helper1">
+              <ibold>SHIELD:</ibold>
+              <br>
+              <br>
+              <bdr>]]..opt9..[[</bdr> : start/stop venting<br>
+              <br>
+              <bdr>]]..opt8..[[</bdr> : on/off shield<br>
+              <br>
+              <bdr>]]..opt7..[[</bdr> : switch AUTO/MANUAL shield mode<br>
+              <br>
+              <bdr>]]..shifttext..[[</bdr> + <bdr>]]..opt7..[[</bdr>: switch shield mode between MAX and 50/50 mode<br>
+              <br>
+              <bdr>]]..opt6..[[</bdr> : agree and apply resists in manual shield mode<br>
+              <br>
+              <bdr>]]..uptext..[[</bdr> + <bdr>]]..opt1..[[</bdr>: 100% antimatter power<br>
+              <br>
+              <bdr>]]..uptext..[[</bdr> + <bdr>]]..opt2..[[</bdr>: 100% electromagnetic power<br>
+              <br>
+              <bdr>]]..uptext..[[</bdr> + <bdr>]]..opt3..[[</bdr>: 100% thremic power<br>
+              <br>
+              <bdr>]]..uptext..[[</bdr> + <bdr>]]..opt4..[[</bdr>: 100% kinetic power<br>
+              <br>
+              <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt1..[[</bdr>: cannon profile<br>
+              <br>
+              <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt2..[[</bdr>: laser profile<br>
+              <br>
+              <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt3..[[</bdr>: railgun profile<br>
+              <br>
+              <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt4..[[</bdr>: universal profile<br>
+            </div>
+            <div class="helper2">
+              <ibold>Other:</ibold>
+              <br>
+              <br>
+              <bdr>]]..braketext1..[[</bdr> : lock brake<br>
+              <br>
+              <bdr>]]..opt1..[[</bdr> : show/hide planets and planetary periscope<br>
+              <br>
+              <bdr>]]..opt2..[[</bdr>: set destination to planet #1 (closest pipe planets)<br>
+              <br>
+              <bdr>]]..opt3..[[</bdr>: set destination to closest pipe<br>
+              <br>
+              <bdr>]]..opt4..[[</bdr>: set destination to planet #2 (closest pipe planets)<br>
+              <br>
+              <bdr>]]..shifttext..[[</bdr> + <bdr>]]..opt2..[[</bdr>: set destination to destination planet (LUA parameters)<br>
+              <br>
+              <bdr>]]..shifttext..[[</bdr> + <bdr>]]..opt3..[[</bdr>: set destination to custom pipe Destination - Departure (LUA parameters)<br>
+              <br>
+              <bdr>]]..shifttext..[[</bdr> + <bdr>]]..opt4..[[</bdr>: set destination to departure planet (LUA parameters)<br>
+              <br>
+              <bdr>]]..opt5..[[</bdr>: Helios system map<br>
+              <br>
+              <bdr>]]..opt5..[[</bdr>: set destination to saved position<br>
+            </div>
+          </div>
+          <div class="bottomL">
+            <div class="helper3">
+              <ibold>SHIELD LUA COMMANDS:</ibold>
+              <br>
+              <br>
+              <luac>am</luac>: 100% antimatter power<br>
+              <br>
+              <luac>em</luac>: 100% electromagnetic power<br>
+              <br>
+              <luac>th</luac>: 100% thermic power<br>
+              <br>
+              <luac>ki</luac>: 100% kinetic power<br>
+              <br>
+              <luac>c</luac>: cannon profile<br>
+              <br>
+              <luac>l</luac>: laser profile<br>
+              <br>
+              <luac>r</luac>: railgun profile<br>
+              <br>
+              <luac>m</luac>: missile profile<br>
+            </div>
+            <div class="helper4">
+              <ibold>Other LUA COMMANDS:</ibold>
+              <br>
+              <br>
+              <luac>tag foxtrot</luac>: set transponder tag, where foxtrot is transponder tag<br>
+              <br>
+              <luac>m::pos{}</luac>: get info about position, safe position to dababank, add position to Helios map and planetary periscope<br>
+              <br>
+              <luac>drop</luac>: undock all constructs<br>
+              <br>
+              <luac>helper</luac>: show/hide build helper<br>
+            </div>
+          </div>
+          <div class="helperCenter">GEMINI FOUNDATION<br><br>Remote Controller Controls</div>
+        </body>
+      </html>]]
 
          transponder.deactivate() --transponder server bug fix
          main1 = coroutine.create(closestPipe)

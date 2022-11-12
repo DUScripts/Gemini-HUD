@@ -18,6 +18,11 @@ local formatted_hp = string.format('%0.0f',math.ceil(HP))
 
 if shield.isActive() == 0 then
    svghp = maxSHP * (HP*0.01)
+   shieldColor = "#fc033d"
+   shieldStatus = "DEACTIVE"
+else
+   shieldColor = "#2ebac9"
+   shieldStatus = "ACTIVE"
 end
 
 if (system.getArkTime() - lastShotTime) >= 40 then
@@ -36,7 +41,7 @@ end
 
 if shield.isVenting() then
    venttime = shield.getVentingCooldown()
-   if venttime < venttimemax and venttime ~= 0 then
+   if venttime < venttimemax then
       resCLWN = math.floor(venttime)
       shieldStatus = 'VENTING'
    end
@@ -127,35 +132,46 @@ if math.ceil(HP) <= 50 then
          else
             shieldAlarm = false
          end
-
+      local sPos = vec3(construct.getWorldPosition())
       local thrust1 = math.floor(unit.getThrottle())
       local accel = math.floor((json.decode(unit.getWidgetData()).acceleration/9.80665)*10)/10
-      local speed = math.floor(vec3(construct.getWorldVelocity()):len() * 3.6)
+      local sp1 = construct.getWorldVelocity()
+      local speed = math.floor(vec3(sp1):len() * 3.6)
       local maxSpeed = math.floor(construct.getMaxSpeed() * 3.6)
       --local closestPlanet = getClosestPlanet(shipPos)
       local AR_planets = ''
       local AR_asteroid = ''
       local AR_pvpzone = ''
       local AR_safezone = ''
+      local Indicator = ''
+      local ind = sPos + 400000 * vec3(sp1)
+      local pointF = library.getPointOnScreen({ind.x,ind.y,ind.z})
+      if pointF[3] > 0 and speed > 15 then --visible zone
+         local x = screenWidth*pointF[1] - GHUD_flight_indicator_size/2
+         local y = screenHeight*pointF[2] - GHUD_flight_indicator_size/2
+         Indicator = [[
+               <style>
+               .flightIndicator {
+                  position: absolute;
+                  width: ]]..GHUD_flight_indicator_size..[[px;
+                  height: ]]..GHUD_flight_indicator_size..[[px;
+                  left: ]]..x..[[px;
+                  top: ]]..y..[[px;
+               }
+               </style>
+               <div class="flightIndicator">
+               <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+               <line style="fill: ]]..GHUD_flight_indicator_color..[[; stroke: ]]..GHUD_flight_indicator_color..[[; stroke-width: 20px;" x1="10" y1="100" x2="190" y2="100" transform="matrix(0.707107, -0.707107, 0.707107, 0.707107, -41.421356, 100)"></line>
+               <line style="fill: ]]..GHUD_flight_indicator_color..[[; stroke: ]]..GHUD_flight_indicator_color..[[; stroke-width: 20px;" x1="10" y1="100" x2="190" y2="100" transform="matrix(0.707107, 0.707107, -0.707107, 0.707107, 100, -41.421356)"></line>
+               </svg></div>]]
+            end
 
-      local safeStatus, safeVector, zoneDist = safeZone()
+      local safeStatus, safeVector, zoneDist, distStr = safeZone()
 
          if szsafe == true then
-            safetext=''..safeStatus..'<br><green1>'..zoneDist..'</green1>'
+            safetext=''..safeStatus..' <green1>'..zoneDist..' '..distStr..'</green1>'
             local point1 = library.getPointOnScreen({safeVector.x,safeVector.y,safeVector.z})
             if point1[3] > 0 then --visible zone
-               local dist = vec3(vec3(construct.getWorldPosition()) - safeVector):len()
-               local sdist = ''
-               if dist >= 100000 then
-                  dist = string.format('%0.2f', dist/200000)
-                  sdist = 'SU'
-               elseif dist >= 1000 and dist < 100000 then
-                  dist = string.format('%0.1f', dist/1000)
-                  sdist = 'KM'
-               else
-                  dist = string.format('%0.0f', dist)
-                  sdist = 'M'
-               end
                local x2 = screenWidth*point1[1] - 50
                local y2 = screenHeight*point1[2] - 50
                AR_pvpzone = [[
@@ -172,26 +188,14 @@ if math.ceil(HP) <= 50 then
                <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
                <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #fc033d; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
                <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">PvP ZONE</text>
-               <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
-               <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..sdist..[[</text>
+               <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..zoneDist..[[</text>
+               <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..distStr..[[</text>
                </svg></div>]]
             end
          else
-            safetext=''..safeStatus..'<br><green1>'..zoneDist..'</green1>'
+            safetext=''..safeStatus..' <green1>'..zoneDist..' '..distStr..'</green1>'
             local point1 = library.getPointOnScreen({safeVector.x,safeVector.y,safeVector.z})
             if point1[3] > 0 then --visible zone
-               local dist = vec3(vec3(construct.getWorldPosition()) - safeVector):len()
-               local sdist = ''
-               if dist >= 100000 then
-                  dist = string.format('%0.2f', dist/200000)
-                  sdist = 'SU'
-               elseif dist >= 1000 and dist < 100000 then
-                  dist = string.format('%0.1f', dist/1000)
-                  sdist = 'KM'
-               else
-                  dist = string.format('%0.0f', dist)
-                  sdist = 'M'
-               end
                local x2 = screenWidth*point1[1] - 50
                local y2 = screenHeight*point1[2] - 50
                AR_safezone = [[
@@ -208,8 +212,8 @@ if math.ceil(HP) <= 50 then
                <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
                <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #07e88e; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
                <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">SAFE ZONE</text>
-               <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
-               <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..sdist..[[</text>
+               <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..zoneDist..[[</text>
+               <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..distStr..[[</text>
                </svg></div>]]
             end
          end
@@ -217,7 +221,7 @@ if math.ceil(HP) <= 50 then
          if asteroidcoord[1] ~= 0 then
             local point1 = library.getPointOnScreen({asteroidcoord.x,asteroidcoord.y,asteroidcoord.z})
             if point1[3] > 0 then --visible zone
-               local dist = vec3(vec3(construct.getWorldPosition()) - asteroidcoord):len()
+               local dist = vec3(sPos - asteroidcoord):len()
                local sdist = ''
                if dist >= 100000 then
                   dist = string.format('%0.2f', dist/200000)
@@ -260,7 +264,7 @@ if math.ceil(HP) <= 50 then
          .XY {
             position: absolute;
             left: 2%;
-            top: 26%;
+            top: 23%;
             color: #FFB12C;
             font-size:18px;
             font-family: verdana;
@@ -290,9 +294,9 @@ if math.ceil(HP) <= 50 then
                </style>]]
                message=message..[[<svg class="svg">]]
                svgradar=""
-               RadarX=screenWidth*1/6
-               RadarY=screenWidth*1/6
-               RadarR=screenWidth*1/6
+               RadarX=screenWidth*1/7
+               RadarY=screenWidth*1/7
+               RadarR=screenWidth*1/7
 
                svgradar=svgradar..string.format([[<line x1="%f" y1="%f" x2="%f" y2="%f" stroke-width="2" stroke="black" />]],RadarX,RadarY-RadarR,RadarX,RadarY+RadarR)
                svgradar=svgradar..string.format([[<line x1="%f" y1="%f" x2="%f" y2="%f" stroke-width="2" stroke="black" />]],RadarX-RadarR,RadarY,RadarX+RadarR,RadarY)
@@ -308,7 +312,7 @@ if math.ceil(HP) <= 50 then
                         drawonradar(vec3(planet.center),planet.name[1])
                         local point1 = library.getPointOnScreen({planet.center[1],planet.center[2],planet.center[3]})
                         if point1[3] > 0 then --visible zone
-                           local dist = vec3(vec3(construct.getWorldPosition()) - vec3(planet.center)):len()
+                           local dist = vec3(sPos - vec3(planet.center)):len()
                            local sdist = ''
                            if dist >= 100000 then
                               dist = string.format('%0.2f', dist/200000)
@@ -467,7 +471,7 @@ if math.ceil(HP) <= 50 then
                margin-top: calc(-100% + 5px);
                margin-left: 40%;
                width: 120px;
-               height: 100px;
+               height: 120px;
             }
             .fuel1 {
                position: absolute;
@@ -516,7 +520,10 @@ if math.ceil(HP) <= 50 then
             }
             .safez {
                width: auto;
-               padding: 5px;
+               padding-top: 1px;
+               padding-bottom: 1px;
+               padding-left: 5px;
+               padding-right: 5px;
                position:fixed;
                top: 0;
                right: 0;
@@ -526,12 +533,15 @@ if math.ceil(HP) <= 50 then
                font-size: 1.2em;
                font-weight: bold;
                background: ]]..GHUD_background_color..[[;
-               border: 1px solid black;
+               border: 0.5px solid black;
             }
             .pipe {
                width: auto;
-               padding: 5px;
-               position:fixed;
+               padding-left: 35px;
+               padding-right: 35px;
+               padding-top: 2px;
+               padding-bottom: 2px;
+               position: fixed;
                top: ]]..GHUD_pipe_Y..[[vh;
                right: ]]..GHUD_pipe_X..[[vw;
                text-align: center;
@@ -539,7 +549,7 @@ if math.ceil(HP) <= 50 then
                font-size: 1.2em;
                font-weight: bold;
                background: ]]..GHUD_background_color..[[;
-               border: 1px solid black;
+               border: 0.5px solid black;
             }
             </style>
             <body>
@@ -548,13 +558,14 @@ if math.ceil(HP) <= 50 then
             ]]..AR_planets..[[
             ]]..AR_pvpzone..[[
             ]]..AR_safezone..[[
+            ]]..Indicator..[[
             ]]..message..[[
             ]]..brakeHUD..[[
             <div class="safez">]]..safetext..[[</div>
             <div class="pipe">]]..pD()..[[</div>
             <div class="center1"></div>
             <div class="right1">THRUST<br><div class="thrust1">]]..thrust1..[[</div><orange1>%</orange1><br>SPEED<br><div class="speed1">]]..speed..[[</div><orange1>KM/H</orange1><mspeed> ]]..maxSpeed..[[</mspeed><br>ACCEL<br><div class="accel1">]]..accel..[[</div><orange1>G</orange1><br>BRAKE-DISTANCE<br><div class="brakedist">]]..brakeDist..[[</div><orange1>]]..brakeS..[[</orange1></div>
-            <div class="left1">]]..shieldText..[[<div class="shield2"><svg viewBox="0 0 100 100" fill="none" stroke="]]..shieldColor..[[" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+            <div class="left1">SHIELD<div class="shield2"><svg viewBox="0 0 100 100" fill="none" stroke="]]..shieldColor..[[" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
             <path d="M 50 60 C 50 60 58 56 58 50 L 58 43 L 50 40 L 42 43 L 42 50 C 42 56 50 60 50 60 Z"/>
             <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 13px; font-weight: 700; stroke-width: 0px; text-anchor: middle;" x="50" y="53.737">]]..shieldIcon..[[</text>
             </svg></div><br><div class="shieldtext">]]..formatted_hp..[[</div><orange1>%</orange1><br>FUEL<div class="fuel1"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -582,7 +593,7 @@ if math.ceil(HP) <= 50 then
             <stop stop-color="]]..GHUD_shield_background_color..[[" offset="0" />
             </linearGradient>
             </defs>
-            <rect x="145" y="225" width="210" height="50" style="fill: ]]..GHUD_shield_empty_background_layer_color..[[; stroke: ]]..GHUD_shield_background_color..[[;" bx:origin="0.5 0.5"/>
+            <rect x="145" y="225" width="210" height="50" style="fill: ]]..GHUD_shield_empty_background_layer_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[;" bx:origin="0.5 0.5"/>
             <rect x="145" y="225" width="]]..svghp..[[" height="50" style="fill: ]]..GHUD_shield_background_color..[[; stroke: ]]..GHUD_shield_background_color..[[;" bx:origin="0.5 0.5"/>
             ]]..damageLine..[[
             ]]..ccsLineHit..[[
@@ -618,4 +629,4 @@ if math.ceil(HP) <= 50 then
             </body>
             </html>]]
 
-            if map == 0 then system.setScreen(htmlHUD) end
+            if map == 0 and helper == false and helper1 == false then system.setScreen(htmlHUD) end

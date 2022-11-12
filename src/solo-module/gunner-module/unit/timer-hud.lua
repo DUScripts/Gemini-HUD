@@ -10,9 +10,9 @@ end
 local sight = ''
 local data = weapon_1.getWidgetData()
 zone = data:match('"outOfZone":(.-),')
-probil = tonumber(data:match('"hitProbability":(.-),'))
+local probil = tonumber(data:match('"hitProbability":(.-),'))
 
-shipPos = vec3(construct.getWorldPosition())
+local shipPos = vec3(construct.getWorldPosition())
 local id = radar_1.getTargetId()
 if id ~= 0 then
    local sdist = ""
@@ -52,8 +52,8 @@ if id ~= 0 then
    }
    ]]
    if point1[3] > 0 then --visible zone
-      local x2 = screenWidth*point1[1] - 100
-      local y2 = screenHeight*point1[2] - 100
+      local x2 = screenWidth*point1[1] - GHUD_AR_sight_size/2
+      local y2 = screenHeight*point1[2] - GHUD_AR_sight_size/2
       sight1 = [[
       .sight1 {
          position: absolute;
@@ -105,8 +105,8 @@ else
    --local pos1 = ConvertLocalToWorld(0,distance,0)
    --local point1 = library.getPointOnScreen({pos1.x,pos1.y,pos1.z})
    if point1[3] > 0 then --visible zone
-      local x2 = screenWidth*point1[1] - 100
-      local y2 = screenHeight*point1[2] - 100
+      local x2 = screenWidth*point1[1] - GHUD_AR_sight_size/2
+      local y2 = screenHeight*point1[2] - GHUD_AR_sight_size/2
       sight = [[
       <style>
       .sight1 {
@@ -334,4 +334,4 @@ html,body {
 </html>
 ]]
 
-if helper == false then system.setScreen(htmlHUD) end
+if helper == false and helper1 == false then system.setScreen(htmlHUD) end

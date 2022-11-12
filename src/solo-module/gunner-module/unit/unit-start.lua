@@ -41,7 +41,7 @@ GHUD_count_color = "rgb(0, 191, 255)" --export:
 GHUD_your_ship_ID_color = "#fca503" --export:
 GHUD_border_color = "black" --export:
 GHUD_allies_Y = 0 --export: set to 0 if playing in fullscreen mode
-GHUD_windowed_mode = false --export: adds 2 to the height GHUD_allies_Y
+GHUD_windowed_mode = false --export: adds 2 to height GHUD_allies_Y
 collectgarbages = false --export: experimental
 --GHUD_radar_notifications_mac_os_style = false
 
@@ -99,7 +99,6 @@ firstload = 0
 constructSelected = 0
 probil = 0
 playerName = system.getPlayerName(player.getId())
-shipPos = vec3(construct.getWorldPosition())
 warpScan = 0 --for 3D map
 t_radarEnter = {}
 loglist = {}
@@ -117,6 +116,7 @@ target = {}
 count = 0
 gearB = false
 helper = false
+helper1 = false
 pp1 = ''
 shipName = construct.getName()
 local scID = construct.getId()
@@ -203,7 +203,7 @@ function mRadar:updateStep()
       local selectedTarget = self.radar.getTargetId(ID)
       if locked == 1 or alive == 0 or selectedTarget == ID and size ~= "" then --show only locked or alive or selected targets
          if defaultSize == 'ALL' then --default mode
-            if (whitelist[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode and self.radar.getThreatRateFrom(ID) ~= 5 then  --show attacking traitor on widget
+            if ((whitelist[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode) and self.radar.getThreatRateFrom(ID) ~= 5 then  --show attacking traitor on widget
                goto continue1
             end
             if isIDFiltered and self.idFilter[ID%1000] ~= true then
@@ -211,9 +211,8 @@ function mRadar:updateStep()
             end
             resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. tostring(ID):sub(-3) .. ' - %1"')
             ::continue1::
-         end
-         if defaultSize ~= 'ALL' and size == defaultSize then --sorted
-            if (whitelist[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode and self.radar.getThreatRateFrom(ID) ~= 5 then
+         elseif size == defaultSize then
+            if ((whitelist[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode) and self.radar.getThreatRateFrom(ID) ~= 5 then
                goto continue2
             end
             if isIDFiltered and self.idFilter[ID%1000] ~= true then
@@ -791,6 +790,7 @@ lockhtml = [[<style>
    border: 1px solid ]]..GHUD_border_color..[[;
    border-top: none;
    color: white;
+   font-weight: bold;
 }
 orangecolor {
    color: #fca503;
@@ -1295,7 +1295,7 @@ function inTEXT(unit, system, text)
       timeExport1 = math.floor(databank_1.getFloatValue(2))
       timeExport2 = math.floor(databank_1.getFloatValue(4))
 
-      system.print("The coordinates were exported to the screen")
+      system.print("The coordinates were exported to screen")
 
       screen_1.setCenteredText(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
       system.print("Target speed: " .. tspeed1 .. " km/h")
@@ -1315,11 +1315,12 @@ function inTEXT(unit, system, text)
    if text == "n" then
       pp1 = ''
       unit.stopTimer("marker")
-      databank_1.clear()
+      --databank_1.clear()
       showMarker = true
-      blockTime = 0
-      databank_1.setFloatValue(2, blockTime)
-      databank_1.setFloatValue(4, blockTime)
+      databank_1.setStringValue(1, "")
+      databank_1.setFloatValue(2, 0)
+      databank_1.setStringValue(3, "")
+      databank_1.setFloatValue(4, 0)
       pos1 = 0
       pos2 = 0
       lasttime = 0
@@ -1351,11 +1352,12 @@ function inTEXT(unit, system, text)
 
    if GHUD_export_mode == true and string.find(text, "/") and not string.find(text, "/::pos") then
       unit.stopTimer("marker")
-      databank_1.clear()
+      --databank_1.clear()
       showMarker = true
-      blockTime = 0
-      databank_1.setFloatValue(2, blockTime)
-      databank_1.setFloatValue(4, blockTime)
+      databank_1.setStringValue(1, "")
+      databank_1.setFloatValue(2, 0)
+      databank_1.setStringValue(3, "")
+      databank_1.setFloatValue(4, 0)
       pos1 = 0
       pos2 = 0
       lasttime = 0
@@ -1458,11 +1460,12 @@ function inTEXT(unit, system, text)
    end
    if GHUD_export_mode == true and string.find(text, "/::pos") then
       unit.stopTimer("marker")
-      databank_1.clear()
+      --databank_1.clear()
       showMarker = true
-      blockTime = 0
-      databank_1.setFloatValue(2, blockTime)
-      databank_1.setFloatValue(4, blockTime)
+      databank_1.setStringValue(1, "")
+      databank_1.setFloatValue(2, 0)
+      databank_1.setStringValue(3, "")
+      databank_1.setFloatValue(4, 0)
       pos1 = 0
       pos2 = 0
       lasttime = 0
@@ -1844,11 +1847,10 @@ function tickVector(unit, system, text)
       timeExport1 = math.floor(databank_1.getFloatValue(2))
       timeExport2 = math.floor(databank_1.getFloatValue(4))
 
-      system.print("The coordinates were exported to the screen")
+      system.print("The coordinates were exported to screen")
 
       screen_1.setCenteredText(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
    end
-
    function radarPos(system,radar)
       local id = radar_1.getTargetId()
       if id ~= 0 then
@@ -1900,7 +1902,7 @@ function tickVector(unit, system, text)
             timeExport1 = math.floor(databank_1.getFloatValue(2))
             timeExport2 = math.floor(databank_1.getFloatValue(4))
 
-            system.print("The coordinates were exported to the screen")
+            system.print("The coordinates were exported to screen")
 
             screen_1.setCenteredText(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
             system.print("Target speed: " .. tspeed1 .. " km/h")
@@ -1919,11 +1921,12 @@ function tickVector(unit, system, text)
             else
                if pos1 ~= 0 and pos2 ~= 0 then
                   unit.stopTimer("marker")
-                  databank_1.clear()
+                  --databank_1.clear()
                   showMarker = true
-                  blockTime = 0
-                  databank_1.setFloatValue(2, blockTime)
-                  databank_1.setFloatValue(4, blockTime)
+                  databank_1.setStringValue(1, "")
+                  databank_1.setFloatValue(2, 0)
+                  databank_1.setStringValue(3, "")
+                  databank_1.setFloatValue(4, 0)
                   pos1 = 0
                   pos2 = 0
                   lasttime = 0
@@ -1995,11 +1998,7 @@ function tickVector(unit, system, text)
   <style>
     html,
     body {
-      background-image: linear-gradient(135deg,
-          hsl(240deg 33% 1%) 0%,
-          hsl(223deg 44% 10%) 33%,
-          hsl(295deg 38% 23%) 67%,
-          hsl(28deg 95% 34%) 100%);
+      background-image: linear-gradient(to right bottom, #1a0a13, #1e0f1a, #201223, #21162c, #1e1b36, #322448, #4a2b58, #653265, #a43b65, #d35551, #e78431, #dabb10);
     }
     .helperCenter {
       position: absolute;
@@ -2053,19 +2052,19 @@ function tickVector(unit, system, text)
       background-color: green;
       padding-right: 4px;
       padding-left: 4px;
-      padding-top: 1.5px;
-      padding-bottom: 1.5px;
+      padding-top: 2px;
+      padding-bottom: 2px;
       border-radius: 6px;
-      border: 1.5px solid white;
+      border: 2.5px solid white;
     }
     luac {
       color: white;
       background-color: green;
       padding-right: 4px;
       padding-left: 4px;
-      padding-top: 1.5px;
-      padding-bottom: 1.5px;
-      border: 1.5px solid white;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      border: 2.5px solid white;
     }
   </style>
   <body>
@@ -2074,29 +2073,29 @@ function tickVector(unit, system, text)
         <ibold>RADAR WIDGET:</ibold>
         <br>
         <br>
-        <bdr>]]..alttext..[[</bdr> + <bdr>]]..downtext..[[</bdr> : switch between friends/enemies <br>
+        <bdr>]]..alttext..[[</bdr> + <bdr>]]..downtext..[[</bdr>: switch between friends/enemies<br>
         <br>
-        <bdr>]]..alttext..[[</bdr> + <bdr>]]..uptext..[[</bdr> : construct size filter <br>
+        <bdr>]]..alttext..[[</bdr> + <bdr>]]..uptext..[[</bdr>: construct size filter<br>
         <br>
-        <bdr>]]..shifttext..[[</bdr> + <bdr>]]..opt1..[[</bdr> : add/remove selected target from whitelist <br>
+        <bdr>]]..shifttext..[[</bdr> + <bdr>]]..opt1..[[</bdr>: add/remove selected target from whitelist<br>
       </div>
       <div class="helper2">
         <ibold>TARGET VECTOR:</ibold>
         <br>
         <br>
-        <bdr>]]..geartext..[[</bdr> : set pos1/pos2 for radar selected target <br>
+        <bdr>]]..geartext..[[</bdr>: set pos1/pos2 for radar selected target<br>
         <br>
-        <bdr>]]..shifttext..[[</bdr> + <bdr>↓↑</bdr>: set pos1/pos2 for radar selected target <br>
+        <bdr>]]..shifttext..[[</bdr> + <bdr>↓↑</bdr>: set pos1/pos2 for radar selected target<br>
         <br>
-        <bdr>]]..shifttext..[[</bdr> + <bdr>←→</bdr>: move destination ±10 su <br>
+        <bdr>]]..shifttext..[[</bdr> + <bdr>←→</bdr>: move destination ±10 su<br>
         <br>
-        <bdr>]]..shifttext..[[</bdr> + <bdr>]]..alttext..[[</bdr>: destination to the closest target pipe <br>
+        <bdr>]]..shifttext..[[</bdr> + <bdr>]]..alttext..[[</bdr>: destination to closest target pipe<br>
         <br>
-        <bdr>]]..alttext..[[</bdr> + <bdr>]]..geartext..[[</bdr>: on/off export mode <br>
+        <bdr>]]..alttext..[[</bdr> + <bdr>]]..geartext..[[</bdr>: on/off export mode<br>
         <br>
-        <bdr>]]..opt4..[[</bdr> : show/hide current target position (Works only when manually setting coordinates or in export mode) <br>
+        <bdr>]]..opt4..[[</bdr>: show/hide current target position (Works only when manually setting coordinates or in export mode)<br>
         <br>
-        <bdr>]]..shifttext..[[</bdr> + <bdr>↓↑</bdr>: switch target position between current speed or targetSpeed from LUA parameters <br>
+        <bdr>]]..shifttext..[[</bdr> + <bdr>↓↑</bdr>: switch target position between current speed or targetSpeed from LUA parameters<br>
       </div>
     </div>
     <div class="bottomL">
@@ -2104,26 +2103,26 @@ function tickVector(unit, system, text)
         <ibold>RADAR WIDGET LUA COMMANDS:</ibold>
         <br>
         <br>
-        <luac>f345</luac> : focus mode where 345 is target ID <br>
+        <luac>f345</luac>: focus mode where 345 is target ID<br>
         <br>
-        <luac>f</luac> : reset focus mode <br>
+        <luac>f</luac>: reset focus mode<br>
         <br>
-        <luac>addall</luac> : add all radar targets to whitelist databank <br>
+        <luac>addall</luac>: add all radar targets to whitelist databank<br>
         <br>
-        <luac>clear</luac> : clear all whitelist databank <br>
+        <luac>clear</luac>: clear all whitelist databank<br>
       </div>
       <div class="helper4">
         <ibold>TARGET VECTOR LUA COMMANDS:</ibold>
         <br>
         <br>
-        <luac>n</luac> : reset pos1/pos2 <br>
+        <luac>n</luac>: reset pos1/pos2<br>
         <br>
-        <luac>mar345</luac> : get position in LUA chat, where 345 is SU ahead of the target <br>
+        <luac>mar345</luac>: get position in LUA chat, where 345 is SU ahead of the target<br>
         <br>
-        <luac>export</luac> : export coordinates to the screen in format - pos1/time1/pos2/time2 <br>
+        <luac>export</luac>: export coordinates to screen in format - pos1/time1/pos2/time2<br>
       </div>
     </div>
-    <div class="helperCenter">GEMINI FOUNDATION <br>Gunner Module Controls </div>
+    <div class="helperCenter">GEMINI FOUNDATION<br><br>Gunner Module Controls</div>
   </body>
 </html>]]
 
@@ -2259,8 +2258,8 @@ transform: translate(-50%, -50%);
    }
    </style>
    <body>
-   <div class="text fade-in">GEMINI FOUNDATION<br>
-Solo Gunner Module v]]..HUD_version..[[</div>
+   <div class="text fade-in">GEMINI FOUNDATION<br><br>
+   Gunner Module v]]..HUD_version..[[</div>
    <div class="spinner">
    <div class="bounce1"></div>
    <div class="bounce2"></div>

@@ -4,6 +4,16 @@ if string.sub((text),1,3) == 'tag' then
    unit.setTimer('tr',2)
 end
 
+if text=="helper" then
+   if bhelper == false then
+      bhelper = true
+      system.showHelper(1)
+   else
+      bhelper = false
+      system.showHelper(0)
+   end
+end
+
 if text == "am" and shield.getResistancesCooldown() == 0 then
    local resistance = shield.getResistances()
    local res = {resMAX,0,0,0}

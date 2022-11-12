@@ -1,9 +1,4 @@
-if shield.isActive() == 0 then 
-    shieldColor = "#fc033d"
-    shieldStatus = "DEACTIVE"
-else 
-    shieldColor = "#2ebac9"
-    shieldStatus = "ACTIVE"
+if shield.isActive() == 1 then
     local shield_hp = shield.getShieldHitpoints() 
     last_shield_hp = shield_hp
     HP = shield_hp/shieldMaxHP * 100
