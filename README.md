@@ -5,6 +5,31 @@ Discord: https://discord.gg/sTWdvte8E7<br/>
 <br/>
 Gemini HUD is the rebirth of the CFCS HUD (Custom Fire Control System)<br/>
 <br/>
+Features:<br/>
+Animated shield panel<br/>
+Animated radar contact notifications<br/>
+Animated hit/miss notifications<br/>
+AR sight based on distance to selected target<br/>
+AR planets<br/>
+AR allies marks<br/>
+AR closest pvp/safe zone marks<br/>
+AR asteroid/custom mark<br/>
+Gunner can track multiple identified targets<br/>
+HUD design customization<br/>
+Custom weapon widgets (hit probability, target ID, short ammo name)<br/>
+Custom radar widget (target ID, size filter, pvp focus mode, transponders and whitelist support)<br/>
+Target Vector feature<br/>
+Closest pipe UI<br/>
+Closest pvp/safe zone UI<br/>
+Helios system rotating space map<br/>
+2D planetary periscope<br/>
+Waypoint info (lua chat: closest pipe, distance to safe zone)<br/>
+Radar contact sound notification<br/>
+Transponder tag can be set via lua chat<br/>
+Closest pipe waypoint<br/>
+Waypoint to custom pipe closest distance<br/>
+If the new radar target is dead, you will see its exact position in the lua chat<br/>
+<br/>
 Many thanks to:<br/>
  W1zard for weapon and radar widgets<br/>
  tiramon for closest pipe functions<br/>
