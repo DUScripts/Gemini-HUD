@@ -1991,7 +1991,7 @@ function tickVector(unit, system, text)
    local yawrighttext=system.getActionKeyName('yawright')
    local braketext1=system.getActionKeyName('brake')
    local lighttext=system.getActionKeyName('light')
-   system.print(''..geartext..' + ↑: HUD helper')
+   system.print(''..geartext..' + ↑: gunner module helper')
 
    helpHTML = [[
       <html>
@@ -2073,29 +2073,29 @@ function tickVector(unit, system, text)
         <ibold>RADAR WIDGET:</ibold>
         <br>
         <br>
-        <bdr>]]..alttext..[[</bdr> + <bdr>]]..downtext..[[</bdr>: switch between friends/enemies<br>
+        <bdr>]]..alttext..[[</bdr> + <bdr>]]..downtext..[[</bdr> : switch between friends/enemies<br>
         <br>
-        <bdr>]]..alttext..[[</bdr> + <bdr>]]..uptext..[[</bdr>: construct size filter<br>
+        <bdr>]]..alttext..[[</bdr> + <bdr>]]..uptext..[[</bdr> : construct size filter<br>
         <br>
-        <bdr>]]..shifttext..[[</bdr> + <bdr>]]..opt1..[[</bdr>: add/remove selected target from whitelist<br>
+        <bdr>]]..shifttext..[[</bdr> + <bdr>]]..opt1..[[</bdr> : add/remove selected target from whitelist<br>
       </div>
       <div class="helper2">
         <ibold>TARGET VECTOR:</ibold>
         <br>
         <br>
-        <bdr>]]..geartext..[[</bdr>: set pos1/pos2 for radar selected target<br>
+        <bdr>]]..geartext..[[</bdr> : set pos1/pos2 for radar selected target<br>
         <br>
-        <bdr>]]..shifttext..[[</bdr> + <bdr>↓↑</bdr>: set pos1/pos2 for radar selected target<br>
+        <bdr>]]..shifttext..[[</bdr> + <bdr>↓↑</bdr> : set pos1/pos2 for radar selected target<br>
         <br>
-        <bdr>]]..shifttext..[[</bdr> + <bdr>←→</bdr>: move destination ±10 su<br>
+        <bdr>]]..shifttext..[[</bdr> + <bdr>←→</bdr> : move destination ±10 su<br>
         <br>
-        <bdr>]]..shifttext..[[</bdr> + <bdr>]]..alttext..[[</bdr>: destination to closest target pipe<br>
+        <bdr>]]..shifttext..[[</bdr> + <bdr>]]..alttext..[[</bdr> : destination to closest target pipe<br>
         <br>
-        <bdr>]]..alttext..[[</bdr> + <bdr>]]..geartext..[[</bdr>: on/off export mode<br>
+        <bdr>]]..alttext..[[</bdr> + <bdr>]]..geartext..[[</bdr> : on/off export mode<br>
         <br>
-        <bdr>]]..opt4..[[</bdr>: show/hide current target position (Works only when manually setting coordinates or in export mode)<br>
+        <bdr>]]..opt4..[[</bdr> : show/hide current target position (Works only when manually setting coordinates or in export mode)<br>
         <br>
-        <bdr>]]..shifttext..[[</bdr> + <bdr>↓↑</bdr>: switch target position between current speed or targetSpeed from LUA parameters<br>
+        <bdr>]]..shifttext..[[</bdr> + <bdr>↓↑</bdr> : switch target position between current speed or targetSpeed from LUA parameters<br>
       </div>
     </div>
     <div class="bottomL">

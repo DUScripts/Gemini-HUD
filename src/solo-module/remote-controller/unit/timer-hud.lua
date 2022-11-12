@@ -39,7 +39,7 @@ else
       resCLWN = ''
 end
 
-if shield.isVenting() then
+if shield.isVenting() == 1 then
    venttime = shield.getVentingCooldown()
    if venttime < venttimemax then
       resCLWN = math.floor(venttime)
@@ -307,7 +307,6 @@ if math.ceil(HP) <= 50 then
 
                for BodyId in pairs(atlas[0]) do
                   local planet=atlas[0][BodyId]
-                  if planet ~= closestPlanet then
                      if (planet.type[1] == 'Planet' or planet.isSanctuary == true) then
                         drawonradar(vec3(planet.center),planet.name[1])
                         local point1 = library.getPointOnScreen({planet.center[1],planet.center[2],planet.center[3]})
@@ -345,7 +344,6 @@ if math.ceil(HP) <= 50 then
                            </svg></div>]]
                         end
                      end
-                  end
                end
                drawonradar(safeVector,safeStatus)
                if asteroidcoord[1] ~= 0 then

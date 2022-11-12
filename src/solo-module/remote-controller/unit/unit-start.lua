@@ -368,7 +368,7 @@ local destCenter = vec3(stellarObjectDestination.center)
 
 return calcDistance(origCenter, destCenter, currenLocation)
 end
-closestPlanet = stellarObjects[0]
+
 function closestPipe()
 while true do
    local smallestDistance = nil;
@@ -426,6 +426,7 @@ while true do
    end
 end
 end
+closestPlanet = stellarObjects[0]
 closestPlanetT = stellarObjects[0]
 function closestPipe1(pos)
    while true do
@@ -1193,25 +1194,25 @@ elseif stress[2] >= stress[1] and
               <br>
               <bdr>]]..opt7..[[</bdr> : switch AUTO/MANUAL shield mode<br>
               <br>
-              <bdr>]]..shifttext..[[</bdr> + <bdr>]]..opt7..[[</bdr>: switch shield mode between MAX and 50/50 mode<br>
+              <bdr>]]..shifttext..[[</bdr> + <bdr>]]..opt7..[[</bdr> : switch shield mode between MAX and 50/50 mode<br>
               <br>
               <bdr>]]..opt6..[[</bdr> : agree and apply resists in manual shield mode<br>
               <br>
-              <bdr>]]..uptext..[[</bdr> + <bdr>]]..opt1..[[</bdr>: 100% antimatter power<br>
+              <bdr>]]..uptext..[[</bdr> + <bdr>]]..opt1..[[</bdr> : 100% antimatter power<br>
               <br>
-              <bdr>]]..uptext..[[</bdr> + <bdr>]]..opt2..[[</bdr>: 100% electromagnetic power<br>
+              <bdr>]]..uptext..[[</bdr> + <bdr>]]..opt2..[[</bdr> : 100% electromagnetic power<br>
               <br>
-              <bdr>]]..uptext..[[</bdr> + <bdr>]]..opt3..[[</bdr>: 100% thremic power<br>
+              <bdr>]]..uptext..[[</bdr> + <bdr>]]..opt3..[[</bdr> : 100% thremic power<br>
               <br>
-              <bdr>]]..uptext..[[</bdr> + <bdr>]]..opt4..[[</bdr>: 100% kinetic power<br>
+              <bdr>]]..uptext..[[</bdr> + <bdr>]]..opt4..[[</bdr> : 100% kinetic power<br>
               <br>
-              <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt1..[[</bdr>: cannon profile<br>
+              <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt1..[[</bdr> : cannon profile<br>
               <br>
-              <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt2..[[</bdr>: laser profile<br>
+              <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt2..[[</bdr> : laser profile<br>
               <br>
-              <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt3..[[</bdr>: railgun profile<br>
+              <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt3..[[</bdr> : railgun profile<br>
               <br>
-              <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt4..[[</bdr>: universal profile<br>
+              <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt4..[[</bdr> : universal profile<br>
             </div>
             <div class="helper2">
               <ibold>Other:</ibold>
@@ -1221,21 +1222,21 @@ elseif stress[2] >= stress[1] and
               <br>
               <bdr>]]..opt1..[[</bdr> : show/hide planets and planetary periscope<br>
               <br>
-              <bdr>]]..opt2..[[</bdr>: set destination to planet #1 (closest pipe planets)<br>
+              <bdr>]]..opt2..[[</bdr> : set destination to planet #1 (closest pipe planets)<br>
               <br>
-              <bdr>]]..opt3..[[</bdr>: set destination to closest pipe<br>
+              <bdr>]]..opt3..[[</bdr> : set destination to closest pipe<br>
               <br>
-              <bdr>]]..opt4..[[</bdr>: set destination to planet #2 (closest pipe planets)<br>
+              <bdr>]]..opt4..[[</bdr> : set destination to planet #2 (closest pipe planets)<br>
               <br>
-              <bdr>]]..shifttext..[[</bdr> + <bdr>]]..opt2..[[</bdr>: set destination to destination planet (LUA parameters)<br>
+              <bdr>]]..shifttext..[[</bdr> + <bdr>]]..opt2..[[</bdr> : set destination to destination planet (LUA parameters)<br>
               <br>
-              <bdr>]]..shifttext..[[</bdr> + <bdr>]]..opt3..[[</bdr>: set destination to custom pipe Destination - Departure (LUA parameters)<br>
+              <bdr>]]..shifttext..[[</bdr> + <bdr>]]..opt3..[[</bdr> : set destination to custom pipe Destination - Departure (LUA parameters)<br>
               <br>
-              <bdr>]]..shifttext..[[</bdr> + <bdr>]]..opt4..[[</bdr>: set destination to departure planet (LUA parameters)<br>
+              <bdr>]]..shifttext..[[</bdr> + <bdr>]]..opt4..[[</bdr> : set destination to departure planet (LUA parameters)<br>
               <br>
-              <bdr>]]..opt5..[[</bdr>: Helios system map<br>
+              <bdr>]]..opt5..[[</bdr> : Helios system map<br>
               <br>
-              <bdr>]]..opt5..[[</bdr>: set destination to saved position<br>
+              <bdr>]]..opt5..[[</bdr> : set destination to saved position<br>
             </div>
           </div>
           <div class="bottomL">
@@ -1275,7 +1276,76 @@ elseif stress[2] >= stress[1] and
           <div class="helperCenter">GEMINI FOUNDATION<br><br>Remote Controller Controls</div>
         </body>
       </html>]]
+      Kinematic = {} -- just a namespace
 
+      function Kinematic.computeAccelerationTime(initial, acceleration, final)
+         -- ans: t = (vf - vi)/a
+         return (final - initial)/acceleration
+      end
+
+
+      function Kinematic.computeDistanceAndTime(initial,final,mass,thrust,t50,brakeThrust)
+
+         t50            = t50 or 0
+         brakeThrust    = brakeThrust or 0 -- usually zero when accelerating
+
+         local speedUp  = initial < final
+         local a0       = thrust / (speedUp and mass or -mass)
+         local b0       = -brakeThrust/mass
+         local totA     = a0+b0
+
+         if initial == final then
+            return 0, 0   -- trivial
+         elseif speedUp and totA <= 0 or not speedUp and totA >= 0 then
+            return -1, -1 -- no solution
+         end
+
+         local distanceToMax, timeToMax = 0, 0
+
+         if a0 ~= 0 and t50 > 0 then
+
+            local c1  = math.pi/t50/2
+
+            local v = function(t)
+                  return a0*(t/2 - t50*math.sin(c1*t)/math.pi) + b0*t + initial
+            end
+
+            local speedchk = speedUp and function(s) return s >= final end or
+                                          function(s) return s <= final end
+            timeToMax  = 2*t50
+
+            if speedchk(v(timeToMax)) then
+                  local lasttime = 0
+
+                  while math.abs(timeToMax - lasttime) > 0.25 do
+                     local t = (timeToMax + lasttime)/2
+                     if speedchk(v(t)) then
+                        timeToMax = t 
+                     else
+                        lasttime = t
+                     end
+                  end
+            end
+
+            -- Closed form solution for distance exists (t <= 2*t50):
+            local K       = 2*a0*t50^2/math.pi^2
+            distanceToMax = K*(math.cos(c1*timeToMax) - 1) +
+                              (a0+2*b0)*timeToMax^2/4 + initial*timeToMax
+
+            if timeToMax < 2*t50 then
+                  return distanceToMax, timeToMax
+            end
+            initial = v(timeToMax)
+         end
+         -- At full thrust, motion follows Newton's formula:
+         local a = a0+b0
+         local t = Kinematic.computeAccelerationTime(initial, a, final)
+         local d = initial*t + a*t*t/2
+         return distanceToMax+d
+      end
+
+      system.print(''..geartext..' + ↓: remote controller helper')
+      
          transponder.deactivate() --transponder server bug fix
          main1 = coroutine.create(closestPipe)
          unit.setTimer('hud',0.02)
