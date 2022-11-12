@@ -44,7 +44,8 @@ ETH/BEP20: 0x90b865B1e05950826D521B4a0F95597d80b23180 <br/>
 BTC: 18HJbJBNeWs4ZZPYQ1hpjYt3BLb8VoiwXA <br/>
 TRX: TTEiRTWftQXJCu4h31KZThNZpXhPZjVRMp <br/>
 ![HUD concept1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/1c.png)<br/>
-![HUD concept2](https://github.com/Crusader93/Gemini-HUD/blob/master/images/22.png)<br/>
+![HUD concept2](https://github.com/Crusader93/Gemini-HUD/blob/master/images/11.png)<br/>
+![HUD concept3](https://github.com/Crusader93/Gemini-HUD/blob/master/images/22.png)<br/>
 ![example1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/3.png)<br/>
 <br/>
 Install gunner module:<br/>
