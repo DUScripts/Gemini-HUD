@@ -1202,7 +1202,7 @@ elseif stress[2] >= stress[1] and
               <br>
               <bdr>]]..uptext..[[</bdr> + <bdr>]]..opt2..[[</bdr> : 100% electromagnetic power<br>
               <br>
-              <bdr>]]..uptext..[[</bdr> + <bdr>]]..opt3..[[</bdr> : 100% thremic power<br>
+              <bdr>]]..uptext..[[</bdr> + <bdr>]]..opt3..[[</bdr> : 100% thermic power<br>
               <br>
               <bdr>]]..uptext..[[</bdr> + <bdr>]]..opt4..[[</bdr> : 100% kinetic power<br>
               <br>
