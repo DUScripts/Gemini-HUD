@@ -65,8 +65,8 @@ Periscope controls:<br/>
 Alt + MMB  - zoom periscope.<br/>
 <br/>
 HUD controls:<br/>
-I highly recommend you change your game controls: set buttons 1-8 instead of Options 1-8.<br/>
 Use G + ↑ or G + ↓ to call a helpers.<br/>
+I highly recommend you change your game controls: set buttons 1-8 instead of Options 1-8.<br/>
 ![controls1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/controls.png)<br/>
 <br/>
 GHUD 1st shield panel concept:<br/>
