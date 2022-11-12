@@ -49,13 +49,13 @@ TRX: TTEiRTWftQXJCu4h31KZThNZpXhPZjVRMp <br/>
 ![example1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/3.png)<br/>
 <br/>
 Install gunner module:<br/>
-Link the screen, 2 databanks, weapons and radar to the gunner module, then load the configuration to gunner module.<br/>
-You must have one shared databank linker with the gunner seat and remote controller. Total 2 databanks.<br/>
+Link the screen, 2 databanks, weapons and radar to gunner module, then load the configuration to gunner module.<br/>
+You must have one shared databank linked with the gunner seat and remote controller. Total 2 databanks.<br/>
 Put the audio folder with sounds here: Documents\NQ\DualUniverse\ <br/>
 <br/>
 Install remote controller:<br/>
-Link the transponder and one spacefuetank to the remote module, then load the configuration to remote controller.<br/>
-You must have one shared databank linker with the gunner seat and remote controller. Total 2 databanks.<br/>
+Link the transponder and one spacefuetank to remote controller, then load the configuration to remote controller.<br/>
+You must have one shared databank linked with the gunner seat and remote controller. Total 2 databanks.<br/>
 <br/>
 Install periscope:<br/>
 Link programming board 1 to manual switch, then copy and paste the programming-board-1.json to programming board 1<br/>
