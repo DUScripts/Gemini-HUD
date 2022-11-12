@@ -62,7 +62,7 @@ Link programming board 1 to manual switch, then copy and paste the programming-b
 Link manual switch to programming board 2, then copy and paste the programming-board-2.json to programming board 2<br/>
 <br/>
 Periscope controls:<br/>
-Alt + MMB  - zoom periscope.<br/>
+Alt + MMB: zoom periscope.<br/>
 <br/>
 HUD controls:<br/>
 Use G + ↑ or G + ↓ to call a helpers.<br/>
