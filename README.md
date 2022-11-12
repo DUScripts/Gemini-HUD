@@ -40,9 +40,9 @@ Many thanks to:<br/>
  Chelobek for target vector widget<br/>
  <br/>
 DONATE:<br/>
-ETH/BEP20: 0x90b865B1e05950826D521B4a0F95597d80b23180<br/>
-BTC: 18HJbJBNeWs4ZZPYQ1hpjYt3BLb8VoiwXA<br/>
-TRX: TTEiRTWftQXJCu4h31KZThNZpXhPZjVRMp<br/>
+ETH/BEP20: 0x90b865B1e05950826D521B4a0F95597d80b23180 <br/>
+BTC: 18HJbJBNeWs4ZZPYQ1hpjYt3BLb8VoiwXA <br/>
+TRX: TTEiRTWftQXJCu4h31KZThNZpXhPZjVRMp <br/>
 ![HUD concept1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/56.png)<br/>
 ![HUD concept2](https://github.com/Crusader93/Gemini-HUD/blob/master/images/11.png)<br/>
 ![HUD concept3](https://github.com/Crusader93/Gemini-HUD/blob/master/images/22.png)<br/>
@@ -53,22 +53,25 @@ Install gunner module:<br/>
 Link the screen, 2 databanks, weapons and radar to the gunner module, then load the configuration to gunner module.<br/>
 You must have one shared databank linker with the gunner seat and remote controller. Total 2 databanks.<br/>
 <br/>
-Put the audio folder with sounds here: Documents\NQ\DualUniverse\<br/>
+Put the audio folder with sounds here: Documents\NQ\DualUniverse\ <br/>
 <br/>
 Install remote controller:<br/>
+<br/>
 Link the transponder and one spacefuetank to the remote module, then load the configuration to remote controller.<br/>
 You must have one shared databank linker with the gunner seat and remote controller. Total 2 databanks.<br/>
 <br/>
-Put the audio folder with sounds here: Documents\NQ\DualUniverse\<br/>
+Put the audio folder with sounds here: Documents\NQ\DualUniverse\ <br/>
 <br/>
 Install periscope:<br/>
+<br/>
 1. Link programming board 1 to manual switch, then copy and paste the programming-board-1.json to programming board 1<br/>
 2. Link manual switch to programming board 2, then copy and paste the programming-board-2.json to programming board 2<br/>
 Periscope controls:<br/>
 Alt + MMB  - zoom periscope.<br/>
 <br/>
 HUD controls:<br/>
-I highly recommend that you change your game controls: set buttons 1-8 instead of Options 1-8<br/>
+I highly recommend you change your game controls: set buttons 1-8 instead of Options 1-8.<br/>
+
 ![controls1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/controls.png)<br/>
 Use G + ↑ or G + ↓ to call a helpers.<br/>
 ![controls2](https://github.com/Crusader93/Gemini-HUD/blob/master/images/gunner.png)<br/>
