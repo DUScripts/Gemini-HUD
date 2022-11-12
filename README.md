@@ -54,7 +54,7 @@ You must have one shared databank linked with the gunner seat and remote control
 Put the audio folder with sounds here: Documents\NQ\DualUniverse\ <br/>
 <br/>
 Install remote controller:<br/>
-Link the transponder and one spacefuetank to remote controller, then load the configuration to remote controller.<br/>
+Link the transponder,databank and one spacefuetank to remote controller, then load the configuration to remote controller.<br/>
 You must have one shared databank linked with the gunner seat and remote controller. Total 2 databanks.<br/>
 <br/>
 Install periscope:<br/>
