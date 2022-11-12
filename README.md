@@ -55,7 +55,7 @@ Put the audio folder with sounds here: Documents\NQ\DualUniverse\ <br/>
 <br/>
 Install remote controller:<br/>
 Link the databank and one spacefuetank to remote controller, then load the configuration to remote controller.<br/>
-You must have one shared databank linked with the gunner seat and remote controller. Total 2 databanks.<br/>
+You must have one shared databank linked with the gunner seat and remote controller. Total 2 databanks. Gunner module - 2 linked databanks, remote controller - 1 linked databank.<br/>
 <br/>
 Install periscope:<br/>
 Link programming board 1 to manual switch, then copy and paste the programming-board-1.json to programming board 1<br/>
