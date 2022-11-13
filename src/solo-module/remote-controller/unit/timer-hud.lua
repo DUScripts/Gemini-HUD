@@ -30,21 +30,21 @@ if (system.getArkTime() - lastShotTime) >= 40 then
 end
 
 varcombat = construct.getPvPTimer()
+
 resisttime = shield.getResistancesCooldown()
 if resisttime ~= 0 then
-   if resisttime < resisttimemax  then 
       resCLWN = math.floor(resisttime)
-   end
 else
       resCLWN = ''
 end
 
 if shield.isVenting() == 1 then
-   venttime = shield.getVentingCooldown()
-   if venttime < venttimemax then
-      resCLWN = math.floor(venttime)
-      shieldStatus = 'VENTING'
-   end
+   shieldStatus = 'VENTING'
+end
+
+venttime = shield.getVentingCooldown()
+if venttime ~= 0 then
+   resCLWN = math.floor(venttime)
 end
 
 if mybr == true then
