@@ -1,2 +1,2 @@
 start:
-if buttonSpace == false mmode = not mmode end
+if buttonSpace == false then mmode = not mmode end
