@@ -30,8 +30,7 @@ GHUD_AR_allies_border_size = 400 --export:
 GHUD_AR_allies_border_color = "#0cf27b" --export:
 GHUD_AR_allies_font_color = "#0cf27b" --export:
 GHUD_targets_color = "#fc033d" --export:
-GHUD_show_echoes = false --export: Show targets echo. Has a negative impact on performance with a large targets count!
-GHUD_notifications = true --export: Radar notifications + LUA char notification
+GHUD_safeNotifications = false --export: radar notifications in safe zone
 GHUD_selected_border_color = "rgb(0, 191, 255)" --export:
 GHUD_target_names_color = "#fc033d" --export: Color for target names
 GHUD_allies_distance_color = "rgb(0, 191, 255)" --export:
@@ -57,6 +56,8 @@ if GHUD_windowed_mode then
    GHUD_allies_Y = 2
 end
 
+GHUD_show_echoes = false
+
 if GHUD_show_echoes == true then
    statusY = 13.5
 else
@@ -65,6 +66,8 @@ end
 
 --vars
 atlas = require("atlas")
+activeRadar = radar_1
+activeRadar.setSortMethod(1)
 shift = false
 lalt = false
 radarIDs = {}
@@ -154,6 +157,9 @@ end
 whitelist = checkWhitelist() --load IDs
 local pauseAfter = 100 --radar widget coroutine
 
+radarWidgetScale = 2
+radarWidgetScaleDisplay = '<div class="measures"><span>0 SU</span><span>1 SU</span><span>2 SU</span></div>'
+
 --radar widget
 function defaultRadar()
    sizeState = 6
@@ -162,15 +168,15 @@ function defaultRadar()
 end
 
 function mRadar:createWidget()
-   self.dataID = self.system.createData(self.radar.getWidgetData())
+   self.dataID = self.system.createData(activeRadar.getWidgetData())
    radarPanel = self.system.createWidgetPanel('')
-   radarWidget = self.system.createWidget(radarPanel, self.radar.getWidgetType())
+   radarWidget = self.system.createWidget(radarPanel, activeRadar.getWidgetType())
    self.system.addDataToWidget(self.dataID, radarWidget)
 end
 
 function mRadar:createWidgetNew()
-   self.dataID = self.system.createData(self.radar.getWidgetData())
-   radarWidget = self.system.createWidget(radarPanel, self.radar.getWidgetType())
+   self.dataID = self.system.createData(activeRadar.getWidgetData())
+   radarWidget = self.system.createWidget(radarPanel, activeRadar.getWidgetType())
    self.system.addDataToWidget(self.dataID, radarWidget)
 end
 
@@ -188,7 +194,7 @@ end
 
 function mRadar:updateStep()
    local resultList = {}
-   local data = self.radar.getWidgetData()
+   local data = activeRadar.getWidgetData()
    local constructList = data:gmatch('({"constructId":".-%b{}.-})')
    local isIDFiltered = next(self.idFilter) ~= nil
    local i = 0
@@ -198,13 +204,13 @@ function mRadar:updateStep()
          coroutine.yield()
       end
       local ID = tonumber(str:match('"constructId":"([%d]*)"'))
-      local size = self.radar.getConstructCoreSize(ID)
-      local locked = self.radar.isConstructIdentified(ID)
-      local alive = self.radar.isConstructAbandoned(ID)
-      local selectedTarget = self.radar.getTargetId(ID)
+      local size = activeRadar.getConstructCoreSize(ID)
+      local locked = activeRadar.isConstructIdentified(ID)
+      local alive = activeRadar.isConstructAbandoned(ID)
+      local selectedTarget = activeRadar.getTargetId(ID)
       if locked == 1 or alive == 0 or selectedTarget == ID and size ~= "" then --show only locked or alive or selected targets
          if defaultSize == 'ALL' then --default mode
-            if ((whitelist[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode) and self.radar.getThreatRateFrom(ID) ~= 5 then  --show attacking traitor on widget
+            if ((whitelist[ID]==true or activeRadar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode) and activeRadar.getThreatRateFrom(ID) ~= 5 then  --show attacking traitor on widget
                goto continue1
             end
             if isIDFiltered and self.idFilter[ID%1000] ~= true then
@@ -213,7 +219,7 @@ function mRadar:updateStep()
             resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. tostring(ID):sub(-3) .. ' - %1"')
             ::continue1::
          elseif size == defaultSize then
-            if ((whitelist[ID]==true or self.radar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode) and self.radar.getThreatRateFrom(ID) ~= 5 then
+            if ((whitelist[ID]==true or activeRadar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode) and activeRadar.getThreatRateFrom(ID) ~= 5 then
                goto continue2
             end
             if isIDFiltered and self.idFilter[ID%1000] ~= true then
@@ -263,19 +269,18 @@ function mRadar:toggleFriendlyMode()
    self.friendlyMode = not self.friendlyMode
 end
 
-function mRadar:new(sys, radar)
+function mRadar:new(sys)
    local mRadar = {}
    setmetatable(mRadar, self)
    self.system = sys
-   self.radar = radar
    self.friendlyMode = false
    self.onlyIdentified = false
    self.idFilter = {}
-   --self:createWidget()
-   self.dataID = self.system.createData(self.radar.getWidgetData())
-   self.radarPanel = self.system.createWidgetPanel('')
-   self.radarWidget = self.system.createWidget(self.radarPanel, self.radar.getWidgetType())
-   self.system.addDataToWidget(self.dataID, self.radarWidget)
+   self:createWidget()
+   --self.dataID = self.system.createData(activeRadar.getWidgetData())
+   --self.radarPanel = self.system.createWidgetPanel('')
+   --self.radarWidget = self.system.createWidget(self.radarPanel, activeRadar.getWidgetType())
+   --self.system.addDataToWidget(self.dataID, self.radarWidget)
    self.updaterCoroutine = coroutine.create(function() self:updateLoop() end)
    return self
 end
@@ -352,7 +357,6 @@ function mWeapons:onUpdate()
          ammoType2 = "Def"
       end
 
-      --weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. hitP .. '% ' .. ammoType1 .. ' ' .. ammoType2 .. '"')
       weaponData = weaponData:gsub('"constructId":"(%d+(%d%d%d))","name":"(.?.?.?.?).-"', '"constructId":"%1","name":"%2 - %3"')
       weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. hitP .. '%% - ' .. ammoType1 .. ' ' .. ammoType2 .. '"')
       --weaponData = weaponData:gsub('"constructId":"(%d+(%d%d%d))","name":"(.?.?.?.?.?.?.?.?.?.?.?.?.?.?).-"', '"constructId":"%1","name":"%2 - %3"')
@@ -400,26 +404,12 @@ function ConvertLocalToWorld(x,y,z)
    return xOffset + yOffset + zOffset + vec3(construct.getWorldPosition())
 end
 
---Echoes startup configurator
--- if radar_1.getOperationalState() == 0 then
---    radarWidgetScale = 160
---    radarWidgetScaleDisplay = '<div class="measures"><span>0 KM</span><span>2.5 KM</span><span>5 KM</span></div>'
--- else
---    radarWidgetScale = 2
---    radarWidgetScaleDisplay = '<div class="measures"><span>0 SU</span><span>1 SU</span><span>2 SU</span></div>'
--- end
-
-radarWidgetScale = 2
-radarWidgetScaleDisplay = '<div class="measures"><span>0 SU</span><span>1 SU</span><span>2 SU</span></div>'
-
-radar_1.setSortMethod(1) --set default radar range mode for constructIds list main function
-
 if GHUD_radarWidget_on_top == true then
-   mRadar = mRadar:new(system, radar_1) --radar widget
+   mRadar = mRadar:new(system) --radar widget
    mWeapons = mWeapons:new(system, weapon, GHUD_weapon_panels) --weapon widgets
 else
    mWeapons = mWeapons:new(system, weapon, GHUD_weapon_panels)
-   mRadar = mRadar:new(system, radar_1)
+   mRadar = mRadar:new(system)
 end
 
 --main gunner function
@@ -449,15 +439,35 @@ function main()
       radarDynamicWidget = {}
       radarStaticData = radarStaticWidget
       radarStaticWidget = {}
+      if radar_2 ~= nil then
+         if radar_1.getOperationalState() == -1 and atmovar == false then
+            atmovar = true
+            activeRadar = radar_2
+            mRadar:deleteWidget()
+            mRadar:createWidgetNew()
+            radarWidgetScale = 160
+            radarWidgetScaleDisplay = '<div class="measures"><span>0 KM</span><span>2.5 KM</span><span>5 KM</span></div>'
+            activeRadar.setSortMethod(1)
+         end
+         if radar_1.getOperationalState() == 1 and atmovar == true then
+            atmovar = false
+            activeRadar = radar_1
+            mRadar:deleteWidget()
+            mRadar:createWidgetNew()
+            radarWidgetScale = 2
+            radarWidgetScaleDisplay = '<div class="measures"><span>0 SU</span><span>1 SU</span><span>2 SU</span></div>'
+            activeRadar.setSortMethod(1)
+         end
+      end
       for k,v in pairs(radarIDs) do
          i = i + 1
-         local size = radar_1.getConstructCoreSize(v)
+         local size = activeRadar.getConstructCoreSize(v)
          local constructRow = {}
          if GHUD_log_stats then
             if t_radarEnter[v] ~= nil then
-               if radar_1.hasMatchingTransponder(v) == 0 and not whitelist[v] and size ~= "" and radar_1.getConstructDistance(v) < 600000 then --do not show far targets during warp and server lag
-                  local name = radar_1.getConstructName(v)
-                  if radar_1.isConstructAbandoned(v) == 0 then
+               if activeRadar.hasMatchingTransponder(v) == 0 and not whitelist[v] and size ~= "" and activeRadar.getConstructDistance(v) < 600000 then --do not show far targets during warp and server lag
+                  local name = activeRadar.getConstructName(v)
+                  if activeRadar.isConstructAbandoned(v) == 0 then
                      local msg = 'NEW TARGET: '..name..' - '..v..' - Size: '..size..'\nYour pos: '..t_radarEnter[v].pos..''
                      table.insert(loglist, msg)
                      if count < 10 then --max 10 notifications
@@ -468,7 +478,7 @@ function main()
                         system.playSound('enter.mp3')
                      end
                   else
-                     local pos = radar_1.getConstructWorldPos(v)
+                     local pos = activeRadar.getConstructWorldPos(v)
                      pos = '::pos{0,0,'..pos[1]..','..pos[2]..','..pos[3]..'}'
                      local msg = 'NEW TARGET (abandoned): '..name..' - '..v..' - Size: '..size..'\nTarget pos:'..pos..''
                      table.insert(loglist, msg)
@@ -486,14 +496,14 @@ function main()
          end
          if GHUD_show_echoes == true then
             if size ~= "" then
-               constructRow.widgetDist = math.ceil(radar_1.getConstructDistance(v) / 1000 * radarWidgetScale)
+               constructRow.widgetDist = math.ceil(activeRadar.getConstructDistance(v) / 1000 * radarWidgetScale)
             end
          end
          --radarlist
          if GHUD_show_allies == true and size ~= "" then
-            if radar_1.hasMatchingTransponder(v) == 1 or whitelist[v] and radar_1.getThreatRateFrom(v) ~= 5 then  --remove attacking traitor from the allies HUD
-               local name = radar_1.getConstructName(v)
-               local dist = math.floor(radar_1.getConstructDistance(v))
+            if activeRadar.hasMatchingTransponder(v) == 1 or whitelist[v] and activeRadar.getThreatRateFrom(v) ~= 5 then  --remove attacking traitor from the allies HUD
+               local name = activeRadar.getConstructName(v)
+               local dist = math.floor(activeRadar.getConstructDistance(v))
                if dist >= 1000 then
                   dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
                else
@@ -502,7 +512,7 @@ function main()
                local allID = tostring(v):sub(-3)
                local nameA = ''..allID..' '..name..''
                friendlies = friendlies + 1
-               if radar_1.getTargetId(v) ~= v and friendlies < GHUD_allies_count1 then
+               if activeRadar.getTargetId(v) ~= v and friendlies < GHUD_allies_count1 then
                   list = list..[[
                   <div class="table-row3 th3">
                   <div class="table-cell3">
@@ -510,7 +520,7 @@ function main()
                   </div>
                   </div>]]
                end
-               if radar_1.getTargetId(v) == v and friendlies < GHUD_allies_count1 then
+               if activeRadar.getTargetId(v) == v and friendlies < GHUD_allies_count1 then
                   list = list..[[
                   <div class="table-row3 th3S">
                   <div class="table-cell3S">
@@ -518,7 +528,7 @@ function main()
                   </div>
                   </div>]]
                end
-               if radar_1.getTargetId(v) == v and friendlies >= GHUD_allies_count1 then
+               if activeRadar.getTargetId(v) == v and friendlies >= GHUD_allies_count1 then
                   list = list..[[
                   <div class="table-row3 th3S">
                   <div class="table-cell3S">
@@ -532,9 +542,9 @@ function main()
          local speed = 0
          local radspeed = 0
          local angspeed = 0
-         if radar_1.isConstructIdentified(v) == 1 and size ~= "" then
-            local name = radar_1.getConstructName(v)
-            local dist = math.floor(radar_1.getConstructDistance(v))
+         if activeRadar.isConstructIdentified(v) == 1 and size ~= "" then
+            local name = activeRadar.getConstructName(v)
+            local dist = math.floor(activeRadar.getConstructDistance(v))
             if dist >= 1000 then
                dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
             else
@@ -545,8 +555,8 @@ function main()
             --local nameT = string.sub((""..nameIDENT..""),1,11)
             --table.insert(radarTarget, constructRow)
             isILock = true
-            speed = math.floor(radar_1.getConstructSpeed(v) * 3.6)
-            if radar_1.getTargetId(v) == v then
+            speed = math.floor(activeRadar.getConstructSpeed(v) * 3.6)
+            if activeRadar.getTargetId(v) == v then
                islockList = islockList..[[
                <div class="table-row2 thS">
                <div class="table-cellS">
@@ -565,7 +575,7 @@ function main()
 
             if GHUD_show_echoes == true then
                if size ~= "" then
-                  if radar_1.getConstructKind(v) == 5 then
+                  if activeRadar.getConstructKind(v) == 5 then
                      table.insert(radarDynamic, constructRow)
                      if radarDynamicWidget[constructRow.widgetDist] ~= nil then
                         radarDynamicWidget[constructRow.widgetDist] = radarDynamicWidget[constructRow.widgetDist] + 1
@@ -584,10 +594,10 @@ function main()
             end
          end
          --lockstatus
-         if radar_1.getThreatRateFrom(v) ~= 1 and size ~= "" then
+         if activeRadar.getThreatRateFrom(v) ~= 1 and size ~= "" then
             countLock = countLock + 1
-            local name = string.sub((""..radar_1.getConstructName(v)..""),1,11)
-            local dist = math.floor(radar_1.getConstructDistance(v))
+            local name = string.sub((""..activeRadar.getConstructName(v)..""),1,11)
+            local dist = math.floor(activeRadar.getConstructDistance(v))
             if dist >= 1000 then
                dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
             else
@@ -595,7 +605,7 @@ function main()
             end
             local loclIDT = tostring(v):sub(-3)
             local nameLOCK = ''..loclIDT..' '..name..''
-            if radar_1.getThreatRateFrom(v) == 5 then
+            if activeRadar.getThreatRateFrom(v) == 5 then
                countAttacked = countAttacked + 1
                if countLock <= 10 then
                lockList = lockList..[[
@@ -1857,9 +1867,9 @@ function tickVector(unit, system, text)
       screen_1.setCenteredText(posExport1 .. "/" .. timeExport1 .. "/" .. posExport2 .. "/" .. timeExport2)
    end
    function radarPos(system,radar)
-      local id = radar_1.getTargetId()
+      local id = activeRadar.getTargetId()
       if id ~= 0 then
-         local dist = radar_1.getConstructDistance(id)
+         local dist = activeRadar.getConstructDistance(id)
          local forwvector = vec3(system.getCameraWorldForward())
          local worldpos = vec3(system.getCameraWorldPos())
          local p = (dist * forwvector + worldpos)
@@ -2117,6 +2127,8 @@ function tickVector(unit, system, text)
         <luac>clear</luac>: clear all whitelist databank<br>
         <br>
         <luac>friends</luac>: show/hide AR allies marks<br>
+        <br>
+        <luac>safe</luac>: on/off radar notifications in safe zone<br>
       </div>
       <div class="helper4">
         <ibold>TARGET VECTOR LUA COMMANDS:</ibold>

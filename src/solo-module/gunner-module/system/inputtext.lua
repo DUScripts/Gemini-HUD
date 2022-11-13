@@ -37,4 +37,14 @@ else
 end
 end
 
+if text == "safe" then
+   if GHUD_safeNotifications == true then
+      GHUD_safeNotifications = false
+      system.print('Radar safe zone notifications OFF')
+   else
+      GHUD_safeNotifications = true
+      system.print('Radar safe zone notifications ON')
+   end
+   end
+
 inTEXT(unit,system,text)

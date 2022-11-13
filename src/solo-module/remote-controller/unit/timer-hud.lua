@@ -551,13 +551,13 @@ if math.ceil(HP) <= 50 then
             }
             </style>
             <body>
-            ]]..warningmsg..[[
+            ]]..Indicator..[[
             ]]..AR_asteroid..[[
             ]]..AR_planets..[[
             ]]..AR_pvpzone..[[
             ]]..AR_safezone..[[
-            ]]..Indicator..[[
             ]]..message..[[
+            ]]..warningmsg..[[
             ]]..brakeHUD..[[
             <div class="safez">]]..safetext..[[</div>
             <div class="pipe">]]..pD()..[[</div>

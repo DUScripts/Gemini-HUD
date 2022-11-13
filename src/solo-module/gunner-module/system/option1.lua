@@ -1,5 +1,5 @@
 if shift == true then
-  local id = radar_1.getTargetId()
+  local id = activeRadar.getTargetId()
   if id ~= 0 then
      local keys = databank_2.getNbKeys()
      if whitelist[id] == true then

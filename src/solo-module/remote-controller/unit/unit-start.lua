@@ -377,7 +377,6 @@ while true do
    local pos = vec3(construct.getWorldPosition())
    for obj in pairs(stellarObjects) do
       i = i + 1
-      if (stellarObjects[obj].type[1] == 'Planet' or stellarObjects[obj].isSanctuary == true) then
          local planetCenter = vec3(stellarObjects[obj].center)
          local distance = vec3(pos - planetCenter):len()
 
@@ -385,7 +384,6 @@ while true do
             smallestDistance = distance
             nearestPlanet = obj
          end
-      end
       if i > 30 then
          i = 0
          coroutine.yield()
@@ -394,7 +392,7 @@ while true do
    i = 0
    closestPlanet = stellarObjects[nearestPlanet]
    nearestPipeDistance = nil
-   nearestAliothPipeDistance= nil
+   --nearestAliothPipeDistance= nil
    for obj in pairs(stellarObjects) do
       i = i + 1
       if (stellarObjects[obj].type[1] == 'Planet' or stellarObjects[obj].isSanctuary == true) then
@@ -406,11 +404,11 @@ while true do
                   sortestPipeKeyId = obj;
                   sortestPipeKey2Id = obj2;
                end
-               if stellarObjects[obj].name[1] == "Alioth" and (nearestAliothPipeDistance == nil or pipeDistance < nearestAliothPipeDistance) then
-                  nearestAliothPipeDistance = pipeDistance
-                  sortestAliothPipeKeyId = obj
-                  sortestAliothPipeKey2Id = obj2
-               end
+               -- if stellarObjects[obj].name[1] == "Alioth" and (nearestAliothPipeDistance == nil or pipeDistance < nearestAliothPipeDistance) then
+               --    nearestAliothPipeDistance = pipeDistance
+               --    sortestAliothPipeKeyId = obj
+               --    sortestAliothPipeKey2Id = obj2
+               -- end
             end
          end
       end
@@ -426,8 +424,10 @@ while true do
    end
 end
 end
+
 closestPlanet = stellarObjects[0]
 closestPlanetT = stellarObjects[0]
+
 function closestPipe1(pos)
    while true do
       local smallestDistance1 = nil;
@@ -446,23 +446,23 @@ function closestPipe1(pos)
       i = 0
       closestPlanetT = stellarObjects[nearestPlanet1]
       local nearestPipeDistance1 = nil
-      local nearestAliothPipeDistance1= nil
+      --local nearestAliothPipeDistance1= nil
       for obj in pairs(stellarObjects) do
          i = i + 1
             for obj2 in pairs(stellarObjects) do
-               if (obj2 > obj and (stellarObjects[obj2].type[1] == 'Planet' or stellarObjects[obj2].isSanctuary == true)) then
+               --if (obj2 > obj and (stellarObjects[obj2].type[1] == 'Planet' or stellarObjects[obj2].isSanctuary == true)) then
                   pipeDistance1 = calcDistanceStellar(stellarObjects[obj], stellarObjects[obj2], pos)
                   if nearestPipeDistance1 == nil or pipeDistance1 < nearestPipeDistance1 then
                      nearestPipeDistance1 = pipeDistance1;
                      sortestPipeKeyId1 = obj;
                      sortestPipeKey2Id1 = obj2;
                   end
-                  if stellarObjects[obj].name[1] == "Alioth" and (nearestAliothPipeDistance1 == nil or pipeDistance1 < nearestAliothPipeDistance1) then
-                     nearestAliothPipeDistance1 = pipeDistance1
-                     sortestAliothPipeKeyId1 = obj
-                     sortestAliothPipeKey2Id1 = obj2
-                  end
-               end
+                  -- if stellarObjects[obj].name[1] == "Alioth" and (nearestAliothPipeDistance1 == nil or pipeDistance1 < nearestAliothPipeDistance1) then
+                  --    nearestAliothPipeDistance1 = pipeDistance1
+                  --    sortestAliothPipeKeyId1 = obj
+                  --    sortestAliothPipeKey2Id1 = obj2
+                  -- end
+               --end
             end
          local distCP = vec3(pos):dist(vec3(closestPlanetT.center))
          if distCP > 100000 then
@@ -597,26 +597,27 @@ upB = false
 downB = false
 safew=''
 varcombat = construct.getPvPTimer()
+
 function pD()
-if closestPlanet ~= nil then
-   local pipeD = ''
-   if nearestPipeDistance >= 100000 then
-      pipeD = ''..string.format('%0.2f', nearestPipeDistance/200000)..' su'
-   elseif nearestPipeDistance >= 1000 and nearestPipeDistance < 100000 then
-      pipeD = ''..string.format('%0.1f', nearestPipeDistance/1000)..' km'
+   if closestPlanet ~= nil then
+      local pipeD = ''
+      if nearestPipeDistance >= 100000 then
+         pipeD = ''..string.format('%0.2f', nearestPipeDistance/200000)..' su'
+      elseif nearestPipeDistance >= 1000 and nearestPipeDistance < 100000 then
+         pipeD = ''..string.format('%0.1f', nearestPipeDistance/1000)..' km'
+      else
+         pipeD = ''..string.format('%0.0f', nearestPipeDistance)..' m'
+      end
+      if nearestPipeDistance >= 600000 then
+         return closestPipeData.. '<br>' .. '<green1>'..pipeD..'</green1>'
+      elseif nearestPipeDistance >= 400000 and nearestPipeDistance <= 600000 then
+         return closestPipeData.. '<br>' .. '<orange1>'..pipeD..'</orange1>'
+      elseif nearestPipeDistance < 400000 then
+         return closestPipeData.. '<br>' .. '<red1>'..pipeD..'<red1>'
+      end
    else
-      pipeD = ''..string.format('%0.0f', nearestPipeDistance)..' m'
+      return ""
    end
-   if nearestPipeDistance >= 600000 then
-      return closestPipeData.. '<br>' .. '<green1>'..pipeD..'</green1>'
-   elseif nearestPipeDistance >= 400000 and nearestPipeDistance <= 600000 then
-      return closestPipeData.. '<br>' .. '<orange1>'..pipeD..'</orange1>'
-   elseif nearestPipeDistance < 400000 then
-      return closestPipeData.. '<br>' .. '<red1>'..pipeD..'<red1>'
-   end
-else
-   return ""
-end
 end
 
 shipName = construct.getName()
@@ -763,7 +764,7 @@ elseif stress[2] >= stress[1] and
             if mabs(distp - szradius) < mabs(distsz - safeRadius) then
                distS = mabs(distp - szradius)
                local a3 = ''
-               local vector1 = vectorLengthen(vec3(closestPlanet.center), WorldPos, distS)
+               local vector1 = vectorLengthen(vec3(closestPlanet.center), WorldPos, 500000)
                if distS > 100000 then
                   distS = string.format('%0.2f', distS/200000)
                   a3 = 'su'

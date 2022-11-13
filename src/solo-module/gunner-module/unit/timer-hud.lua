@@ -1,4 +1,4 @@
-radarIDs = radar_1.getConstructIds()
+radarIDs = activeRadar.getConstructIds()
 idN = #radarIDs
 
 mRadar:onUpdate()
@@ -13,20 +13,20 @@ zone = data:match('"outOfZone":(.-),')
 local probil = tonumber(data:match('"hitProbability":(.-),'))
 
 local shipPos = vec3(construct.getWorldPosition())
-local id = radar_1.getTargetId()
+local id = activeRadar.getTargetId()
 if id ~= 0 then
    local sdist = ""
-   local dist = math.floor(radar_1.getConstructDistance(id))
-   local name = radar_1.getConstructName(id)
-   local size = radar_1.getConstructCoreSize(id)
+   local dist = math.floor(activeRadar.getConstructDistance(id))
+   local name = activeRadar.getConstructName(id)
+   local size = activeRadar.getConstructCoreSize(id)
    local speed = 'UNKNOWN'
    local anchor = 'middle'
    local damage = '0.0'
    if totalDamage[id] ~= nil then --target damage calculation concept
       damage = string.format('%0.1f',totalDamage[id].damage * 0.000001)
    end
-   if radar_1.isConstructIdentified(id) == 1 then
-      speed = radar_1.getConstructSpeed(id)
+   if activeRadar.isConstructIdentified(id) == 1 then
+      speed = activeRadar.getConstructSpeed(id)
       speed = math.floor(speed * 3.6)
       dist3 = speed
       anchor = 'start'
@@ -128,8 +128,8 @@ end
 local AR_allies = ''
 if GHUD_show_AR_allies_marks == true then
 for k,v in pairs(radarIDs) do --AR marks
-   if radar_1.hasMatchingTransponder(v) == 1 then
-      local pos = radar_1.getConstructWorldPos(v)
+   if activeRadar.hasMatchingTransponder(v) == 1 then
+      local pos = activeRadar.getConstructWorldPos(v)
       local point = library.getPointOnScreen({pos[1],pos[2],pos[3]})
       if point[3] > 0 then --visible zone
          local x = screenWidth*point[1] - GHUD_AR_allies_border_size/2
