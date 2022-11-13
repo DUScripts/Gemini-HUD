@@ -5,11 +5,15 @@ end
 
 damage_SVG()
 
-local stress = shield.getStressRatioRaw()
-AM_stress = stress[1]
-EM_stress = stress[2]
-KI_stress = stress[3]
-TH_stress = stress[4]
+varcombat = construct.getPvPTimer()
+
+if varcombat > 302 then
+   local stress = shield.getStressRatioRaw()
+   AM_stress = stress[1]
+   EM_stress = stress[2]
+   KI_stress = stress[3]
+   TH_stress = stress[4]
+end
 
 ccs_SVG()
 
@@ -28,8 +32,6 @@ end
 if (system.getArkTime() - lastShotTime) >= 40 then
    shoteCount = 0
 end
-
-varcombat = construct.getPvPTimer()
 
 resisttime = shield.getResistancesCooldown()
 if resisttime ~= 0 then

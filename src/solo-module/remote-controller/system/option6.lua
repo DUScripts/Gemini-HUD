@@ -1,9 +1,14 @@
 start:
-if varcombat > 300 and shield.getResistancesCooldown() == 0 and not GHUD_shield_auto_calibration then
+if varcombat > 302 and shield.getResistancesCooldown() == 0 and not GHUD_shield_auto_calibration then
     local stress = shield.getStressRatioRaw()
     local resistance = shield.getResistances()
     local res = getRes(stress, resMAX)
- 
+    
+    AM_stress = stress[1]
+    EM_stress = stress[2]
+    KI_stress = stress[3]
+    TH_stress = stress[4]
+
     if GHUD_shield_calibration_max then
        if resistance[1] == res[1] and
        resistance[2] == res[2] and
