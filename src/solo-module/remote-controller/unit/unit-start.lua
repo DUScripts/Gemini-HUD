@@ -764,7 +764,7 @@ elseif stress[2] >= stress[1] and
             if mabs(distp - szradius) < mabs(distsz - safeRadius) then
                distS = mabs(distp - szradius)
                local a3 = ''
-               local vector1 = vectorLengthen(vec3(closestPlanet.center), WorldPos, 500000)
+               local vector1 = vec3(closestPlanet.center)
                if distS > 100000 then
                   distS = string.format('%0.2f', distS/200000)
                   a3 = 'su'
@@ -787,7 +787,7 @@ elseif stress[2] >= stress[1] and
             else
                distS = mabs(distsz - safeRadius)
                local a3 = ''
-               local vector1 = vectorLengthen(WorldPos, safeWorldPos, distS)
+               local vector1 = safeWorldPos
                if distS > 100000 then
                   distS = string.format('%0.2f', distS/200000)
                   a3 = 'su'
