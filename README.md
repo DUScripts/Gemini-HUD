@@ -49,7 +49,7 @@ TRX: TTEiRTWftQXJCu4h31KZThNZpXhPZjVRMp <br/>
 ![example1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/3.png)<br/>
 <br/>
 Install gunner module:<br/>
-Link the screen, 2 databanks, weapons and radar to gunner module, then load the configuration to gunner module.<br/>
+Link the screen, 2 databanks, weapons, space radar and atmo radar (optional) to gunner module, then load the configuration to gunner module.<br/>
 You must have one shared databank linked with the gunner seat and remote controller. Total 2 databanks. Gunner module - 2 linked databanks, remote controller - 1 linked databank.<br/>
 Put the audio folder with sounds here: Documents\NQ\DualUniverse\ <br/>
 <br/>
