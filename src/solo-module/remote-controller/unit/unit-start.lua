@@ -1245,33 +1245,33 @@ elseif stress[2] >= stress[1] and
               <ibold>SHIELD LUA COMMANDS:</ibold>
               <br>
               <br>
-              <luac>am</luac>: 100% antimatter power<br>
+              <luac>am</luac> : 100% antimatter power<br>
               <br>
-              <luac>em</luac>: 100% electromagnetic power<br>
+              <luac>em</luac> : 100% electromagnetic power<br>
               <br>
-              <luac>th</luac>: 100% thermic power<br>
+              <luac>th</luac> : 100% thermic power<br>
               <br>
-              <luac>ki</luac>: 100% kinetic power<br>
+              <luac>ki</luac> : 100% kinetic power<br>
               <br>
-              <luac>c</luac>: cannon profile<br>
+              <luac>c</luac> : cannon profile<br>
               <br>
-              <luac>l</luac>: laser profile<br>
+              <luac>l</luac> : laser profile<br>
               <br>
-              <luac>r</luac>: railgun profile<br>
+              <luac>r</luac> : railgun profile<br>
               <br>
-              <luac>m</luac>: missile profile<br>
+              <luac>m</luac> : missile profile<br>
             </div>
             <div class="helper4">
               <ibold>Other LUA COMMANDS:</ibold>
               <br>
               <br>
-              <luac>tag foxtrot</luac>: set transponder tag, where foxtrot is transponder tag<br>
+              <luac>tag foxtrot</luac> : set transponder tag, where foxtrot is transponder tag<br>
               <br>
-              <luac>m::pos{}</luac>: get info about position, safe position to dababank, add position to Helios map and planetary periscope<br>
+              <luac>m::pos{}</luac> : get info about position, safe position to dababank, add position to Helios map and planetary periscope<br>
               <br>
-              <luac>drop</luac>: undock all constructs<br>
+              <luac>drop</luac> : undock all constructs<br>
               <br>
-              <luac>helper</luac>: show/hide build helper<br>
+              <luac>helper</luac> : show/hide build helper<br>
             </div>
           </div>
           <div class="helperCenter">GEMINI FOUNDATION<br><br>Remote Controller Controls</div>

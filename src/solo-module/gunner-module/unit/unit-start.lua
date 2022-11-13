@@ -2118,27 +2118,27 @@ function tickVector(unit, system, text)
         <ibold>RADAR WIDGET LUA COMMANDS:</ibold>
         <br>
         <br>
-        <luac>f345</luac>: focus mode where 345 is target ID<br>
+        <luac>f345</luac> : focus mode where 345 is target ID<br>
         <br>
-        <luac>f</luac>: reset focus mode<br>
+        <luac>f</luac> : reset focus mode<br>
         <br>
-        <luac>addall</luac>: add all radar targets to whitelist databank<br>
+        <luac>addall</luac> : add all radar targets to whitelist databank<br>
         <br>
-        <luac>clear</luac>: clear all whitelist databank<br>
+        <luac>clear</luac> : clear all whitelist databank<br>
         <br>
-        <luac>friends</luac>: show/hide AR allies marks<br>
+        <luac>friends</luac> : show/hide AR allies marks<br>
         <br>
-        <luac>safe</luac>: on/off radar notifications in safe zone<br>
+        <luac>safe</luac> : on/off radar notifications in safe zone<br>
       </div>
       <div class="helper4">
         <ibold>TARGET VECTOR LUA COMMANDS:</ibold>
         <br>
         <br>
-        <luac>n</luac>: reset pos1/pos2<br>
+        <luac>n</luac> : reset pos1/pos2<br>
         <br>
-        <luac>mar345</luac>: get position in LUA chat, where 345 is SU ahead of the target<br>
+        <luac>mar345</luac> : get position in LUA chat, where 345 is SU ahead of the target<br>
         <br>
-        <luac>export</luac>: export coordinates to screen in format - pos1/time1/pos2/time2<br>
+        <luac>export</luac> : export coordinates to screen in format - pos1/time1/pos2/time2<br>
       </div>
     </div>
     <div class="helperCenter">GEMINI FOUNDATION<br><br>Gunner Module Controls</div>
