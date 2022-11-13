@@ -3,7 +3,9 @@ local f1 = string.sub(text,1,1)
 if count == 1 and f1 == "f" then
    mRadar:onTextInput(text)
 end
+
 if text == "export" then GEAR(unit,system,text) end
+
 if text == "clear" then
    databank_2.clear()
    GHUD_friendly_IDs = {}
@@ -11,6 +13,7 @@ if text == "clear" then
    whitelist = newWhitelist
    system.print('Databank whitelist cleared')
 end
+
 if text == "addall" then
    local keys = databank_2.getNbKeys()
    local keyCount = keys
@@ -23,4 +26,15 @@ for k,v in pairs(radarIDs) do
  whitelist = newWhitelist
  system.print('All targets have been added to the whitelist')
 end
+
+if text == "friends" then
+if GHUD_show_AR_allies_marks == true then
+   GHUD_show_AR_allies_marks = false
+   system.print('AR allies marks deactivated')
+else
+   GHUD_show_AR_allies_marks = true
+   system.print('AR allies marks activated')
+end
+end
+
 inTEXT(unit,system,text)

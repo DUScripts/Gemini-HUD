@@ -22,10 +22,10 @@ GHUD_hits_misses_Y = 76 --export:
 GHUD_hit_X = 56.5 --export:
 GHUD_miss_X = 47.5 --export:
 GHUD_log_stats = true --export: Radar and LUA chat new targets notofications
-GHUD_show_allies = true --export: Show allies
 GHUD_allies_count = 5 --export: Max count of displayed allies. Selected ally will always be displayed
 GHUD_allies_color = "rgb(0, 191, 255)" --export:
 GHUD_allied_names_color = "rgb(0, 191, 255)" --export:
+GHUD_show_AR_allies_marks = true --export:
 GHUD_AR_allies_border_size = 400 --export:
 GHUD_AR_allies_border_color = "#0cf27b" --export:
 GHUD_AR_allies_font_color = "#0cf27b" --export:
@@ -69,6 +69,7 @@ shift = false
 lalt = false
 radarIDs = {}
 idN = 0
+GHUD_show_allies = true
 screenHeight = system.getScreenHeight()
 screenWidth = system.getScreenWidth()
 startTime = system.getArkTime()
@@ -596,19 +597,23 @@ function main()
             local nameLOCK = ''..loclIDT..' '..name..''
             if radar_1.getThreatRateFrom(v) == 5 then
                countAttacked = countAttacked + 1
+               if countLock <= 10 then
                lockList = lockList..[[
                <div class="table-row th">
                <div class="lockedT">
                <redcolor1>]]..'['..size..'] '..nameLOCK.. [[</redcolor1><br><distcolor>]] ..dist.. [[</distcolor>
                </div>
                </div>]]
+               end
             else
+               if countLock <= 10 then
                lockList = lockList..[[
                <div class="table-row th">
                <div class="lockedT">
                <orangecolor>]]..'['..size..'] '..nameLOCK.. [[</orangecolor><br><distcolor>]] ..dist.. [[</distcolor>
                </div>
                </div>]]
+               end
             end
          end
          if i > 50 then
@@ -2093,7 +2098,7 @@ function tickVector(unit, system, text)
         <br>
         <bdr>]]..alttext..[[</bdr> + <bdr>]]..geartext..[[</bdr> : on/off export mode<br>
         <br>
-        <bdr>]]..opt4..[[</bdr> : show/hide current target position (Works only when manually setting coordinates or in export mode)<br>
+        <bdr>]]..opt4..[[</bdr> : show/hide current target position (works only when manually setting coordinates or in export mode)<br>
         <br>
         <bdr>]]..shifttext..[[</bdr> + <bdr>↓↑</bdr> : switch target position between current speed or targetSpeed from LUA parameters<br>
       </div>
@@ -2110,6 +2115,8 @@ function tickVector(unit, system, text)
         <luac>addall</luac>: add all radar targets to whitelist databank<br>
         <br>
         <luac>clear</luac>: clear all whitelist databank<br>
+        <br>
+        <luac>friends</luac>: show/hide AR allies marks<br>
       </div>
       <div class="helper4">
         <ibold>TARGET VECTOR LUA COMMANDS:</ibold>

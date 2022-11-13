@@ -126,6 +126,7 @@ else
 end
 
 local AR_allies = ''
+if GHUD_show_AR_allies_marks == true then
 for k,v in pairs(radarIDs) do --AR marks
    if radar_1.hasMatchingTransponder(v) == 1 then
       local pos = radar_1.getConstructWorldPos(v)
@@ -150,6 +151,7 @@ for k,v in pairs(radarIDs) do --AR marks
          </svg></div>]]
       end
    end
+end
 end
 
 --hit/miss animations, radar contacts animations
