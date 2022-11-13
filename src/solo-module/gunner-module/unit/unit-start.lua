@@ -468,7 +468,7 @@ function main()
                if activeRadar.hasMatchingTransponder(v) == 0 and not whitelist[v] and size ~= "" and activeRadar.getConstructDistance(v) < 600000 then --do not show far targets during warp and server lag
                   local name = activeRadar.getConstructName(v)
                   if activeRadar.isConstructAbandoned(v) == 0 then
-                     local msg = 'NEW TARGET: '..name..' - '..v..' - Size: '..size..'\nYour pos: '..t_radarEnter[v].pos..''
+                     local msg = 'NEW TARGET: '..name..' - '..v..' - Size: '..size..'\n '..t_radarEnter[v].pos..''
                      table.insert(loglist, msg)
                      if count < 10 then --max 10 notifications
                         count = count + 1
@@ -480,7 +480,7 @@ function main()
                   else
                      local pos = activeRadar.getConstructWorldPos(v)
                      pos = '::pos{0,0,'..pos[1]..','..pos[2]..','..pos[3]..'}'
-                     local msg = 'NEW TARGET (abandoned): '..name..' - '..v..' - Size: '..size..'\nTarget pos:'..pos..''
+                     local msg = 'NEW TARGET (abandoned): '..name..' - '..v..' - Size: '..size..'\n '..pos..''
                      table.insert(loglist, msg)
                      if count < 10 then --max 10 notifications
                         count = count + 1
