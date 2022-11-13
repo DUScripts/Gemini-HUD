@@ -2,7 +2,7 @@ start:
 if upB == false and downB == false then
 if lalt==true then
    local function getPipeDistance()
-      local worldPos = shipPos
+      local worldPos = vec3(construct.getWorldPosition())
       local pipe = (DestinationCenter - DepartureCenter):normalize()
       local r = (worldPos -DepartureCenter):dot(pipe) / pipe:dot(pipe)
       if r <= 0. then
@@ -20,7 +20,7 @@ else
    local function getPipeDistance()
       local DestinationCenter = vec3(stellarObjects[sortestPipeKeyId].center)
       local DepartureCenter = vec3(stellarObjects[sortestPipeKey2Id].center)
-      local worldPos = shipPos
+      local worldPos = vec3(construct.getWorldPosition())
       local pipe = (DestinationCenter - DepartureCenter):normalize()
       local r = (worldPos -DepartureCenter):dot(pipe) / pipe:dot(pipe)
       if r <= 0. then
