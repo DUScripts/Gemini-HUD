@@ -192,12 +192,12 @@ function ccs_SVG()
    end
    if AM_svg < AM_last_stress then
       AM_svg = AM_svg + 0.01
-      if AM_svg >= AM_stress then AM_svg = AM_stress
+      if AM_svg >= AM_last_stress then AM_svg = AM_last_stress
    end
 end
 if AM_svg > AM_last_stress then
    AM_svg = AM_svg - 0.01
-   if AM_svg <= AM_stress then AM_svg = AM_stress end
+   if AM_svg <= AM_last_stress then AM_svg = AM_last_stress end
 end
 --EM
 if EM_stress ~= EM_last_stress then
@@ -205,11 +205,11 @@ if EM_stress ~= EM_last_stress then
 end
 if EM_svg < EM_last_stress then
    EM_svg = EM_svg + 0.01
-   if EM_svg >= EM_stress then EM_svg = EM_stress end
+   if EM_svg >= EM_last_stress then EM_svg = EM_last_stress end
 end
 if EM_svg > EM_last_stress then
    EM_svg = EM_svg - 0.01
-   if EM_svg <= EM_stress then EM_svg = EM_stress end
+   if EM_svg <= EM_last_stress then EM_svg = EM_last_stress end
 end
 --TH
 if TH_stress ~= TH_last_stress then
@@ -217,11 +217,11 @@ if TH_stress ~= TH_last_stress then
 end
 if TH_svg < TH_last_stress then
    TH_svg = TH_svg + 0.01
-   if TH_svg >= TH_stress then TH_svg = TH_stress end
+   if TH_svg >= TH_last_stress then TH_svg = TH_last_stress end
 end
 if TH_svg > TH_last_stress then
    TH_svg = TH_svg - 0.01
-   if TH_svg <= TH_stress then TH_svg = TH_stress end
+   if TH_svg <= TH_last_stress then TH_svg = TH_last_stress end
 end
 --KI
 if KI_stress ~= KI_last_stress then
@@ -229,11 +229,11 @@ if KI_stress ~= KI_last_stress then
 end
 if KI_svg < KI_last_stress then
    KI_svg = KI_svg + 0.01
-   if KI_svg >= KI_stress then KI_svg = KI_stress end
+   if KI_svg >= KI_last_stress then KI_svg = KI_last_stress end
 end
 if KI_svg > KI_last_stress then
    KI_svg = KI_svg - 0.01
-   if KI_svg <= KI_stress then KI_svg = KI_stress end
+   if KI_svg <= KI_last_stress then KI_svg = KI_last_stress end
 end
 end
 
