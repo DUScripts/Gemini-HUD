@@ -214,9 +214,10 @@ end
 if string.find (text,'m::pos') then
    asteroidPOS = text:sub(2)
    system.print(asteroidPOS)
+   system.print('Calculation...')
    asteroidcoord = zeroConvertToWorldCoordinates(asteroidPOS)
    databank_1.setStringValue(15,asteroidPOS)
+   corTime = system.getArkTime() 
    ck = coroutine.create(closestPipe1)
-   coroutine.resume(ck, asteroidcoord)
-   system.print(safeZone1(asteroidcoord))
+   corpos = true
 end

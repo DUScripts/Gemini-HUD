@@ -3,6 +3,12 @@ if coroutine.status(main1) ~= "dead" and coroutine.status(main1) == "suspended" 
    --coroutine.xpcall(main1) -- resume debug coroutine
 end
 
+if corpos == true then  
+if coroutine.status(ck) ~= "dead" and coroutine.status(ck) == "suspended" then
+   coroutine.resume(ck, asteroidcoord)
+end
+end
+
 damage_SVG()
 
 varcombat = construct.getPvPTimer()
