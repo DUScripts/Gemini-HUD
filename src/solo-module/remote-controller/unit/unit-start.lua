@@ -575,7 +575,7 @@ local XcoordR=Xcoord*math.sqrt(1-Ycoord*Ycoord/2)*RadarR+RadarX
 local YcoordR=Ycoord*math.sqrt(1-Xcoord*Xcoord/2)*RadarR+RadarY
 svgradar=svgradar..string.format([[
 <circle cx="%f" cy="%f" r="4" fill="red" />
-<text x="%f" y="%f" font-size="12px" fill="yellow">%s</text>
+<text x="%f" y="%f" font-size="10px" fill="yellow">%s</text>
 ]],XcoordR,YcoordR,XcoordR+4,YcoordR,PlaneteName)
 end
 
