@@ -21,7 +21,6 @@ GHUD_show_misses = true --export:
 GHUD_hits_misses_Y = 76 --export:
 GHUD_hit_X = 56.5 --export:
 GHUD_miss_X = 47.5 --export:
-GHUD_log_stats = true --export: Radar and LUA chat new targets notofications
 GHUD_allies_count = 5 --export: Max count of displayed allies. Selected ally will always be displayed
 GHUD_allies_color = "rgb(0, 191, 255)" --export:
 GHUD_allied_names_color = "rgb(0, 191, 255)" --export:
@@ -99,8 +98,6 @@ znak = '' --target speed icon
 newcolor = "white"
 dist1=0
 dist3=0
-firstload = 0
-constructSelected = 0
 probil = 0
 playerName = system.getPlayerName(player.getId())
 warpScan = 0 --for 3D map
@@ -463,7 +460,6 @@ function main()
          i = i + 1
          local size = activeRadar.getConstructCoreSize(v)
          local constructRow = {}
-         if GHUD_log_stats then
             if t_radarEnter[v] ~= nil then
                if activeRadar.hasMatchingTransponder(v) == 0 and not whitelist[v] and size ~= "" and activeRadar.getConstructDistance(v) < 600000 then --do not show far targets during warp and server lag
                   local name = activeRadar.getConstructName(v)
@@ -493,7 +489,6 @@ function main()
                end
                t_radarEnter[v] = nil
             end
-         end
          if GHUD_show_echoes == true then
             if size ~= "" then
                constructRow.widgetDist = math.ceil(activeRadar.getConstructDistance(v) / 1000 * radarWidgetScale)
@@ -913,11 +908,11 @@ htmlbasic = [[<style>
 hudvers = [[
 <style>
 .hudversion {
-   position: fixed;
+   position: absolute;
    bottom: 2.7vh;
    color: white;
    right: 9.25vw;
-   font-family: v;
+   font-family: verdana;
    letter-spacing: 0.5px;
    font-size: 1.4em;
    font-weight: bold;
@@ -2145,151 +2140,11 @@ function tickVector(unit, system, text)
   </body>
 </html>]]
 
-   local preloader = [[
-      <html>
-   <style>
-   .text {
-      position: absolute;
-top: 50%;
-left: 50%;
-color: white;
-font-family: "Roboto Slab", serif;
-font-size: 1.5em;
-text-align: center;
-transform: translate(-50%, -50%);
-      transition: background 800ms ease-in 800ms;
-   }
-
-   .fade-in {
-      animation: fadeIn ease 3s;
-      -webkit-animation: fadeIn ease 3s;
-      -moz-animation: fadeIn ease 3s;
-      -o-animation: fadeIn ease 3s;
-      -ms-animation: fadeIn ease 3s;
-   }
-
-   @keyframes fadeIn {
-      0% {
-         opacity: 0;
-      }
-
-      100% {
-         opacity: 1;
-      }
-   }
-
-   @-moz-keyframes fadeIn {
-      0% {
-         opacity: 0;
-      }
-
-      100% {
-         opacity: 1;
-      }
-   }
-
-   @-webkit-keyframes fadeIn {
-      0% {
-         opacity: 0;
-      }
-
-      100% {
-         opacity: 1;
-      }
-   }
-
-   @-o-keyframes fadeIn {
-      0% {
-         opacity: 0;
-      }
-
-      100% {
-         opacity: 1;
-      }
-   }
-
-   @-ms-keyframes fadeIn {
-      0% {
-         opacity: 0;
-      }
-
-      100% {
-         opacity: 1;
-      }
-   }
-
-   .spinner {
-      top: 60%;
-      width: 70px;
-      text-align: center;
-      position: relative;
-      margin-left: auto;
-      margin-right: auto;
-      margin-top: 0;
-   }
-
-   .spinner>div {
-      width: 18px;
-      height: 18px;
-      background-color: #14dbcb;
-      border-radius: 100%;
-      display: inline-block;
-      -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
-      animation: sk-bouncedelay 1.4s infinite ease-in-out both;
-   }
-
-   .spinner .bounce1 {
-      -webkit-animation-delay: -0.32s;
-      animation-delay: -0.32s;
-   }
-
-   .spinner .bounce2 {
-      -webkit-animation-delay: -0.16s;
-      animation-delay: -0.16s;
-   }
-
-   @-webkit-keyframes sk-bouncedelay {
-
-      0%,
-      80%,
-      100% {
-         -webkit-transform: scale(0)
-      }
-
-      40% {
-         -webkit-transform: scale(1.0)
-      }
-   }
-
-   @keyframes sk-bouncedelay {
-
-      0%,
-      80%,
-      100% {
-         -webkit-transform: scale(0);
-         transform: scale(0);
-      }
-
-      40% {
-         -webkit-transform: scale(1.0);
-         transform: scale(1.0);
-      }
-   }
-   </style>
-   <body>
-   <div class="text fade-in">GEMINI FOUNDATION<br><br>
-   Gunner Module v]]..HUD_version..[[</div>
-   <div class="spinner">
-   <div class="bounce1"></div>
-   <div class="bounce2"></div>
-   <div class="bounce3"></div>
-   </body>
-   </html>]]
    system.showScreen(1)
-   system.setScreen(preloader)
-   unit.setTimer("delay", 1)
+   main1 = coroutine.create(main)
+   unit.setTimer("hud", 0.016)
+   unit.setTimer("logger", 0.5)
 
-   --clean performance
    if collectgarbages == true then
       unit.setTimer("cleaner",30)
    end

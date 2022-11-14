@@ -168,8 +168,9 @@ if math.ceil(HP) <= 50 then
                </svg></div>]]
             end
 
+         local safeStatus, safeVector, zoneDist, distStr = safeZone()
+
          if szsafe == true then
-            safeStatus, safeVector, zoneDist, distStr = safeZone()
             safetext=''..safeStatus..' <green1>'..zoneDist..' '..distStr..'</green1>'
             local point1 = library.getPointOnScreen({safeVector.x,safeVector.y,safeVector.z})
             if point1[3] > 0 then --visible zone
@@ -194,7 +195,6 @@ if math.ceil(HP) <= 50 then
                </svg></div>]]
             end
          else
-            safeStatus, safeVector, zoneDist, distStr = safeZone()
             safetext=''..safeStatus..' <green1>'..zoneDist..' '..distStr..'</green1>'
             local point1 = library.getPointOnScreen({safeVector.x,safeVector.y,safeVector.z})
             if point1[3] > 0 then --visible zone
