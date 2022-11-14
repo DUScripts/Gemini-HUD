@@ -2023,6 +2023,7 @@ handlers:
                 local yawrighttext=system.getActionKeyName('yawright')
                 local braketext1=system.getActionKeyName('brake')
                 local lighttext=system.getActionKeyName('light')
+                local boostertext=system.getActionKeyName('booster')
                 system.print(''..geartext..' + ↑: gunner module helper')
 
                 helpHTML = [[
@@ -2125,9 +2126,9 @@ handlers:
                         <br>
                         <bdr>]]..alttext..[[</bdr> + <bdr>]]..geartext..[[</bdr> : on/off export mode<br>
                         <br>
-                        <bdr>]]..opt4..[[</bdr> : show/hide current target position (works only when manually setting coordinates or in export mode)<br>
+                        <bdr>]]..boostertext..[[</bdr> : show/hide current target position (works only when manually setting coordinates or in export mode)<br>
                         <br>
-                        <bdr>]]..shifttext..[[</bdr> + <bdr>↓↑</bdr> : switch target position between current speed or targetSpeed from LUA parameters<br>
+                        <bdr>]]..opt4..[[</bdr> : switch target position between current speed or targetSpeed from LUA parameters<br>
                     </div>
                     </div>
                     <div class="bottomL">
