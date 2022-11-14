@@ -909,13 +909,12 @@ hudvers = [[
 <style>
 .hudversion {
    position: absolute;
-   bottom: 2.7vh;
+   bottom: 0.15vh;
    color: white;
-   right: 9.25vw;
+   right: 5.25vw;
    font-family: verdana;
    letter-spacing: 0.5px;
-   font-size: 1.4em;
-   font-weight: bold;
+   font-size: 1.2em;
 }</style>]]
 
 htmlRadar = [[
