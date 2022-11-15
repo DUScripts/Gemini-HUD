@@ -18,7 +18,7 @@ img {
    border-right: 4px solid ]]..periscope_border_color..[[;
 }
 @keyframes blinking{
-   0%{   width: 40vw;  }
+   0%{   width: 0vw;  }
    100%{  width: 20vw;   }
 }
 </style>
