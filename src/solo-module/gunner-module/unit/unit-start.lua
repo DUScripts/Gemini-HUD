@@ -403,9 +403,13 @@ end
 
 if GHUD_radarWidget_on_top == true then
    mRadar = mRadar:new(system) --radar widget
+   if weapon_1 ~= nil then
    mWeapons = mWeapons:new(system, weapon, GHUD_weapon_panels) --weapon widgets
+end
 else
+   if weapon_1 ~= nil then
    mWeapons = mWeapons:new(system, weapon, GHUD_weapon_panels)
+end
    mRadar = mRadar:new(system)
 end
 

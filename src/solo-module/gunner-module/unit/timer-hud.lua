@@ -7,10 +7,14 @@ if coroutine.status(main1) ~= "dead" and coroutine.status(main1) == "suspended" 
    coroutine.resume(main1)
    --coroutine.xpcall(main1) -- resume debug coroutine
 end
+
 local sight = ''
-local data = weapon_1.getWidgetData()
-zone = data:match('"outOfZone":(.-),')
-local probil = tonumber(data:match('"hitProbability":(.-),'))
+if weapon_1 ~= nil then
+local wdata = weapon_1.getWidgetData()
+--weapon_1.getHitProbability() for future version
+--zone = data:match('"outOfZone":(.-),') deprecated, bad perfomance
+probil = tonumber(wdata:match('"hitProbability":(.-),'))
+end
 
 local shipPos = vec3(construct.getWorldPosition())
 local id = activeRadar.getTargetId()
