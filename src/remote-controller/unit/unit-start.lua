@@ -1371,7 +1371,7 @@ elseif stress[2] >= stress[1] and
       
          transponder.deactivate() --transponder server bug fix
          main1 = coroutine.create(closestPipe)
-         unit.setTimer('hud',0.02)
+         unit.setTimer('hud',0.016)
          unit.setTimer('brake',0.15)
          unit.setTimer('tr',2)
          unit.setTimer('prealarm',2)
