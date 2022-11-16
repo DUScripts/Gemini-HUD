@@ -1,14 +1,14 @@
 -- GEMINI FOUNDATION
 
---Solo remote controller
+--Remote controller
 HUD_version = '1.0.0'
 
 --LUA parameters
-GHUD_marker_name = 'Asteroid' --export:
-GHUD_shield_auto_calibration = true --export: (AUTO/MANUAL) shield mode
-GHUD_shield_calibration_max = true --export: (MAX/50) calibration of the entire shield power by the largest resist based on DPS
-GHUD_departure_planet = 'Alioth' --export: Departure ID planet
-GHUD_destination_planet = 'Jago' --export: Destination ID planet
+GHUD_marker_name = 'Asteroid' --export: Helios map marker name
+GHUD_shield_auto_calibration = true --export: AUTO/MANUAL shield mode
+GHUD_shield_calibration_max = true --export: MAX or 50/50 shield mode
+GHUD_departure_planet = 'Alioth' --export: Departure name planet
+GHUD_destination_planet = 'Jago' --export: Destination name planet
 GHUD_shield_panel_size = 1300 --export:
 GHUD_shield_panel_Y = 87 --export:
 GHUD_active_resists_border_color = '#07e88e' --export:
@@ -23,13 +23,13 @@ GHUD_flight_indicator_size = 25 --export:
 GHUD_flight_indicator_color = 'rgb(198, 3, 252)' --export:
 GHUD_right_block_X = 65 --export:
 GHUD_left_block_X = 65 --export:
-GHUD_background_color = '#142027' --export: Background color
-GHUD_pipe_text_color = '#FFFFFF' --export: Pipe text color
+GHUD_background_color = '#142027' --export:
+GHUD_pipe_text_color = '#FFFFFF' --export:
 GHUD_pipe_Y = 0 --export:
 GHUD_pipe_X = 15.5 --export:
 GHUD_Y = 50 --export:
-GHUD_shield_warning_message_Y = 20 --export:
-GHUD_brake_Y = 1 -- export:
+GHUD_shield_warning_message_Y = 20 --export: Shield low HP warning message
+GHUD_brake_Y = 1 -- export: Brake indicator
 collectgarbages = false --export: experimental
 
 --vars
@@ -1174,6 +1174,15 @@ elseif stress[2] >= stress[1] and
             font-family: "Roboto Slab", serif;
             font-size: 1em;
           }
+          .hudversion {
+            position: absolute;
+            bottom: 0.15vh;
+            color: white;
+            right: 5.25vw;
+            font-family: verdana;
+            letter-spacing: 0.5px;
+            font-size: 1.2em;
+         }
           bdr {
             color: white;
             background-color: green;
@@ -1286,6 +1295,7 @@ elseif stress[2] >= stress[1] and
             </div>
           </div>
           <div class="helperCenter">GEMINI FOUNDATION<br><br>Remote Controller Controls</div>
+          <div class="hudversion">GHUD v]]..HUD_version..[[</div>
         </body>
       </html>]]
       Kinematic = {} -- just a namespace
@@ -1356,7 +1366,8 @@ elseif stress[2] >= stress[1] and
          return distanceToMax+d
       end
 
-      system.print(''..geartext..' + ↓: remote controller helper')
+      system.print('GHUD Remote controller v'..HUD_version)
+      system.print(''..geartext..' + ↓: helper')
       
          transponder.deactivate() --transponder server bug fix
          main1 = coroutine.create(closestPipe)
