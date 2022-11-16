@@ -10,7 +10,7 @@ end
 
 if coroutine.status(main2) ~= "dead" and coroutine.status(main2) == "suspended" then
    coroutine.resume(main2)
-   --coroutine.xpcall(main1) -- resume debug coroutine
+   --coroutine.xpcall(main2) -- resume debug coroutine
 end
 
 if corpos == true then
