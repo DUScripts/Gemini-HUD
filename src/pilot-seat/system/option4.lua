@@ -51,3 +51,5 @@ if downB == true and shield.getResistancesCooldown() == 0 then
       system.playSound('shieldResistError.mp3')
    end
 end
+
+if gearB == true then mmode = not mmode end
