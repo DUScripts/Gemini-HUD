@@ -1,1 +1,0 @@
-altLEFT(unit,system,text)
