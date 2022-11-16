@@ -1,5 +1,5 @@
 start:
-if lalt == false and upB == false and downB == false then DisplayRadar = not DisplayRadar end
+if shift == false and upB == false and downB == false then DisplayRadar = not DisplayRadar end
 
 if upB == true and shield.getResistancesCooldown() == 0 then
     local resistance = shield.getResistances()

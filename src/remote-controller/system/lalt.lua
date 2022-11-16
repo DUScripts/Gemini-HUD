@@ -1,5 +1,5 @@
 start:
-altb=true
+lalt=true
 
 stop:
-altb=false
+lalt=false

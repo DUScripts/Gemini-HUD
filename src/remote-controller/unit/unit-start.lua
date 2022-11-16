@@ -604,9 +604,12 @@ moonScale = 3000
 map = 0
 warpScan = 0
 targetList = ''
-altb=false
+lalt=false
+shift=false
 upB = false
 downB = false
+leftB = false
+rightB = false
 safew=''
 varcombat = construct.getPvPTimer()
 
@@ -667,9 +670,6 @@ end
 return resRatio
 end
 
-lalt=false
-buttonC=false
-buttonSpace=false
 resMAX = shield.getResistancesPool()
 function getRes(stress, resMAX)
 local res = {0.15,0.15,0.15,0.15}
@@ -1367,7 +1367,7 @@ elseif stress[2] >= stress[1] and
       end
 
       system.print('GHUD Remote controller v'..HUD_version)
-      system.print(''..geartext..' + ↓: helper')
+      system.print(''..geartext..' + →: helper')
       
          transponder.deactivate() --transponder server bug fix
          main1 = coroutine.create(closestPipe)

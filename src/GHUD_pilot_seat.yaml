@@ -1,0 +1,34 @@
+name: GHUD Pilot seat v1.0.0
+
+slots:
+    core:
+        class: CoreUnit
+    antigrav:
+        class: AntiGravityGeneratorUnit
+    warpdrive:
+        class: WarpDriveUnit
+    atmofueltank:
+        class: AtmoFuelContainer
+        select: manual
+    spacefueltank:
+        class: SpaceFuelContainer
+        select: manual
+    rocketfueltank:
+        class: RocketFuelContainer
+        select: manual
+    shield:
+        class: ShieldGeneratorUnit
+    weapon:
+        class: WeaponUnit
+        select: manual
+    radar:
+        class: RadarPVPUnit
+        select: manual
+    databank:
+        class: DatabankUnit
+        select: manual
+    screen:
+        class: ScreenUnit
+        select: manual
+    transponder:
+        class: TransponderUnit

@@ -1,6 +1,6 @@
 -- GEMINI FOUNDATION
 
---Gunner seat
+--Gunner module
 HUD_version = '1.0.0'
 
 --LUA parameters
@@ -90,8 +90,8 @@ sizeState = 6
 focus = ''
 gunnerHUD = ''
 vectorHUD = ''
-buttonSpace = false
-buttonC = false
+downB = false
+upB = false
 atmovar = false
 endload = 0
 znak = '' --target speed icon
@@ -2117,7 +2117,7 @@ function tickVector(unit, system, text)
         <br>
         <bdr>]]..boostertext..[[</bdr> : show/hide current target position (works only when manually setting coordinates or in export mode)<br>
         <br>
-        <bdr>]]..opt4..[[</bdr> : switch target position between current speed or targetSpeed from LUA parameters<br>
+        <bdr>]]..geartext..[[</bdr> + <bdr>]]..opt4..[[</bdr> : switch target position between current speed or targetSpeed from LUA parameters<br>
       </div>
     </div>
     <div class="bottomL">
@@ -2154,7 +2154,7 @@ function tickVector(unit, system, text)
 </html>]]
 
    system.print('GHUD Gunner module v'..HUD_version)
-   system.print(''..geartext..' + ↑: helper')
+   system.print(''..geartext..' + ←: helper')
 
    system.showScreen(1)
    main1 = coroutine.create(main)

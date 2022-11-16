@@ -1,5 +1,5 @@
 start:
-if lalt==false then
+if shift==false then
    if GHUD_shield_auto_calibration == true then
       GHUD_shield_auto_calibration = false
       system.print('Shield manual mode activated')

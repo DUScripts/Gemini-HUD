@@ -1,6 +1,6 @@
 start:
 if upB == false and downB == false then
-if lalt==true then
+if shift==true then
    local function getPipeDistance()
       local worldPos = vec3(construct.getWorldPosition())
       local pipe = (DestinationCenter - DepartureCenter):normalize()

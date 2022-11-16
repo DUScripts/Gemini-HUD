@@ -1,2 +1,2 @@
 start:
-if buttonSpace == false and buttonC == false and shift == false then mmode = not mmode end
+if gearB == true then mmode = not mmode end
