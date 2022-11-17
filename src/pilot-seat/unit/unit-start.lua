@@ -596,8 +596,6 @@ end
 end
 
 --2D Planet radar and AR planets
-screenHeight = system.getScreenHeight()
-screenWidth = system.getScreenWidth()
 DisplayRadar = false
 function drawonradar(coordonate,PlaneteName)
 local constructUp = vec3(construct.getWorldOrientationUp())
