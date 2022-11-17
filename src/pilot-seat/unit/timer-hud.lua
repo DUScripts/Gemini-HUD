@@ -364,6 +364,9 @@ if mybr == true then
                      end
                   end
                   drawonradar(safeVector,safeStatus)
+                  if szsafe == true then
+                     drawonradar(safeWorldPos,'Central SZ')
+                     end
                   if asteroidcoord[1] ~= 0 then
                      drawonradar(asteroidcoord,""..GHUD_marker_name.."")
                   end
