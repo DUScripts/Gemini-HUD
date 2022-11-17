@@ -532,7 +532,7 @@ while true do
          coroutine.yield()
       end
    end
-   if system.getArkTime() - corTime > 5 then
+   if system.getArkTime() - corTime > 4 then
       corpos = false
       system.print('Closest planet: '..closestPlanetT.name[1]..' - '..distCP)
       system.print('Closest pipe: '..closestpip..' - '..distS1)
@@ -684,6 +684,7 @@ tz1=0
 tz2=0
 brakeS = ''
 brakeDist = ''
+planetzone = ''
 
 function indexSort(tbl)
 local idx = {}
@@ -783,6 +784,7 @@ elseif stress[2] >= stress[1] and
          local szradius = 500000
          local distsz, distp = math.huge
          szsafe = false
+         planetzone = ''
          local distsz = vec3(WorldPos):dist(safeWorldPos)
          if distsz < safeRadius then
             szsafe=true
@@ -808,6 +810,7 @@ elseif stress[2] >= stress[1] and
          if distp < szradius then szsafe = true else szsafe = false end
          if mabs(distp - szradius) < mabs(distsz - safeRadius) then
             distS = mabs(distp - szradius)
+            local distS1 = distS
             local a3 = ''
             local vector1 = vec3(closestPlanet.center)
             if distS > 100000 then
@@ -821,11 +824,14 @@ elseif stress[2] >= stress[1] and
                a3 = 'm'
             end
             if szsafe == true then
-               local a1 = ''..closestPlanet.name[1]..' PvP ZONE'
+               local a1 = closestPlanet.name[1]..' PvP ZONE'
+               local vector1 = vectorLengthen(vec3(closestPlanet.center), WorldPos, distS1)
                local a2 = distS
                return a1, vector1, a2, a3
             else
-               local a1 = ''..closestPlanet.name[1]..' SAFE ZONE'
+               local a1 = closestPlanet.name[1]..' SAFE ZONE'
+               local vector1 = vec3(closestPlanet.center)
+               planetzone = closestPlanet.name[1]
                local a2 = distS
                return a1, vector1, a2, a3
             end
