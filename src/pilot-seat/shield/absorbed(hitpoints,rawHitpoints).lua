@@ -50,6 +50,7 @@ if shield.getResistancesCooldown() == 0 and shoteCount >= 5 and GHUD_shield_auto
       else
          if shield.setResistances(re1,re2,re3,re4) == 1 then
             system.print("Shield power has been split 50/50%")
+            local re = {re1,re2,re3,re4}
             actionRes(re)
             system.playSound('shieldNewResists.mp3')
          else

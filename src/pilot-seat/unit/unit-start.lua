@@ -762,7 +762,6 @@ elseif stress[2] >= stress[1] and
          shieldStatus = "ACTIVE"
       end
 
-      resisttime = 0
       venttime = 0
       venttimemax = shield.getVentingMaxCooldown()
       resisttimemax = shield.getResistancesMaxCooldown()

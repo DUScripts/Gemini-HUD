@@ -21,6 +21,7 @@ end
 
 damage_SVG()
 
+local sPos = vec3(construct.getWorldPosition())
 varcombat = construct.getPvPTimer()
 
 if varcombat > 302 then
@@ -49,7 +50,7 @@ if (system.getArkTime() - lastShotTime) >= 40 then
    shoteCount = 0
 end
 
-resisttime = shield.getResistancesCooldown()
+local resisttime = shield.getResistancesCooldown()
 if resisttime ~= 0 then
    resCLWN = math.floor(resisttime)
 else
@@ -150,7 +151,6 @@ if mybr == true then
          else
             shieldAlarm = false
          end
-         local sPos = vec3(construct.getWorldPosition())
          local thrust1 = math.floor(unit.getThrottle())
          local accel = math.floor((json.decode(unit.getWidgetData()).acceleration/9.80665)*10)/10
          local sp1 = construct.getWorldVelocity()
@@ -381,7 +381,6 @@ if mybr == true then
                   probil = tonumber(wdata:match('"hitProbability":(.-),'))
                end
 
-               local shipPos = vec3(construct.getWorldPosition())
                local id = activeRadar.getTargetId()
                if id ~= 0 then
                   local sdist = ""
@@ -400,7 +399,7 @@ if mybr == true then
                      dist3 = speed
                      anchor = 'start'
                   end
-                  local pos1 = shipPos + dist * vec3(construct.getWorldOrientationForward())
+                  local pos1 = sPos + dist * vec3(construct.getWorldOrientationForward())
                   local point1 = library.getPointOnScreen({pos1.x,pos1.y,pos1.z})
                   if dist >= 100000 then
                      dist = string.format('%0.2f', dist/200000)
@@ -469,7 +468,7 @@ if mybr == true then
                   <text style="fill: ]]..newcolor..[[; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: ]]..anchor..[[;" y="310.246" x="494">]]..speed .. znak..[[</text>
                   </svg></div>]]
                else
-                  local pos1 = shipPos + 400000 * vec3(construct.getWorldOrientationForward())
+                  local pos1 = sPos + 400000 * vec3(construct.getWorldOrientationForward())
                   local point1 = library.getPointOnScreen({pos1.x,pos1.y,pos1.z})
                   --local pos1 = ConvertLocalToWorld(0,distance,0)
                   --local point1 = library.getPointOnScreen({pos1.x,pos1.y,pos1.z})
