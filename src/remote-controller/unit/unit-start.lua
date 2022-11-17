@@ -778,7 +778,6 @@ elseif stress[2] >= stress[1] and
             distS = mabs(distp - szradius)
             local distS1 = distS
             local a3 = ''
-            local vector1 = vec3(closestPlanet.center)
             if distS > 100000 then
                distS = string.format('%0.2f', distS/200000)
                a3 = 'su'
