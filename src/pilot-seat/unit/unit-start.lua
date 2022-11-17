@@ -203,7 +203,7 @@ TH_res = ''
 
 function damage_SVG()
    if damage > 0 then
-      damage = damage - 0.1
+      damage = damage - 0.08
       damageLine = [[<rect x="]].. svghp + 145 ..[[" y="225" width="]]..damage..[[" height="50" style="fill: #de1656; stroke: #de1656;" bx:origin="0.5 0.5"/>]]
    end
    if damage <= 0 then
@@ -212,7 +212,7 @@ function damage_SVG()
    end
 
    if ccshit > 0 then
-      ccshp = ccshp + 0.25
+      ccshp = ccshp + 0.23
       if ccshp >= ccshp1 then
          ccshp = ccshp1
          ccsLineHit = ''
