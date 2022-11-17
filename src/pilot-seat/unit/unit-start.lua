@@ -1223,8 +1223,6 @@ elseif stress[2] >= stress[1] and
       atlas = require("atlas")
       activeRadar = radar_1
       activeRadar.setSortMethod(1)
-      shift = false
-      lalt = false
       radarIDs = {}
       idN = 0
       GHUD_show_allies = true
@@ -1246,8 +1244,6 @@ elseif stress[2] >= stress[1] and
       focus = ''
       gunnerHUD = ''
       vectorHUD = ''
-      downB = false
-      upB = false
       atmovar = false
       endload = 0
       znak = '' --target speed icon
