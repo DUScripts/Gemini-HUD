@@ -380,6 +380,7 @@ while true do
    local pos = vec3(construct.getWorldPosition())
    for obj in pairs(stellarObjects) do
       i = i + 1
+      if stellarObjects[obj].type[1] ~= 'Asteroid' then
          local planetCenter = vec3(stellarObjects[obj].center)
          local distance = vec3(pos - planetCenter):len()
 
@@ -387,6 +388,7 @@ while true do
             smallestDistance = distance
             nearestPlanet = obj
          end
+      end
       if i > 15 then
          i = 0
          coroutine.yield()
@@ -437,6 +439,7 @@ function closestPipe1(pos)
       local i = 0
       for obj in pairs(stellarObjects) do
          i = i + 1
+         if stellarObjects[obj].type[1] ~= 'Asteroid' then
             local planetCenter = vec3(stellarObjects[obj].center)
             local distance = vec3(pos - planetCenter):len()
    
@@ -444,6 +447,7 @@ function closestPipe1(pos)
                smallestDistance1 = distance
                nearestPlanet1 = obj
             end
+         end
             if i > 5 then
                i = 0
                coroutine.yield()
@@ -455,7 +459,9 @@ function closestPipe1(pos)
       --local nearestAliothPipeDistance1= nil
       for obj in pairs(stellarObjects) do
          i = i + 1
+         if stellarObjects[obj].type[1] ~= 'Asteroid' then
             for obj2 in pairs(stellarObjects) do
+               if stellarObjects[obj2].type[1] ~= 'Asteroid' then
                if obj2 > obj then
                   pipeDistance1 = calcDistanceStellar(stellarObjects[obj], stellarObjects[obj2], pos)
                   if nearestPipeDistance1 == nil or pipeDistance1 < nearestPipeDistance1 then
@@ -470,6 +476,12 @@ function closestPipe1(pos)
                   -- end
                end
             end
+         end
+         if i > 5 then
+            i = 0
+            coroutine.yield()
+         end
+      end
          distCP = vec3(pos):dist(vec3(closestPlanetT.center))
          if distCP > 100000 then
             distCP = ''..string.format('%0.2f', distCP/200000)..' su'
@@ -491,10 +503,10 @@ function closestPipe1(pos)
             else
             closestpip = stellarObjects[sortestPipeKey2Id1].name[1] .. " - " .. stellarObjects[sortestPipeKeyId1].name[1]
          end
-         if i > 3 then
-            i = 0
-            coroutine.yield()
-         end
+         -- if i > 3 then
+         --    i = 0
+         --    coroutine.yield()
+         -- end
       end
       if system.getArkTime() - corTime > 4 then
          corpos = false

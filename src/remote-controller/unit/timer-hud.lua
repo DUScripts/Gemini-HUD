@@ -317,7 +317,7 @@ if math.ceil(HP) <= 50 then
 
                for BodyId in pairs(atlas[0]) do
                   local planet=atlas[0][BodyId]
-                     if (planet.type[1] == 'Planet' or planet.isSanctuary == true and planet.name[1] ~= planetzone) then
+                     if ((planet.type[1] == 'Planet' or planet.isSanctuary == true) and planet.name[1] ~= planetzone) then
                         drawonradar(vec3(planet.center),planet.name[1])
                         local point1 = library.getPointOnScreen({planet.center[1],planet.center[2],planet.center[3]})
                         if point1[3] > 0 then --visible zone
