@@ -1649,7 +1649,7 @@ elseif stress[2] >= stress[1] and
                end
                --radarlist
                if GHUD_show_allies == true and size ~= "" then
-                  if activeRadar.hasMatchingTransponder(v) == 1 or whitelist[v] then  --remove attacking traitor from the allies HUD
+                  if activeRadar.hasMatchingTransponder(v) == 1 or whitelist[v] then
                      local name = activeRadar.getConstructName(v)
                      local dist = math.floor(activeRadar.getConstructDistance(v))
                      if dist >= 1000 then
