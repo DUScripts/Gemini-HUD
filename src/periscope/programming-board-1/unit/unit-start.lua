@@ -4,6 +4,7 @@ unit.hideWidget()
 flaunch = true
 lalt = false
 zoom = false
+gearB = false
 local periscope = [[
 <style>
 img {

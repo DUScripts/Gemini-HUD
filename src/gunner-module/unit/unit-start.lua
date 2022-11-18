@@ -207,7 +207,7 @@ function mRadar:updateStep()
       local selectedTarget = activeRadar.getTargetId(ID)
       if locked == 1 or alive == 0 or selectedTarget == ID and size ~= "" then --show only locked or alive or selected targets
          if defaultSize == 'ALL' then --default mode
-            if ((whitelist[ID]==true or activeRadar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode) and activeRadar.getThreatRateFrom(ID) ~= 5 then  --show attacking traitor on widget
+            if ((whitelist[ID]==true or activeRadar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode) and activeRadar.getThreatRateFrom(ID) <= 2 then  --show attacking traitor on widget
                goto continue1
             end
             if isIDFiltered and self.idFilter[ID%1000] ~= true then
@@ -216,7 +216,7 @@ function mRadar:updateStep()
             resultList[#resultList+1] = str:gsub('"name":"(.+)"', '"name":"' .. tostring(ID):sub(-3) .. ' - %1"')
             ::continue1::
          elseif size == defaultSize then
-            if ((whitelist[ID]==true or activeRadar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode) and activeRadar.getThreatRateFrom(ID) ~= 5 then
+            if ((whitelist[ID]==true or activeRadar.hasMatchingTransponder(ID)==1) ~= self.friendlyMode) and activeRadar.getThreatRateFrom(ID) <= 2 then
                goto continue2
             end
             if isIDFiltered and self.idFilter[ID%1000] ~= true then
@@ -500,7 +500,7 @@ function main()
          end
          --radarlist
          if GHUD_show_allies == true and size ~= "" then
-            if activeRadar.hasMatchingTransponder(v) == 1 or whitelist[v] and activeRadar.getThreatRateFrom(v) ~= 5 then  --remove attacking traitor from the allies HUD
+            if activeRadar.hasMatchingTransponder(v) == 1 or whitelist[v] then  --remove attacking traitor from the allies HUD
                local name = activeRadar.getConstructName(v)
                local dist = math.floor(activeRadar.getConstructDistance(v))
                if dist >= 1000 then
@@ -593,7 +593,7 @@ function main()
             end
          end
          --lockstatus
-         if activeRadar.getThreatRateFrom(v) ~= 1 and size ~= "" then
+         if activeRadar.getThreatRateFrom(v) ~= 1 and activeRadar.getThreatRateFrom(v) ~= 4 and size ~= "" then
             countLock = countLock + 1
             local name = string.sub((""..activeRadar.getConstructName(v)..""),1,11)
             local dist = math.floor(activeRadar.getConstructDistance(v))
