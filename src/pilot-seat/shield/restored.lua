@@ -1,3 +1,4 @@
-last_shield_hp = shieldMaxHP
-svghp = maxSHP * (100*0.01)
+local shield_hp = shield.getShieldHitpoints()
+last_shield_hp = shield_hp
+svghp = maxSHP
 system.print("SHIELD READY")

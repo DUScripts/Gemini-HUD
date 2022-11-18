@@ -20,9 +20,6 @@ if shield.getResistancesCooldown() == 0 and not GHUD_shield_auto_calibration the
              system.print("Shield power has been set to max stress")
              actionRes(res)
             system.playSound('shieldNewResists.mp3')
-          else
-             system.print("ERR4")
-             system.playSound('shieldResistError.mp3')
           end
        end
     else
@@ -41,9 +38,6 @@ if shield.getResistancesCooldown() == 0 and not GHUD_shield_auto_calibration the
              local re = {re1,re2,re3,re4}
              actionRes(re)
             system.playSound('shieldNewResists.mp3')
-          else
-             system.print("ERR5")
-             system.playSound('shieldResistError.mp3')
           end
        end
     end

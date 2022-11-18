@@ -9,7 +9,8 @@ if shield.isVenting() == 1 then
        system.print("Shield venting is already stopped!")
     else
        shield.startVenting()
-       last_shield_hp = 0
+       local shield_hp = shield.getShieldHitpoints()
+       last_shield_hp = shield_hp
        system.print("Shield regeneration started!")
     end
  end

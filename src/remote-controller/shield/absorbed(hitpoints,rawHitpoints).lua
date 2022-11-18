@@ -1,6 +1,6 @@
 local shield_hp = shield.getShieldHitpoints()
 if shield_hp < last_shield_hp then
-   HP = shield_hp/shieldMaxHP * 100
+   local HP = shield_hp/shieldMaxHP * 100
    --formatted_hp = string.format('%0.0f',math.ceil(HP))
    local hit = last_shield_hp - shield_hp
    local damage1 = hit/shieldMaxHP*100
@@ -32,9 +32,6 @@ if shield.getResistancesCooldown() == 0 and shoteCount >= 5 and GHUD_shield_auto
             system.print("Shield power has been set to max stress")
             actionRes(res)
             system.playSound('shieldNewResists.mp3')
-         else
-            system.print("ERR2")
-            system.playSound('shieldResistError.mp3')
          end
       end
    else
@@ -53,9 +50,6 @@ if shield.getResistancesCooldown() == 0 and shoteCount >= 5 and GHUD_shield_auto
             local re = {re1,re2,re3,re4}
             actionRes(re)
             system.playSound('shieldNewResists.mp3')
-         else
-            system.print("ERR3")
-            system.playSound('shieldResistError.mp3')
          end
       end
    end

@@ -39,6 +39,8 @@ local formatted_hp = string.format('%0.0f',math.ceil(HP))
 
 if shield.isActive() == 0 then
    svghp = maxSHP * (HP*0.01)
+   local shield_hp = shield.getShieldHitpoints()
+   last_shield_hp = shield_hp
    shieldColor = "#fc033d"
    shieldStatus = "DEACTIVE"
 else

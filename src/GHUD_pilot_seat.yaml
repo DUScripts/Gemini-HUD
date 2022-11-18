@@ -3607,6 +3607,8 @@ handlers:
 
                 if shield.isActive() == 0 then
                 svghp = maxSHP * (HP*0.01)
+                local shield_hp = shield.getShieldHitpoints()
+                last_shield_hp = shield_hp
                 shieldColor = "#fc033d"
                 shieldStatus = "DEACTIVE"
                 else
@@ -4934,8 +4936,7 @@ handlers:
                     ccshp = ccshp1
                     last_core_stress = 0
                     last_shield_hp = shieldMaxHP
-                    HP = 100
-                    svghp = maxSHP * (HP*0.01)
+                    svghp = maxSHP
                 end
     core:
         onStressChanged(stress):
@@ -4955,7 +4956,7 @@ handlers:
             lua: |
                 local shield_hp = shield.getShieldHitpoints()
                 if shield_hp < last_shield_hp then
-                HP = shield_hp/shieldMaxHP * 100
+                local HP = shield_hp/shieldMaxHP * 100
                 --formatted_hp = string.format('%0.0f',math.ceil(HP))
                 local hit = last_shield_hp - shield_hp
                 local damage1 = hit/shieldMaxHP*100
@@ -4987,9 +4988,6 @@ handlers:
                             system.print("Shield power has been set to max stress")
                             actionRes(res)
                             system.playSound('shieldNewResists.mp3')
-                        else
-                            system.print("ERR2")
-                            system.playSound('shieldResistError.mp3')
                         end
                     end
                 else
@@ -5008,17 +5006,14 @@ handlers:
                             local re = {re1,re2,re3,re4}
                             actionRes(re)
                             system.playSound('shieldNewResists.mp3')
-                        else
-                            system.print("ERR3")
-                            system.playSound('shieldResistError.mp3')
                         end
                     end
                 end
                 end
         onDown():
             lua: |
-                last_shield_hp = 0
-                svghp = maxSHP
+                local shield_hp = shield.getShieldHitpoints()
+                last_shield_hp = shield_hp
                 shield.startVenting()
                 system.print("The shield is over, shield regeneration started!")
         onVenting(active, restoredHitpoints):
@@ -5028,15 +5023,16 @@ handlers:
                 end
         onRestored():
             lua: |
-                last_shield_hp = shieldMaxHP
-                svghp = maxSHP * (100*0.01)
+                local shield_hp = shield.getShieldHitpoints()
+                last_shield_hp = shield_hp
+                svghp = maxSHP
                 system.print("SHIELD READY")
         onToggled(active):
             lua: |
                 if shield.isActive() == 1 then
                     local shield_hp = shield.getShieldHitpoints() 
                     last_shield_hp = shield_hp
-                    HP = shield_hp/shieldMaxHP * 100
+                    local HP = shield_hp/shieldMaxHP * 100
                     svghp = maxSHP * (HP*0.01)
                 end
     system:
@@ -5701,16 +5697,16 @@ handlers:
             args: [option6]
             lua: |
                 if shield.getResistancesCooldown() == 0 and not GHUD_shield_auto_calibration then
-                    local stress = shield.getStressRatioRaw()
-                    local resistance = shield.getResistances()
-                    local res = getRes(stress, resMAX)
-                    
-                    AM_stress = stress[1]
-                    EM_stress = stress[2]
-                    KI_stress = stress[3]
-                    TH_stress = stress[4]
+                local stress = shield.getStressRatioRaw()
+                local resistance = shield.getResistances()
+                local res = getRes(stress, resMAX)
+                
+                AM_stress = stress[1]
+                EM_stress = stress[2]
+                KI_stress = stress[3]
+                TH_stress = stress[4]
 
-                    if GHUD_shield_calibration_max then
+                if GHUD_shield_calibration_max then
                     if resistance[1] == res[1] and
                     resistance[2] == res[2] and
                     resistance[3] == res[3] and
@@ -5720,13 +5716,10 @@ handlers:
                         if shield.setResistances(res[1],res[2],res[3],res[4]) == 1 then
                             system.print("Shield power has been set to max stress")
                             actionRes(res)
-                            system.playSound('shieldNewResists.mp3')
-                        else
-                            system.print("ERR4")
-                            system.playSound('shieldResistError.mp3')
+                        system.playSound('shieldNewResists.mp3')
                         end
                     end
-                    else
+                else
                     local re1 = getResRatioBy2HighestDamage(stress)[1]
                     local re2 = getResRatioBy2HighestDamage(stress)[2]
                     local re3 = getResRatioBy2HighestDamage(stress)[3]
@@ -5741,13 +5734,10 @@ handlers:
                             system.print("Shield power has been split 50/50%")
                             local re = {re1,re2,re3,re4}
                             actionRes(re)
-                            system.playSound('shieldNewResists.mp3')
-                        else
-                            system.print("ERR5")
-                            system.playSound('shieldResistError.mp3')
+                        system.playSound('shieldNewResists.mp3')
                         end
                     end
-                    end
+                end
                 end
         onActionStart:
             args: [option7]
@@ -5811,7 +5801,8 @@ handlers:
                     system.print("Shield venting is already stopped!")
                     else
                     shield.startVenting()
-                    last_shield_hp = 0
+                    local shield_hp = shield.getShieldHitpoints()
+                    last_shield_hp = shield_hp
                     system.print("Shield regeneration started!")
                     end
                 end
