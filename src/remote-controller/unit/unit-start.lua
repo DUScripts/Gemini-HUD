@@ -611,7 +611,7 @@ safew=''
 varcombat = construct.getPvPTimer()
 
 function pD()
-   if nearestPipeDistance ~= nil then
+   if nearestPipeDistance ~= nil and closestPipeData ~= nil then
       local pipeD = ''
       if nearestPipeDistance >= 100000 then
          pipeD = ''..string.format('%0.2f', nearestPipeDistance/200000)..' su'
