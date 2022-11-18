@@ -445,23 +445,18 @@ function closestPipe()
                      sortestPipeKeyId = obj;
                      sortestPipeKey2Id = obj2;
                   end
-                  -- if stellarObjects[obj].name[1] == "Alioth" and (nearestAliothPipeDistance == nil or pipeDistance < nearestAliothPipeDistance) then
-                  --    nearestAliothPipeDistance = pipeDistance
-                  --    sortestAliothPipeKeyId = obj
-                  --    sortestAliothPipeKey2Id = obj2
-                  -- end
                end
             end
-         end
-         if pos:dist(vec3(stellarObjects[sortestPipeKeyId].center)) < pos:dist(vec3(stellarObjects[sortestPipeKey2Id].center)) then
-         closestPipeData = stellarObjects[sortestPipeKeyId].name[1] .. " - " .. stellarObjects[sortestPipeKey2Id].name[1]
-         else
-         closestPipeData = stellarObjects[sortestPipeKey2Id].name[1] .. " - " .. stellarObjects[sortestPipeKeyId].name[1]
          end
          if i > 15 then
             i = 0
             coroutine.yield()
          end
+      end
+      if pos:dist(vec3(stellarObjects[sortestPipeKeyId].center)) < pos:dist(vec3(stellarObjects[sortestPipeKey2Id].center)) then
+         closestPipeData = stellarObjects[sortestPipeKeyId].name[1] .. " - " .. stellarObjects[sortestPipeKey2Id].name[1]
+         else
+         closestPipeData = stellarObjects[sortestPipeKey2Id].name[1] .. " - " .. stellarObjects[sortestPipeKeyId].name[1]
       end
    end
    end
