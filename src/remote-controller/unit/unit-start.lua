@@ -690,9 +690,6 @@ elseif stress[2] >= stress[1] and
          stress[4] >= stress[2] and
          stress[4] > stress[3] then
             res = {0,0,0,resMAX}
-         else
-            system.print("ERR1")
-            system.playSound('shieldResistError.mp3')
          end
          return res
       end

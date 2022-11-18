@@ -748,9 +748,6 @@ handlers:
                         stress[4] >= stress[2] and
                         stress[4] > stress[3] then
                             res = {0,0,0,resMAX}
-                        else
-                            system.print("ERR1")
-                            system.playSound('shieldResistError.mp3')
                         end
                         return res
                     end
@@ -1461,7 +1458,7 @@ handlers:
 
                 varcombat = construct.getPvPTimer()
 
-                if varcombat > 302 then
+                if varcombat > 0 and varcombat < 302 then
                 local stress = shield.getStressRatioRaw()
                 AM_stress = stress[1]
                 EM_stress = stress[2]
@@ -2983,7 +2980,7 @@ handlers:
         onActionStart:
             args: [option6]
             lua: |
-                if varcombat > 302 and shield.getResistancesCooldown() == 0 and not GHUD_shield_auto_calibration then
+                if shield.getResistancesCooldown() == 0 and not GHUD_shield_auto_calibration then
                     local stress = shield.getStressRatioRaw()
                     local resistance = shield.getResistances()
                     local res = getRes(stress, resMAX)

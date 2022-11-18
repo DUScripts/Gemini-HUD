@@ -13,7 +13,7 @@ damage_SVG()
 
 varcombat = construct.getPvPTimer()
 
-if varcombat > 302 then
+if varcombat > 0 and varcombat < 302 then
    local stress = shield.getStressRatioRaw()
    AM_stress = stress[1]
    EM_stress = stress[2]
