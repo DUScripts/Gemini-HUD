@@ -108,7 +108,7 @@ handlers:
                 GHUD_hits_misses_Y = 76 --export:
                 GHUD_hit_X = 56.5 --export:
                 GHUD_miss_X = 47.5 --export:
-                GHUD_allies_count = 5 --export: Max count of displayed allies. Selected ally will always be displayed
+                GHUD_allies_count = 8 --export: Max count of displayed allies. Selected ally will always be displayed
                 GHUD_allies_color = "rgb(0, 191, 255)" --export:
                 GHUD_allied_names_color = "rgb(0, 191, 255)" --export:
                 GHUD_show_AR_allies_marks = true --export:
