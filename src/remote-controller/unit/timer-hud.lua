@@ -9,6 +9,9 @@ if coroutine.status(ck) ~= "dead" and coroutine.status(ck) == "suspended" then
 end
 end
 
+local dx = system.getMouseDeltaX()
+local dy = system.getMouseDeltaY()
+
 damage_SVG()
 
 varcombat = construct.getPvPTimer()
@@ -157,8 +160,8 @@ if math.ceil(HP) <= 50 then
       local ind = sPos + 400000 * vec3(sp1)
       local pointF = library.getPointOnScreen({ind.x,ind.y,ind.z})
       if pointF[3] > 0 and speed > 15 then --visible zone
-         local x = screenWidth*pointF[1] - GHUD_flight_indicator_size/2
-         local y = screenHeight*pointF[2] - GHUD_flight_indicator_size/2
+         local x = (screenWidth*pointF[1]) - dx - GHUD_flight_indicator_size/2
+         local y = (screenHeight*pointF[2]) - dy - GHUD_flight_indicator_size/2
          Indicator = [[
                <style>
                .flightIndicator {
@@ -182,8 +185,8 @@ if math.ceil(HP) <= 50 then
             safetext=''..safeStatus..' <green1>'..zoneDist..' '..distStr..'</green1>'
             local point1 = library.getPointOnScreen({safeVector.x,safeVector.y,safeVector.z})
             if point1[3] > 0 then --visible zone
-               local x2 = screenWidth*point1[1] - 50
-               local y2 = screenHeight*point1[2] - 50
+               local x2 = (screenWidth*point1[1]) - dx - 50
+               local y2 = (screenHeight*point1[2]) - dy - 50
                AR_pvpzone = [[
                <style>
                .pvpzoneAR {
@@ -206,8 +209,8 @@ if math.ceil(HP) <= 50 then
             safetext=''..safeStatus..' <green1>'..zoneDist..' '..distStr..'</green1>'
             local point1 = library.getPointOnScreen({safeVector.x,safeVector.y,safeVector.z})
             if point1[3] > 0 then --visible zone
-               local x2 = screenWidth*point1[1] - 50
-               local y2 = screenHeight*point1[2] - 50
+               local x2 = (screenWidth*point1[1]) - dx - 50
+               local y2 = (screenHeight*point1[2]) - dy - 50
                AR_safezone = [[
                <style>
                .safezoneAR {
@@ -243,8 +246,8 @@ if math.ceil(HP) <= 50 then
                   dist = string.format('%0.0f', dist)
                   sdist = 'M'
                end
-               local x = screenWidth*point1[1] - 50
-               local y = screenHeight*point1[2] - 50
+               local x = (screenWidth*point1[1]) - dx - 50
+               local y = (screenHeight*point1[2]) - dy - 50
                AR_asteroid = [[
                <style>
                .marker]]..GHUD_marker_name..[[ {
@@ -333,8 +336,8 @@ if math.ceil(HP) <= 50 then
                               dist = string.format('%0.0f', dist)
                               sdist = 'M'
                            end
-                           local x2 = screenWidth*point1[1] - 50
-                           local y2 = screenHeight*point1[2] - 50
+                           local x2 = (screenWidth*point1[1]) - dx - 50
+                           local y2 = (screenHeight*point1[2]) - dy - 50
                            AR_planets = AR_planets .. [[
                            <style>
                            .pl]]..planet.name[1]..[[ {

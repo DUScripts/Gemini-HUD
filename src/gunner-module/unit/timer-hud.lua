@@ -8,6 +8,9 @@ if coroutine.status(main1) ~= "dead" and coroutine.status(main1) == "suspended" 
    --coroutine.xpcall(main1) -- resume debug coroutine
 end
 
+local dx = system.getMouseDeltaX()
+local dy = system.getMouseDeltaY()
+
 local sight = ''
 if weapon_1 ~= nil then
 local wdata = weapon_1.getWidgetData()
@@ -56,8 +59,8 @@ if id ~= 0 then
    }
    ]]
    if point1[3] > 0 then --visible zone
-      local x2 = screenWidth*point1[1] - GHUD_AR_sight_size/2
-      local y2 = screenHeight*point1[2] - GHUD_AR_sight_size/2
+      local x2 = (screenWidth*point1[1]) - dx - GHUD_AR_sight_size/2
+      local y2 = (screenHeight*point1[2]) - dy - GHUD_AR_sight_size/2
       sight1 = [[
       .sight1 {
          position: absolute;
@@ -109,8 +112,8 @@ else
    --local pos1 = ConvertLocalToWorld(0,distance,0)
    --local point1 = library.getPointOnScreen({pos1.x,pos1.y,pos1.z})
    if point1[3] > 0 then --visible zone
-      local x2 = screenWidth*point1[1] - GHUD_AR_sight_size/2
-      local y2 = screenHeight*point1[2] - GHUD_AR_sight_size/2
+      local x2 = (screenWidth*point1[1]) - dx - GHUD_AR_sight_size/2
+      local y2 = (screenHeight*point1[2]) - dy - GHUD_AR_sight_size/2
       sight = [[
       <style>
       .sight1 {
@@ -136,10 +139,10 @@ for k,v in pairs(radarIDs) do --AR marks
       local pos = activeRadar.getConstructWorldPos(v)
       local point = library.getPointOnScreen({pos[1],pos[2],pos[3]})
       if point[3] > 0 then --visible zone
-         local x = screenWidth*point[1] - GHUD_AR_allies_border_size/2
-         local y = screenHeight*point[2] - GHUD_AR_allies_border_size/2
+         local x = (screenWidth*point[1]) - dx - GHUD_AR_allies_border_size/2
+         local y = (screenHeight*point[2]) - dy - GHUD_AR_allies_border_size/2
          AR_allies = AR_allies .. [[
-         <style>
+         <style>     
          .id]]..v..[[ {
             position: absolute;
             width: ]]..GHUD_AR_allies_border_size..[[px;

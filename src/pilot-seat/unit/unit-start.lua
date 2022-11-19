@@ -1267,30 +1267,31 @@ elseif stress[2] >= stress[1] and
       gearB = false
       helper = false
       helper1 = false
+      friendsData = {}
       pp1 = ''
       shipName = construct.getName()
       local scID = construct.getId()
       system.print(''..shipName..': '..scID..'')
       conID = tostring(scID):sub(-3)
-
+      
       GHUD_friendly_IDs = {}
-
+      
       local dbkeys = databank_2.getNbKeys()
-
+      
       if dbkeys > 0 then
          for i = 1, dbkeys do
             table.insert(GHUD_friendly_IDs,databank_2.getIntValue(i))
          end
          system.print('Databank whitelist loaded')
       end
-
+      
       function checkWhitelist()
          local whitelist = GHUD_friendly_IDs
          local set = {}
          for _, l in ipairs(whitelist) do set[l] = true end
          return set
       end
-
+      
       function table.contains(table, element)
          for _, value in pairs(table) do
             if value == element then
@@ -1299,45 +1300,45 @@ elseif stress[2] >= stress[1] and
          end
          return false
       end
-
+      
       whitelist = checkWhitelist() --load IDs
       local pauseAfter = 100 --radar widget coroutine
-
+      
       radarWidgetScale = 2
       radarWidgetScaleDisplay = '<div class="measures"><span>0 SU</span><span>1 SU</span><span>2 SU</span></div>'
-
+      
       --radar widget
       function defaultRadar()
          sizeState = 6
          defaultSize = 'ALL'
          if mRadar.friendlyMode == true then mRadar.friendlyMode = false end
       end
-
+      
       function mRadar:createWidget()
          self.dataID = self.system.createData(activeRadar.getWidgetData())
          radarPanel = self.system.createWidgetPanel('')
          radarWidget = self.system.createWidget(radarPanel, activeRadar.getWidgetType())
          self.system.addDataToWidget(self.dataID, radarWidget)
       end
-
+      
       function mRadar:createWidgetNew()
          self.dataID = self.system.createData(activeRadar.getWidgetData())
          radarWidget = self.system.createWidget(radarPanel, activeRadar.getWidgetType())
          self.system.addDataToWidget(self.dataID, radarWidget)
       end
-
+      
       function mRadar:deleteWidget()
          self.system.destroyData(self.dataID)
          self.system.destroyWidget(radarWidget)
       end
-
+      
       function mRadar:updateLoop()
          while true do
             self:updateStep()
             coroutine.yield()
          end
       end
-
+      
       function mRadar:updateStep()
          local resultList = {}
          local data = activeRadar.getWidgetData()
@@ -1383,19 +1384,19 @@ elseif stress[2] >= stress[1] and
          data = '{"constructsList":[' .. table.concat(resultList, ",") .. "]," .. postData --completed json radar data
          self.system.updateData(self.dataID, data)
       end
-
+      
       function mRadar:onUpdate()
          coroutine.resume(self.updaterCoroutine)
       end
-
+      
       function mRadar:clearIDFilter()
          self.idFilter = {}
       end
-
+      
       function mRadar:addIDFilter(id)
          self.idFilter[id] = true
       end
-
+      
       --pvp focus mode
       function mRadar:onTextInput(text)
          self:clearIDFilter()
@@ -1410,11 +1411,11 @@ elseif stress[2] >= stress[1] and
             self:addIDFilter(tonumber(id))
          end
       end
-
+      
       function mRadar:toggleFriendlyMode()
          self.friendlyMode = not self.friendlyMode
       end
-
+      
       function mRadar:new(sys)
          local mRadar = {}
          setmetatable(mRadar, self)
@@ -1430,7 +1431,7 @@ elseif stress[2] >= stress[1] and
          self.updaterCoroutine = coroutine.create(function() self:updateLoop() end)
          return self
       end
-
+      
       --weapon widgets
       local oldAnimationTime = {}
       local oldWeaponStatus = {}
@@ -1438,7 +1439,7 @@ elseif stress[2] >= stress[1] and
       local OldoutOfZone = {}
       local oldTargetConstruct = {}
       local oldHitProbability = {}
-
+      
       function mWeapons:createWidgets()
          if not (type(self.weapons) == 'table' and #self.weapons > 0) then
             return
@@ -1454,7 +1455,7 @@ elseif stress[2] >= stress[1] and
             self.system.addDataToWidget(weaponDataID, self.system.createWidget(widgetPanelID, weap.getWidgetType()))
          end
       end
-
+      
       function mWeapons:onUpdate()
          for weaponDataID, weap in pairs(self.weaponData) do
             local weaponData = weap.getWidgetData()
@@ -1467,7 +1468,7 @@ elseif stress[2] >= stress[1] and
             local hitP = math.floor(tonumber(hitProbability) * 100)
             local animationChanged = animationTime > oldAnimationTime[weaponDataID]
             oldAnimationTime[weaponDataID] = animationTime
-
+      
             if weaponStatus == oldWeaponStatus[weaponDataID] and oldTargetConstruct[weaponDataID] == targetConstructID and oldFireReady[weaponDataID] == fireReady and OldoutOfZone[weaponDataID] == outOfZone and oldHitProbability[weaponDataID] == hitProbability and not animationChanged then
                goto continue
             end
@@ -1476,9 +1477,9 @@ elseif stress[2] >= stress[1] and
             OldoutOfZone[weaponDataID] = outOfZone
             oldTargetConstruct[weaponDataID] = targetConstructID
             oldHitProbability[weaponDataID] = hitProbability
-
+      
             local ammoName = weaponData:match('"ammoName":"(.-)"')
-
+      
             local ammoType1 = ""
             if ammoName:match("Antimatter") then
                ammoType1 = "AM"
@@ -1491,7 +1492,7 @@ elseif stress[2] >= stress[1] and
             elseif ammoName:match("Stasis") then
                ammoType1 = "Stasis"
             end
-
+      
             local ammoType2 = ""
             if ammoName:match("Precision") then
                ammoType2 = "Prec"
@@ -1502,19 +1503,19 @@ elseif stress[2] >= stress[1] and
             elseif ammoName:match("Defense") then
                ammoType2 = "Def"
             end
-
+      
             weaponData = weaponData:gsub('"constructId":"(%d+(%d%d%d))","name":"(.?.?.?.?).-"', '"constructId":"%1","name":"%2 - %3"')
             weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. hitP .. '%% - ' .. ammoType1 .. ' ' .. ammoType2 .. '"')
             --weaponData = weaponData:gsub('"constructId":"(%d+(%d%d%d))","name":"(.?.?.?.?.?.?.?.?.?.?.?.?.?.?).-"', '"constructId":"%1","name":"%2 - %3"')
-
+      
             if self.system.updateData(weaponDataID, weaponData) ~= 1 then
                self.system.print('update error')
             end
-
+      
             ::continue::
          end
       end
-
+      
       function mWeapons:new(sys, weapons, weaponsPerPanel)
          local mWeapons = {}
          setmetatable(mWeapons, self)
@@ -1525,43 +1526,43 @@ elseif stress[2] >= stress[1] and
          self:createWidgets()
          return self
       end
-
+      
       --debug coroutine
       function coroutine.xpcall(co)
          local output = {coroutine.resume(co)}
          if output[1] == false then
             local tb = traceback(co)
-
+      
             local message = tb:gsub('"%-%- |STDERROR%-EVENTHANDLER[^"]*"', 'chunk')
             system.print(message)
-
+      
             message = output[2]:gsub('"%-%- |STDERROR%-EVENTHANDLER[^"]*"', 'chunk')
             system.print(message)
             return false, output[2], tb
          end
          return table.unpack(output)
       end
-
+      
       function ConvertLocalToWorld(x,y,z)
          local xOffset = x * vec3(construct.getWorldRight())
          local yOffset = y * vec3(construct.getWorldForward())
          local zOffset = z * vec3(construct.getWorldUp())
-
+      
          return xOffset + yOffset + zOffset + vec3(construct.getWorldPosition())
       end
-
+      
       if GHUD_radarWidget_on_top == true then
          mRadar = mRadar:new(system) --radar widget
          if weapon_1 ~= nil then
-            mWeapons = mWeapons:new(system, weapon, GHUD_weapon_panels) --weapon widgets
-         end
+         mWeapons = mWeapons:new(system, weapon, GHUD_weapon_panels) --weapon widgets
+      end
       else
          if weapon_1 ~= nil then
-            mWeapons = mWeapons:new(system, weapon, GHUD_weapon_panels)
-         end
+         mWeapons = mWeapons:new(system, weapon, GHUD_weapon_panels)
+      end
          mRadar = mRadar:new(system)
       end
-
+      
       --main gunner function
       function main()
          while true do
@@ -1613,35 +1614,35 @@ elseif stress[2] >= stress[1] and
                i = i + 1
                local size = activeRadar.getConstructCoreSize(v)
                local constructRow = {}
-               if t_radarEnter[v] ~= nil then
-                  if activeRadar.hasMatchingTransponder(v) == 0 and not whitelist[v] and size ~= "" and activeRadar.getConstructDistance(v) < 600000 then --do not show far targets during warp and server lag
-                     local name = activeRadar.getConstructName(v)
-                     if activeRadar.isConstructAbandoned(v) == 0 then
-                        local msg = 'NEW TARGET: '..name..' - '..v..' - Size: '..size..'\n '..t_radarEnter[v].pos..''
-                        table.insert(loglist, msg)
-                        if count < 10 then --max 10 notifications
-                           count = count + 1
-                           if target[count] == nil then
-                              target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0}
+                  if t_radarEnter[v] ~= nil then
+                     if activeRadar.hasMatchingTransponder(v) == 0 and not whitelist[v] and size ~= "" and activeRadar.getConstructDistance(v) < 600000 then --do not show far targets during warp and server lag
+                        local name = activeRadar.getConstructName(v)
+                        if activeRadar.isConstructAbandoned(v) == 0 then
+                           local msg = 'NEW TARGET: '..name..' - Size: '..size..' - '..v..'\n '..t_radarEnter[v].pos..''
+                           table.insert(loglist, msg)
+                           if count < 10 then --max 10 notifications
+                              count = count + 1
+                              if target[count] == nil then
+                                 target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0}
+                              end
+                              system.playSound('enter.mp3')
                            end
-                           system.playSound('enter.mp3')
-                        end
-                     else
-                        local pos = activeRadar.getConstructWorldPos(v)
-                        pos = '::pos{0,0,'..pos[1]..','..pos[2]..','..pos[3]..'}'
-                        local msg = 'NEW TARGET (abandoned): '..name..' - '..v..' - Size: '..size..'\n '..pos..''
-                        table.insert(loglist, msg)
-                        if count < 10 then --max 10 notifications
-                           count = count + 1
-                           if target[count] == nil then
-                              target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0}
+                        else
+                           local pos = activeRadar.getConstructWorldPos(v)
+                           pos = '::pos{0,0,'..pos[1]..','..pos[2]..','..pos[3]..'}'
+                           local msg = 'NEW TARGET (abandoned): '..name..' - Size: '..size..' - '..v..'\n '..pos..''
+                           table.insert(loglist, msg)
+                           if count < 10 then --max 10 notifications
+                              count = count + 1
+                              if target[count] == nil then
+                                 target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0}
+                              end
                            end
+                           system.playSound('sonar.mp3')
                         end
-                        system.playSound('sonar.mp3')
                      end
+                     t_radarEnter[v] = nil
                   end
-                  t_radarEnter[v] = nil
-               end
                if GHUD_show_echoes == true then
                   if size ~= "" then
                      constructRow.widgetDist = math.ceil(activeRadar.getConstructDistance(v) / 1000 * radarWidgetScale)
@@ -1652,10 +1653,21 @@ elseif stress[2] >= stress[1] and
                   if activeRadar.hasMatchingTransponder(v) == 1 or whitelist[v] then
                      local name = activeRadar.getConstructName(v)
                      local dist = math.floor(activeRadar.getConstructDistance(v))
-                     if dist >= 1000 then
-                        dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
+                        local ownerTag = ''
+                        if activeRadar.hasMatchingTransponder(v) == 1 then   
+                        local owner = activeRadar.getConstructOwnerEntity(v)
+                        if owner['isOrganization'] then
+                           ownerTag = system.getOrganization(owner['id']).tag
+                        else
+                           ownerTag = system.getPlayerName(owner['id'])
+                        end
                      else
-                        dist = ''..dist..'m'
+                        ownerTag = 'DB'
+                     end
+                     if dist >= 1000 then
+                        dist = ''..string.format('%0.1f', dist/1000)..' km ('..string.format('%0.2f', dist/200000)..' su)'
+                     else
+                        dist = ''..dist..' m'
                      end
                      local allID = tostring(v):sub(-3)
                      local nameA = ''..allID..' '..name..''
@@ -1664,7 +1676,7 @@ elseif stress[2] >= stress[1] and
                         list = list..[[
                         <div class="table-row3 th3">
                         <div class="table-cell3">
-                        ]]..'['..size..'] '..nameA.. [[<br><distalliescolor>]] ..dist.. [[</distalliescolor>
+                        ]]..'['..size..'] '..nameA.. [[ <allyborder>]]..ownerTag..[[</allyborder><br><distalliescolor>]] ..dist.. [[</distalliescolor>
                         </div>
                         </div>]]
                      end
@@ -1672,7 +1684,7 @@ elseif stress[2] >= stress[1] and
                         list = list..[[
                         <div class="table-row3 th3S">
                         <div class="table-cell3S">
-                        ]]..'['..size..'] '..nameA.. [[<br><distalliescolor>]] ..dist.. [[</distalliescolor>
+                        ]]..'['..size..'] '..nameA.. [[ <allyborder>]]..ownerTag..[[</allyborder><br><distalliescolor>]] ..dist.. [[</distalliescolor>
                         </div>
                         </div>]]
                      end
@@ -1680,7 +1692,7 @@ elseif stress[2] >= stress[1] and
                         list = list..[[
                         <div class="table-row3 th3S">
                         <div class="table-cell3S">
-                        ]]..'['..size..'] '..nameA.. [[<br><distalliescolor>]] ..dist.. [[</distalliescolor>
+                        ]]..'['..size..'] '..nameA.. [[ <allyborder>]]..ownerTag..[[</allyborder><br><distalliescolor>]] ..dist.. [[</distalliescolor>
                         </div>
                         </div>]]
                      end
@@ -1694,9 +1706,9 @@ elseif stress[2] >= stress[1] and
                   local name = activeRadar.getConstructName(v)
                   local dist = math.floor(activeRadar.getConstructDistance(v))
                   if dist >= 1000 then
-                     dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
+                     dist = ''..string.format('%0.1f', dist/1000)..' km ('..string.format('%0.2f', dist/200000)..' su)'
                   else
-                     dist = ''..dist..'m'
+                     dist = ''..dist..' m'
                   end
                   local IDT = tostring(v):sub(-3)
                   local nameIDENT = ''..IDT..' '..name..''
@@ -1708,19 +1720,19 @@ elseif stress[2] >= stress[1] and
                      islockList = islockList..[[
                      <div class="table-row2 thS">
                      <div class="table-cellS">
-                     ]]..'['..size..'] '..nameIDENT.. [[ <speedcolor> ]] ..speed.. [[km/h</speedcolor><br><distcolor>]] ..dist.. [[</distcolor>
+                     ]]..'['..size..'] '..nameIDENT.. [[ <speedcolor> ]] ..speed.. [[ km/h</speedcolor><br><distcolor>]] ..dist.. [[</distcolor>
                      </div>
                      </div>]]
                   else
                      islockList = islockList..[[
                      <div class="table-row2 th2">
                      <div class="table-cell2">
-                     ]]..'['..size..'] '..nameIDENT.. [[ <speedcolor> ]] ..speed.. [[km/h</speedcolor><br><distcolor>]] ..dist.. [[</distcolor>
+                     ]]..'['..size..'] '..nameIDENT.. [[ <speedcolor> ]] ..speed.. [[ km/h</speedcolor><br><distcolor>]] ..dist.. [[</distcolor>
                      </div>
                      </div>]]
                   end
                else
-
+      
                   if GHUD_show_echoes == true then
                      if size ~= "" then
                         if activeRadar.getConstructKind(v) == 5 then
@@ -1742,36 +1754,32 @@ elseif stress[2] >= stress[1] and
                   end
                end
                --lockstatus
-               if activeRadar.getThreatRateFrom(v) ~= 1 and activeRadar.getThreatRateFrom(v) ~= 4 and size ~= "" then
+               if (activeRadar.getThreatRateFrom(v) == 2 or activeRadar.getThreatRateFrom(v) == 3 or activeRadar.getThreatRateFrom(v) == 5) and size ~= "" then
                   countLock = countLock + 1
                   local name = string.sub((""..activeRadar.getConstructName(v)..""),1,11)
                   local dist = math.floor(activeRadar.getConstructDistance(v))
                   if dist >= 1000 then
-                     dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
+                     dist = ''..string.format('%0.1f', dist/1000)..' km ('..string.format('%0.2f', dist/200000)..' su)'
                   else
-                     dist = ''..dist..'m'
+                     dist = ''..dist..' m'
                   end
                   local loclIDT = tostring(v):sub(-3)
                   local nameLOCK = ''..loclIDT..' '..name..''
                   if activeRadar.getThreatRateFrom(v) == 5 then
                      countAttacked = countAttacked + 1
-                     if countLock <= 10 then
-                        lockList = lockList..[[
-                        <div class="table-row th">
-                        <div class="lockedT">
-                        <redcolor1>]]..'['..size..'] '..nameLOCK.. [[</redcolor1><br><distcolor>]] ..dist.. [[</distcolor>
-                        </div>
-                        </div>]]
-                     end
+                     lockList = lockList..[[
+                     <div class="table-row th">
+                     <div class="lockedT">
+                     <redcolor1>]]..'['..size..'] '..nameLOCK.. [[</redcolor1><br><distcolor>]] ..dist.. [[</distcolor>
+                     </div>
+                     </div>]]
                   else
-                     if countLock <= 10 then
-                        lockList = lockList..[[
-                        <div class="table-row th">
-                        <div class="lockedT">
-                        <orangecolor>]]..'['..size..'] '..nameLOCK.. [[</orangecolor><br><distcolor>]] ..dist.. [[</distcolor>
-                        </div>
-                        </div>]]
-                     end
+                     lockList = lockList..[[
+                     <div class="table-row th">
+                     <div class="lockedT">
+                     <orangecolor>]]..'['..size..'] '..nameLOCK.. [[</orangecolor><br><distcolor>]] ..dist.. [[</distcolor>
+                     </div>
+                     </div>]]
                   end
                end
                if i > 50 then
@@ -1903,9 +1911,9 @@ elseif stress[2] >= stress[1] and
             else
                radarWidget = ''
             end
-
+      
             hudver = hudvers .. [[<div class="hudversion">GHUD v]]..HUD_version..[[</div>]]
-
+      
             if GHUD_show_echoes == true then
                if GHUD_show_allies == true then
                   --system.setScreen(htmltext .. target1 .. locks .. hudver .. radarWidget ..statusSVG)
@@ -1914,9 +1922,9 @@ elseif stress[2] >= stress[1] and
                   --system.setScreen(target1 .. locks .. hudver .. radarWidget ..statusSVG)
                   gunnerHUD = target1 .. locks .. hudver .. radarWidget ..statusSVG
                end
-
+      
             else
-
+      
                if GHUD_show_allies == true then
                   --system.setScreen(htmltext .. target1 .. locks .. hudver ..statusSVG)
                   gunnerHUD = htmltext .. target1 .. locks .. hudver ..statusSVG
@@ -1928,7 +1936,7 @@ elseif stress[2] >= stress[1] and
             coroutine.yield()
          end
       end
-
+      
       --HUD design
       lockhtml = [[<style>
       .table {
@@ -2037,6 +2045,16 @@ elseif stress[2] >= stress[1] and
          bottom: ]]..GHUD_allies_Y..[[vh;
          left: 0;
       }
+      allyborder {
+         color: white;
+         background-color: green;
+         padding-right: 3px;
+         padding-left: 3px;
+         padding-top: 0.5px;
+         padding-bottom: 0.5px;
+         border-radius: 5px;
+         border: 2px solid white;
+       }
       .table-row3 {
          display: table-row;
          float: left;
@@ -2069,7 +2087,7 @@ elseif stress[2] >= stress[1] and
          letter-spacing: 0.5px;
          font-size: 1.2em;
       }</style>]]
-
+      
       htmlRadar = [[
       <style>
       .radar-widget {
@@ -2147,7 +2165,7 @@ elseif stress[2] >= stress[1] and
          background: #ff3a56;
       }
       </style>]]
-
+      
       --interception concept, be careful
       --Dear programmer:
       --When I wrote this code, only God and I know how the next code works, don't try to edit it!

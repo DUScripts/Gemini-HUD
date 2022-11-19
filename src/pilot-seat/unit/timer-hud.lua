@@ -19,6 +19,9 @@ if corpos == true then
    end
 end
 
+local dx = system.getMouseDeltaX()
+local dy = system.getMouseDeltaY()
+
 damage_SVG()
 
 local sPos = vec3(construct.getWorldPosition())
@@ -167,8 +170,8 @@ if mybr == true then
          local ind = sPos + 400000 * vec3(sp1)
          local pointF = library.getPointOnScreen({ind.x,ind.y,ind.z})
          if pointF[3] > 0 and speed > 15 then --visible zone
-            local x = screenWidth*pointF[1] - GHUD_flight_indicator_size/2
-            local y = screenHeight*pointF[2] - GHUD_flight_indicator_size/2
+            local x = (screenWidth*pointF[1]) - dx - GHUD_flight_indicator_size/2
+            local y = (screenHeight*pointF[2]) - dy - GHUD_flight_indicator_size/2
             Indicator = [[
             <style>
             .flightIndicator {
@@ -192,8 +195,8 @@ if mybr == true then
             safetext=''..safeStatus..' <green1>'..zoneDist..' '..distStr..'</green1>'
             local point1 = library.getPointOnScreen({safeVector.x,safeVector.y,safeVector.z})
             if point1[3] > 0 then --visible zone
-               local x2 = screenWidth*point1[1] - 50
-               local y2 = screenHeight*point1[2] - 50
+               local x2 = (screenWidth*point1[1]) - dx - 50
+               local y2 = (screenHeight*point1[2]) - dy - 50
                AR_pvpzone = [[
                <style>
                .pvpzoneAR {
@@ -216,8 +219,8 @@ if mybr == true then
             safetext=''..safeStatus..' <green1>'..zoneDist..' '..distStr..'</green1>'
             local point1 = library.getPointOnScreen({safeVector.x,safeVector.y,safeVector.z})
             if point1[3] > 0 then --visible zone
-               local x2 = screenWidth*point1[1] - 50
-               local y2 = screenHeight*point1[2] - 50
+               local x2 = (screenWidth*point1[1]) - dx - 50
+               local y2 = (screenHeight*point1[2]) - dy - 50
                AR_safezone = [[
                <style>
                .safezoneAR {
@@ -253,8 +256,8 @@ if mybr == true then
                   dist = string.format('%0.0f', dist)
                   sdist = 'M'
                end
-               local x = screenWidth*point1[1] - 50
-               local y = screenHeight*point1[2] - 50
+               local x = (screenWidth*point1[1]) - dx - 50
+               local y = (screenHeight*point1[2]) - dy - 50
                AR_asteroid = [[
                <style>
                .marker]]..GHUD_marker_name..[[ {
@@ -343,8 +346,8 @@ if mybr == true then
                               dist = string.format('%0.0f', dist)
                               sdist = 'M'
                            end
-                           local x2 = screenWidth*point1[1] - 50
-                           local y2 = screenHeight*point1[2] - 50
+                           local x2 = (screenWidth*point1[1]) - dx - 50
+                           local y2 = (screenHeight*point1[2]) - dy - 50
                            AR_planets = AR_planets .. [[
                            <style>
                            .pl]]..planet.name[1]..[[ {
@@ -425,8 +428,8 @@ if mybr == true then
                   }
                   ]]
                   if point1[3] > 0 then --visible zone
-                     local x2 = screenWidth*point1[1] - GHUD_AR_sight_size/2
-                     local y2 = screenHeight*point1[2] - GHUD_AR_sight_size/2
+                     local x2 = (screenWidth*point1[1]) - dx - GHUD_AR_sight_size/2
+                     local y2 = (screenHeight*point1[2]) - dy - GHUD_AR_sight_size/2
                      sight1 = [[
                      .sight1 {
                         position: absolute;
@@ -478,8 +481,8 @@ if mybr == true then
                   --local pos1 = ConvertLocalToWorld(0,distance,0)
                   --local point1 = library.getPointOnScreen({pos1.x,pos1.y,pos1.z})
                   if point1[3] > 0 then --visible zone
-                     local x2 = screenWidth*point1[1] - GHUD_AR_sight_size/2
-                     local y2 = screenHeight*point1[2] - GHUD_AR_sight_size/2
+                     local x2 = (screenWidth*point1[1]) - dx - GHUD_AR_sight_size/2
+                     local y2 = (screenHeight*point1[2]) - dy - GHUD_AR_sight_size/2
                      sight = [[
                      <style>
                      .sight1 {
@@ -505,8 +508,8 @@ if mybr == true then
                         local pos = activeRadar.getConstructWorldPos(v)
                         local point = library.getPointOnScreen({pos[1],pos[2],pos[3]})
                         if point[3] > 0 then --visible zone
-                           local x = screenWidth*point[1] - GHUD_AR_allies_border_size/2
-                           local y = screenHeight*point[2] - GHUD_AR_allies_border_size/2
+                           local x = (screenWidth*point[1]) - dx - GHUD_AR_allies_border_size/2
+                           local y = (screenHeight*point[2]) - dy - GHUD_AR_allies_border_size/2
                            AR_allies = AR_allies .. [[
                            <style>
                            .id]]..v..[[ {

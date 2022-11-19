@@ -118,6 +118,7 @@ count = 0
 gearB = false
 helper = false
 helper1 = false
+friendsData = {}
 pp1 = ''
 shipName = construct.getName()
 local scID = construct.getId()
@@ -468,7 +469,7 @@ function main()
                if activeRadar.hasMatchingTransponder(v) == 0 and not whitelist[v] and size ~= "" and activeRadar.getConstructDistance(v) < 600000 then --do not show far targets during warp and server lag
                   local name = activeRadar.getConstructName(v)
                   if activeRadar.isConstructAbandoned(v) == 0 then
-                     local msg = 'NEW TARGET: '..name..' - '..v..' - Size: '..size..'\n '..t_radarEnter[v].pos..''
+                     local msg = 'NEW TARGET: '..name..' - Size: '..size..' - '..v..'\n '..t_radarEnter[v].pos..''
                      table.insert(loglist, msg)
                      if count < 10 then --max 10 notifications
                         count = count + 1
@@ -480,7 +481,7 @@ function main()
                   else
                      local pos = activeRadar.getConstructWorldPos(v)
                      pos = '::pos{0,0,'..pos[1]..','..pos[2]..','..pos[3]..'}'
-                     local msg = 'NEW TARGET (abandoned): '..name..' - '..v..' - Size: '..size..'\n '..pos..''
+                     local msg = 'NEW TARGET (abandoned): '..name..' - Size: '..size..' - '..v..'\n '..pos..''
                      table.insert(loglist, msg)
                      if count < 10 then --max 10 notifications
                         count = count + 1
@@ -503,10 +504,21 @@ function main()
             if activeRadar.hasMatchingTransponder(v) == 1 or whitelist[v] then
                local name = activeRadar.getConstructName(v)
                local dist = math.floor(activeRadar.getConstructDistance(v))
-               if dist >= 1000 then
-                  dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
+                  local ownerTag = ''
+                  if activeRadar.hasMatchingTransponder(v) == 1 then   
+                  local owner = activeRadar.getConstructOwnerEntity(v)
+                  if owner['isOrganization'] then
+                     ownerTag = system.getOrganization(owner['id']).tag
+                  else
+                     ownerTag = system.getPlayerName(owner['id'])
+                  end
                else
-                  dist = ''..dist..'m'
+                  ownerTag = 'DB'
+               end
+               if dist >= 1000 then
+                  dist = ''..string.format('%0.1f', dist/1000)..' km ('..string.format('%0.2f', dist/200000)..' su)'
+               else
+                  dist = ''..dist..' m'
                end
                local allID = tostring(v):sub(-3)
                local nameA = ''..allID..' '..name..''
@@ -515,7 +527,7 @@ function main()
                   list = list..[[
                   <div class="table-row3 th3">
                   <div class="table-cell3">
-                  ]]..'['..size..'] '..nameA.. [[<br><distalliescolor>]] ..dist.. [[</distalliescolor>
+                  ]]..'['..size..'] '..nameA.. [[ <allyborder>]]..ownerTag..[[</allyborder><br><distalliescolor>]] ..dist.. [[</distalliescolor>
                   </div>
                   </div>]]
                end
@@ -523,7 +535,7 @@ function main()
                   list = list..[[
                   <div class="table-row3 th3S">
                   <div class="table-cell3S">
-                  ]]..'['..size..'] '..nameA.. [[<br><distalliescolor>]] ..dist.. [[</distalliescolor>
+                  ]]..'['..size..'] '..nameA.. [[ <allyborder>]]..ownerTag..[[</allyborder><br><distalliescolor>]] ..dist.. [[</distalliescolor>
                   </div>
                   </div>]]
                end
@@ -531,7 +543,7 @@ function main()
                   list = list..[[
                   <div class="table-row3 th3S">
                   <div class="table-cell3S">
-                  ]]..'['..size..'] '..nameA.. [[<br><distalliescolor>]] ..dist.. [[</distalliescolor>
+                  ]]..'['..size..'] '..nameA.. [[ <allyborder>]]..ownerTag..[[</allyborder><br><distalliescolor>]] ..dist.. [[</distalliescolor>
                   </div>
                   </div>]]
                end
@@ -545,9 +557,9 @@ function main()
             local name = activeRadar.getConstructName(v)
             local dist = math.floor(activeRadar.getConstructDistance(v))
             if dist >= 1000 then
-               dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
+               dist = ''..string.format('%0.1f', dist/1000)..' km ('..string.format('%0.2f', dist/200000)..' su)'
             else
-               dist = ''..dist..'m'
+               dist = ''..dist..' m'
             end
             local IDT = tostring(v):sub(-3)
             local nameIDENT = ''..IDT..' '..name..''
@@ -559,14 +571,14 @@ function main()
                islockList = islockList..[[
                <div class="table-row2 thS">
                <div class="table-cellS">
-               ]]..'['..size..'] '..nameIDENT.. [[ <speedcolor> ]] ..speed.. [[km/h</speedcolor><br><distcolor>]] ..dist.. [[</distcolor>
+               ]]..'['..size..'] '..nameIDENT.. [[ <speedcolor> ]] ..speed.. [[ km/h</speedcolor><br><distcolor>]] ..dist.. [[</distcolor>
                </div>
                </div>]]
             else
                islockList = islockList..[[
                <div class="table-row2 th2">
                <div class="table-cell2">
-               ]]..'['..size..'] '..nameIDENT.. [[ <speedcolor> ]] ..speed.. [[km/h</speedcolor><br><distcolor>]] ..dist.. [[</distcolor>
+               ]]..'['..size..'] '..nameIDENT.. [[ <speedcolor> ]] ..speed.. [[ km/h</speedcolor><br><distcolor>]] ..dist.. [[</distcolor>
                </div>
                </div>]]
             end
@@ -593,36 +605,32 @@ function main()
             end
          end
          --lockstatus
-         if activeRadar.getThreatRateFrom(v) ~= 1 and activeRadar.getThreatRateFrom(v) ~= 4 and size ~= "" then
+         if (activeRadar.getThreatRateFrom(v) == 2 or activeRadar.getThreatRateFrom(v) == 3 or activeRadar.getThreatRateFrom(v) == 5) and size ~= "" then
             countLock = countLock + 1
             local name = string.sub((""..activeRadar.getConstructName(v)..""),1,11)
             local dist = math.floor(activeRadar.getConstructDistance(v))
             if dist >= 1000 then
-               dist = ''..string.format('%0.1f', dist/1000)..'km ('..string.format('%0.2f', dist/200000)..'SU)'
+               dist = ''..string.format('%0.1f', dist/1000)..' km ('..string.format('%0.2f', dist/200000)..' su)'
             else
-               dist = ''..dist..'m'
+               dist = ''..dist..' m'
             end
             local loclIDT = tostring(v):sub(-3)
             local nameLOCK = ''..loclIDT..' '..name..''
             if activeRadar.getThreatRateFrom(v) == 5 then
                countAttacked = countAttacked + 1
-               if countLock <= 10 then
                lockList = lockList..[[
                <div class="table-row th">
                <div class="lockedT">
                <redcolor1>]]..'['..size..'] '..nameLOCK.. [[</redcolor1><br><distcolor>]] ..dist.. [[</distcolor>
                </div>
                </div>]]
-               end
             else
-               if countLock <= 10 then
                lockList = lockList..[[
                <div class="table-row th">
                <div class="lockedT">
                <orangecolor>]]..'['..size..'] '..nameLOCK.. [[</orangecolor><br><distcolor>]] ..dist.. [[</distcolor>
                </div>
                </div>]]
-               end
             end
          end
          if i > 50 then
@@ -888,6 +896,16 @@ htmlbasic = [[<style>
    bottom: ]]..GHUD_allies_Y..[[vh;
    left: 0;
 }
+allyborder {
+   color: white;
+   background-color: green;
+   padding-right: 3px;
+   padding-left: 3px;
+   padding-top: 0.5px;
+   padding-bottom: 0.5px;
+   border-radius: 5px;
+   border: 2px solid white;
+ }
 .table-row3 {
    display: table-row;
    float: left;
