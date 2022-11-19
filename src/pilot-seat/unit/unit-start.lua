@@ -1658,8 +1658,10 @@ elseif stress[2] >= stress[1] and
                         local owner = activeRadar.getConstructOwnerEntity(v)
                         if owner['isOrganization'] then
                            ownerTag = system.getOrganization(owner['id']).tag
+                           friendsData[v] = {tag = ownerTag}
                         else
                            ownerTag = system.getPlayerName(owner['id'])
+                           friendsData[v] = {tag = ownerTag}
                         end
                      else
                         ownerTag = 'DB'
