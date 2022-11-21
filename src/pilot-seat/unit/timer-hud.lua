@@ -684,7 +684,7 @@ if mybr == true then
                   end
                end
 
-               local htmlHUD = [[
+               local htmlHUD1 = [[
                <html>
                <style>
                html,body {
@@ -905,7 +905,8 @@ if mybr == true then
                ]]..hitsHUD..[[
                ]]..sight..[[
                ]]..warningmsg..[[
-               ]]..brakeHUD..[[
+               ]]..brakeHUD..[[]]
+               local htmlHUD2 = [[
                <div class="safez">]]..safetext..[[</div>
                <div class="pipe">]]..pD()..[[</div>
                <div class="center1"></div>
@@ -975,4 +976,4 @@ if mybr == true then
                </body>
                </html>]]
 
-               if map == 0 and helper == false and helper1 == false then system.setScreen(htmlHUD) end
+               if map == 0 and helper == false and helper1 == false then system.setScreen(htmlHUD .. htmlHUD2) end

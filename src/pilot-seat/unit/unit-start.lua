@@ -1217,7 +1217,6 @@ elseif stress[2] >= stress[1] and
       end
 
       --vars
-      atlas = require("atlas")
       activeRadar = radar_1
       activeRadar.setSortMethod(1)
       radarIDs = {}
