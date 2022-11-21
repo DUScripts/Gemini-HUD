@@ -195,7 +195,7 @@ if GHUD_show_hits == true then
             transform: translate(-50%, -50%);
          }
          </style>
-         <div class="hit]]..k..[[">HIT ]]..lastHitTime[k].damage..[[ HP</div>]]
+         <div class="hit]]..k..[[">]]..lastHitTime[k].damage..[[</div>]]
          hits[k] = {html = hit}
 
          if lastHitTime[k].time >= 2 then
