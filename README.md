@@ -5,6 +5,7 @@ Discord: https://discord.gg/sTWdvte8E7<br/>
 <br/>
 GHUD is the rebirth of the CFCS HUD (Custom Fire Control System)<br/>
 <br/>
+https://youtu.be/l_VxfEqWc1w<br/><br/>
 Features:<br/>
 Animated shield panel<br/>
 Animated radar contact notifications<br/>
