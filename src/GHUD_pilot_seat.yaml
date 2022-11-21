@@ -445,6 +445,41 @@ handlers:
                 return table.unpack(output)
                 end
 
+                function hitFnc(slotname,dmg)
+                local ammo = ''
+                if slotname.isOutOfAmmo() ~= 1 then
+                    ammo = slotname.getAmmo()
+                    ammo = system.getItem(ammo)['displayName']
+                    if ammo:match("Antimatter") then
+                        ammo = "AM"
+                    elseif ammo:match("Electromagnetic") then
+                        ammo = "EM"
+                    elseif ammo:match("Kinetic") then
+                        ammo = "KI"
+                    elseif ammo:match("Thermic") then
+                        ammo = "TH"
+                    end
+                end
+
+                if ammo ~= '' then lastAmmo[slotname] = {ammoName = ammo} end
+                if ammo == '' then
+                    if lastAmmo[slotname] ~= nil then
+                        ammo = lastAmmo[slotname].ammoName
+                    end
+                end
+
+                if GHUD_show_hits == true then
+                    hitAnimations = hitAnimations + 1
+                    local strd = 'HIT '..ammo..' '..dmg
+                    lastHitTime[hitAnimations] = {damage = strd, time = 0, hitOpacity = 1, anims = hitAnimations}
+                end
+                if totalDamage[targetId] ~= nil then --target damage calculation concept (DeadRank)
+                    totalDamage[targetId].damage = totalDamage[targetId].damage + dmg
+                else
+                    totalDamage[targetId] = {damage = dmg}
+                end
+                end
+
                 function calcDistance(origCenter, destCenter, location)
                 local pipe = (destCenter - origCenter):normalize()
                 local r = (location-origCenter):dot(pipe) / pipe:dot(pipe)
@@ -1314,6 +1349,7 @@ handlers:
                     loglist = {}
                     radarTarget = nil
                     newWhitelist = {}
+                    lastAmmo = {}
                     radarStatic = {}
                     radarDynamic = {}
                     radarStaticWidget = {}
@@ -4789,32 +4825,7 @@ handlers:
         onHit(targetId,damage):
             lua: |
                 local damage1 = math.floor(damage)
-
-                local ammo = ''
-                if weapon_1.isOutOfAmmo() ~= 1 then --weapon slot name
-                    ammo = weapon_1.getAmmo()
-                    ammo = system.getItem(ammo)['displayName']
-                    if ammo:match("Antimatter") then
-                        ammo = "AM"
-                    elseif ammo:match("Electromagnetic") then
-                        ammo = "EM"
-                    elseif ammo:match("Kinetic") then
-                        ammo = "KI"
-                    elseif ammo:match("Thermic") then
-                        ammo = "TH"
-                    end
-                end
-
-                if GHUD_show_hits == true then
-                hitAnimations = hitAnimations + 1
-                local strd = 'HIT '..ammo..' '..damage1
-                lastHitTime[hitAnimations] = {damage = strd, time = 0, hitOpacity = 1, anims = hitAnimations}
-                end
-                if totalDamage[targetId] ~= nil then --target damage calculation concept (DeadRank)
-                    totalDamage[targetId].damage = totalDamage[targetId].damage + damage1
-                else
-                    totalDamage[targetId] = {damage = damage1}
-                end
+                hitFnc(weapon_1,damage1) --weapon slot
         onMissed(targetId):
             lua: |
                 if GHUD_show_misses == true then
@@ -4830,32 +4841,7 @@ handlers:
         onHit(targetId,damage):
             lua: |
                 local damage1 = math.floor(damage)
-
-                local ammo = ''
-                if weapon_2.isOutOfAmmo() ~= 1 then --weapon slot name
-                    ammo = weapon_2.getAmmo()
-                    ammo = system.getItem(ammo)['displayName']
-                    if ammo:match("Antimatter") then
-                        ammo = "AM"
-                    elseif ammo:match("Electromagnetic") then
-                        ammo = "EM"
-                    elseif ammo:match("Kinetic") then
-                        ammo = "KI"
-                    elseif ammo:match("Thermic") then
-                        ammo = "TH"
-                    end
-                end
-
-                if GHUD_show_hits == true then
-                hitAnimations = hitAnimations + 1
-                local strd = 'HIT '..ammo..' '..damage1
-                lastHitTime[hitAnimations] = {damage = strd, time = 0, hitOpacity = 1, anims = hitAnimations}
-                end
-                if totalDamage[targetId] ~= nil then --target damage calculation concept (DeadRank)
-                    totalDamage[targetId].damage = totalDamage[targetId].damage + damage1
-                else
-                    totalDamage[targetId] = {damage = damage1}
-                end
+                hitFnc(weapon_2,damage1) --weapon slot
         onMissed(targetId):
             lua: |
                 if GHUD_show_misses == true then
@@ -4871,32 +4857,7 @@ handlers:
         onHit(targetId,damage):
             lua: |
                 local damage1 = math.floor(damage)
-
-                local ammo = ''
-                if weapon_3.isOutOfAmmo() ~= 1 then --weapon slot name
-                    ammo = weapon_3.getAmmo()
-                    ammo = system.getItem(ammo)['displayName']
-                    if ammo:match("Antimatter") then
-                        ammo = "AM"
-                    elseif ammo:match("Electromagnetic") then
-                        ammo = "EM"
-                    elseif ammo:match("Kinetic") then
-                        ammo = "KI"
-                    elseif ammo:match("Thermic") then
-                        ammo = "TH"
-                    end
-                end
-
-                if GHUD_show_hits == true then
-                hitAnimations = hitAnimations + 1
-                local strd = 'HIT '..ammo..' '..damage1
-                lastHitTime[hitAnimations] = {damage = strd, time = 0, hitOpacity = 1, anims = hitAnimations}
-                end
-                if totalDamage[targetId] ~= nil then --target damage calculation concept (DeadRank)
-                    totalDamage[targetId].damage = totalDamage[targetId].damage + damage1
-                else
-                    totalDamage[targetId] = {damage = damage1}
-                end
+                hitFnc(weapon_3,damage1) --weapon slot
         onMissed(targetId):
             lua: |
                 if GHUD_show_misses == true then
@@ -4912,32 +4873,7 @@ handlers:
         onHit(targetId,damage):
             lua: |
                 local damage1 = math.floor(damage)
-
-                local ammo = ''
-                if weapon_4.isOutOfAmmo() ~= 1 then --weapon slot name
-                    ammo = weapon_4.getAmmo()
-                    ammo = system.getItem(ammo)['displayName']
-                    if ammo:match("Antimatter") then
-                        ammo = "AM"
-                    elseif ammo:match("Electromagnetic") then
-                        ammo = "EM"
-                    elseif ammo:match("Kinetic") then
-                        ammo = "KI"
-                    elseif ammo:match("Thermic") then
-                        ammo = "TH"
-                    end
-                end
-
-                if GHUD_show_hits == true then
-                hitAnimations = hitAnimations + 1
-                local strd = 'HIT '..ammo..' '..damage1
-                lastHitTime[hitAnimations] = {damage = strd, time = 0, hitOpacity = 1, anims = hitAnimations}
-                end
-                if totalDamage[targetId] ~= nil then --target damage calculation concept (DeadRank)
-                    totalDamage[targetId].damage = totalDamage[targetId].damage + damage1
-                else
-                    totalDamage[targetId] = {damage = damage1}
-                end
+                hitFnc(weapon_4,damage1) --weapon slot
         onMissed(targetId):
             lua: |
                 if GHUD_show_misses == true then
@@ -4953,32 +4889,7 @@ handlers:
         onHit(targetId,damage):
             lua: |
                 local damage1 = math.floor(damage)
-
-                local ammo = ''
-                if weapon_5.isOutOfAmmo() ~= 1 then --weapon slot name
-                    ammo = weapon_5.getAmmo()
-                    ammo = system.getItem(ammo)['displayName']
-                    if ammo:match("Antimatter") then
-                        ammo = "AM"
-                    elseif ammo:match("Electromagnetic") then
-                        ammo = "EM"
-                    elseif ammo:match("Kinetic") then
-                        ammo = "KI"
-                    elseif ammo:match("Thermic") then
-                        ammo = "TH"
-                    end
-                end
-
-                if GHUD_show_hits == true then
-                hitAnimations = hitAnimations + 1
-                local strd = 'HIT '..ammo..' '..damage1
-                lastHitTime[hitAnimations] = {damage = strd, time = 0, hitOpacity = 1, anims = hitAnimations}
-                end
-                if totalDamage[targetId] ~= nil then --target damage calculation concept (DeadRank)
-                    totalDamage[targetId].damage = totalDamage[targetId].damage + damage1
-                else
-                    totalDamage[targetId] = {damage = damage1}
-                end
+                hitFnc(weapon_5,damage1) --weapon slot
         onMissed(targetId):
             lua: |
                 if GHUD_show_misses == true then
@@ -4994,32 +4905,7 @@ handlers:
         onHit(targetId,damage):
             lua: |
                 local damage1 = math.floor(damage)
-
-                local ammo = ''
-                if weapon_6.isOutOfAmmo() ~= 1 then --weapon slot name
-                    ammo = weapon_6.getAmmo()
-                    ammo = system.getItem(ammo)['displayName']
-                    if ammo:match("Antimatter") then
-                        ammo = "AM"
-                    elseif ammo:match("Electromagnetic") then
-                        ammo = "EM"
-                    elseif ammo:match("Kinetic") then
-                        ammo = "KI"
-                    elseif ammo:match("Thermic") then
-                        ammo = "TH"
-                    end
-                end
-
-                if GHUD_show_hits == true then
-                hitAnimations = hitAnimations + 1
-                local strd = 'HIT '..ammo..' '..damage1
-                lastHitTime[hitAnimations] = {damage = strd, time = 0, hitOpacity = 1, anims = hitAnimations}
-                end
-                if totalDamage[targetId] ~= nil then --target damage calculation concept (DeadRank)
-                    totalDamage[targetId].damage = totalDamage[targetId].damage + damage1
-                else
-                    totalDamage[targetId] = {damage = damage1}
-                end
+                hitFnc(weapon_6,damage1) --weapon slot
         onMissed(targetId):
             lua: |
                 if GHUD_show_misses == true then
@@ -5035,32 +4921,7 @@ handlers:
         onHit(targetId,damage):
             lua: |
                 local damage1 = math.floor(damage)
-
-                local ammo = ''
-                if weapon_7.isOutOfAmmo() ~= 1 then --weapon slot name
-                    ammo = weapon_7.getAmmo()
-                    ammo = system.getItem(ammo)['displayName']
-                    if ammo:match("Antimatter") then
-                        ammo = "AM"
-                    elseif ammo:match("Electromagnetic") then
-                        ammo = "EM"
-                    elseif ammo:match("Kinetic") then
-                        ammo = "KI"
-                    elseif ammo:match("Thermic") then
-                        ammo = "TH"
-                    end
-                end
-
-                if GHUD_show_hits == true then
-                hitAnimations = hitAnimations + 1
-                local strd = 'HIT '..ammo..' '..damage1
-                lastHitTime[hitAnimations] = {damage = strd, time = 0, hitOpacity = 1, anims = hitAnimations}
-                end
-                if totalDamage[targetId] ~= nil then --target damage calculation concept (DeadRank)
-                    totalDamage[targetId].damage = totalDamage[targetId].damage + damage1
-                else
-                    totalDamage[targetId] = {damage = damage1}
-                end
+                hitFnc(weapon_7,damage1) --weapon slot
         onMissed(targetId):
             lua: |
                 missAnimations = missAnimations + 1

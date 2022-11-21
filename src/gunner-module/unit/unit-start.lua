@@ -102,6 +102,7 @@ probil = 0
 playerName = system.getPlayerName(player.getId())
 warpScan = 0 --for 3D map
 t_radarEnter = {}
+lastAmmo = {}
 loglist = {}
 radarTarget = nil
 newWhitelist = {}
@@ -392,6 +393,41 @@ function coroutine.xpcall(co)
       return false, output[2], tb
    end
    return table.unpack(output)
+end
+
+function hitFnc(slotname,dmg)
+   local ammo = ''
+   if slotname.isOutOfAmmo() ~= 1 then
+      ammo = slotname.getAmmo()
+      ammo = system.getItem(ammo)['displayName']
+      if ammo:match("Antimatter") then
+         ammo = "AM"
+      elseif ammo:match("Electromagnetic") then
+         ammo = "EM"
+      elseif ammo:match("Kinetic") then
+         ammo = "KI"
+      elseif ammo:match("Thermic") then
+         ammo = "TH"
+      end
+   end
+
+   if ammo ~= '' then lastAmmo[slotname] = {ammoName = ammo} end
+   if ammo == '' then
+      if lastAmmo[slotname] ~= nil then
+         ammo = lastAmmo[slotname].ammoName
+      end
+   end
+
+   if GHUD_show_hits == true then
+      hitAnimations = hitAnimations + 1
+      local strd = 'HIT '..ammo..' '..dmg
+      lastHitTime[hitAnimations] = {damage = strd, time = 0, hitOpacity = 1, anims = hitAnimations}
+   end
+   if totalDamage[targetId] ~= nil then --target damage calculation concept (DeadRank)
+      totalDamage[targetId].damage = totalDamage[targetId].damage + dmg
+   else
+      totalDamage[targetId] = {damage = dmg}
+   end
 end
 
 function ConvertLocalToWorld(x,y,z)
