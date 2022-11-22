@@ -1,7 +1,11 @@
-start:
-system.showScreen(0)
+loop:
+map = 1
 system.lockView(1)
+local gmap = mapGalaxy .. drawMap()
+system.setScreen(gmap)
+xDelta = xDelta + system.getMouseDeltaX()
+yDelta = yDelta + system.getMouseDeltaY()
 
 stop:
-system.showScreen(1)
+map = 0
 system.lockView(0)

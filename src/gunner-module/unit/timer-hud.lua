@@ -8,6 +8,17 @@ if coroutine.status(main1) ~= "dead" and coroutine.status(main1) == "suspended" 
    --coroutine.xpcall(main1) -- resume debug coroutine
 end
 
+if coroutine.status(main2) ~= "dead" and coroutine.status(main2) == "suspended" then
+   coroutine.resume(main2)
+   --coroutine.xpcall(main2) -- resume debug coroutine
+end
+
+if corpos == true then  
+   if coroutine.status(ck) ~= "dead" and coroutine.status(ck) == "suspended" then
+      coroutine.resume(ck, asteroidcoord)
+   end
+end
+
 local dx = system.getMouseDeltaX()
 local dy = system.getMouseDeltaY()
 
@@ -166,6 +177,225 @@ for k,v in pairs(radarIDs) do --AR marks
 end
 end
 
+local AR_planets = ''
+local AR_asteroid = ''
+local AR_pvpzone = ''
+local AR_safezone = ''
+local Indicator = ''
+local ind = shipPos + 400000 * vec3(sp1)
+local pointF = library.getPointOnScreen({ind.x,ind.y,ind.z})
+if pointF[3] > 0 and speed > 15 then --visible zone
+   local x = (screenWidth*pointF[1]) - dx - GHUD_flight_indicator_size/2
+   local y = (screenHeight*pointF[2]) - dy - GHUD_flight_indicator_size/2
+   Indicator = [[
+         <style>
+         .flightIndicator {
+            position: absolute;
+            width: ]]..GHUD_flight_indicator_size..[[px;
+            height: ]]..GHUD_flight_indicator_size..[[px;
+            left: ]]..x..[[px;
+            top: ]]..y..[[px;
+         }
+         </style>
+         <div class="flightIndicator">
+         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+         <line style="fill: ]]..GHUD_flight_indicator_color..[[; stroke: ]]..GHUD_flight_indicator_color..[[; stroke-width: 20px;" x1="10" y1="100" x2="190" y2="100" transform="matrix(0.707107, -0.707107, 0.707107, 0.707107, -41.421356, 100)"></line>
+         <line style="fill: ]]..GHUD_flight_indicator_color..[[; stroke: ]]..GHUD_flight_indicator_color..[[; stroke-width: 20px;" x1="10" y1="100" x2="190" y2="100" transform="matrix(0.707107, 0.707107, -0.707107, 0.707107, 100, -41.421356)"></line>
+         </svg></div>]]
+      end
+
+   local safeStatus, safeVector, zoneDist, distStr = safeZone()
+
+   if szsafe == true then
+      safetext=''..safeStatus..' <green1>'..zoneDist..' '..distStr..'</green1>'
+      local point1 = library.getPointOnScreen({safeVector.x,safeVector.y,safeVector.z})
+      if point1[3] > 0 then --visible zone
+         local x2 = (screenWidth*point1[1]) - dx - 50
+         local y2 = (screenHeight*point1[2]) - dy - 50
+         AR_pvpzone = [[
+         <style>
+         .pvpzoneAR {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            left: ]]..x2..[[px;
+            top: ]]..y2..[[px;
+         }
+         </style>
+         <div class="pvpzoneAR"><?xml version="1.0" encoding="utf-8"?>
+         <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+         <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #fc033d; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
+         <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">PvP ZONE</text>
+         <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..zoneDist..[[</text>
+         <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..distStr..[[</text>
+         </svg></div>]]
+      end
+   else
+      safetext=''..safeStatus..' <green1>'..zoneDist..' '..distStr..'</green1>'
+      local point1 = library.getPointOnScreen({safeVector.x,safeVector.y,safeVector.z})
+      if point1[3] > 0 then --visible zone
+         local x2 = (screenWidth*point1[1]) - dx - 50
+         local y2 = (screenHeight*point1[2]) - dy - 50
+         AR_safezone = [[
+         <style>
+         .safezoneAR {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            left: ]]..x2..[[px;
+            top: ]]..y2..[[px;
+         }
+         </style>
+         <div class="safezoneAR"><?xml version="1.0" encoding="utf-8"?>
+         <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+         <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #07e88e; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
+         <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">SAFE ZONE</text>
+         <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..zoneDist..[[</text>
+         <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..distStr..[[</text>
+         </svg></div>]]
+      end
+   end
+
+   if asteroidcoord[1] ~= 0 then
+      local point1 = library.getPointOnScreen({asteroidcoord.x,asteroidcoord.y,asteroidcoord.z})
+      if point1[3] > 0 then --visible zone
+         local dist = vec3(shipPos - asteroidcoord):len()
+         local sdist = ''
+         if dist >= 100000 then
+            dist = string.format('%0.2f', dist/200000)
+            sdist = 'SU'
+         elseif dist >= 1000 and dist < 100000 then
+            dist = string.format('%0.1f', dist/1000)
+            sdist = 'KM'
+         else
+            dist = string.format('%0.0f', dist)
+            sdist = 'M'
+         end
+         local x = (screenWidth*point1[1]) - dx - 50
+         local y = (screenHeight*point1[2]) - dy - 50
+         AR_asteroid = [[
+         <style>
+         .marker]]..GHUD_marker_name..[[ {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            left: ]]..x..[[px;
+            top: ]]..y..[[px;
+         }
+         </style>
+         <div class="marker]]..GHUD_marker_name..[["><?xml version="1.0" encoding="utf-8"?>
+         <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+         <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #c603fc; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
+         <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">]]..GHUD_marker_name..[[</text>
+         <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
+         <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..sdist..[[</text>
+         </svg></div>]]
+      end
+   end  
+
+if DisplayRadar==true then
+   local x,y,z = table.unpack(construct.getWorldOrientationForward())
+   local xoc = math.floor(math.atan(x, y)*180/math.pi+180)
+   local yoc = math.floor(math.atan(y, z)*180/math.pi+180)
+   local XY = [[
+   <style>
+   .XY {
+      position: absolute;
+      left: 2%;
+      top: 23%;
+      color: #FFB12C;
+      font-size:18px;
+      font-family: verdana;
+      font-weight: bold;
+      text-align: left;
+   }</style>
+   <div class="XY">X: ]]..xoc..[[<br>Y: ]]..yoc..[[</div>]]
+   message=[[
+   <style>
+   .svg {
+      position:absolute;
+      left: 0;
+      top: 6vh;
+      height: 100vh;
+      width: 100vw;
+      .wptxt {
+         fill: white;
+         font-size: ]].. screenHeight/80 ..[[;
+         font-family: sans-serif;
+         text-anchor: end;
+         .shiptxt {
+            fill: white;
+            font-size: ]].. screenHeight/80 ..[[;
+            font-family: sans-serif;
+            text-anchor: start;
+         }
+         </style>]]
+         message=message..[[<svg class="svg">]]
+         svgradar=""
+         RadarX=screenWidth*1/7
+         RadarY=screenWidth*1/7
+         RadarR=screenWidth*1/7
+
+         svgradar=svgradar..string.format([[<line x1="%f" y1="%f" x2="%f" y2="%f" stroke-width="2" stroke="black" />]],RadarX,RadarY-RadarR,RadarX,RadarY+RadarR)
+         svgradar=svgradar..string.format([[<line x1="%f" y1="%f" x2="%f" y2="%f" stroke-width="2" stroke="black" />]],RadarX-RadarR,RadarY,RadarX+RadarR,RadarY)
+         svgradar=svgradar..string.format([[<circle  cx="%f" cy="%f" r="%f" stroke="black" fill="transparent" stroke-width="5"/>]],
+         RadarX,RadarY,RadarR/2)
+         svgradar=svgradar..string.format([[<circle  cx="%f" cy="%f" r="%f" stroke="black" fill-opacity="0.2" fill="green" stroke-width="5"/>]],
+         RadarX,RadarY,RadarR)
+
+         for BodyId in pairs(atlas[0]) do
+            local planet=atlas[0][BodyId]
+               if ((planet.type[1] == 'Planet' or planet.isSanctuary == true) and planet.name[1] ~= planetzone) then
+                  drawonradar(vec3(planet.center),planet.name[1])
+                  local point1 = library.getPointOnScreen({planet.center[1],planet.center[2],planet.center[3]})
+                  if point1[3] > 0 then --visible zone
+                     local dist = vec3(shipPos - vec3(planet.center)):len()
+                     local sdist = ''
+                     if dist >= 100000 then
+                        dist = string.format('%0.2f', dist/200000)
+                        sdist = 'SU'
+                     elseif dist >= 1000 and dist < 100000 then
+                        dist = string.format('%0.1f', dist/1000)
+                        sdist = 'KM'
+                     else
+                        dist = string.format('%0.0f', dist)
+                        sdist = 'M'
+                     end
+                     local x2 = (screenWidth*point1[1]) - dx - 50
+                     local y2 = (screenHeight*point1[2]) - dy - 50
+                     AR_planets = AR_planets .. [[
+                     <style>
+                     .pl]]..planet.name[1]..[[ {
+                        position: absolute;
+                        width: 100px;
+                        height: 100px;
+                        left: ]]..x2..[[px;
+                        top: ]]..y2..[[px;
+                     }
+                     </style>
+                     <div class="pl]]..planet.name[1]..[["><?xml version="1.0" encoding="utf-8"?>
+                     <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+                     <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #FFB12C; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
+                     <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">]]..planet.name[1]..[[</text>
+                     <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..dist..[[</text>
+                     <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..sdist..[[</text>
+                     </svg></div>]]
+                  end
+               end
+         end
+         drawonradar(safeVector,safeStatus)
+         if szsafe == true then
+         drawonradar(safeWorldPos,'Central SZ')
+         end
+         if asteroidcoord[1] ~= 0 then
+            drawonradar(asteroidcoord,""..GHUD_marker_name.."")
+         end
+         message=message..svgradar..XY
+         message=message.."</svg>"
+      else
+         message = ''
+      end
+
 --hit/miss animations, radar contacts animations
 local hitsHUD = ''
 local missesHUD = ''
@@ -323,6 +553,39 @@ html,body {
    padding:0;
    overflow: hidden;
 }
+.safez {
+   width: auto;
+   padding-top: 1px;
+   padding-bottom: 1px;
+   padding-left: 5px;
+   padding-right: 5px;
+   position:fixed;
+   top: 0;
+   right: 0;
+   text-align: right;
+   color: #FFFFFF;
+   text-align: center;
+   font-size: 1.2em;
+   font-weight: bold;
+   background: ]]..GHUD_background_color..[[;
+   border: 0.5px solid black;
+}
+.pipe {
+   width: auto;
+   padding-left: 35px;
+   padding-right: 35px;
+   padding-top: 2px;
+   padding-bottom: 2px;
+   position: fixed;
+   top: ]]..GHUD_pipe_Y..[[vh;
+   right: ]]..GHUD_pipe_X..[[vw;
+   text-align: center;
+   color: ]]..GHUD_pipe_text_color..[[;
+   font-size: 1.2em;
+   font-weight: bold;
+   background: ]]..GHUD_background_color..[[;
+   border: 0.5px solid black;
+}
 .pos1 {
    position: absolute;
    left: 50%;
@@ -337,12 +600,20 @@ html,body {
 </style>
 <body>
 ]]..AR_allies..[[
-]]..gunnerHUD..[[
+]]..Indicator..[[
+]]..AR_asteroid..[[
+]]..AR_planets..[[
+]]..AR_pvpzone..[[
+]]..AR_safezone..[[
+]]..message..[[
 ]]..targetsHUD..[[
 ]]..vectorHUD..[[
 ]]..missesHUD..[[
 ]]..hitsHUD..[[
 ]]..sight..[[
+]]..gunnerHUD..[[
+<div class="safez">]]..safetext..[[</div>
+<div class="pipe">]]..pD()..[[</div>
 <div class="pos1">]]..pp1..[[</div>
 </body>
 </html>

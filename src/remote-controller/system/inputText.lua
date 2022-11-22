@@ -210,14 +210,3 @@ if text =="drop" then
    end
    system.print("All ships were successfully undocked")
 end
-
-if string.find (text,'m::pos') then
-   asteroidPOS = text:sub(2)
-   system.print(asteroidPOS)
-   system.print('Calculation...')
-   asteroidcoord = zeroConvertToWorldCoordinates(asteroidPOS)
-   databank_1.setStringValue(15,asteroidPOS)
-   corTime = system.getArkTime() 
-   ck = coroutine.create(closestPipe1)
-   corpos = true
-end

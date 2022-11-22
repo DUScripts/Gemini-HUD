@@ -1,3 +1,6 @@
+start:
+if shift == false and upB == false and downB == false then DisplayRadar = not DisplayRadar end
+
 if shift == true then
   local id = activeRadar.getTargetId()
   if id ~= 0 then
@@ -18,7 +21,3 @@ if shift == true then
      whitelist = newWhitelist
   end
 end
-
-
-
-
