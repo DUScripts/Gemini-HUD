@@ -4025,5 +4025,5 @@ handlers:
                     corpos = true
                 end   
 
-                inTEXT(unit,system,text
+                inTEXT(unit,system,text)
   
