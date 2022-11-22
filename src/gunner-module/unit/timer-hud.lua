@@ -31,6 +31,8 @@ probil = tonumber(wdata:match('"hitProbability":(.-),'))
 end
 
 local shipPos = vec3(construct.getWorldPosition())
+local sp1 = construct.getWorldVelocity()
+local speed = math.floor(vec3(sp1):len() * 3.6)
 local id = activeRadar.getTargetId()
 if id ~= 0 then
    local sdist = ""
@@ -596,6 +598,15 @@ html,body {
    font-weight: bold;
    color: white;
    transform: translate(-50%, -50%);
+}
+red1 {
+   color: #fc033d;
+}
+orange1 {
+   color: #FFB12C;
+}
+green1 {
+   color: #07e88e;
 }
 </style>
 <body>

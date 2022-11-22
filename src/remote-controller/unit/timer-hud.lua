@@ -303,39 +303,6 @@ if math.ceil(HP) <= 50 then
                top: 50%;
                transform: translate(-50%, -50%);
             }
-            .safez {
-               width: auto;
-               padding-top: 1px;
-               padding-bottom: 1px;
-               padding-left: 5px;
-               padding-right: 5px;
-               position:fixed;
-               top: 0;
-               right: 0;
-               text-align: right;
-               color: #FFFFFF;
-               text-align: center;
-               font-size: 1.2em;
-               font-weight: bold;
-               background: ]]..GHUD_background_color..[[;
-               border: 0.5px solid black;
-            }
-            .pipe {
-               width: auto;
-               padding-left: 35px;
-               padding-right: 35px;
-               padding-top: 2px;
-               padding-bottom: 2px;
-               position: fixed;
-               top: ]]..GHUD_pipe_Y..[[vh;
-               right: ]]..GHUD_pipe_X..[[vw;
-               text-align: center;
-               color: ]]..GHUD_pipe_text_color..[[;
-               font-size: 1.2em;
-               font-weight: bold;
-               background: ]]..GHUD_background_color..[[;
-               border: 0.5px solid black;
-            }
             </style>
             <body>
             ]]..warningmsg..[[
@@ -406,4 +373,4 @@ if math.ceil(HP) <= 50 then
             </body>
             </html>]]
 
-            if map == 0 and helper == false and helper1 == false then system.setScreen(htmlHUD) end
+            if helper == false and helper1 == false then system.setScreen(htmlHUD) end
