@@ -1,6 +1,3 @@
-local dx = system.getMouseDeltaX()
-local dy = system.getMouseDeltaY()
-
 damage_SVG()
 
 varcombat = construct.getPvPTimer()
@@ -49,6 +46,7 @@ if venttime ~= 0 then
    resCLWN = math.floor(venttime)
 end
 
+local brakeHUD = ''
 if mybr == true then
    brakeHUD = [[
       <style>
