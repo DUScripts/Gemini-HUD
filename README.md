@@ -30,15 +30,6 @@ GHUD is the rebirth of the CFCS HUD (Custom Fire Control System)
 - Transponder tag can be set via lua chat<br/>
 - Closest pipe waypoint<br/>
 - Waypoint to custom pipe closest distance<br/>
-## Many thanks to:<br/>
- - W1zard for weapon and radar widgets<br/>
- - tiramon for closest pipe functions<br/>
- - DeadRank for brake distance function<br/>
- - SeM for the help with the coroutines<br/>
- - Aranol for closest pos functions and 2D planetary periscope<br/>
- - Mistery for vector functions<br/>
- - IvanGrozny for Echoes widget, 3D space map, icons from his "Epic HUD"<br/>
- - Chelobek for target vector widget<br/>
 ![HUD concept3](https://github.com/Crusader93/Gemini-HUD/blob/master/images/1.png)<br/>
 ![HUD concept3](https://github.com/Crusader93/Gemini-HUD/blob/master/images/2.png)<br/>
 ![HUD concept3](https://github.com/Crusader93/Gemini-HUD/blob/master/images/33.png)<br/>
@@ -68,3 +59,12 @@ I highly recommend you change your game controls: set buttons 1-8 instead of Opt
 <br/>
 GHUD 1st shield panel concept:<br/>
 ![example1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/shield.png)<br/>
+## Many thanks to:<br/>
+ - W1zard for weapon and radar widgets<br/>
+ - tiramon for closest pipe functions<br/>
+ - DeadRank for brake distance function<br/>
+ - SeM for the help with the coroutines<br/>
+ - Aranol for closest pos functions and 2D planetary periscope<br/>
+ - Mistery for vector functions<br/>
+ - IvanGrozny for Echoes widget, 3D space map, icons from his "Epic HUD"<br/>
+ - Chelobek for target vector widget<br/>
