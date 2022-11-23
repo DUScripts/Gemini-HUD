@@ -19,8 +19,8 @@ if corpos == true then
    end
 end
 
-local dx = system.getMouseDeltaX()
-local dy = system.getMouseDeltaY()
+local dx = system.getMouseDeltaX() * 4
+local dy = system.getMouseDeltaY() * 4
 
 damage_SVG()
 
@@ -71,6 +71,7 @@ if venttime ~= 0 then
    resCLWN = math.floor(venttime)
 end
 
+local brakeHUD = ''
 if mybr == true then
    brakeHUD = [[
    <style>
@@ -564,7 +565,7 @@ if mybr == true then
                            transform: translate(-50%, -50%);
                         }
                         </style>
-                        <div class="hit]]..k..[[">HIT ]]..lastHitTime[k].damage..[[ HP</div>]]
+                        <div class="hit]]..k..[[">]]..lastHitTime[k].damage..[[</div>]]
                         hits[k] = {html = hit}
 
                         if lastHitTime[k].time >= 2 then
