@@ -30,11 +30,11 @@ GHUD is the rebirth of the CFCS HUD (Custom Fire Control System)
 - Transponder tag can be set via lua chat<br/>
 - Closest pipe waypoint<br/>
 - Waypoint to custom pipe closest distance<br/>
-![HUD concept3](https://github.com/Crusader93/Gemini-HUD/blob/master/images/1.png)<br/>
-![HUD concept3](https://github.com/Crusader93/Gemini-HUD/blob/master/images/2.png)<br/>
-![HUD concept3](https://github.com/Crusader93/Gemini-HUD/blob/master/images/33.png)<br/>
-![HUD concept5](https://github.com/Crusader93/Gemini-HUD/blob/master/images/cp2.png)<br/>
-![example1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/3.png)<br/>
+![HUD1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/1.png)<br/>
+![HUD2](https://github.com/Crusader93/Gemini-HUD/blob/master/images/2.png)<br/>
+![HUD3](https://github.com/Crusader93/Gemini-HUD/blob/master/images/33.png)<br/>
+![HUD4](https://github.com/Crusader93/Gemini-HUD/blob/master/images/cp2.png)<br/>
+![HUD5](https://github.com/Crusader93/Gemini-HUD/blob/master/images/3.png)<br/>
 ### .conf files:
 1) Download the .conf file(s) you would like to use
 2) Place them in your `custom` folder in the DU game path (defaults to here on installation: `C:\ProgramData\Dual Universe\Game\data\lua\autoconf\custom`
@@ -56,6 +56,8 @@ Alt + MMB: zoom periscope.<br/>
 Use G + ← or G + → to call a helpers.<br/>
 I highly recommend you change your game controls: set buttons 1-8 instead of Options 1-8.<br/>
 ![controls1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/controls.png)<br/>
+![controls2](https://github.com/Crusader93/Gemini-HUD/blob/master/images/gunner.png)<br/>
+![controls3](https://github.com/Crusader93/Gemini-HUD/blob/master/images/remote.png)<br/>
 <br/>
 GHUD 1st shield panel concept:<br/>
 ![example1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/shield.png)<br/>
