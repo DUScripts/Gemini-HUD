@@ -53,7 +53,7 @@ Link manual switch to `programming board 2`, then copy and paste the `programmin
 ### Periscope controls:
 Alt + MMB: zoom periscope.<br/>
 ### HUD controls:
-Use G + ← or G + → to call a helpers.<br/>
+Use `G + ←` or `G + →` to call a helpers.<br/>
 I highly recommend you change your game controls: set buttons 1-8 instead of Options 1-8.<br/>
 ![controls1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/controls.png)<br/>
 ![controls2](https://github.com/Crusader93/Gemini-HUD/blob/master/images/gunner.png)<br/>
