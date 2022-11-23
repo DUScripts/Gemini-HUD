@@ -44,7 +44,7 @@ handlers:
 
                 Nav = Navigator.new(system, core, unit)
                 Nav.axisCommandManager:setupCustomTargetSpeedRanges(axisCommandId.longitudinal, {1000, 5000, 10000, 20000, 30000})
-                Nav.axisCommandManager:setTargetGroundAltitude(-1)
+                Nav.axisCommandManager:setTargetGroundAltitude(4)
 
                 -- freeze the player in he is remote controlling the construct
                 if unit.isRemoteControlled() == 1 then
