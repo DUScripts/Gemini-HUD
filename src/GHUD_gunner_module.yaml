@@ -2963,8 +2963,8 @@ handlers:
                 end
                 end
 
-                local dx = system.getMouseDeltaX()
-                local dy = system.getMouseDeltaY()
+                local dx = system.getMouseDeltaX() * 4
+                local dy = system.getMouseDeltaY() * 4
 
                 local sight = ''
                 if weapon_1 ~= nil then
