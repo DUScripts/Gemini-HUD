@@ -46,7 +46,7 @@ Put the audio folder with sounds here: `Documents\NQ\DualUniverse\` <br/>
 ### Remote controller:
 Link `1 spacefuetank` to remote controller, then load the configuration to remote controller.<br/>
 ### Pilot seat:
-Place the space radar on the construct first, then link the `screen`, `1 spacefuetank`, `2 databanks`, `weapons` (optional), `space radar` and `atmo radar` (2nd radar is optional) to gunner module, then load the configuration to gunner module.<br/>
+Place the space radar on the construct first, then link the `screen`, `1 spacefuetank`, `2 databanks`, `weapons` (optional), `space radar` and `atmo radar` (2nd radar is optional) to pilot seat, then load the configuration to gunner module.<br/>
 Put the audio folder with sounds here: `Documents\NQ\DualUniverse\` <br/>
 ### Periscope:
 Link `programming board 1` to manual switch, then copy and paste the `programming-board-1.json` to `programming board 1`<br/>
