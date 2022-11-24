@@ -38,7 +38,7 @@ GHUD is the rebirth of the CFCS HUD (Custom Fire Control System)
 ## Installation
 ### .conf files:
 1) Download the .conf file(s) you would like to use
-2) Place them in your `custom` folder in the DU game path (defaults to here on installation: `C:\ProgramData\Dual Universe\Game\data\lua\autoconf\custom`
+2) Place them in your `custom` folder in the DU game path (defaults to here on installation: `ProgramData\Dual Universe\Game\data\lua\autoconf\custom`
 3) Update custom scripts in-game or log in if the game is not running
 ### Gunner module:
 Place the space radar on the construct first, then link the `screen`, `2 databanks`, `weapons` (optional), `space radar` and `atmo radar` (2nd radar is optional) to gunner module, then load the configuration to gunner module.<br/>
