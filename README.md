@@ -35,19 +35,20 @@ GHUD is the rebirth of the CFCS HUD (Custom Fire Control System)
 ![HUD3](https://github.com/Crusader93/Gemini-HUD/blob/master/images/33.png)<br/>
 ![HUD4](https://github.com/Crusader93/Gemini-HUD/blob/master/images/cp2.png)<br/>
 ![HUD5](https://github.com/Crusader93/Gemini-HUD/blob/master/images/3.png)<br/>
+## Installation
 ### .conf files:
 1) Download the .conf file(s) you would like to use
 2) Place them in your `custom` folder in the DU game path (defaults to here on installation: `C:\ProgramData\Dual Universe\Game\data\lua\autoconf\custom`
 3) Update custom scripts in-game or log in if the game is not running
-### Install gunner module:
+### Gunner module:
 Place the space radar on the construct first, then link the `screen`, `2 databanks`, `weapons` (optional), `space radar` and `atmo radar` (2nd radar is optional) to gunner module, then load the configuration to gunner module.<br/>
 Put the audio folder with sounds here: `Documents\NQ\DualUniverse\` <br/>
 ### Install remote controller:
 Link `1 spacefuetank` to remote controller, then load the configuration to remote controller.<br/>
-### Install pilot seat:
+### Pilot seat:
 Place the space radar on the construct first, then link the `screen`, `1 spacefuetank`, `2 databanks`, `weapons` (optional), `space radar` and `atmo radar` (2nd radar is optional) to gunner module, then load the configuration to gunner module.<br/>
 Put the audio folder with sounds here: `Documents\NQ\DualUniverse\` <br/>
-### Install periscope:
+### Periscope:
 Link `programming board 1` to manual switch, then copy and paste the `programming-board-1.json` to `programming board 1`<br/>
 Link manual switch to `programming board 2`, then copy and paste the `programming-board-2.json` to `programming board 2`<br/>
 ### Periscope controls:
