@@ -61,7 +61,7 @@ I highly recommend you change your game controls: set buttons 1-8 instead of Opt
 ### Shield system:
 In auto mode, the shield is calibrated after the first 5 hits on you. If you haven't been hit within 40 seconds, this count will be reset.<br/>
 The 50/50 mode splits the pool of available shield power between the two strongest damage types.<br/>
-By default, the MAX mode is enabled - the shield power will be used against the strongest type of damage.<br/>
+By default, the MAX mode is enabled - the shield power will be used for the strongest type of damage.<br/>
 In manual mode, the shield also makes calculations. You can agree with the system in manual mode and apply the new shield resistances by pressing 'option-6'
 ## Many thanks to:<br/>
  - W1zard for weapon and radar widgets<br/>
