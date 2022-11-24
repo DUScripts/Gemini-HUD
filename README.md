@@ -43,7 +43,7 @@ GHUD is the rebirth of the CFCS HUD (Custom Fire Control System)
 ### Gunner module:
 Place the space radar on the construct first, then link the `screen`, `2 databanks`, `weapons` (optional), `space radar` and `atmo radar` (2nd radar is optional) to gunner module, then load the configuration to gunner module.<br/>
 Put the audio folder with sounds here: `Documents\NQ\DualUniverse\` <br/>
-### Install remote controller:
+### Remote controller:
 Link `1 spacefuetank` to remote controller, then load the configuration to remote controller.<br/>
 ### Pilot seat:
 Place the space radar on the construct first, then link the `screen`, `1 spacefuetank`, `2 databanks`, `weapons` (optional), `space radar` and `atmo radar` (2nd radar is optional) to gunner module, then load the configuration to gunner module.<br/>
