@@ -58,7 +58,8 @@ I highly recommend you change your game controls: set buttons 1-8 instead of Opt
 ![controls1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/controls.png)<br/>
 ![controls2](https://github.com/Crusader93/Gemini-HUD/blob/master/images/gunner.png)<br/>
 ![controls3](https://github.com/Crusader93/Gemini-HUD/blob/master/images/remote.png)<br/>
-<br/>
+### Shield system:
+In automatic mode, the shield is calibrated after the first 5 hits on you. The 50/50 mode splits the pool of available shield points between the two strongest damage types. By default, the MAX mode is enabled - the shield power will be used against the strongest type of damage.<br/>
 GHUD 1st shield panel concept:<br/>
 ![example1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/shield.png)<br/>
 ## Many thanks to:<br/>
