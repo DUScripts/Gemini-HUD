@@ -734,7 +734,7 @@ handlers:
                         <br>
                         <bdr>]]..dC..[[</bdr> : set pos1/pos2 for radar selected target<br>
                         <br>
-                        <bdr>]]..dB..[[</bdr> + <bdr>↓↑</bdr> : set pos1/pos2 for radar selected target<br>
+                        <bdr>]]..dB..[[</bdr> + <bdr>↓↑</bdr> : move destination ±2.5 su<br>
                         <br>
                         <bdr>]]..dB..[[</bdr> + <bdr>←→</bdr> : move destination ±10 su<br>
                         <br>

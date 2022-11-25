@@ -3304,7 +3304,7 @@ elseif stress[2] >= stress[1] and
          <br>
          <bdr>]]..geartext..[[</bdr> : set pos1/pos2 for radar selected target<br>
          <br>
-         <bdr>]]..shifttext..[[</bdr> + <bdr>↓↑</bdr> : set pos1/pos2 for radar selected target<br>
+         <bdr>]]..shifttext..[[</bdr> + <bdr>↓↑</bdr> : move destination ±2.5 su<br>
          <br>
          <bdr>]]..shifttext..[[</bdr> + <bdr>←→</bdr> : move destination ±10 su<br>
          <br>
