@@ -57,8 +57,8 @@ Alt + MMB: zoom periscope.<br/>
 Use `G + ←` or `G + →` to call a helpers.<br/>
 I highly recommend you change your game controls: set buttons 1-8 instead of Options 1-8.<br/>
 ![controls1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/controls.png)<br/>
-![controls2](https://github.com/Crusader93/Gemini-HUD/blob/master/images/gunner.png)<br/>
-![controls3](https://github.com/Crusader93/Gemini-HUD/blob/master/images/remote.png)<br/>
+![controls2](https://github.com/Crusader93/Gemini-HUD/blob/master/images/gunner1.png)<br/>
+![controls3](https://github.com/Crusader93/Gemini-HUD/blob/master/images/remote1.png)<br/>
 ### Shield system:
 In auto mode, the shield is calibrated after the first 5 hits on you. If you haven't been hit within 40 seconds, this count will be reset.<br/>
 The 50/50 mode splits the pool of available shield power between the two strongest damage types.<br/>
