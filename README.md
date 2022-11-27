@@ -10,7 +10,6 @@ IGN: GeminiX<br/>
 Alternative:<br/>
 - ERC20/BEP20: 0x90b865B1e05950826D521B4a0F95597d80b23180<br/>
 - BTC: 18HJbJBNeWs4ZZPYQ1hpjYt3BLb8VoiwXA<br/>
-- TRX: TTEiRTWftQXJCu4h31KZThNZpXhPZjVRMp<br/>
 ## Features:
 - Animated shield panel<br/>
 - Animated radar contact notifications<br/>
