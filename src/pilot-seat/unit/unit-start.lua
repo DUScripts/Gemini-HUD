@@ -3484,8 +3484,6 @@ elseif stress[2] >= stress[1] and
          <bdr>]]..shifttext..[[</bdr> + <bdr>]]..opt4..[[</bdr> : set destination to departure planet (LUA parameters)<br>
          <br>
          <bdr>]]..opt5..[[</bdr> : Helios system map<br>
-         <br>
-         <bdr>]]..lighttext..[[</bdr> : set destination to saved position<br>
          </div>
          </div>
          <div class="bottomL">

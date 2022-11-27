@@ -853,8 +853,6 @@ atlas=require("atlas")stellarObjects=atlas[0]shipPos=vec3(construct.getWorldPosi
          <bdr>]]..dB..[[</bdr> + <bdr>]]..dv..[[</bdr> : set destination to departure planet (LUA parameters)<br>
          <br>
          <bdr>]]..dw..[[</bdr> : Helios system map<br>
-         <br>
-         <bdr>]]..dO..[[</bdr> : set destination to saved position<br>
          </div>
          </div>
          <div class="bottomL">
