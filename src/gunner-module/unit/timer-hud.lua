@@ -233,7 +233,7 @@ if pointF[3] > 0 and speed > 15 then --visible zone
          </svg></div>]]
       end
    else
-      safetext=''..safeStatus..' <green1>'..zoneDist..' '..distStr..'</green1>'
+      safetext=''..safeStatus..' <red1>'..zoneDist..' '..distStr..'</red1>'
       local point1 = library.getPointOnScreen({safeVector.x,safeVector.y,safeVector.z})
       if point1[3] > 0 then --visible zone
          local x2 = (screenWidth*point1[1]) - dx - 50

@@ -80,7 +80,7 @@ radarIDs=activeRadar.getConstructIds()idN=#radarIDs;mRadar:onUpdate()if coroutin
                <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">PvP ZONE</text>
                <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..A..[[</text>
                <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..B..[[</text>
-               </svg></div>]]end else safetext=''..y..' <green1>'..A..' '..B..'</green1>'local C=library.getPointOnScreen({z.x,z.y,z.z})if C[3]>0 then local D=screenWidth*C[1]-a-50;local E=screenHeight*C[2]-b-50;s=[[
+               </svg></div>]]end else safetext=''..y..' <red1>'..A..' '..B..'</red1>'local C=library.getPointOnScreen({z.x,z.y,z.z})if C[3]>0 then local D=screenWidth*C[1]-a-50;local E=screenHeight*C[2]-b-50;s=[[
                <style>
                .safezoneAR {
                   position: absolute;

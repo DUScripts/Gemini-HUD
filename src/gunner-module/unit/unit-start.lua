@@ -1,7 +1,7 @@
 -- GEMINI FOUNDATION
 
 --Gunner module
-HUD_version = '1.0.0'
+HUD_version = '1.0.1'
 
 --LUA parameters
 GHUD_marker_name = 'Asteroid' --export: Helios map marker name
@@ -2489,10 +2489,10 @@ function tickVector(unit, system, text)
 
          if showMarker == true then
             if mmode == true then
-               system.setWaypoint(Waypoint1)
+               system.setWaypoint(Waypoint1,false)
                system.print("The target flew " .. lengthSU1 .. " su, speed " .. tspeed1 .. " km/h")
             else
-               system.setWaypoint(Waypoint)
+               system.setWaypoint(Waypoint,false)
                system.print("The target flew " .. lengthSU .. " su, speed " .. targetSpeed .. " km/h")
             end
          end
@@ -2837,8 +2837,6 @@ function tickVector(unit, system, text)
         <bdr>]]..shifttext..[[</bdr> + <bdr>]]..opt4..[[</bdr> : set destination to departure planet (LUA parameters)<br>
         <br>
         <bdr>]]..opt5..[[</bdr> : Helios system map<br>
-        <br>
-        <bdr>]]..lighttext..[[</bdr> : set destination to saved position<br>
         <br>
         <bdr>]]..geartext..[[</bdr> : set pos1/pos2 for radar selected target<br>
         <br>

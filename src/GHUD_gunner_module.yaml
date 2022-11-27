@@ -1,4 +1,4 @@
-name: GHUD Gunner module v1.0.0
+name: GHUD Gunner module v1.0.1
 pvp: true
 
 slots:
@@ -24,7 +24,7 @@ handlers:
                 -- GEMINI FOUNDATION
 
                 --Gunner module
-                HUD_version = '1.0.0'
+                HUD_version = '1.0.1'
 
                 --LUA parameters
                 GHUD_marker_name = 'Asteroid' --export: Helios map marker name
@@ -2512,10 +2512,10 @@ handlers:
 
                         if showMarker == true then
                             if mmode == true then
-                            system.setWaypoint(Waypoint1)
+                            system.setWaypoint(Waypoint1,false)
                             system.print("The target flew " .. lengthSU1 .. " su, speed " .. tspeed1 .. " km/h")
                             else
-                            system.setWaypoint(Waypoint)
+                            system.setWaypoint(Waypoint,false)
                             system.print("The target flew " .. lengthSU .. " su, speed " .. targetSpeed .. " km/h")
                             end
                         end
@@ -3177,7 +3177,7 @@ handlers:
                         </svg></div>]]
                     end
                 else
-                    safetext=''..safeStatus..' <green1>'..zoneDist..' '..distStr..'</green1>'
+                    safetext=''..safeStatus..' <red1>'..zoneDist..' '..distStr..'</red1>'
                     local point1 = library.getPointOnScreen({safeVector.x,safeVector.y,safeVector.z})
                     if point1[3] > 0 then --visible zone
                         local x2 = (screenWidth*point1[1]) - dx - 50
@@ -3910,13 +3910,6 @@ handlers:
             args: [groundaltitudedown]
             lua: |
                 mRadar.friendlyMode = not mRadar.friendlyMode
-        onActionStart:
-            args: [light]
-            lua: |
-                if databank_1.getStringValue(15) ~= "" then
-                    local way = databank_1.getStringValue(15)
-                    system.setWaypoint(way)
-                end
         onActionStart:
             args: [antigravity]
             lua: |
