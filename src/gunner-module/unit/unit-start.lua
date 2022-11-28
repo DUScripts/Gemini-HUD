@@ -421,7 +421,7 @@ function coroutine.xpcall(co)
    return table.unpack(output)
 end
 
-function hitFnc(slotname,dmgm,targetId)
+function hitFnc(slotname,dmg,targetId)
    local ammo = ''
    if slotname.isOutOfAmmo() ~= 1 then
       ammo = slotname.getAmmo()
