@@ -1,2 +1,3 @@
 local damage1 = math.floor(damage)
-hitFnc(weapon_) --weapon slot
+local id = targetId
+hitFnc(weapon_1,damage1,id) --weapon slot

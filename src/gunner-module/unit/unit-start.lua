@@ -1,7 +1,7 @@
 -- GEMINI FOUNDATION
 
 --Gunner module
-HUD_version = '1.0.1'
+HUD_version = '1.0.2'
 
 --LUA parameters
 GHUD_marker_name = 'Asteroid' --export: Helios map marker name
@@ -421,7 +421,7 @@ function coroutine.xpcall(co)
    return table.unpack(output)
 end
 
-function hitFnc(slotname,dmg)
+function hitFnc(slotname,dmgm,targetId)
    local ammo = ''
    if slotname.isOutOfAmmo() ~= 1 then
       ammo = slotname.getAmmo()

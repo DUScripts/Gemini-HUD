@@ -1,7 +1,7 @@
 -- GEMINI FOUNDATION
 
 --Pilot seat
-HUD_version = '1.0.1'
+HUD_version = '1.0.2'
 
 --LUA parameters
 GHUD_marker_name = 'Asteroid' --export: Helios map marker name
@@ -1216,7 +1216,7 @@ elseif stress[2] >= stress[1] and
          statusY = 6
       end
 
-      function hitFnc(slotname,dmg)
+      function hitFnc(slotname,dmg,targetId)
          local ammo = ''
          if slotname.isOutOfAmmo() ~= 1 then
             ammo = slotname.getAmmo()

@@ -1,4 +1,4 @@
-name: GHUD Gunner module v1.0.1
+name: GHUD Gunner module v1.0.2
 pvp: true
 
 slots:
@@ -24,7 +24,7 @@ handlers:
                 -- GEMINI FOUNDATION
 
                 --Gunner module
-                HUD_version = '1.0.1'
+                HUD_version = '1.0.2'
 
                 --LUA parameters
                 GHUD_marker_name = 'Asteroid' --export: Helios map marker name
@@ -444,7 +444,7 @@ handlers:
                 return table.unpack(output)
                 end
 
-                function hitFnc(slotname,dmg)
+                function hitFnc(slotname,dmg,targetId)
                 local ammo = ''
                 if slotname.isOutOfAmmo() ~= 1 then
                     ammo = slotname.getAmmo()
@@ -3631,7 +3631,8 @@ handlers:
         onHit(targetId,damage):
             lua: |
                 local damage1 = math.floor(damage)
-                hitFnc(weapon_1,damage1) --weapon slot
+                local id = targetId
+                hitFnc(weapon_1,damage1,id) --weapon slot
         onMissed(targetId):
             lua: |
                 if GHUD_show_misses == true then
@@ -3647,7 +3648,8 @@ handlers:
         onHit(targetId,damage):
             lua: |
                 local damage1 = math.floor(damage)
-                hitFnc(weapon_2,damage1) --weapon slot
+                local id = targetId
+                hitFnc(weapon_2,damage1,id) --weapon slot
         onMissed(targetId):
             lua: |
                 if GHUD_show_misses == true then
@@ -3663,7 +3665,8 @@ handlers:
         onHit(targetId,damage):
             lua: |
                 local damage1 = math.floor(damage)
-                hitFnc(weapon_3,damage1) --weapon slot
+                local id = targetId
+                hitFnc(weapon_3,damage1,id) --weapon slot
         onMissed(targetId):
             lua: |
                 if GHUD_show_misses == true then
@@ -3679,7 +3682,8 @@ handlers:
         onHit(targetId,damage):
             lua: |
                 local damage1 = math.floor(damage)
-                hitFnc(weapon_4,damage1) --weapon slot
+                local id = targetId
+                hitFnc(weapon_4,damage1,id) --weapon slot
         onMissed(targetId):
             lua: |
                 if GHUD_show_misses == true then
@@ -3695,7 +3699,8 @@ handlers:
         onHit(targetId,damage):
             lua: |
                 local damage1 = math.floor(damage)
-                hitFnc(weapon_5,damage1) --weapon slot
+                local id = targetId
+                hitFnc(weapon_5,damage1,id) --weapon slot
         onMissed(targetId):
             lua: |
                 if GHUD_show_misses == true then
@@ -3711,7 +3716,8 @@ handlers:
         onHit(targetId,damage):
             lua: |
                 local damage1 = math.floor(damage)
-                hitFnc(weapon_6,damage1) --weapon slot
+                local id = targetId
+                hitFnc(weapon_6,damage1,id) --weapon slot
         onMissed(targetId):
             lua: |
                 if GHUD_show_misses == true then
@@ -3727,7 +3733,8 @@ handlers:
         onHit(targetId,damage):
             lua: |
                 local damage1 = math.floor(damage)
-                hitFnc(weapon_7,damage1) --weapon slot
+                local id = targetId
+                hitFnc(weapon_7,damage1,id) --weapon slot
         onMissed(targetId):
             lua: |
                 missAnimations = missAnimations + 1
