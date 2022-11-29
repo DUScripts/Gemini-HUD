@@ -1,7 +1,7 @@
 -- GEMINI FOUNDATION
 
 --Pilot seat
-HUD_version = '1.0.2'
+HUD_version = '1.0.3'
 
 --LUA parameters
 GHUD_marker_name = 'Asteroid' --export: Helios map marker name
@@ -1277,10 +1277,14 @@ elseif stress[2] >= stress[1] and
       vectorHUD = ''
       atmovar = false
       endload = 0
-      znak = '' --target speed icon
+      znak = ''
       newcolor = "white"
-      dist1=0
-      dist3=0
+      znak2 = ''
+      newcolor2 = "white"
+      speedT = 0
+      lastspeed = 0
+      distT = 0 
+      lastdist = 0
       probil = 0
       playerName = system.getPlayerName(player.getId())
       warpScan = 0 --for 3D map
