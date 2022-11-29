@@ -1,10 +1,11 @@
 -- GEMINI FOUNDATION
 
 --Gunner module
-HUD_version = '1.0.3'
+HUD_version = '1.0.4'
 
 --LUA parameters
 GHUD_marker_name = 'Asteroid' --export: Helios map marker name
+GHUD_marker_color = '#c603fc' --export:
 GHUD_departure_planet = 'Alioth' --export: Departure name planet
 GHUD_destination_planet = 'Jago' --export: Destination name planet
 GHUD_radarWidget_on_top = false --export: Radar widget position

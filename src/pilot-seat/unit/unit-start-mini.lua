@@ -1,10 +1,11 @@
 -- GEMINI FOUNDATION
 
 --Pilot seat
-HUD_version = '1.0.3'
+HUD_version = '1.0.4'
 
 --LUA parameters
 GHUD_marker_name = 'Asteroid' --export: Helios map marker name
+GHUD_marker_color = '#c603fc' --export:
 GHUD_shield_auto_calibration = true --export: AUTO/MANUAL shield mode
 GHUD_shield_calibration_max = true --export: MAX or 50/50 shield mode
 GHUD_departure_planet = 'Alioth' --export: Departure name planet
