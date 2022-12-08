@@ -1,7 +1,7 @@
 -- GEMINI FOUNDATION
 
 --Pilot seat
-HUD_version = '1.0.5'
+HUD_version = '1.1.0'
 
 --LUA parameters
 GHUD_marker_name = 'Asteroid' --export: Helios map marker name
@@ -36,7 +36,7 @@ GHUD_weapon_panels = 3 --export: Set 3 or 2
 GHUD_export_mode = false --export: Target Vector export mode
 targetSpeed = 29999 --export: Target Vector speed
 GHUD_background_color = "#142027" --export: Background HUD color
-GHUD_AR_sight_size = 100 --export: AR sight size
+GHUD_AR_sight_size = 50 --export: AR sight size
 GHUD_AR_sight_color = "rgba(0, 191, 255, 0.7)" --export: AR sight color
 GHUD_radar_notifications_border_radius = true --export:
 GHUD_radar_notifications_border_color = 'black' --export:
@@ -48,7 +48,7 @@ GHUD_show_misses = true --export: Show misses animations
 GHUD_hits_misses_Y = 76 --export:
 GHUD_hit_X = 56.5 --export:
 GHUD_miss_X = 47.5 --export:
-GHUD_allies_count = 8 --export: Max count of displayed allies. Selected ally will always be displayed
+GHUD_allies_count = 5 --export: Max count of displayed allies. Selected ally will always be displayed
 GHUD_allies_color = "rgb(0, 191, 255)" --export:
 GHUD_allied_names_color = "rgb(0, 191, 255)" --export:
 GHUD_show_AR_allies_marks = true --export:
@@ -426,7 +426,7 @@ function closestPipe()
                nearestPlanet = obj
             end
          end
-         if i > 15 then
+         if i > 30 then
             i = 0
             coroutine.yield()
          end
@@ -449,7 +449,7 @@ function closestPipe()
                end
             end
          end
-         if i > 15 then
+         if i > 30 then
             i = 0
             coroutine.yield()
          end
@@ -1542,9 +1542,9 @@ elseif stress[2] >= stress[1] and
                ammoType2 = "Def"
             end
       
-            weaponData = weaponData:gsub('"constructId":"(%d+(%d%d%d))","name":"(.?.?.?.?).-"', '"constructId":"%1","name":"%2 - %3"')
-            weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. hitP .. '%% - ' .. ammoType1 .. ' ' .. ammoType2 .. '"')
-            --weaponData = weaponData:gsub('"constructId":"(%d+(%d%d%d))","name":"(.?.?.?.?.?.?.?.?.?.?.?.?.?.?).-"', '"constructId":"%1","name":"%2 - %3"')
+            weaponData = weaponData:gsub('"helperId":"(.-)","name":"(.-)"', '"helperId":"%1","name":"%2 ' .. hitP .. '%%"')
+            weaponData = weaponData:gsub('"constructId":"(%d+(%d%d%d))","name":"(.-)"', '"constructId":"%1","name":"%2 - %3"')
+            weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. ammoType1 .. ' ' .. ammoType2 .. '"')
       
             if self.system.updateData(weaponDataID, weaponData) ~= 1 then
                self.system.print('update error')
