@@ -35,8 +35,6 @@ if varcombat > 0 and varcombat < 302 then
    TH_stress = stress[4]
 end
 
-ccs_SVG()
-
 local HP = shield.getShieldHitpoints()/shieldMaxHP * 100
 local formatted_hp = string.format('%0.0f',math.ceil(HP))
 
