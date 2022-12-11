@@ -11,15 +11,15 @@ end
 lastShotTime = system.getArkTime()
 shoteCount = shoteCount + 1
 local stress = shield.getStressRatioRaw()
-local resistance = shield.getResistances()
-local res = getRes(stress, resMAX)
 AM_stress = stress[1]
 EM_stress = stress[2]
 KI_stress = stress[3]
 TH_stress = stress[4]
-ccs_SVG()
 
 if shield.getResistancesCooldown() == 0 and shoteCount >= 5 and GHUD_shield_auto_calibration then
+
+   local resistance = shield.getResistances()
+   local res = getRes(stress, resMAX)
    
    if GHUD_shield_calibration_max then
       if resistance[1] == res[1] and
@@ -35,10 +35,10 @@ if shield.getResistancesCooldown() == 0 and shoteCount >= 5 and GHUD_shield_auto
          end
       end
    else
-      local re1 = getResRatioBy2HighestDamage(stress)[1]
-      local re2 = getResRatioBy2HighestDamage(stress)[2]
-      local re3 = getResRatioBy2HighestDamage(stress)[3]
-      local re4 = getResRatioBy2HighestDamage(stress)[4]
+      local re1 = gR2D(stress)[1]
+      local re2 = gR2D(stress)[2]
+      local re3 = gR2D(stress)[3]
+      local re4 = gR2D(stress)[4]
       if re1 == resistance[1] and
       re2 == resistance[2] and
       re3 == resistance[3] and

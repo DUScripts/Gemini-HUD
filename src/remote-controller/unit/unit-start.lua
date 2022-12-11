@@ -1,7 +1,7 @@
 -- GEMINI FOUNDATION
 
 --Remote controller
-HUD_version = '1.2.0'
+HUD_version = '1.2.1'
 
 --LUA parameters
 GHUD_shield_auto_calibration = true --export: AUTO/MANUAL shield mode
@@ -228,7 +228,10 @@ AM_stress = stress[1]
 EM_stress = stress[2]
 KI_stress = stress[3]
 TH_stress = stress[4]
-
+AM_last_stress = stress[1]
+EM_last_stress = stress[2]
+TH_last_stress = stress[3]
+KI_last_stress = stress[4]
 ccs_SVG()
 
 function setTag(tag)
@@ -495,9 +498,9 @@ elseif stress[2] >= stress[1] and
               <br>
               <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt1..[[</bdr> : cannon profile<br>
               <br>
-              <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt2..[[</bdr> : laser profile<br>
+              <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt2..[[</bdr> : railgun profile<br>
               <br>
-              <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt3..[[</bdr> : railgun profile<br>
+              <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt3..[[</bdr> : laser profile<br>
               <br>
               <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt4..[[</bdr> : universal profile<br>
             </div>
@@ -523,9 +526,9 @@ elseif stress[2] >= stress[1] and
               <br>
               <luac>c</luac> : cannon profile<br>
               <br>
-              <luac>l</luac> : laser profile<br>
-              <br>
               <luac>r</luac> : railgun profile<br>
+              <br>
+              <luac>l</luac> : laser profile<br>
               <br>
               <luac>m</luac> : missile profile<br>
             </div>

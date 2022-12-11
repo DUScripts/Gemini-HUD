@@ -18,10 +18,10 @@ if shield.getResistancesCooldown() == 0 and not GHUD_shield_auto_calibration the
          end
       end
    else
-      local re1 = getResRatioBy2HighestDamage(stress)[1]
-      local re2 = getResRatioBy2HighestDamage(stress)[2]
-      local re3 = getResRatioBy2HighestDamage(stress)[3]
-      local re4 = getResRatioBy2HighestDamage(stress)[4]
+      local re1 = gR2D(stress)[1]
+      local re2 = gR2D(stress)[2]
+      local re3 = gR2D(stress)[3]
+      local re4 = gR2D(stress)[4]
       if re1 == resistance[1] and
       re2 == resistance[2] and
       re3 == resistance[3] and

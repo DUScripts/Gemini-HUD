@@ -1,4 +1,4 @@
-name: GHUD Pilot seat v1.2.0
+name: GHUD Pilot seat v1.2.1
 
 slots:
     core:
@@ -62,7 +62,7 @@ handlers:
                 -- GEMINI FOUNDATION
 
                 --Pilot seat
-                HUD_version = '1.2.0'
+                HUD_version = '1.2.1'
 
                 --LUA parameters
                 GHUD_marker_name = 'Asteroid' --export: Helios map marker name
@@ -104,6 +104,7 @@ handlers:
                 GHUD_radar_notifications_text_color = 'black' --export:
                 GHUD_radar_notifications_background_color = 'rgb(255, 177, 44)' --export:
                 GHUD_radar_notifications_Y = 10 --export:
+                GHUD_print_hits = true --export: LUA chat hits
                 GHUD_show_hits = true --export: Show hits animations
                 GHUD_show_misses = true --export: Show misses animations
                 GHUD_hits_misses_Y = 76 --export:
@@ -129,7 +130,7 @@ handlers:
                 GHUD_allies_Y = 0 --export: set to 0 if playing in fullscreen mode
                 GHUD_windowed_mode = false --export: adds 2 to height GHUD_allies_Y
                 collectgarbages = false --export: experimental
-                atlas=require("atlas")stellarObjects=atlas[0]shipPos=vec3(construct.getWorldPosition())safeWorldPos=vec3({13771471,7435803,-128971})damageLine=''ccsLineHit=''damage=0;maxSHP=210;shieldMaxHP=shield.getMaxShieldHitpoints()last_shield_hp=shield.getShieldHitpoints()HP=shield.getShieldHitpoints()/shieldMaxHP*100;svghp=maxSHP*HP*0.01;ccshit=0;maxCCS=139.5;coreMaxStress=core.getMaxCoreStress()last_core_stress=core.getCoreStress()CCS=last_core_stress/coreMaxStress*100;ccshp1=maxCCS*CCS*0.01;ccshp=ccshp1;maxFUEL=maxCCS;fuel_lvl=math.ceil(spacefueltank_1.getItemsVolume()/spacefueltank_1.getMaxVolume()*100)FUEL_svg=maxFUEL*fuel_lvl*0.01;AM_last_stress=0;EM_last_stress=0;TH_last_stress=0;KI_last_stress=0;AM_svg=0;EM_svg=0;TH_svg=0;KI_svg=0;if warpdrive~=nil then avWarp=warpdrive.getRequiredWarpCells()totalWarp=warpdrive.getAvailableWarpCells()else avWarp=0;totalWarp=0 end;function resistance_SVG()local a=shield.getResistances()if a[1]>0 then AM_stroke_color=GHUD_active_resists_border_color;AMstrokeWidth=2 else AM_stroke_color=GHUD_shield_stroke_color;AMstrokeWidth=1 end;if a[2]>0 then EM_stroke_color=GHUD_active_resists_border_color;EMstrokeWidth=2 else EM_stroke_color=GHUD_shield_stroke_color;EMstrokeWidth=1 end;if a[3]>0 then KI_stroke_color=GHUD_active_resists_border_color;KIstrokeWidth=2 else KI_stroke_color=GHUD_shield_stroke_color;KIstrokeWidth=1 end;if a[4]>0 then TH_stroke_color=GHUD_active_resists_border_color;THstrokeWidth=2 else TH_stroke_color=GHUD_shield_stroke_color;THstrokeWidth=1 end end;function actionRes(a)if a[1]>0 then AM_stroke_color=GHUD_active_resists_border_color;AMstrokeWidth=2;unit.setTimer('AM',0.016)else AM_stroke_color=GHUD_shield_stroke_color;AMstrokeWidth=1 end;if a[2]>0 then EM_stroke_color=GHUD_active_resists_border_color;EMstrokeWidth=2;unit.setTimer('EM',0.016)else EM_stroke_color=GHUD_shield_stroke_color;EMstrokeWidth=1 end;if a[3]>0 then KI_stroke_color=GHUD_active_resists_border_color;KIstrokeWidth=2;unit.setTimer('KI',0.016)else KI_stroke_color=GHUD_shield_stroke_color;KIstrokeWidth=1 end;if a[4]>0 then TH_stroke_color=GHUD_active_resists_border_color;THstrokeWidth=2;unit.setTimer('TH',0.016)else TH_stroke_color=GHUD_shield_stroke_color;THstrokeWidth=1 end end;resistance_SVG()am=0;am_x=-50;am_opacity=1;em=0;em_x=-50;em_opacity=1;ki=0;ki_x=339;ki_opacity=1;th=0;th_x=339;th_opacity=1;AM_res=''EM_res=''KI_res=''TH_res=''function damage_SVG()if damage>0 then damage=damage-0.08;damageLine=[[<rect x="]]..svghp+145 ..[[" y="225" width="]]..damage..[[" height="50" style="fill: #de1656; stroke: #de1656;" bx:origin="0.5 0.5"/>]]end;if damage<=0 then damage=0;damageLine=''end;if ccshit>0 then ccshp=ccshp+0.23;if ccshp>=ccshp1 then ccshp=ccshp1;ccsLineHit=''ccshit=0 end end end;function ccs_SVG()if AM_stress~=AM_last_stress then AM_last_stress=AM_stress end;if AM_svg<AM_last_stress then AM_svg=AM_svg+0.01;if AM_svg>=AM_last_stress then AM_svg=AM_last_stress end end;if AM_svg>AM_last_stress then AM_svg=AM_svg-0.01;if AM_svg<=AM_last_stress then AM_svg=AM_last_stress end end;if EM_stress~=EM_last_stress then EM_last_stress=EM_stress end;if EM_svg<EM_last_stress then EM_svg=EM_svg+0.01;if EM_svg>=EM_last_stress then EM_svg=EM_last_stress end end;if EM_svg>EM_last_stress then EM_svg=EM_svg-0.01;if EM_svg<=EM_last_stress then EM_svg=EM_last_stress end end;if TH_stress~=TH_last_stress then TH_last_stress=TH_stress end;if TH_svg<TH_last_stress then TH_svg=TH_svg+0.01;if TH_svg>=TH_last_stress then TH_svg=TH_last_stress end end;if TH_svg>TH_last_stress then TH_svg=TH_svg-0.01;if TH_svg<=TH_last_stress then TH_svg=TH_last_stress end end;if KI_stress~=KI_last_stress then KI_last_stress=KI_stress end;if KI_svg<KI_last_stress then KI_svg=KI_svg+0.01;if KI_svg>=KI_last_stress then KI_svg=KI_last_stress end end;if KI_svg>KI_last_stress then KI_svg=KI_svg-0.01;if KI_svg<=KI_last_stress then KI_svg=KI_last_stress end end end;local b=shield.getStressRatioRaw()AM_stress=b[1]EM_stress=b[2]KI_stress=b[3]TH_stress=b[4]ccs_SVG()function setTag(c)local c=c:sub(5)system.print('Activated new transponder tag "'..c..'"')c={c}transponder.setTags(c)end;function zeroConvertToWorldCoordinates(d)local e=' *([+-]?%d+%.?%d*e?[+-]?%d*)'local f='::pos{'..e..','..e..','..e..','..e..','..e..'}'local g,h,i,j,k=string.match(d,f)if g==nil or h==nil or i==nil or j==nil or k==nil then system.print("Invalid pos!")return vec3()end;if g=="0"and h=="0"then return vec3(i,j,k)end;j=math.rad(j)i=math.rad(i)local l=atlas[tonumber(g)][tonumber(h)]local m=math.cos(i)local n=vec3(m*math.cos(j),m*math.sin(j),math.sin(i))return vec3(l.center)+(l.radius+k)*n end;if databank_1.getStringValue(15)~=""then asteroidPOS=databank_1.getStringValue(15)else asteroidPOS=''end;if GHUD_marker_name==""then GHUD_marker_name="Asteroid"end;asteroidcoord={}if asteroidPOS~=""then asteroidcoord=zeroConvertToWorldCoordinates(asteroidPOS)else asteroidcoord={0,0,0}end;local o={}function iconStatusCheck(p)if p=='on'or p==1 then return'on'else return''end end;function o.space(p)return[[<svg class="icon ]]..iconStatusCheck(p)..[[" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 197.6 107.43">
+                atlas=require("atlas")stellarObjects=atlas[0]shipPos=vec3(construct.getWorldPosition())safeWorldPos=vec3({13771471,7435803,-128971})damageLine=''ccsLineHit=''damage=0;maxSHP=210;shieldMaxHP=shield.getMaxShieldHitpoints()last_shield_hp=shield.getShieldHitpoints()HP=shield.getShieldHitpoints()/shieldMaxHP*100;svghp=maxSHP*HP*0.01;ccshit=0;maxCCS=139.5;coreMaxStress=core.getMaxCoreStress()last_core_stress=core.getCoreStress()CCS=last_core_stress/coreMaxStress*100;ccshp1=maxCCS*CCS*0.01;ccshp=ccshp1;maxFUEL=maxCCS;fuel_lvl=math.ceil(spacefueltank_1.getItemsVolume()/spacefueltank_1.getMaxVolume()*100)FUEL_svg=maxFUEL*fuel_lvl*0.01;AM_last_stress=0;EM_last_stress=0;TH_last_stress=0;KI_last_stress=0;AM_svg=0;EM_svg=0;TH_svg=0;KI_svg=0;if warpdrive~=nil then avWarp=warpdrive.getRequiredWarpCells()totalWarp=warpdrive.getAvailableWarpCells()else avWarp=0;totalWarp=0 end;function resistance_SVG()local a=shield.getResistances()if a[1]>0 then AM_stroke_color=GHUD_active_resists_border_color;AMstrokeWidth=2 else AM_stroke_color=GHUD_shield_stroke_color;AMstrokeWidth=1 end;if a[2]>0 then EM_stroke_color=GHUD_active_resists_border_color;EMstrokeWidth=2 else EM_stroke_color=GHUD_shield_stroke_color;EMstrokeWidth=1 end;if a[3]>0 then KI_stroke_color=GHUD_active_resists_border_color;KIstrokeWidth=2 else KI_stroke_color=GHUD_shield_stroke_color;KIstrokeWidth=1 end;if a[4]>0 then TH_stroke_color=GHUD_active_resists_border_color;THstrokeWidth=2 else TH_stroke_color=GHUD_shield_stroke_color;THstrokeWidth=1 end end;function actionRes(a)if a[1]>0 then AM_stroke_color=GHUD_active_resists_border_color;AMstrokeWidth=2;unit.setTimer('AM',0.016)else AM_stroke_color=GHUD_shield_stroke_color;AMstrokeWidth=1 end;if a[2]>0 then EM_stroke_color=GHUD_active_resists_border_color;EMstrokeWidth=2;unit.setTimer('EM',0.016)else EM_stroke_color=GHUD_shield_stroke_color;EMstrokeWidth=1 end;if a[3]>0 then KI_stroke_color=GHUD_active_resists_border_color;KIstrokeWidth=2;unit.setTimer('KI',0.016)else KI_stroke_color=GHUD_shield_stroke_color;KIstrokeWidth=1 end;if a[4]>0 then TH_stroke_color=GHUD_active_resists_border_color;THstrokeWidth=2;unit.setTimer('TH',0.016)else TH_stroke_color=GHUD_shield_stroke_color;THstrokeWidth=1 end end;resistance_SVG()am=0;am_x=-50;am_opacity=1;em=0;em_x=-50;em_opacity=1;ki=0;ki_x=339;ki_opacity=1;th=0;th_x=339;th_opacity=1;AM_res=''EM_res=''KI_res=''TH_res=''function damage_SVG()if damage>0 then damage=damage-0.08;damageLine=[[<rect x="]]..svghp+145 ..[[" y="225" width="]]..damage..[[" height="50" style="fill: #de1656; stroke: #de1656;" bx:origin="0.5 0.5"/>]]end;if damage<=0 then damage=0;damageLine=''end;if ccshit>0 then ccshp=ccshp+0.23;if ccshp>=ccshp1 then ccshp=ccshp1;ccsLineHit=''ccshit=0 end end end;function ccs_SVG()if AM_stress~=AM_last_stress then AM_last_stress=AM_stress end;if AM_svg<AM_last_stress then AM_svg=AM_svg+0.01;if AM_svg>=AM_last_stress then AM_svg=AM_last_stress end end;if AM_svg>AM_last_stress then AM_svg=AM_svg-0.01;if AM_svg<=AM_last_stress then AM_svg=AM_last_stress end end;if EM_stress~=EM_last_stress then EM_last_stress=EM_stress end;if EM_svg<EM_last_stress then EM_svg=EM_svg+0.01;if EM_svg>=EM_last_stress then EM_svg=EM_last_stress end end;if EM_svg>EM_last_stress then EM_svg=EM_svg-0.01;if EM_svg<=EM_last_stress then EM_svg=EM_last_stress end end;if TH_stress~=TH_last_stress then TH_last_stress=TH_stress end;if TH_svg<TH_last_stress then TH_svg=TH_svg+0.01;if TH_svg>=TH_last_stress then TH_svg=TH_last_stress end end;if TH_svg>TH_last_stress then TH_svg=TH_svg-0.01;if TH_svg<=TH_last_stress then TH_svg=TH_last_stress end end;if KI_stress~=KI_last_stress then KI_last_stress=KI_stress end;if KI_svg<KI_last_stress then KI_svg=KI_svg+0.01;if KI_svg>=KI_last_stress then KI_svg=KI_last_stress end end;if KI_svg>KI_last_stress then KI_svg=KI_svg-0.01;if KI_svg<=KI_last_stress then KI_svg=KI_last_stress end end end;local b=shield.getStressRatioRaw()AM_stress=b[1]EM_stress=b[2]KI_stress=b[3]TH_stress=b[4]AM_last_stress=b[1]EM_last_stress=b[2]TH_last_stress=b[3]KI_last_stress=b[4]ccs_SVG()function setTag(c)local c=c:sub(5)system.print('Activated new transponder tag "'..c..'"')c={c}transponder.setTags(c)end;function zeroConvertToWorldCoordinates(d)local e=' *([+-]?%d+%.?%d*e?[+-]?%d*)'local f='::pos{'..e..','..e..','..e..','..e..','..e..'}'local g,h,i,j,k=string.match(d,f)if g==nil or h==nil or i==nil or j==nil or k==nil then system.print("Invalid pos!")return vec3()end;if g=="0"and h=="0"then return vec3(i,j,k)end;j=math.rad(j)i=math.rad(i)local l=atlas[tonumber(g)][tonumber(h)]local m=math.cos(i)local n=vec3(m*math.cos(j),m*math.sin(j),math.sin(i))return vec3(l.center)+(l.radius+k)*n end;if databank_1.getStringValue(15)~=""then asteroidPOS=databank_1.getStringValue(15)else asteroidPOS=''end;if GHUD_marker_name==""then GHUD_marker_name="Asteroid"end;asteroidcoord={}if asteroidPOS~=""then asteroidcoord=zeroConvertToWorldCoordinates(asteroidPOS)else asteroidcoord={0,0,0}end;local o={}function iconStatusCheck(p)if p=='on'or p==1 then return'on'else return''end end;function o.space(p)return[[<svg class="icon ]]..iconStatusCheck(p)..[[" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 197.6 107.43">
                 <path class="a" d="M197.19,25.35c-4.31-15-38.37-12.36-60-9.09A53.64,53.64,0,0,0,46.29,42.48C26.28,51.21-3.9,67.12.42,82.08,2.81,90.36,14.68,93.74,31.3,93.74a197.4,197.4,0,0,0,29.09-2.56A53.64,53.64,0,0,0,151.31,65C179.87,52.59,200.82,37.94,197.19,25.35Zm-98.38-16A44.44,44.44,0,0,1,143.2,53.71,45.3,45.3,0,0,1,143,58.4a363,363,0,0,1-38.9,13.51,361.77,361.77,0,0,1-40,9.27A44.32,44.32,0,0,1,98.81,9.32ZM9.37,79.5c-.83-2.89,7.34-13.18,35.74-26.27,0,.16,0,.32,0,.48a53.27,53.27,0,0,0,8.58,29C26.33,86.24,10.55,83.58,9.37,79.5ZM98.81,98.11a44.13,44.13,0,0,1-26.65-9c11.34-2.18,23.07-5,34.47-8.28s22.84-7.12,33.6-11.31A44.43,44.43,0,0,1,98.81,98.11ZM152.5,54.2c0-.16,0-.32,0-.49a53.34,53.34,0,0,0-8.56-29c31-4.05,43.45.32,44.28,3.2C189.42,32,177.43,42.64,152.5,54.2Z" />
                 </svg>
                 ]]end;function o.marker(p)return[[<svg class="icon ]]..iconStatusCheck(p)..[[" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 148.21 197.07">
@@ -146,7 +147,7 @@ handlers:
                 ]]end;function coroutine.xpcall(q)local r={coroutine.resume(q)}if r[1]==false then local s=traceback(q)local t=s:gsub('"%-%- |STDERROR%-EVENTHANDLER[^"]*"','chunk')system.print(t)t=r[2]:gsub('"%-%- |STDERROR%-EVENTHANDLER[^"]*"','chunk')system.print(t)return false,r[2],s end;return table.unpack(r)end;function calcDistance(u,v,w)local x=(v-u):normalize()local z=(w-u):dot(x)/x:dot(x)if z<=0.then return(w-u):len()elseif z>=(v-u):len()then return(w-v):len()end;local A=u+z*x;pipeDistance=(A-w):len()return pipeDistance end;function calcDistanceStellar(B,C,D)local u=vec3(B.center)local v=vec3(C.center)return calcDistance(u,v,D)end;closestPlanet=stellarObjects[1]closestPlanetT=stellarObjects[1]function closestPipe()while true do local E=nil;local F=nil;local G=0;local d=vec3(construct.getWorldPosition())for H in pairs(stellarObjects)do G=G+1;if stellarObjects[H].type[1]~='Asteroid'then local I=vec3(stellarObjects[H].center)local J=vec3(d-I):len()if E==nil or J<E then E=J;F=H end end;if G>30 then G=0;coroutine.yield()end end;G=0;closestPlanet=stellarObjects[F]nearestPipeDistance=nil;for H in pairs(stellarObjects)do G=G+1;if stellarObjects[H].type[1]=='Planet'or stellarObjects[H].isSanctuary==true then for K in pairs(stellarObjects)do if K>H and(stellarObjects[K].type[1]=='Planet'or stellarObjects[K].isSanctuary==true)then pipeDistance=calcDistanceStellar(stellarObjects[H],stellarObjects[K],d)if nearestPipeDistance==nil or pipeDistance<nearestPipeDistance then nearestPipeDistance=pipeDistance;sortestPipeKeyId=H;sortestPipeKey2Id=K end end end end;if G>30 then G=0;coroutine.yield()end end;if d:dist(vec3(stellarObjects[sortestPipeKeyId].center))<d:dist(vec3(stellarObjects[sortestPipeKey2Id].center))then closestPipeData=stellarObjects[sortestPipeKeyId].name[1].." - "..stellarObjects[sortestPipeKey2Id].name[1]else closestPipeData=stellarObjects[sortestPipeKey2Id].name[1].." - "..stellarObjects[sortestPipeKeyId].name[1]end end end;corpos=false;corTime=0;function closestPipe1(d)while true do local L=nil;local M=nil;local G=0;for H in pairs(stellarObjects)do G=G+1;if stellarObjects[H].type[1]~='Asteroid'then local I=vec3(stellarObjects[H].center)local J=vec3(d-I):len()if L==nil or J<L then L=J;M=H end end;if G>5 then G=0;coroutine.yield()end end;G=0;closestPlanetT=stellarObjects[M]local N=nil;for H in pairs(stellarObjects)do G=G+1;if stellarObjects[H].type[1]~='Asteroid'then for K in pairs(stellarObjects)do if K>H and stellarObjects[K].type[1]~='Asteroid'then pipeDistance1=calcDistanceStellar(stellarObjects[H],stellarObjects[K],d)if N==nil or pipeDistance1<N then N=pipeDistance1;sortestPipeKeyId1=H;sortestPipeKey2Id1=K end end end end;if G>5 then G=0;coroutine.yield()end end;distCP=vec3(d):dist(vec3(closestPlanetT.center))if distCP>100000 then distCP=''..string.format('%0.2f',distCP/200000)..' su'elseif distCP>1000 and distCP<100000 then distCP=''..string.format('%0.1f',distCP/1000)..' km'else distCP=''..string.format('%0.0f',distCP)..' m'end;distS1=''if N>=100000 then distS1=''..string.format('%0.2f',N/200000)..' su'elseif N>=1000 and N<100000 then distS1=''..string.format('%0.1f',N/1000)..' km'else distS1=''..string.format('%0.0f',N)..' m'end;if vec3(d):dist(vec3(stellarObjects[sortestPipeKeyId1].center))<vec3(d):dist(vec3(stellarObjects[sortestPipeKey2Id1].center))then closestpip=stellarObjects[sortestPipeKeyId1].name[1].." - "..stellarObjects[sortestPipeKey2Id1].name[1]else closestpip=stellarObjects[sortestPipeKey2Id1].name[1].." - "..stellarObjects[sortestPipeKeyId1].name[1]end;if system.getArkTime()-corTime>4 then corpos=false;system.print('Closest planet: '..closestPlanetT.name[1]..' - '..distCP)system.print('Closest pipe: '..closestpip..' - '..distS1)system.print(safeZone1(asteroidcoord))end end end;function safeZone1(d)local O=d;local P=math.abs;local Q=18000000;local R=500000;local S,T=math.huge;local U=false;local S=vec3(O):dist(safeWorldPos)if S<Q then U=true;local distS=P(S-Q)if distS>100000 then distS=''..string.format('%0.2f',distS/200000)..' su'elseif distS>1000 and distS<100000 then distS=''..string.format('%0.1f',distS/1000)..' km'else distS=''..string.format('%0.0f',distS)..' m'end;local V='Central SZ, distance to PvP - '..distS;return V end;local T=vec3(O):dist(vec3(closestPlanetT.center))if T<R then U=true else U=false end;if P(T-R)<P(S-Q)then local distS=P(T-R)if distS>100000 then distS=''..string.format('%0.2f',distS/200000)..' su'elseif distS>1000 and distS<100000 then distS=''..string.format('%0.1f',distS/1000)..' km'else distS=''..string.format('%0.0f',distS)..' m'end;if U==true then local V=closestPlanetT.name[1]..' - SAFE zone, distance to PvP - '..distS;return V else local V='PvP zone, closest safe zone - '..closestPlanetT.name[1]..' - '..distS;return V end else local distS=P(S-Q)if distS>100000 then distS=''..string.format('%0.2f',distS/200000)..' su'elseif distS>1000 and distS<100000 then distS=''..string.format('%0.1f',distS/1000)..' km'else distS=''..string.format('%0.0f',distS)..' m'end;local V='PvP zone, closest safe zone - Central SZ - '..distS;return V end end;DisplayRadar=false;function drawonradar(W,X)local Y=vec3(construct.getWorldOrientationUp())local Z=vec3(construct.getWorldOrientationForward())local _=vec3(construct.getWorldOrientationRight())local a0=vec3(construct.getWorldPosition())local a1=W-a0;local a2=mySignedAngleBetween(a1,Z,Y)/math.pi;local a3=mySignedAngleBetween(a1,Z,_)/math.pi;local a4=a2*math.sqrt(1-a3*a3/2)*RadarR+RadarX;local a5=a3*math.sqrt(1-a2*a2/2)*RadarR+RadarY;svgradar=svgradar..string.format([[
                 <circle cx="%f" cy="%f" r="4" fill="red" />
                 <text x="%f" y="%f" font-size="11px" fill="yellow">%s</text>
-                ]],a4,a5,a4+4,a5,X)end;function mySignedAngleBetween(a6,a7,a8)local a9=a6:project_on_plane(a8):normalize()local aa=a7:normalize()local ab=math.acos(a9:dot(aa))local ac=a6:cross(a7)if ac:dot(a8)<0 then return-ab else return ab end end;playerName=system.getPlayerName(player.getId())xDelta=-238;yDelta=-108;mapScale=.99999;planetScale=1200;aliothsize=8000;moonScale=3000;map=0;warpScan=0;targetList=''lalt=false;shift=false;upB=false;downB=false;leftB=false;rightB=false;safew=''varcombat=construct.getPvPTimer()function pD()if nearestPipeDistance~=nil and closestPipeData~=nil then local ad=''if nearestPipeDistance>=100000 then ad=''..string.format('%0.2f',nearestPipeDistance/200000)..' su'elseif nearestPipeDistance>=1000 and nearestPipeDistance<100000 then ad=''..string.format('%0.1f',nearestPipeDistance/1000)..' km'else ad=''..string.format('%0.0f',nearestPipeDistance)..' m'end;if nearestPipeDistance>=600000 then return closestPipeData..'<br>'..'<green1>'..ad..'</green1>'elseif nearestPipeDistance>=400000 and nearestPipeDistance<=600000 then return closestPipeData..'<br>'..'<orange1>'..ad..'</orange1>'elseif nearestPipeDistance<400000 then return closestPipeData..'<br>'..'<red1>'..ad..'<red1>'end else return""end end;shipName=construct.getName()conID=tostring(construct.getId()):sub(-3)bhelper=false;helper=false;helper1=false;system.showHelper(0)system.showScreen(1)unit.hideWidget()distS=''safetext=''szsafe=true;tz1=0;tz2=0;brakeS=''brakeDist=''planetzone=''function indexSort(ae)local af={}for G=1,#ae do af[G]=G end;table.sort(af,function(ag,ah)return ae[ag]>ae[ah]end)return table.unpack or unpack(af)end;function getResRatioBy2HighestDamage(b)local ai={0,0,0,0}local aj,ak=indexSort(b)if b[ak]>0 then ai[aj]=resMAX/2;ai[ak]=resMAX/2 else ai[aj]=resMAX end;return ai end;resMAX=shield.getResistancesPool()function getRes(b,resMAX)local a={0.15,0.15,0.15,0.15}if b[1]>=b[2]and b[1]>=b[3]and b[1]>b[4]then a={resMAX,0,0,0}elseif b[2]>=b[1]and b[2]>=b[3]and b[2]>b[4]then a={0,resMAX,0,0}elseif b[3]>=b[1]and b[3]>=b[2]and b[3]>b[4]then a={0,0,resMAX,0}elseif b[4]>=b[1]and b[4]>=b[2]and b[4]>b[3]then a={0,0,0,resMAX}end;return a end;shoteCount=0;lastShotTime=system.getArkTime()resCLWN=""if GHUD_shield_auto_calibration==true then if GHUD_shield_calibration_max then shieldText="MAX - SHIELD"shieldIcon="A"else shieldText="50/50 - SHIELD"shieldIcon="A"end else if GHUD_shield_calibration_max then shieldText="MAX - SHIELD"shieldIcon="M"else shieldText="50/50 - SHIELD"shieldIcon="M"end end;brakeText=""if shield.isActive()==0 then shieldColor="#fc033d"shieldStatus="DEACTIVE"else shieldColor="#2ebac9"shieldStatus="ACTIVE"end;venttime=0;venttimemax=shield.getVentingMaxCooldown()resisttimemax=shield.getResistancesMaxCooldown()for al in pairs(atlas[0])do local l=atlas[0][al]if l.name[1]==GHUD_destination_planet then DestinationCenter=vec3(l.center)DestinationCenterName=l.name[1]end;if l.name[1]==GHUD_departure_planet then DepartureCenter=vec3(l.center)DepartureCenterName=l.name[1]end end;function safeZone()local O=vec3(construct.getWorldPosition())local P=math.abs;local Q=18000000;local R=500000;local an,ao=math.huge;szsafe=false;planetzone=''local an=vec3(O):dist(safeWorldPos)if an<Q then szsafe=true;distS=P(an-Q)local ap=''local aq=vectorLengthen(safeWorldPos,O,distS)if distS>100000 then distS=string.format('%0.2f',distS/200000)ap='su'elseif distS>1000 and distS<100000 then distS=string.format('%0.1f',distS/1000)ap='km'else distS=string.format('%0.0f',distS)ap='m'end;local V='PvP ZONE'local ar=distS;return V,aq,ar,ap end;ao=vec3(O):dist(vec3(closestPlanet.center))if ao<R then szsafe=true else szsafe=false end;if P(ao-R)<P(an-Q)then distS=P(ao-R)local distS1=distS;local ap=''if distS>100000 then distS=string.format('%0.2f',distS/200000)ap='su'elseif distS>1000 and distS<100000 then distS=string.format('%0.1f',distS/1000)ap='km'else distS=string.format('%0.0f',distS)ap='m'end;if szsafe==true then local V=closestPlanet.name[1]..' PvP ZONE'local aq=vectorLengthen(vec3(closestPlanet.center),O,distS1)local ar=distS;return V,aq,ar,ap else local V=closestPlanet.name[1]..' SAFE ZONE'local aq=vec3(closestPlanet.center)planetzone=closestPlanet.name[1]local ar=distS;return V,aq,ar,ap end else distS=P(an-Q)local ap=''local aq=safeWorldPos;if distS>100000 then distS=string.format('%0.2f',distS/200000)ap='su'elseif distS>1000 and distS<100000 then distS=string.format('%0.1f',distS/1000)ap='km'else distS=string.format('%0.0f',distS)ap='m'end;local V='SAFE ZONE'local ar=distS;return V,aq,ar,ap end end;mybr=false;dis=0;accel=0;resString=""throttle1=0;fuel1=0;blink=1;shieldAlarm=false;alarmTimer=false;t2=nil;function makeVector(as,at)local au=vec3(at).x-vec3(as).x;local y=vec3(at).y-vec3(as).y;local av=vec3(at).z-vec3(as).z;return vec3(au,y,av)end;function vectorLengthen(as,at,aw)local ax=makeVector(as,at)local ay=vec3(ax):len()local az=ay+aw;local aA=az/ay;local aB=ax*aA;local au=vec3(as).x+vec3(aB).x;local y=vec3(as).y+vec3(aB).y;local av=vec3(as).z+vec3(aB).z;local aC=vec3(au,y,av)return aC end;function customDistance(J)local aD=''if J<1000 then aD=''..string.format('%0.0f',J)..' m'elseif J<100000 then aD=''..string.format('%0.1f',J/1000)..' km'else aD=''..string.format('%0.2f',J/200000)..' su'end;return aD end;local function aE(aF,aG,a8)local a9=aF:normalize()local aa=aG:normalize()local aH=a9:dot(aa)aH=utils.clamp(aH,-1,1)local ab=math.acos(aH)local ac=aF:cross(aG)if ac:dot(a8)<0 then return-ab-math.pi else return ab+math.pi end end;local function aI(aJ,aK)local aL=vec3(0,0,1)local aM=aL:project_on_plane(aK)local aN=aJ:project_on_plane(aK)return aE(aM,aN,aK)end;function rotateX3D(aO,aP)aP=aP*math.pi/180;local aQ=math.sin(aP)local aR=math.cos(aP)local y=aO.y*aR-aO.z*aQ;local av=aO.z*aR+aO.y*aQ;aO.y=y;aO.z=av;return aO end;function rotateY3D(aO,aP)aP=aP*math.pi/180;local aQ=math.sin(aP)local aR=math.cos(aP)local au=aO.x*aR-aO.y*aQ;local y=aO.y*aR+aO.x*aQ;aO.x=au;aO.y=y;return aO end;function rotateZ3D(aO,aP)aP=aP*math.pi/180;local aQ=math.sin(aP)local aR=math.cos(aP)local au=aO.x*aR+aO.z*aQ;local av=aO.z*aR-aO.x*aQ;aO.x=au;aO.y=y;return aO end;function drawMap()local aS=""local l=""local aT=""local aU=""local aV=''aV=[[
+                ]],a4,a5,a4+4,a5,X)end;function mySignedAngleBetween(a6,a7,a8)local a9=a6:project_on_plane(a8):normalize()local aa=a7:normalize()local ab=math.acos(a9:dot(aa))local ac=a6:cross(a7)if ac:dot(a8)<0 then return-ab else return ab end end;playerName=system.getPlayerName(player.getId())xDelta=-238;yDelta=-108;mapScale=.99999;planetScale=1200;aliothsize=8000;moonScale=3000;map=0;warpScan=0;targetList=''lalt=false;shift=false;upB=false;downB=false;leftB=false;rightB=false;safew=''varcombat=construct.getPvPTimer()function pD()if nearestPipeDistance~=nil and closestPipeData~=nil then local ad=''if nearestPipeDistance>=100000 then ad=''..string.format('%0.2f',nearestPipeDistance/200000)..' su'elseif nearestPipeDistance>=1000 and nearestPipeDistance<100000 then ad=''..string.format('%0.1f',nearestPipeDistance/1000)..' km'else ad=''..string.format('%0.0f',nearestPipeDistance)..' m'end;if nearestPipeDistance>=600000 then return closestPipeData..'<br>'..'<green1>'..ad..'</green1>'elseif nearestPipeDistance>=400000 and nearestPipeDistance<=600000 then return closestPipeData..'<br>'..'<orange1>'..ad..'</orange1>'elseif nearestPipeDistance<400000 then return closestPipeData..'<br>'..'<red1>'..ad..'<red1>'end else return""end end;shipName=construct.getName()conID=tostring(construct.getId()):sub(-3)bhelper=false;helper=false;helper1=false;system.showHelper(0)system.showScreen(1)unit.hideWidget()distS=''safetext=''szsafe=true;tz1=0;tz2=0;brakeS=''brakeDist=''planetzone=''function indexSort(ae)local af={}for G=1,#ae do af[G]=G end;table.sort(af,function(ag,ah)return ae[ag]>ae[ah]end)return table.unpack or unpack(af)end;function gR2D(b)local ai={0,0,0,0}local aj,ak=indexSort(b)if b[ak]>0 then ai[aj]=resMAX/2;ai[ak]=resMAX/2 else ai[aj]=resMAX end;return ai end;resMAX=shield.getResistancesPool()function getRes(b,resMAX)local a={0.15,0.15,0.15,0.15}if b[1]>=b[2]and b[1]>=b[3]and b[1]>b[4]then a={resMAX,0,0,0}elseif b[2]>=b[1]and b[2]>=b[3]and b[2]>b[4]then a={0,resMAX,0,0}elseif b[3]>=b[1]and b[3]>=b[2]and b[3]>b[4]then a={0,0,resMAX,0}elseif b[4]>=b[1]and b[4]>=b[2]and b[4]>b[3]then a={0,0,0,resMAX}end;return a end;shoteCount=0;lastShotTime=system.getArkTime()resCLWN=""if GHUD_shield_auto_calibration==true then if GHUD_shield_calibration_max then shieldText="MAX - SHIELD"shieldIcon="A"else shieldText="50/50 - SHIELD"shieldIcon="A"end else if GHUD_shield_calibration_max then shieldText="MAX - SHIELD"shieldIcon="M"else shieldText="50/50 - SHIELD"shieldIcon="M"end end;brakeText=""if shield.isActive()==0 then shieldColor="#fc033d"shieldStatus="DEACTIVE"else shieldColor="#2ebac9"shieldStatus="ACTIVE"end;venttime=0;venttimemax=shield.getVentingMaxCooldown()resisttimemax=shield.getResistancesMaxCooldown()for al in pairs(atlas[0])do local l=atlas[0][al]if l.name[1]==GHUD_destination_planet then DestinationCenter=vec3(l.center)DestinationCenterName=l.name[1]end;if l.name[1]==GHUD_departure_planet then DepartureCenter=vec3(l.center)DepartureCenterName=l.name[1]end end;function safeZone()local O=vec3(construct.getWorldPosition())local P=math.abs;local Q=18000000;local R=500000;local an,ao=math.huge;szsafe=false;planetzone=''local an=vec3(O):dist(safeWorldPos)if an<Q then szsafe=true;distS=P(an-Q)local ap=''local aq=vectorLengthen(safeWorldPos,O,distS)if distS>100000 then distS=string.format('%0.2f',distS/200000)ap='su'elseif distS>1000 and distS<100000 then distS=string.format('%0.1f',distS/1000)ap='km'else distS=string.format('%0.0f',distS)ap='m'end;local V='PvP ZONE'local ar=distS;return V,aq,ar,ap end;ao=vec3(O):dist(vec3(closestPlanet.center))if ao<R then szsafe=true else szsafe=false end;if P(ao-R)<P(an-Q)then distS=P(ao-R)local distS1=distS;local ap=''if distS>100000 then distS=string.format('%0.2f',distS/200000)ap='su'elseif distS>1000 and distS<100000 then distS=string.format('%0.1f',distS/1000)ap='km'else distS=string.format('%0.0f',distS)ap='m'end;if szsafe==true then local V=closestPlanet.name[1]..' PvP ZONE'local aq=vectorLengthen(vec3(closestPlanet.center),O,distS1)local ar=distS;return V,aq,ar,ap else local V=closestPlanet.name[1]..' SAFE ZONE'local aq=vec3(closestPlanet.center)planetzone=closestPlanet.name[1]local ar=distS;return V,aq,ar,ap end else distS=P(an-Q)local ap=''local aq=safeWorldPos;if distS>100000 then distS=string.format('%0.2f',distS/200000)ap='su'elseif distS>1000 and distS<100000 then distS=string.format('%0.1f',distS/1000)ap='km'else distS=string.format('%0.0f',distS)ap='m'end;local V='SAFE ZONE'local ar=distS;return V,aq,ar,ap end end;mybr=false;dis=0;accel=0;resString=""throttle1=0;fuel1=0;blink=1;shieldAlarm=false;alarmTimer=false;t2=nil;function makeVector(as,at)local au=vec3(at).x-vec3(as).x;local y=vec3(at).y-vec3(as).y;local av=vec3(at).z-vec3(as).z;return vec3(au,y,av)end;function vectorLengthen(as,at,aw)local ax=makeVector(as,at)local ay=vec3(ax):len()local az=ay+aw;local aA=az/ay;local aB=ax*aA;local au=vec3(as).x+vec3(aB).x;local y=vec3(as).y+vec3(aB).y;local av=vec3(as).z+vec3(aB).z;local aC=vec3(au,y,av)return aC end;function customDistance(J)local aD=''if J<1000 then aD=''..string.format('%0.0f',J)..' m'elseif J<100000 then aD=''..string.format('%0.1f',J/1000)..' km'else aD=''..string.format('%0.2f',J/200000)..' su'end;return aD end;local function aE(aF,aG,a8)local a9=aF:normalize()local aa=aG:normalize()local aH=a9:dot(aa)aH=utils.clamp(aH,-1,1)local ab=math.acos(aH)local ac=aF:cross(aG)if ac:dot(a8)<0 then return-ab-math.pi else return ab+math.pi end end;local function aI(aJ,aK)local aL=vec3(0,0,1)local aM=aL:project_on_plane(aK)local aN=aJ:project_on_plane(aK)return aE(aM,aN,aK)end;function rotateX3D(aO,aP)aP=aP*math.pi/180;local aQ=math.sin(aP)local aR=math.cos(aP)local y=aO.y*aR-aO.z*aQ;local av=aO.z*aR+aO.y*aQ;aO.y=y;aO.z=av;return aO end;function rotateY3D(aO,aP)aP=aP*math.pi/180;local aQ=math.sin(aP)local aR=math.cos(aP)local au=aO.x*aR-aO.y*aQ;local y=aO.y*aR+aO.x*aQ;aO.x=au;aO.y=y;return aO end;function rotateZ3D(aO,aP)aP=aP*math.pi/180;local aQ=math.sin(aP)local aR=math.cos(aP)local au=aO.x*aR+aO.z*aQ;local av=aO.z*aR-aO.x*aQ;aO.x=au;aO.y=y;return aO end;function drawMap()local aS=""local l=""local aT=""local aU=""local aV=''aV=[[
                         <div class="system-map">
                         <div class="map-actual" style="transform: perspective(1920px) translateZ(-250px);">
                         <div class="map-center" style="transform: translate(-50%, -50%) rotateX(]]..yDelta..[[deg) rotateY(0deg) rotateZ(]]..xDelta..[[deg);"></div>
@@ -261,7 +262,7 @@ handlers:
                         box-sizing: border-box;
                         background: #ff3a56;
                     }
-                    </style>]]Kinematic={}function Kinematic.computeAccelerationTime(b7,b8,b9)return(b9-b7)/b8 end;function Kinematic.computeDistanceAndTime(b7,b9,ba,bb,bc,bd)bc=bc or 0;bd=bd or 0;local be=b7<b9;local bf=bb/(be and ba or-ba)local bg=-bd/ba;local bh=bf+bg;if b7==b9 then return 0,0 elseif be and bh<=0 or not be and bh>=0 then return-1,-1 end;local bi,bj=0,0;if bf~=0 and bc>0 then local bk=math.pi/bc/2;local aW=function(bl)return bf*(bl/2-bc*math.sin(bk*bl)/math.pi)+bg*bl+b7 end;local bm=be and function(bn)return bn>=b9 end or function(bn)return bn<=b9 end;bj=2*bc;if bm(aW(bj))then local lasttime=0;while math.abs(bj-lasttime)>0.25 do local bl=(bj+lasttime)/2;if bm(aW(bl))then bj=bl else lasttime=bl end end end;local bo=2*bf*bc^2/math.pi^2;bi=bo*(math.cos(bk*bj)-1)+(bf+2*bg)*bj^2/4+b7*bj;if bj<2*bc then return bi,bj end;b7=aW(bj)end;local ag=bf+bg;local bl=Kinematic.computeAccelerationTime(b7,ag,b9)local bp=b7*bl+ag*bl*bl/2;return bi+bp end;if GHUD_radar_notifications_border_radius==true then GHUD_border_radius='15px'else GHUD_border_radius='none'end;GHUD_allies_count1=GHUD_allies_count+1;if GHUD_windowed_mode then GHUD_allies_Y=2 end;GHUD_show_echoes=false;if GHUD_show_echoes==true then statusY=13.5 else statusY=6 end;function hitFnc(bq,br,bs)local bt=''if bq.isOutOfAmmo()~=1 then bt=bq.getAmmo()bt=system.getItem(bt)['displayName']if bt:match("Antimatter")then bt="AM"elseif bt:match("Electromagnetic")then bt="EM"elseif bt:match("Kinetic")then bt="KI"elseif bt:match("Thermic")then bt="TH"end end;if bt~=''then lastAmmo[bq]={ammoName=bt}end;if bt==''then if lastAmmo[bq]~=nil then bt=lastAmmo[bq].ammoName end end;if GHUD_show_hits==true then hitAnimations=hitAnimations+1;local bu='HIT '..bt..' '..br;lastHitTime[hitAnimations]={damage=bu,time=0,hitOpacity=1,anims=hitAnimations}end;if totalDamage[bs]~=nil then totalDamage[bs].damage=totalDamage[bs].damage+br else totalDamage[bs]={damage=br}end end;activeRadar=radar_1;activeRadar.setSortMethod(1)radarIDs={}idN=0;GHUD_show_allies=true;screenHeight=system.getScreenHeight()screenWidth=system.getScreenWidth()startTime=system.getArkTime()lastHitTime={}lastMissTime={}hits={}misses={}hitAnimations=0;missAnimations=0;totalDamage={}mRadar={}mWeapons={}size={'XL','L','M','S','XS','ALL'}defaultSize='ALL'sizeState=6;focus=''gunnerHUD=''vectorHUD=''atmovar=false;endload=0;znak=''newcolor="white"znak2=''newcolor2="white"speedT=0;lastspeed=0;distT=0;lastdist=0;probil=0;playerName=system.getPlayerName(player.getId())warpScan=0;t_radarEnter={}loglist={}radarTarget=nil;newWhitelist={}radarStatic={}radarDynamic={}radarStaticWidget={}radarStaticData={}radarDynamicWidget={}radarDynamicData={}lastAmmo={}radarWidget=''targets={}target={}count=0;gearB=false;friendsData={}pp1=''shipName=construct.getName()local bv=construct.getId()system.print(''..shipName..': '..bv..'')conID=tostring(bv):sub(-3)GHUD_friendly_IDs={}local bw=databank_2.getNbKeys()if bw>0 then for G=1,bw do table.insert(GHUD_friendly_IDs,databank_2.getIntValue(G))end;system.print('Databank whitelist loaded')end;function checkWhitelist()local whitelist=GHUD_friendly_IDs;local bx={}for by,bz in ipairs(whitelist)do bx[bz]=true end;return bx end;function table.contains(table,bA)for by,bB in pairs(table)do if bB==bA then return true end end;return false end;whitelist=checkWhitelist()local bC=100;radarWidgetScale=2;radarWidgetScaleDisplay='<div class="measures"><span>0 SU</span><span>1 SU</span><span>2 SU</span></div>'function defaultRadar()sizeState=6;defaultSize='ALL'if mRadar.friendlyMode==true then mRadar.friendlyMode=false end end;function mRadar:createWidget()self.dataID=self.system.createData(activeRadar.getWidgetData())radarPanel=self.system.createWidgetPanel('')radarWidget=self.system.createWidget(radarPanel,activeRadar.getWidgetType())self.system.addDataToWidget(self.dataID,radarWidget)end;function mRadar:createWidgetNew()self.dataID=self.system.createData(activeRadar.getWidgetData())radarWidget=self.system.createWidget(radarPanel,activeRadar.getWidgetType())self.system.addDataToWidget(self.dataID,radarWidget)end;function mRadar:deleteWidget()self.system.destroyData(self.dataID)self.system.destroyWidget(radarWidget)end;function mRadar:updateLoop()while true do self:updateStep()coroutine.yield()end end;function mRadar:updateStep()local bD={}local bE=activeRadar.getWidgetData()local bF=bE:gmatch('({"constructId":".-%b{}.-})')local bG=next(self.idFilter)~=nil;local G=0;for bH in bF do G=G+1;if G%bC==0 then coroutine.yield()end;local bI=tonumber(bH:match('"constructId":"([%d]*)"'))local size=activeRadar.getConstructCoreSize(bI)local bJ=activeRadar.isConstructIdentified(bI)local bK=activeRadar.isConstructAbandoned(bI)local bL=activeRadar.getTargetId(bI)if bJ==1 or bK==0 or bL==bI and size~=""then if defaultSize=='ALL'then if(whitelist[bI]==true or activeRadar.hasMatchingTransponder(bI)==1)~=self.friendlyMode and activeRadar.getThreatRateFrom(bI)<=2 then goto bM end;if bG and self.idFilter[bI%1000]~=true then goto bM end;bD[#bD+1]=bH:gsub('"name":"(.+)"','"name":"'..tostring(bI):sub(-3)..' - %1"')::bM::elseif size==defaultSize then if(whitelist[bI]==true or activeRadar.hasMatchingTransponder(bI)==1)~=self.friendlyMode and activeRadar.getThreatRateFrom(bI)<=2 then goto bN end;if bG and self.idFilter[bI%1000]~=true then goto bN end;bD[#bD+1]=bH:gsub('"name":"(.+)"','"name":"'..tostring(bI):sub(-3)..' - %1"')::bN::end end end;local bO=(bG and''..focus..' - FOCUS - 'or'')..(self.friendlyMode and''..defaultSize..' - Friends'or''..defaultSize..' - Enemies')local bP=bE:match('"currentTargetId":".+')bP=bP:gsub('"errorMessage":""','"errorMessage":"'..bO..'"')bE='{"constructsList":['..table.concat(bD,",").."],"..bP;self.system.updateData(self.dataID,bE)end;function mRadar:onUpdate()coroutine.resume(self.updaterCoroutine)end;function mRadar:clearIDFilter()self.idFilter={}end;function mRadar:addIDFilter(bQ)self.idFilter[bQ]=true end;function mRadar:onTextInput(text)self:clearIDFilter()focus=text:sub(-3)defaultRadar()if focus=='f'then system.print('Focus mode deactivated')else system.print('Focus ID: '..focus)end;for bQ in text:gmatch('%D(%d%d%d)')do self:addIDFilter(tonumber(bQ))end end;function mRadar:toggleFriendlyMode()self.friendlyMode=not self.friendlyMode end;function mRadar:new(bR)local mRadar={}setmetatable(mRadar,self)self.system=bR;self.friendlyMode=false;self.onlyIdentified=false;self.idFilter={}self:createWidget()self.updaterCoroutine=coroutine.create(function()self:updateLoop()end)return self end;local bS={}local bT={}local bU={}local bV={}local bW={}local bX={}function mWeapons:createWidgets()if not(type(self.weapons)=='table'and#self.weapons>0)then return end;local bY;for G,bZ in ipairs(self.weapons)do if(G-1)%self.weaponsPerPanel==0 then bY=self.system.createWidgetPanel('')end;local b_=self.system.createData(bZ.getWidgetData())self.weaponData[b_]=bZ;bS[b_]=0;self.system.addDataToWidget(b_,self.system.createWidget(bY,bZ.getWidgetType()))end end;function mWeapons:onUpdate()for b_,bZ in pairs(self.weaponData)do local c0=bZ.getWidgetData()local c1=c0:match('"weaponStatus":(%d+)')local c2=tonumber(c0:match('"cycleAnimationRemainingTime":(.-),'))local c3=c0:match('"fireReady":(.-),')local c4=c0:match('"outOfZone":(.-),')local c5=c0:match('"constructId":"(.-)"')local c6=c0:match('"hitProbability":(.-),')local c7=math.floor(tonumber(c6)*100)local c8=c2>bS[b_]bS[b_]=c2;if c1==bT[b_]and bW[b_]==c5 and bU[b_]==c3 and bV[b_]==c4 and bX[b_]==c6 and not c8 then goto c9 end;bT[b_]=c1;bU[b_]=c3;bV[b_]=c4;bW[b_]=c5;bX[b_]=c6;local ca=c0:match('"ammoName":"(.-)"')local cb=""if ca:match("Antimatter")then cb="AM"elseif ca:match("Electromagnetic")then cb="EM"elseif ca:match("Kinetic")then cb="KI"elseif ca:match("Thermic")then cb="TH"elseif ca:match("Stasis")then cb="Stasis"end;local cc=""if ca:match("Precision")then cc="Prec"elseif ca:match("Heavy")then cc="Heavy"elseif ca:match("Agile")then cc="Agile"elseif ca:match("Defense")then cc="Def"end;c0=c0:gsub('"helperId":"(.-)","name":"(.-)"','"helperId":"%1","name":"%2 '..c7 ..'%%"')c0=c0:gsub('"constructId":"(%d+(%d%d%d))","name":"(.-)"','"constructId":"%1","name":"%2 - %3"')c0=c0:gsub('"ammoName":"(.-)"','"ammoName":"'..cb..' '..cc..'"')if self.system.updateData(b_,c0)~=1 then self.system.print('update error')end::c9::end end;function mWeapons:new(bR,cd,ce)local mWeapons={}setmetatable(mWeapons,self)self.system=bR;self.weapons=cd;self.weaponsPerPanel=ce or 3;self.weaponData={}self:createWidgets()return self end;function coroutine.xpcall(q)local r={coroutine.resume(q)}if r[1]==false then local s=traceback(q)local t=s:gsub('"%-%- |STDERROR%-EVENTHANDLER[^"]*"','chunk')system.print(t)t=r[2]:gsub('"%-%- |STDERROR%-EVENTHANDLER[^"]*"','chunk')system.print(t)return false,r[2],s end;return table.unpack(r)end;function ConvertLocalToWorld(au,y,av)local cf=au*vec3(construct.getWorldRight())local cg=y*vec3(construct.getWorldForward())local ch=av*vec3(construct.getWorldUp())return cf+cg+ch+vec3(construct.getWorldPosition())end;if GHUD_radarWidget_on_top==true then mRadar=mRadar:new(system)if weapon_1~=nil then mWeapons=mWeapons:new(system,weapon,GHUD_weapon_panels)end else if weapon_1~=nil then mWeapons=mWeapons:new(system,weapon,GHUD_weapon_panels)end;mRadar=mRadar:new(system)end;function main()while true do local G=0;local ci=""local cj=""local ck=""local cl=0;local cm=0;local cn=0;local co,cp,cq="","",""local cr=""local cs=""local ct=""local cu=""local cv=""local cw=""local cx=""local cy=""local cz=""radarTarget={}radarStatic={}radarDynamic={}radarDynamicData=radarDynamicWidget;radarDynamicWidget={}radarStaticData=radarStaticWidget;radarStaticWidget={}if radar_2~=nil then if radar_1.getOperationalState()==-1 and atmovar==false then atmovar=true;activeRadar=radar_2;mRadar:deleteWidget()mRadar:createWidgetNew()radarWidgetScale=160;radarWidgetScaleDisplay='<div class="measures"><span>0 KM</span><span>2.5 KM</span><span>5 KM</span></div>'activeRadar.setSortMethod(1)end;if radar_1.getOperationalState()==1 and atmovar==true then atmovar=false;activeRadar=radar_1;mRadar:deleteWidget()mRadar:createWidgetNew()radarWidgetScale=2;radarWidgetScaleDisplay='<div class="measures"><span>0 SU</span><span>1 SU</span><span>2 SU</span></div>'activeRadar.setSortMethod(1)end end;for cA,aW in pairs(radarIDs)do G=G+1;local size=activeRadar.getConstructCoreSize(aW)local cB={}if t_radarEnter[aW]~=nil then if activeRadar.hasMatchingTransponder(aW)==0 and not whitelist[aW]and size~=""and activeRadar.getConstructDistance(aW)<600000 then local cC=activeRadar.getConstructName(aW)if activeRadar.isConstructAbandoned(aW)==0 then local cD='NEW TARGET: '..cC..' - Size: '..size..' - '..aW..'\n '..t_radarEnter[aW].pos..''table.insert(loglist,cD)if count<10 then count=count+1;if target[count]==nil then target[count]={left=100,opacity=1,cnt=count,name1=cC,size1=size,id=tostring(aW):sub(-3),one=true,check=true,delay=0}end;system.playSound('enter.mp3')end else local d=activeRadar.getConstructWorldPos(aW)d='::pos{0,0,'..d[1]..','..d[2]..','..d[3]..'}'local cD='NEW TARGET (abandoned): '..cC..' - Size: '..size..' - '..aW..'\n '..d..''table.insert(loglist,cD)if count<10 then count=count+1;if target[count]==nil then target[count]={left=100,opacity=1,cnt=count,name1=cC,size1=size,id=tostring(aW):sub(-3),one=true,check=true,delay=0}end end;system.playSound('sonar.mp3')end end;t_radarEnter[aW]=nil end;if GHUD_show_echoes==true then if size~=""then cB.widgetDist=math.ceil(activeRadar.getConstructDistance(aW)/1000*radarWidgetScale)end end;if GHUD_show_allies==true and size~=""then if activeRadar.hasMatchingTransponder(aW)==1 or whitelist[aW]then local cC=activeRadar.getConstructName(aW)local cE=math.floor(activeRadar.getConstructDistance(aW))local cF=''if activeRadar.hasMatchingTransponder(aW)==1 then local cG=activeRadar.getConstructOwnerEntity(aW)if cG['isOrganization']then cF=system.getOrganization(cG['id']).tag;friendsData[aW]={tag=cF}else cF=system.getPlayerName(cG['id'])friendsData[aW]={tag=cF}end else cF='DB'end;if cE>=1000 then cE=''..string.format('%0.1f',cE/1000)..' km ('..string.format('%0.2f',cE/200000)..' su)'else cE=''..cE..' m'end;local cH=tostring(aW):sub(-3)local cI=''..cH..' '..cC..''cl=cl+1;if activeRadar.getTargetId(aW)~=aW and cl<GHUD_allies_count1 then co=co..[[
+                    </style>]]Kinematic={}function Kinematic.computeAccelerationTime(b7,b8,b9)return(b9-b7)/b8 end;function Kinematic.computeDistanceAndTime(b7,b9,ba,bb,bc,bd)bc=bc or 0;bd=bd or 0;local be=b7<b9;local bf=bb/(be and ba or-ba)local bg=-bd/ba;local bh=bf+bg;if b7==b9 then return 0,0 elseif be and bh<=0 or not be and bh>=0 then return-1,-1 end;local bi,bj=0,0;if bf~=0 and bc>0 then local bk=math.pi/bc/2;local aW=function(bl)return bf*(bl/2-bc*math.sin(bk*bl)/math.pi)+bg*bl+b7 end;local bm=be and function(bn)return bn>=b9 end or function(bn)return bn<=b9 end;bj=2*bc;if bm(aW(bj))then local lasttime=0;while math.abs(bj-lasttime)>0.25 do local bl=(bj+lasttime)/2;if bm(aW(bl))then bj=bl else lasttime=bl end end end;local bo=2*bf*bc^2/math.pi^2;bi=bo*(math.cos(bk*bj)-1)+(bf+2*bg)*bj^2/4+b7*bj;if bj<2*bc then return bi,bj end;b7=aW(bj)end;local ag=bf+bg;local bl=Kinematic.computeAccelerationTime(b7,ag,b9)local bp=b7*bl+ag*bl*bl/2;return bi+bp end;if GHUD_radar_notifications_border_radius==true then GHUD_border_radius='15px'else GHUD_border_radius='none'end;GHUD_allies_count1=GHUD_allies_count+1;if GHUD_windowed_mode then GHUD_allies_Y=2 end;GHUD_show_echoes=false;if GHUD_show_echoes==true then statusY=13.5 else statusY=6 end;function hitFnc(bq,br,bs)local bt=''if bq.isOutOfAmmo()~=1 then bt=bq.getAmmo()bt=system.getItem(bt)['displayName']if bt:match("Antimatter")then bt="AM"elseif bt:match("Electromagnetic")then bt="EM"elseif bt:match("Kinetic")then bt="KI"elseif bt:match("Thermic")then bt="TH"end end;if bt~=''then lastAmmo[bq]={ammoName=bt}end;if bt==''then if lastAmmo[bq]~=nil then bt=lastAmmo[bq].ammoName end end;local bu='HIT '..bt..' '..br;if GHUD_show_hits==true then hitAnimations=hitAnimations+1;lastHitTime[hitAnimations]={damage=bu,time=0,hitOpacity=1,anims=hitAnimations}end;if GHUD_print_hits==true then system.print('HIT '..bt..' '..br)end;if totalDamage[bs]~=nil then totalDamage[bs].damage=totalDamage[bs].damage+br else totalDamage[bs]={damage=br}end end;activeRadar=radar_1;activeRadar.setSortMethod(1)radarIDs={}idN=0;GHUD_show_allies=true;screenHeight=system.getScreenHeight()screenWidth=system.getScreenWidth()startTime=system.getArkTime()lastHitTime={}lastMissTime={}hits={}misses={}hitAnimations=0;missAnimations=0;totalDamage={}mRadar={}mWeapons={}size={'XL','L','M','S','XS','ALL'}defaultSize='ALL'sizeState=6;focus=''gunnerHUD=''vectorHUD=''atmovar=false;endload=0;znak=''newcolor="white"znak2=''newcolor2="white"speedT=0;lastspeed=0;distT=0;lastdist=0;probil=0;playerName=system.getPlayerName(player.getId())warpScan=0;t_radarEnter={}loglist={}radarTarget=nil;newWhitelist={}radarStatic={}radarDynamic={}radarStaticWidget={}radarStaticData={}radarDynamicWidget={}radarDynamicData={}lastAmmo={}radarWidget=''targets={}target={}count=0;gearB=false;friendsData={}pp1=''shipName=construct.getName()local bv=construct.getId()system.print(''..shipName..': '..bv..'')conID=tostring(bv):sub(-3)GHUD_friendly_IDs={}local bw=databank_2.getNbKeys()if bw>0 then for G=1,bw do table.insert(GHUD_friendly_IDs,databank_2.getIntValue(G))end;system.print('Databank whitelist loaded')end;function checkWhitelist()local whitelist=GHUD_friendly_IDs;local bx={}for by,bz in ipairs(whitelist)do bx[bz]=true end;return bx end;function table.contains(table,bA)for by,bB in pairs(table)do if bB==bA then return true end end;return false end;whitelist=checkWhitelist()local bC=100;radarWidgetScale=2;radarWidgetScaleDisplay='<div class="measures"><span>0 SU</span><span>1 SU</span><span>2 SU</span></div>'function defaultRadar()sizeState=6;defaultSize='ALL'if mRadar.friendlyMode==true then mRadar.friendlyMode=false end end;function mRadar:createWidget()self.dataID=self.system.createData(activeRadar.getWidgetData())radarPanel=self.system.createWidgetPanel('')radarWidget=self.system.createWidget(radarPanel,activeRadar.getWidgetType())self.system.addDataToWidget(self.dataID,radarWidget)end;function mRadar:createWidgetNew()self.dataID=self.system.createData(activeRadar.getWidgetData())radarWidget=self.system.createWidget(radarPanel,activeRadar.getWidgetType())self.system.addDataToWidget(self.dataID,radarWidget)end;function mRadar:deleteWidget()self.system.destroyData(self.dataID)self.system.destroyWidget(radarWidget)end;function mRadar:updateLoop()while true do self:updateStep()coroutine.yield()end end;function mRadar:updateStep()local bD={}local bE=activeRadar.getWidgetData()local bF=bE:gmatch('({"constructId":".-%b{}.-})')local bG=next(self.idFilter)~=nil;local G=0;for bH in bF do G=G+1;if G%bC==0 then coroutine.yield()end;local bI=tonumber(bH:match('"constructId":"([%d]*)"'))local size=activeRadar.getConstructCoreSize(bI)local bJ=activeRadar.isConstructIdentified(bI)local bK=activeRadar.isConstructAbandoned(bI)local bL=activeRadar.getTargetId(bI)if bJ==1 or bK==0 or bL==bI and size~=""then if defaultSize=='ALL'then if(whitelist[bI]==true or activeRadar.hasMatchingTransponder(bI)==1)~=self.friendlyMode and activeRadar.getThreatRateFrom(bI)<=2 then goto bM end;if bG and self.idFilter[bI%1000]~=true then goto bM end;bD[#bD+1]=bH:gsub('"name":"(.+)"','"name":"'..tostring(bI):sub(-3)..' - %1"')::bM::elseif size==defaultSize then if(whitelist[bI]==true or activeRadar.hasMatchingTransponder(bI)==1)~=self.friendlyMode and activeRadar.getThreatRateFrom(bI)<=2 then goto bN end;if bG and self.idFilter[bI%1000]~=true then goto bN end;bD[#bD+1]=bH:gsub('"name":"(.+)"','"name":"'..tostring(bI):sub(-3)..' - %1"')::bN::end end end;local bO=(bG and''..focus..' - FOCUS - 'or'')..(self.friendlyMode and''..defaultSize..' - Friends'or''..defaultSize..' - Enemies')local bP=bE:match('"currentTargetId":".+')bP=bP:gsub('"errorMessage":""','"errorMessage":"'..bO..'"')bE='{"constructsList":['..table.concat(bD,",").."],"..bP;self.system.updateData(self.dataID,bE)end;function mRadar:onUpdate()coroutine.resume(self.updaterCoroutine)end;function mRadar:clearIDFilter()self.idFilter={}end;function mRadar:addIDFilter(bQ)self.idFilter[bQ]=true end;function mRadar:onTextInput(text)self:clearIDFilter()focus=text:sub(-3)defaultRadar()if focus=='f'then system.print('Focus mode deactivated')else system.print('Focus ID: '..focus)end;for bQ in text:gmatch('%D(%d%d%d)')do self:addIDFilter(tonumber(bQ))end end;function mRadar:toggleFriendlyMode()self.friendlyMode=not self.friendlyMode end;function mRadar:new(bR)local mRadar={}setmetatable(mRadar,self)self.system=bR;self.friendlyMode=false;self.onlyIdentified=false;self.idFilter={}self:createWidget()self.updaterCoroutine=coroutine.create(function()self:updateLoop()end)return self end;local bS={}local bT={}local bU={}local bV={}local bW={}local bX={}function mWeapons:createWidgets()if not(type(self.weapons)=='table'and#self.weapons>0)then return end;local bY;for G,bZ in ipairs(self.weapons)do if(G-1)%self.weaponsPerPanel==0 then bY=self.system.createWidgetPanel('')end;local b_=self.system.createData(bZ.getWidgetData())self.weaponData[b_]=bZ;bS[b_]=0;self.system.addDataToWidget(b_,self.system.createWidget(bY,bZ.getWidgetType()))end end;function mWeapons:onUpdate()for b_,bZ in pairs(self.weaponData)do local c0=bZ.getWidgetData()local c1=c0:match('"weaponStatus":(%d+)')local c2=tonumber(c0:match('"cycleAnimationRemainingTime":(.-),'))local c3=c0:match('"fireReady":(.-),')local c4=c0:match('"outOfZone":(.-),')local c5=c0:match('"constructId":"(.-)"')local c6=c0:match('"hitProbability":(.-),')local c7=math.floor(tonumber(c6)*100)local c8=c2>bS[b_]bS[b_]=c2;if c1==bT[b_]and bW[b_]==c5 and bU[b_]==c3 and bV[b_]==c4 and bX[b_]==c6 and not c8 then goto c9 end;bT[b_]=c1;bU[b_]=c3;bV[b_]=c4;bW[b_]=c5;bX[b_]=c6;local ca=c0:match('"ammoName":"(.-)"')local cb=""if ca:match("Antimatter")then cb="AM"elseif ca:match("Electromagnetic")then cb="EM"elseif ca:match("Kinetic")then cb="KI"elseif ca:match("Thermic")then cb="TH"elseif ca:match("Stasis")then cb="Stasis"end;local cc=""if ca:match("Precision")then cc="Prec"elseif ca:match("Heavy")then cc="Heavy"elseif ca:match("Agile")then cc="Agile"elseif ca:match("Defense")then cc="Def"end;c0=c0:gsub('"helperId":"(.-)","name":"(.-)"','"helperId":"%1","name":"%2 '..c7 ..'%%"')c0=c0:gsub('"constructId":"(%d+(%d%d%d))","name":"(.-)"','"constructId":"%1","name":"%2 - %3"')c0=c0:gsub('"ammoName":"(.-)"','"ammoName":"'..cb..' '..cc..'"')if self.system.updateData(b_,c0)~=1 then self.system.print('update error')end::c9::end end;function mWeapons:new(bR,cd,ce)local mWeapons={}setmetatable(mWeapons,self)self.system=bR;self.weapons=cd;self.weaponsPerPanel=ce or 3;self.weaponData={}self:createWidgets()return self end;function coroutine.xpcall(q)local r={coroutine.resume(q)}if r[1]==false then local s=traceback(q)local t=s:gsub('"%-%- |STDERROR%-EVENTHANDLER[^"]*"','chunk')system.print(t)t=r[2]:gsub('"%-%- |STDERROR%-EVENTHANDLER[^"]*"','chunk')system.print(t)return false,r[2],s end;return table.unpack(r)end;function ConvertLocalToWorld(au,y,av)local cf=au*vec3(construct.getWorldRight())local cg=y*vec3(construct.getWorldForward())local ch=av*vec3(construct.getWorldUp())return cf+cg+ch+vec3(construct.getWorldPosition())end;if GHUD_radarWidget_on_top==true then mRadar=mRadar:new(system)if weapon_1~=nil then mWeapons=mWeapons:new(system,weapon,GHUD_weapon_panels)end else if weapon_1~=nil then mWeapons=mWeapons:new(system,weapon,GHUD_weapon_panels)end;mRadar=mRadar:new(system)end;function main()while true do local G=0;local ci=""local cj=""local ck=""local cl=0;local cm=0;local cn=0;local co,cp,cq="","",""local cr=""local cs=""local ct=""local cu=""local cv=""local cw=""local cx=""local cy=""local cz=""radarTarget={}radarStatic={}radarDynamic={}radarDynamicData=radarDynamicWidget;radarDynamicWidget={}radarStaticData=radarStaticWidget;radarStaticWidget={}if radar_2~=nil then if radar_1.getOperationalState()==-1 and atmovar==false then atmovar=true;activeRadar=radar_2;mRadar:deleteWidget()mRadar:createWidgetNew()radarWidgetScale=160;radarWidgetScaleDisplay='<div class="measures"><span>0 KM</span><span>2.5 KM</span><span>5 KM</span></div>'activeRadar.setSortMethod(1)end;if radar_1.getOperationalState()==1 and atmovar==true then atmovar=false;activeRadar=radar_1;mRadar:deleteWidget()mRadar:createWidgetNew()radarWidgetScale=2;radarWidgetScaleDisplay='<div class="measures"><span>0 SU</span><span>1 SU</span><span>2 SU</span></div>'activeRadar.setSortMethod(1)end end;for cA,aW in pairs(radarIDs)do G=G+1;local size=activeRadar.getConstructCoreSize(aW)local cB={}if t_radarEnter[aW]~=nil then if activeRadar.hasMatchingTransponder(aW)==0 and not whitelist[aW]and size~=""and activeRadar.getConstructDistance(aW)<600000 then local cC=activeRadar.getConstructName(aW)if activeRadar.isConstructAbandoned(aW)==0 then local cD='NEW TARGET: '..cC..' - Size: '..size..' - '..aW..'\n '..t_radarEnter[aW].pos..''table.insert(loglist,cD)if count<10 then count=count+1;if target[count]==nil then target[count]={left=100,opacity=1,cnt=count,name1=cC,size1=size,id=tostring(aW):sub(-3),one=true,check=true,delay=0}end;system.playSound('enter.mp3')end else local d=activeRadar.getConstructWorldPos(aW)d='::pos{0,0,'..d[1]..','..d[2]..','..d[3]..'}'local cD='NEW TARGET (abandoned): '..cC..' - Size: '..size..' - '..aW..'\n '..d..''table.insert(loglist,cD)if count<10 then count=count+1;if target[count]==nil then target[count]={left=100,opacity=1,cnt=count,name1=cC,size1=size,id=tostring(aW):sub(-3),one=true,check=true,delay=0}end end;system.playSound('sonar.mp3')end end;t_radarEnter[aW]=nil end;if GHUD_show_echoes==true then if size~=""then cB.widgetDist=math.ceil(activeRadar.getConstructDistance(aW)/1000*radarWidgetScale)end end;if GHUD_show_allies==true and size~=""then if activeRadar.hasMatchingTransponder(aW)==1 or whitelist[aW]then local cC=activeRadar.getConstructName(aW)local cE=math.floor(activeRadar.getConstructDistance(aW))local cF=''if activeRadar.hasMatchingTransponder(aW)==1 then local cG=activeRadar.getConstructOwnerEntity(aW)if cG['isOrganization']then cF=system.getOrganization(cG['id']).tag;friendsData[aW]={tag=cF}else cF=system.getPlayerName(cG['id'])friendsData[aW]={tag=cF}end else cF='DB'end;if cE>=1000 then cE=''..string.format('%0.1f',cE/1000)..' km ('..string.format('%0.2f',cE/200000)..' su)'else cE=''..cE..' m'end;local cH=tostring(aW):sub(-3)local cI=''..cH..' '..cC..''cl=cl+1;if activeRadar.getTargetId(aW)~=aW and cl<GHUD_allies_count1 then co=co..[[
                                         <div class="table-row3 th3">
                                         <div class="table-cell3">
                                         ]]..'['..size..'] '..cI..[[ <allyborder>]]..cF..[[</allyborder><br><distalliescolor>]]..cE..[[</distalliescolor>
@@ -887,9 +888,9 @@ handlers:
                         <br>
                         <bdr>]]..dJ..[[</bdr> + <bdr>]]..du..[[</bdr> : cannon profile<br>
                         <br>
-                        <bdr>]]..dJ..[[</bdr> + <bdr>]]..dv..[[</bdr> : laser profile<br>
+                        <bdr>]]..dJ..[[</bdr> + <bdr>]]..dv..[[</bdr> : railgun profile<br>
                         <br>
-                        <bdr>]]..dJ..[[</bdr> + <bdr>]]..dw..[[</bdr> : railgun profile<br>
+                        <bdr>]]..dJ..[[</bdr> + <bdr>]]..dw..[[</bdr> : laser profile<br>
                         <br>
                         <bdr>]]..dJ..[[</bdr> + <bdr>]]..dx..[[</bdr> : universal profile<br>
                         </div>
@@ -931,9 +932,9 @@ handlers:
                         <br>
                         <luac>c</luac> : cannon profile<br>
                         <br>
-                        <luac>l</luac> : laser profile<br>
-                        <br>
                         <luac>r</luac> : railgun profile<br>
+                        <br>
+                        <luac>l</luac> : laser profile<br>
                         <br>
                         <luac>m</luac> : missile profile<br>
                         </div>
@@ -953,13 +954,13 @@ handlers:
                         <div class="helperCenter">GEMINI FOUNDATION<br><br>Pilot Seat Controls 2/2</div>
                         <div class="hudversion">GHUD v]]..HUD_version..[[</div>
                         </body>
-                        </html>]]system.print('GHUD Pilot seat v'..HUD_version)system.print(''..dE..' + ←: helper 1')system.print(''..dE..' + →: helper 2')transponder.deactivate()main1=coroutine.create(main)main2=coroutine.create(closestPipe)unit.setTimer('hud',0.016)unit.setTimer('brake',0.15)unit.setTimer('tr',2)unit.setTimer("logger",0.5)unit.setTimer('prealarm',2)if warpdrive~=nil then unit.setTimer('warp',35)end;if collectgarbages==true then unit.setTimer('cleaner',30)end
+                        </html>]]system.print('GHUD Pilot seat v'..HUD_version)system.print(''..dE..' + ←: helper 1')system.print(''..dE..' + →: helper 2')transponder.deactivate()main1=coroutine.create(main)main2=coroutine.create(closestPipe)unit.setTimer('hud',0.016)unit.setTimer('brake',0.15)unit.setTimer('tr',2)unit.setTimer('prealarm',2)if warpdrive~=nil then unit.setTimer('warp',35)end;if collectgarbages==true then unit.setTimer('cleaner',30)end
         onTimer:
             args: ['hud']
             lua: |
-                radarIDs=activeRadar.getConstructIds()idN=#radarIDs;mRadar:onUpdate()if coroutine.status(main1)~="dead"and coroutine.status(main1)=="suspended"then coroutine.resume(main1)end;if coroutine.status(main2)~="dead"and coroutine.status(main2)=="suspended"then coroutine.resume(main2)end;if corpos==true then if coroutine.status(ck)~="dead"and coroutine.status(ck)=="suspended"then coroutine.resume(ck,asteroidcoord)end end;local a=system.getMouseDeltaX()*4;local b=system.getMouseDeltaY()*4;damage_SVG()local c=vec3(construct.getWorldPosition())varcombat=construct.getPvPTimer()if varcombat>0 and varcombat<302 then local d=shield.getStressRatioRaw()AM_stress=d[1]EM_stress=d[2]KI_stress=d[3]TH_stress=d[4]end;local e=shield.getShieldHitpoints()/shieldMaxHP*100;local f=string.format('%0.0f',math.ceil(e))if shield.isActive()==0 then svghp=maxSHP*e*0.01;local g=shield.getShieldHitpoints()last_shield_hp=g;shieldColor="#fc033d"shieldStatus="DEACTIVE"else shieldColor="#2ebac9"shieldStatus="ACTIVE"end;if system.getArkTime()-lastShotTime>=40 then shoteCount=0 end;local h=shield.getResistancesCooldown()if h~=0 then resCLWN=math.floor(h)else resCLWN=''end;if shield.isVenting()==1 then shieldStatus='VENTING'end;venttime=shield.getVentingCooldown()if venttime~=0 then resCLWN=math.floor(venttime)end;local i=''if mybr==true then i=[[
-                    <style>
-                    .main1 {
+                radarIDs=activeRadar.getConstructIds()idN=#radarIDs;mRadar:onUpdate()if coroutine.status(main1)~="dead"and coroutine.status(main1)=="suspended"then coroutine.resume(main1)end;if coroutine.status(main2)~="dead"and coroutine.status(main2)=="suspended"then coroutine.resume(main2)end;if corpos==true then if coroutine.status(ck)~="dead"and coroutine.status(ck)=="suspended"then coroutine.resume(ck,asteroidcoord)end end;local a=system.getMouseDeltaX()*4;local b=system.getMouseDeltaY()*4;damage_SVG()local c=vec3(construct.getWorldPosition())varcombat=construct.getPvPTimer()if varcombat>0 and varcombat<302 then local d=shield.getStressRatioRaw()AM_stress=d[1]EM_stress=d[2]KI_stress=d[3]TH_stress=d[4]end;ccs_SVG()local e=shield.getShieldHitpoints()/shieldMaxHP*100;local f=string.format('%0.0f',math.ceil(e))if shield.isActive()==0 then svghp=maxSHP*e*0.01;local g=shield.getShieldHitpoints()last_shield_hp=g;shieldColor="#fc033d"shieldStatus="DEACTIVE"else shieldColor="#2ebac9"shieldStatus="ACTIVE"end;if system.getArkTime()-lastShotTime>=40 then shoteCount=0 end;local h=shield.getResistancesCooldown()if h~=0 then resCLWN=math.floor(h)else resCLWN=''end;if shield.isVenting()==1 then shieldStatus='VENTING'end;venttime=shield.getVentingCooldown()if venttime~=0 then resCLWN=math.floor(venttime)end;local i=''if mybr==true then i=[[
+                <style>
+                .main1 {
                     position: absolute;
                     width: content;
                     padding: 10px;
@@ -993,30 +994,30 @@ handlers:
                         </style>
                         <div class="warningmsg">SHIELD LOW</div>]]end;if t2==true then blink=blink+0.015;if blink>=1 then t2=false end end;if t2==false then blink=blink-0.015;if blink<0.4 then t2=true end end;if math.ceil(e)<=35 then shieldAlarm=true;if alarmTimer==true then j=[[<style>
                             .warningmsg {
-                                position: absolute;
-                                top: ]]..GHUD_shield_warning_message_Y..[[%;
-                                left: 50%;
-                                transform: translate(-50%, -50%);
-                                padding: 10px;
-                                width: content;
-                                text-align: center;
-                                background: ]]..GHUD_background_color..[[;
-                                color: #fc033d;
-                                opacity: ]]..blink..[[;
-                                font-family: "Lucida" Grande, sans-serif;
-                                font-weight: bold;
-                                font-size: 1.25em;
-                                border-radius: 5vh;
-                                border: 4px solid #FFB12C;
-                                </style>
-                                <div class="warningmsg">SHIELD LOW</div>]]end else shieldAlarm=false end;local k=math.floor(unit.getThrottle())local l=math.floor(json.decode(unit.getWidgetData()).acceleration/9.80665*10)/10;local m=construct.getWorldVelocity()local n=math.floor(vec3(m):len()*3.6)local o=math.floor(construct.getMaxSpeed()*3.6)local p=''local q=''local r=''local s=''local t=''local u=c+400000*vec3(m)local v=library.getPointOnScreen({u.x,u.y,u.z})if v[3]>0 and n>15 then local w=screenWidth*v[1]-a-GHUD_flight_indicator_size/2;local x=screenHeight*v[2]-b-GHUD_flight_indicator_size/2;t=[[
+                            position: absolute;
+                            top: ]]..GHUD_shield_warning_message_Y..[[%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            padding: 10px;
+                            width: content;
+                            text-align: center;
+                            background: ]]..GHUD_background_color..[[;
+                            color: #fc033d;
+                            opacity: ]]..blink..[[;
+                            font-family: "Lucida" Grande, sans-serif;
+                            font-weight: bold;
+                            font-size: 1.25em;
+                            border-radius: 5vh;
+                            border: 4px solid #FFB12C;
+                            </style>
+                            <div class="warningmsg">SHIELD LOW</div>]]end else shieldAlarm=false end;local k=math.floor(unit.getThrottle())local l=math.floor(json.decode(unit.getWidgetData()).acceleration/9.80665*10)/10;local m=construct.getWorldVelocity()local n=math.floor(vec3(m):len()*3.6)local o=math.floor(construct.getMaxSpeed()*3.6)local p=''local q=''local r=''local s=''local t=''local u=c+400000*vec3(m)local v=library.getPointOnScreen({u.x,u.y,u.z})if v[3]>0 and n>15 then local w=screenWidth*v[1]-a-GHUD_flight_indicator_size/2;local x=screenHeight*v[2]-b-GHUD_flight_indicator_size/2;t=[[
                             <style>
                             .flightIndicator {
-                                position: absolute;
-                                width: ]]..GHUD_flight_indicator_size..[[px;
-                                height: ]]..GHUD_flight_indicator_size..[[px;
-                                left: ]]..w..[[px;
-                                top: ]]..x..[[px;
+                            position: absolute;
+                            width: ]]..GHUD_flight_indicator_size..[[px;
+                            height: ]]..GHUD_flight_indicator_size..[[px;
+                            left: ]]..w..[[px;
+                            top: ]]..x..[[px;
                             }
                             </style>
                             <div class="flightIndicator">
@@ -1024,74 +1025,74 @@ handlers:
                             <line style="fill: ]]..GHUD_flight_indicator_color..[[; stroke: ]]..GHUD_flight_indicator_color..[[; stroke-width: 20px;" x1="10" y1="100" x2="190" y2="100" transform="matrix(0.707107, -0.707107, 0.707107, 0.707107, -41.421356, 100)"></line>
                             <line style="fill: ]]..GHUD_flight_indicator_color..[[; stroke: ]]..GHUD_flight_indicator_color..[[; stroke-width: 20px;" x1="10" y1="100" x2="190" y2="100" transform="matrix(0.707107, 0.707107, -0.707107, 0.707107, 100, -41.421356)"></line>
                             </svg></div>]]end;local y,z,A,B=safeZone()if szsafe==true then safetext=''..y..' <green1>'..A..' '..B..'</green1>'local C=library.getPointOnScreen({z.x,z.y,z.z})if C[3]>0 then local D=screenWidth*C[1]-a-50;local E=screenHeight*C[2]-b-50;r=[[
-                                <style>
-                                .pvpzoneAR {
+                            <style>
+                            .pvpzoneAR {
                                 position: absolute;
                                 width: 100px;
                                 height: 100px;
                                 left: ]]..D..[[px;
                                 top: ]]..E..[[px;
-                                }
-                                </style>
-                                <div class="pvpzoneAR"><?xml version="1.0" encoding="utf-8"?>
-                                <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
-                                <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #fc033d; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
-                                <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">PvP ZONE</text>
-                                <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..A..[[</text>
-                                <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..B..[[</text>
-                                </svg></div>]]end else safetext=''..y..' <red1>'..A..' '..B..'</red1>'local C=library.getPointOnScreen({z.x,z.y,z.z})if C[3]>0 then local D=screenWidth*C[1]-a-50;local E=screenHeight*C[2]-b-50;s=[[
-                                <style>
-                                .safezoneAR {
+                            }
+                            </style>
+                            <div class="pvpzoneAR"><?xml version="1.0" encoding="utf-8"?>
+                            <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+                            <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #fc033d; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
+                            <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">PvP ZONE</text>
+                            <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..A..[[</text>
+                            <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..B..[[</text>
+                            </svg></div>]]end else safetext=''..y..' <red1>'..A..' '..B..'</red1>'local C=library.getPointOnScreen({z.x,z.y,z.z})if C[3]>0 then local D=screenWidth*C[1]-a-50;local E=screenHeight*C[2]-b-50;s=[[
+                            <style>
+                            .safezoneAR {
                                 position: absolute;
                                 width: 100px;
                                 height: 100px;
                                 left: ]]..D..[[px;
                                 top: ]]..E..[[px;
-                                }
-                                </style>
-                                <div class="safezoneAR"><?xml version="1.0" encoding="utf-8"?>
-                                <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
-                                <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #07e88e; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
-                                <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">SAFE ZONE</text>
-                                <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..A..[[</text>
-                                <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..B..[[</text>
-                                </svg></div>]]end end;if asteroidcoord[1]~=0 then local C=library.getPointOnScreen({asteroidcoord.x,asteroidcoord.y,asteroidcoord.z})if C[3]>0 then local F=vec3(c-asteroidcoord):len()local G=''if F>=100000 then F=string.format('%0.2f',F/200000)G='SU'elseif F>=1000 and F<100000 then F=string.format('%0.1f',F/1000)G='KM'else F=string.format('%0.0f',F)G='M'end;local w=screenWidth*C[1]-a-50;local x=screenHeight*C[2]-b-50;q=[[
-                                <style>
-                                .marker]]..GHUD_marker_name..[[ {
+                            }
+                            </style>
+                            <div class="safezoneAR"><?xml version="1.0" encoding="utf-8"?>
+                            <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+                            <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #07e88e; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
+                            <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">SAFE ZONE</text>
+                            <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..A..[[</text>
+                            <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..B..[[</text>
+                            </svg></div>]]end end;if asteroidcoord[1]~=0 then local C=library.getPointOnScreen({asteroidcoord.x,asteroidcoord.y,asteroidcoord.z})if C[3]>0 then local F=vec3(c-asteroidcoord):len()local G=''if F>=100000 then F=string.format('%0.2f',F/200000)G='SU'elseif F>=1000 and F<100000 then F=string.format('%0.1f',F/1000)G='KM'else F=string.format('%0.0f',F)G='M'end;local w=screenWidth*C[1]-a-50;local x=screenHeight*C[2]-b-50;q=[[
+                            <style>
+                            .marker]]..GHUD_marker_name..[[ {
                                 position: absolute;
                                 width: 100px;
                                 height: 100px;
                                 left: ]]..w..[[px;
                                 top: ]]..x..[[px;
-                                }
-                                </style>
-                                <div class="marker]]..GHUD_marker_name..[["><?xml version="1.0" encoding="utf-8"?>
-                                <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
-                                <ellipse style="fill: rgba(0, 0, 0, 0); stroke: ]]..GHUD_marker_color..[[; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
-                                <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">]]..GHUD_marker_name..[[</text>
-                                <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..F..[[</text>
-                                <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..G..[[</text>
-                                </svg></div>]]end end;if DisplayRadar==true then local w,x,H=table.unpack(construct.getWorldOrientationForward())local I=math.floor(math.atan(w,x)*180/math.pi+180)local J=math.floor(math.atan(x,H)*180/math.pi+180)local K=[[
+                            }
+                            </style>
+                            <div class="marker]]..GHUD_marker_name..[["><?xml version="1.0" encoding="utf-8"?>
+                            <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+                            <ellipse style="fill: rgba(0, 0, 0, 0); stroke: ]]..GHUD_marker_color..[[; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
+                            <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">]]..GHUD_marker_name..[[</text>
+                            <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..F..[[</text>
+                            <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..G..[[</text>
+                            </svg></div>]]end end;if DisplayRadar==true then local w,x,H=table.unpack(construct.getWorldOrientationForward())local I=math.floor(math.atan(w,x)*180/math.pi+180)local J=math.floor(math.atan(x,H)*180/math.pi+180)local K=[[
                             <style>
                             .XY {
-                                position: absolute;
-                                left: 2%;
-                                top: 23%;
-                                color: #FFB12C;
-                                font-size:18px;
-                                font-family: verdana;
-                                font-weight: bold;
-                                text-align: left;
+                            position: absolute;
+                            left: 2%;
+                            top: 23%;
+                            color: #FFB12C;
+                            font-size:18px;
+                            font-family: verdana;
+                            font-weight: bold;
+                            text-align: left;
                             }</style>
                             <div class="XY">X: ]]..I..[[<br>Y: ]]..J..[[</div>]]message=[[
                             <style>
                             .svg {
-                                position:absolute;
-                                left: 0;
-                                top: 6vh;
-                                height: 100vh;
-                                width: 100vw;
-                                .wptxt {
+                            position:absolute;
+                            left: 0;
+                            top: 6vh;
+                            height: 100vh;
+                            width: 100vw;
+                            .wptxt {
                                 fill: white;
                                 font-size: ]]..screenHeight/80 ..[[;
                                 font-family: sans-serif;
@@ -1103,22 +1104,22 @@ handlers:
                                     text-anchor: start;
                                 }
                                 </style>]]message=message..[[<svg class="svg">]]svgradar=""RadarX=screenWidth*1/7;RadarY=screenWidth*1/7;RadarR=screenWidth*1/7;svgradar=svgradar..string.format([[<line x1="%f" y1="%f" x2="%f" y2="%f" stroke-width="2" stroke="black" />]],RadarX,RadarY-RadarR,RadarX,RadarY+RadarR)svgradar=svgradar..string.format([[<line x1="%f" y1="%f" x2="%f" y2="%f" stroke-width="2" stroke="black" />]],RadarX-RadarR,RadarY,RadarX+RadarR,RadarY)svgradar=svgradar..string.format([[<circle  cx="%f" cy="%f" r="%f" stroke="black" fill="transparent" stroke-width="5"/>]],RadarX,RadarY,RadarR/2)svgradar=svgradar..string.format([[<circle  cx="%f" cy="%f" r="%f" stroke="black" fill-opacity="0.2" fill="green" stroke-width="5"/>]],RadarX,RadarY,RadarR)for L in pairs(atlas[0])do local M=atlas[0][L]if(M.type[1]=='Planet'or M.isSanctuary==true)and M.name[1]~=planetzone then drawonradar(vec3(M.center),M.name[1])local C=library.getPointOnScreen({M.center[1],M.center[2],M.center[3]})if C[3]>0 then local F=vec3(c-vec3(M.center)):len()local G=''if F>=100000 then F=string.format('%0.2f',F/200000)G='SU'elseif F>=1000 and F<100000 then F=string.format('%0.1f',F/1000)G='KM'else F=string.format('%0.0f',F)G='M'end;local D=screenWidth*C[1]-a-50;local E=screenHeight*C[2]-b-50;p=p..[[
-                                            <style>
-                                            .pl]]..M.name[1]..[[ {
+                                        <style>
+                                        .pl]]..M.name[1]..[[ {
                                             position: absolute;
                                             width: 100px;
                                             height: 100px;
                                             left: ]]..D..[[px;
                                             top: ]]..E..[[px;
-                                            }
-                                            </style>
-                                            <div class="pl]]..M.name[1]..[["><?xml version="1.0" encoding="utf-8"?>
-                                            <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
-                                            <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #FFB12C; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
-                                            <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">]]..M.name[1]..[[</text>
-                                            <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..F..[[</text>
-                                            <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..G..[[</text>
-                                            </svg></div>]]end end end;drawonradar(z,y)if szsafe==true then drawonradar(safeWorldPos,'Central SZ')end;if asteroidcoord[1]~=0 then drawonradar(asteroidcoord,""..GHUD_marker_name.."")end;message=message..svgradar..K;message=message.."</svg>"else message=''end;local N=''if weapon_1~=nil then local O=weapon_1.getWidgetData()probil=tonumber(O:match('"hitProbability":(.-),'))end;local P=activeRadar.getTargetId()if P~=0 then local G=""local F=math.floor(activeRadar.getConstructDistance(P))distT=F;local Q=activeRadar.getConstructName(P)local R=activeRadar.getConstructCoreSize(P)local n='UNKNOWN'local S='middle'local T='0.0'if totalDamage[P]~=nil then T=string.format('%0.1f',totalDamage[P].damage*0.000001)end;if activeRadar.isConstructIdentified(P)==1 then n=activeRadar.getConstructSpeed(P)n=math.floor(n*3.6)speedT=n;S='start'end;local U=c+F*vec3(construct.getWorldOrientationForward())local C=library.getPointOnScreen({U.x,U.y,U.z})if F>=100000 then F=string.format('%0.2f',F/200000)G='SU'elseif F>=1000 and F<100000 then F=string.format('%0.1f',F/1000)G='KM'else F=string.format('%0.0f',F)G='M'end;local V=[[
+                                        }
+                                        </style>
+                                        <div class="pl]]..M.name[1]..[["><?xml version="1.0" encoding="utf-8"?>
+                                        <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+                                        <ellipse style="fill: rgba(0, 0, 0, 0); stroke: #FFB12C; stroke-width: 8px;" cx="125" cy="125" rx="50" ry="50"/>
+                                        <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">]]..M.name[1]..[[</text>
+                                        <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..F..[[</text>
+                                        <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..G..[[</text>
+                                        </svg></div>]]end end end;drawonradar(z,y)if szsafe==true then drawonradar(safeWorldPos,'Central SZ')end;if asteroidcoord[1]~=0 then drawonradar(asteroidcoord,""..GHUD_marker_name.."")end;message=message..svgradar..K;message=message.."</svg>"else message=''end;local N=''if weapon_1~=nil then local O=weapon_1.getWidgetData()probil=tonumber(O:match('"hitProbability":(.-),'))end;local P=activeRadar.getTargetId()if P~=0 then local G=""local F=math.floor(activeRadar.getConstructDistance(P))distT=F;local Q=activeRadar.getConstructName(P)local R=activeRadar.getConstructCoreSize(P)local n='UNKNOWN'local S='middle'local T='0.0'if totalDamage[P]~=nil then T=string.format('%0.1f',totalDamage[P].damage*0.000001)end;if activeRadar.isConstructIdentified(P)==1 then n=activeRadar.getConstructSpeed(P)n=math.floor(n*3.6)speedT=n;S='start'end;local U=c+F*vec3(construct.getWorldOrientationForward())local C=library.getPointOnScreen({U.x,U.y,U.z})if F>=100000 then F=string.format('%0.2f',F/200000)G='SU'elseif F>=1000 and F<100000 then F=string.format('%0.1f',F/1000)G='KM'else F=string.format('%0.0f',F)G='M'end;local V=[[
                                 .sight1 {
                                     position: absolute;
                                     opacity: 0;
@@ -1186,11 +1187,11 @@ handlers:
                                     </svg></div>]]end end;local W=''if GHUD_show_AR_allies_marks==true then for X,Y in pairs(radarIDs)do if activeRadar.hasMatchingTransponder(Y)==1 then local Z=activeRadar.getConstructWorldPos(Y)local _=''if friendsData[Y]~=nil then _=friendsData[Y].tag end;local a0=library.getPointOnScreen({Z[1],Z[2],Z[3]})if a0[3]>0 then local w=screenWidth*a0[1]-a-GHUD_AR_allies_border_size/2;local x=screenHeight*a0[2]-b-GHUD_AR_allies_border_size/2;W=W..[[
                                         <style>     
                                         .id]]..Y..[[ {
-                                            position: absolute;
-                                            width: ]]..GHUD_AR_allies_border_size..[[px;
-                                            height: ]]..GHUD_AR_allies_border_size..[[px;
-                                            left: ]]..w..[[px;
-                                            top: ]]..x..[[px;
+                                        position: absolute;
+                                        width: ]]..GHUD_AR_allies_border_size..[[px;
+                                        height: ]]..GHUD_AR_allies_border_size..[[px;
+                                        left: ]]..w..[[px;
+                                        top: ]]..x..[[px;
                                         }
                                         </style>
                                         <div class="id]]..Y..[["><?xml version="1.0" encoding="utf-8"?>
@@ -1201,33 +1202,33 @@ handlers:
                                         </svg></div>]]end end end end;local a1=''local a2=''local a3=''if GHUD_show_hits==true then for X,Y in pairs(lastHitTime)do if lastHitTime[X]~=nil then lastHitTime[X].time=lastHitTime[X].time+0.025;lastHitTime[X].hitOpacity=lastHitTime[X].hitOpacity-0.015;local a4=GHUD_hits_misses_Y-lastHitTime[X].time*3.25;local a5=GHUD_hit_X+lastHitTime[X].time*2;if lastHitTime[X].hitOpacity<=0 then lastHitTime[X].hitOpacity=0 end;local a6=[[
                                         <style>
                                         .hit]]..X..[[ {
-                                            top: ]]..a4 ..[[vh;
-                                            left: ]]..a5 ..[[%;
-                                            position: absolute;
-                                            text-alight: center;
-                                            font-size: 40px;
-                                            font-family: verdana;
-                                            font-style: normal;
-                                            font-weight: bold;
-                                            color: #FFB12C;
-                                            opacity: ]]..lastHitTime[X].hitOpacity..[[;
-                                            transform: translate(-50%, -50%);
+                                        top: ]]..a4 ..[[vh;
+                                        left: ]]..a5 ..[[%;
+                                        position: absolute;
+                                        text-alight: center;
+                                        font-size: 40px;
+                                        font-family: verdana;
+                                        font-style: normal;
+                                        font-weight: bold;
+                                        color: #FFB12C;
+                                        opacity: ]]..lastHitTime[X].hitOpacity..[[;
+                                        transform: translate(-50%, -50%);
                                         }
                                         </style>
                                         <div class="hit]]..X..[[">]]..lastHitTime[X].damage..[[</div>]]hits[X]={html=a6}if lastHitTime[X].time>=2 then hits[X]={html=''}if lastHitTime[X].anims==hitAnimations then hits[X]=nil;hits={}hitAnimations=0;lastHitTime={}end end end end end;if GHUD_show_misses==true then for X,Y in pairs(lastMissTime)do if lastMissTime[X]~=nil then lastMissTime[X].time=lastMissTime[X].time+0.025;lastMissTime[X].missOpacity=lastMissTime[X].missOpacity-0.015;local a4=GHUD_hits_misses_Y-lastMissTime[X].time*3.25;local a7=GHUD_miss_X-lastMissTime[X].time*2;if lastMissTime[X].missOpacity<=0 then lastMissTime[X].missOpacity=0 end;local a8=[[
                                         <style>
                                         .miss]]..X..[[ {
-                                            top: ]]..a4 ..[[vh;
-                                            left: ]]..a7 ..[[%;
-                                            position: absolute;
-                                            text-alight: center;
-                                            font-size: 40px;
-                                            font-family: verdana;
-                                            font-style: normal;
-                                            font-weight: bold;
-                                            color: #fc033d;
-                                            opacity: ]]..lastMissTime[X].missOpacity..[[;
-                                            transform: translate(-50%, -50%);
+                                        top: ]]..a4 ..[[vh;
+                                        left: ]]..a7 ..[[%;
+                                        position: absolute;
+                                        text-alight: center;
+                                        font-size: 40px;
+                                        font-family: verdana;
+                                        font-style: normal;
+                                        font-weight: bold;
+                                        color: #fc033d;
+                                        opacity: ]]..lastMissTime[X].missOpacity..[[;
+                                        transform: translate(-50%, -50%);
                                         }
                                         </style>
                                         <div class="miss]]..X..[[">MISS</div>]]misses[X]={html=a8}if lastMissTime[X].time>=2 then misses[X]={html=''}if lastMissTime[X].anims==missAnimations then misses[X]=nil;misses={}missAnimations=0;lastMissTime={}end end end end end;if GHUD_show_hits==true then for X,Y in pairs(hits)do if hits[X]~=nil then a1=a1 ..hits[X].html end end end;if GHUD_show_misses==true then for X,Y in pairs(misses)do if misses[X]~=nil then a2=a2 ..misses[X].html end end end;for X,Y in pairs(target)do if target[X]~=nil then if target[X].left>85 and target[X].one==true then target[X].left=target[X].left-0.3 end;if target[X].left<=85 then target[X].left=85;target[X].one=false end;local a9=[[
@@ -1249,14 +1250,14 @@ handlers:
                                     }
                                     </style>
                                     <div class="targ]]..X..[[">[]]..target[X].size1 ..[[] ]]..target[X].id..[[ ]]..target[X].name1 ..[[</div>]]targets[X]={html=a9}if target[X].one==false then target[X].delay=target[X].delay+1;if target[X].delay>=100 then target[X].opacity=target[X].opacity-0.01;if target[X].opacity<=0 and target[X].cnt==count then target[X]=nil;target={}targets={}count=0 end end end end end;for X,Y in pairs(targets)do if targets[X]~=nil then a3=a3 ..targets[X].html end end;local aa=[[
-                                <html>
-                                <style>
-                                html,body {
+                            <html>
+                            <style>
+                            html,body {
                                 margin:0;
                                 padding:0;
                                 overflow: hidden;
-                                }
-                                .shield1 {
+                            }
+                            .shield1 {
                                 position: absolute;
                                 width: ]]..GHUD_shield_panel_size..[[px;
                                 top: ]]..GHUD_shield_panel_Y..[[%;
@@ -1264,14 +1265,14 @@ handlers:
                                 left: 50%;
                                 transform: translate(-50%, -50%);
                                 filter: drop-shadow(0 0 15px blue);
-                                }
-                                .center1 {
+                            }
+                            .center1 {
                                 position: relative;
                                 margin-left: 50%;
                                 margin-top: calc(]]..GHUD_Y..[[vh - 68px);
                                 color: white;
-                                }
-                                .right1 {
+                            }
+                            .right1 {
                                 color: rgb(0, 191, 255);
                                 position: absolute;
                                 left: ]]..GHUD_right_block_X..[[%;
@@ -1283,8 +1284,8 @@ handlers:
                                 0 1px 1px #000,
                                 -1px 0 1px #000,
                                 0 -1px 1px #000;
-                                }
-                                .thrust1 {
+                            }
+                            .thrust1 {
                                 color: white;
                                 position: absolute;
                                 width: 100%;
@@ -1293,8 +1294,8 @@ handlers:
                                 justify-content: flex-end;
                                 left: -101%;
                                 margin-top: -1px;
-                                }
-                                .speed1 {
+                            }
+                            .speed1 {
                                 color: white;
                                 position: absolute;
                                 width: 100%;
@@ -1303,8 +1304,8 @@ handlers:
                                 justify-content: flex-end;
                                 left: -101%;
                                 margin-top: -1px;
-                                }
-                                .accel1 {
+                            }
+                            .accel1 {
                                 color: white;
                                 position: absolute;
                                 width: 100%;
@@ -1313,8 +1314,8 @@ handlers:
                                 justify-content: flex-end;
                                 left: -101%;
                                 margin-top: -1.5px;
-                                }
-                                .brakedist {
+                            }
+                            .brakedist {
                                 color: white;
                                 position: absolute;
                                 width: 100%;
@@ -1323,8 +1324,8 @@ handlers:
                                 justify-content: flex-end;
                                 left: -101%;
                                 margin-top: -1.5px;
-                                }
-                                .left1 {
+                            }
+                            .left1 {
                                 color: rgb(0, 191, 255);
                                 position: absolute;
                                 right: ]]..GHUD_left_block_X..[[%;
@@ -1336,8 +1337,8 @@ handlers:
                                 0 1px 1px #000,
                                 -1px 0 1px #000,
                                 0 -1px 1px #000;
-                                }
-                                .shieldtext {
+                            }
+                            .shieldtext {
                                 color: white;
                                 position: absolute;
                                 width: 100%;
@@ -1346,8 +1347,8 @@ handlers:
                                 font-size:20px;
                                 margin-left: -23px;
                                 margin-top: -1px;
-                                }
-                                .fueltext {
+                            }
+                            .fueltext {
                                 color: white;
                                 position: absolute;
                                 width: 100%;
@@ -1356,60 +1357,60 @@ handlers:
                                 font-size:20px;
                                 margin-left: -23px;
                                 margin-top: -1px;
-                                }
-                                .shield2 {
+                            }
+                            .shield2 {
                                 position: absolute;
                                 margin-top: calc(-100% + 5px);
                                 margin-left: 40%;
                                 width: 120px;
                                 height: 120px;
-                                }
-                                .fuel1 {
+                            }
+                            .fuel1 {
                                 position: absolute;
                                 margin-top:calc(-100% + 5px);
                                 margin-left: 40%;
                                 width: 120px;
                                 height: 120px;
-                                }
-                                red1 {
+                            }
+                            red1 {
                                 color: #fc033d;
-                                }
-                                green1 {
+                            }
+                            green1 {
                                 color: #07e88e;
-                                }
-                                white1 {
+                            }
+                            white1 {
                                 color: white;
-                                }
-                                mspeed {
+                            }
+                            mspeed {
                                 color: white;
                                 opacity: 0.25;
-                                }
-                                blue1 {
+                            }
+                            blue1 {
                                 color: rgb(0, 191, 255);
-                                }
-                                it {
+                            }
+                            it {
                                 font-style: italic;
-                                }
-                                orange1 {
+                            }
+                            orange1 {
                                 color: #FFB12C;
-                                }
-                                .sight1 {
+                            }
+                            .sight1 {
                                 position: absolute;
                                 width: 200px;
                                 height: 200px;
                                 left: 50%;
                                 top: 50%;
                                 transform: translate(-50%, -50%);
-                                }
-                                .sight2 {
+                            }
+                            .sight2 {
                                 position: absolute;
                                 width: 400px;
                                 height: 400px;
                                 left: 50%;
                                 top: 50%;
                                 transform: translate(-50%, -50%);
-                                }
-                                .safez {
+                            }
+                            .safez {
                                 width: auto;
                                 padding-top: 1px;
                                 padding-bottom: 1px;
@@ -1425,8 +1426,8 @@ handlers:
                                 font-weight: bold;
                                 background: ]]..GHUD_background_color..[[;
                                 border: 0.5px solid black;
-                                }
-                                .pipe {
+                            }
+                            .pipe {
                                 width: auto;
                                 padding-left: 35px;
                                 padding-right: 35px;
@@ -1441,8 +1442,8 @@ handlers:
                                 font-weight: bold;
                                 background: ]]..GHUD_background_color..[[;
                                 border: 0.5px solid black;
-                                }
-                                .pos1 {
+                            }
+                            .pos1 {
                                 position: absolute;
                                 left: 50%;
                                 top: 55%;
@@ -1452,123 +1453,97 @@ handlers:
                                 font-weight: bold;
                                 color: white;
                                 transform: translate(-50%, -50%);
-                                }
-                                </style>
-                                <body>
-                                ]]..t..[[
-                                ]]..W..[[
-                                ]]..q..[[
-                                ]]..p..[[
-                                ]]..r..[[
-                                ]]..s..[[
-                                ]]..message..[[
-                                ]]..gunnerHUD..[[
-                                ]]..a3 ..[[
-                                ]]..vectorHUD..[[
-                                ]]..a2 ..[[
-                                ]]..a1 ..[[
-                                ]]..N..[[
-                                ]]..j..[[
-                                ]]..i..[[]]local ab=[[
-                                <div class="safez">]]..safetext..[[</div>
-                                <div class="pipe">]]..pD()..[[</div>
-                                <div class="center1"></div>
-                                <div class="right1">THRUST<br><div class="thrust1">]]..k..[[</div><orange1>%</orange1><br>SPEED<br><div class="speed1">]]..n..[[</div><orange1>KM/H</orange1><mspeed> ]]..o..[[</mspeed><br>ACCEL<br><div class="accel1">]]..l..[[</div><orange1>G</orange1><br>BRAKE-DISTANCE<br><div class="brakedist">]]..brakeDist..[[</div><orange1>]]..brakeS..[[</orange1></div>
-                                <div class="left1">SHIELD<div class="shield2"><svg viewBox="0 0 100 100" fill="none" stroke="]]..shieldColor..[[" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M 50 60 C 50 60 58 56 58 50 L 58 43 L 50 40 L 42 43 L 42 50 C 42 56 50 60 50 60 Z"/>
-                                <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 13px; font-weight: 700; stroke-width: 0px; text-anchor: middle;" x="50" y="53.737">]]..shieldIcon..[[</text>
-                                </svg></div><br><div class="shieldtext">]]..f..[[</div><orange1>%</orange1><br>FUEL<div class="fuel1"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                                <g fill="none" fill-rule="evenodd" transform="matrix(1, 0, 0, 1, -18, -4.5)">
-                                <path d="M68 63c3.038 0 5.5-2.493 5.5-5.567 0-2.05-1.833-5.861-5.5-11.433-3.667 5.572-5.5 9.383-5.5 11.433C62.5 60.507 64.962 63 68 63z" fill="#FFB12C"/>
-                                </g>
-                                </svg></div><br><div class="fueltext">]]..fuel_lvl..[[</div><orange1>%</orange1></div>
-                                <div class="shield1"><?xml version="1.0" encoding="utf-8"?>
-                                <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
-                                <defs>
-                                <linearGradient id="AM_gradient" x1="100%" x2="0%">
-                                <stop stop-color="#fc033d" offset="]]..AM_svg..[[" />
-                                <stop stop-color="]]..GHUD_shield_background_color..[[" offset="0" />
-                                </linearGradient>
-                                <linearGradient id="EM_gradient" x1="100%" x2="0%">
-                                <stop stop-color="#fc033d" offset="]]..EM_svg..[[" />
-                                <stop stop-color="]]..GHUD_shield_background_color..[[" offset="0" />
-                                </linearGradient>
-                                <linearGradient id="TH_gradient" x1="100%" x2="0%">
-                                <stop stop-color="#fc033d" offset="]]..TH_svg..[[" />
-                                <stop stop-color="]]..GHUD_shield_background_color..[[" offset="0" />
-                                </linearGradient>
-                                <linearGradient id="KI_gradient" x1="100%" x2="0%">
-                                <stop stop-color="#fc033d" offset="]]..KI_svg..[[" />
-                                <stop stop-color="]]..GHUD_shield_background_color..[[" offset="0" />
-                                </linearGradient>
-                                </defs>
-                                <rect x="145" y="225" width="210" height="50" style="fill: ]]..GHUD_shield_empty_background_layer_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[;" bx:origin="0.5 0.5"/>
-                                <rect x="145" y="225" width="]]..svghp..[[" height="50" style="fill: ]]..GHUD_shield_background_color..[[; stroke: ]]..GHUD_shield_background_color..[[;" bx:origin="0.5 0.5"/>
-                                ]]..damageLine..[[
-                                ]]..ccsLineHit..[[
-                                <rect x="180.2" y="220.2" width="]]..ccshp..[[" height="4.8" style="fill: white; stroke: white; stroke-width:0;"/>
-                                <path style="fill: rgba(0, 0, 0, 0); stroke: ]]..GHUD_shield_stroke_color..[[;" d="M 180.249 220.227 L 319.749 220.175 L 315.834 225 L 184.159 225 L 180.249 220.227 Z"/>
-                                <rect x="180.2" y="275" width="]]..FUEL_svg..[[" height="4.8" style="fill: #FFB12C; stroke: #FFB12C; stroke-width:0;"/>
-                                <path style="fill: rgba(0,0,0,0); stroke: ]]..GHUD_shield_stroke_color..[[;" d="M 180.2 275.052 L 319.7 275 L 315.785 279.825 L 184.11 279.825 L 180.2 275.052 Z" transform="matrix(-1, 0, 0, -1, 499.900004, 554.825024)"/>
-                                <path style="fill: url(#AM_gradient); stroke: ]]..AM_stroke_color..[[; stroke-width: ]]..AMstrokeWidth..[[;" d="M 125 215 L 185 250 L 95 250 L 85 240 L 125 215 Z" transform="matrix(-1, 0, 0, -1, 270.000006, 465.00001)"/>
-                                <path style="fill: url(#TH_gradient); stroke: ]]..TH_stroke_color..[[; stroke-width: ]]..THstrokeWidth..[[;" d="M 315 225 L 325 215 L 415 215 L 355 250 L 315 225 Z"/>
-                                <path style="fill: url(#KI_gradient); stroke: ]]..KI_stroke_color..[[; stroke-width: ]]..KIstrokeWidth..[[;" d="M 355 250 L 415 285 L 325 285 L 315 275 L 355 250 Z"/>
-                                <path style="fill: url(#EM_gradient); stroke: ]]..EM_stroke_color..[[; stroke-width: ]]..EMstrokeWidth..[[;" d="M 85 260 L 95 250 L 185 250 L 125 285 L 85 260 Z" transform="matrix(-1, 0, 0, -1, 270.000006, 535.000011)"/>
-                                <polygon style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linejoin: round; stroke-linecap: round;" points="239 225 244 231 256 231 261 225"></polygon>
-                                <polygon style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linejoin: round; stroke-linecap: round;" points="235 269 240 275 260 275 265 269" transform="matrix(-1, 0, 0, -1, 500, 544)"></polygon>
-                                <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 4.5px; font-weight: 700; text-anchor: middle;" transform="matrix(1, 0, 0, 1, -1.542758, -0.533447)"><tspan x="251.796" y="230.112">]]..resCLWN..[[</tspan></text>
-                                <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; text-anchor: middle;" x="250.048" y="273.416">]]..shieldStatus..[[</text>
-                                <text style="fill: ]]..GHUD_shield_stroke_color..[[; font-family: Arial, sans-serif; font-weight: bold; font-size: 3.2px; text-anchor: middle;" x="250" y="223.591">CCS</text>
-                                <polygon style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linejoin: round; stroke-linecap: round;" points="235 279.8 240 285.8 260 285.8 265 279.8"></polygon>
-                                <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; text-anchor: middle;" x="250.28" y="284.311">]]..avWarp..[[/]]..totalWarp..[[</text>
-                                <path style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linecap: round; stroke-linejoin: round;" d="M 220 279.8 L 225 285.8 L 240 285.8 L 235 279.8 L 220 279.8 Z" transform="matrix(-1, 0, 0, -1, 460, 565.599976)"></path>
-                                <path style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linecap: round; stroke-linejoin: round;" d="M 265 279.8 L 260 285.8 L 275 285.8 L 280 279.8 L 265 279.8 Z" transform="matrix(-1, 0, 0, -1, 540, 565.599976)"></path>
-                                <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 3.5px; font-weight: 700; text-anchor: middle;" x="230.218" y="284.182">WARP</text>
-                                <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 3.5px; font-weight: 700; text-anchor: middle;" x="269.736" y="284.129">CELLS</text>
-                                <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: ]]..GHUD_shield_text_stroke_color..[[; stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -0.542236, -41.161256)"><tspan x="351.543" y="319.558">KI</tspan></text>
-                                <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: ]]..GHUD_shield_text_stroke_color..[[; stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -4.542999, -86.161257)"><tspan x="351.543" y="319.558">TH</tspan></text>
-                                <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: ]]..GHUD_shield_text_stroke_color..[[; stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -219.543004, -41.161256)"><tspan x="351.543" y="319.558">EM</tspan></text>
-                                <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: ]]..GHUD_shield_text_stroke_color..[[; stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -219.543004, -86.161257)"><tspan x="351.543" y="319.558">AM</tspan></text>
-                                <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 20px; font-weight: 700; paint-order: stroke; stroke: ]]..GHUD_shield_text_stroke_color..[[; stroke-width: 1.25px; text-anchor: middle;" x="252" y="257.079">]]..f..[[%</text>
-                                ]]..AM_res..[[
-                                ]]..EM_res..[[
-                                ]]..KI_res..[[
-                                ]]..TH_res..[[
-                                </svg></div>
-                                <div class="pos1">]]..pp1 ..[[</div>
-                                </body>
-                                </html>]]if map==0 and helper==false and helper1==false then system.setScreen(aa..ab)end
+                            }
+                            </style>
+                            <body>
+                            ]]..t..[[
+                            ]]..W..[[
+                            ]]..q..[[
+                            ]]..p..[[
+                            ]]..r..[[
+                            ]]..s..[[
+                            ]]..message..[[
+                            ]]..gunnerHUD..[[
+                            ]]..a3 ..[[
+                            ]]..vectorHUD..[[
+                            ]]..a2 ..[[
+                            ]]..a1 ..[[
+                            ]]..N..[[
+                            ]]..j..[[
+                            ]]..i..[[]]local ab=[[
+                            <div class="safez">]]..safetext..[[</div>
+                            <div class="pipe">]]..pD()..[[</div>
+                            <div class="center1"></div>
+                            <div class="right1">THRUST<br><div class="thrust1">]]..k..[[</div><orange1>%</orange1><br>SPEED<br><div class="speed1">]]..n..[[</div><orange1>KM/H</orange1><mspeed> ]]..o..[[</mspeed><br>ACCEL<br><div class="accel1">]]..l..[[</div><orange1>G</orange1><br>BRAKE-DISTANCE<br><div class="brakedist">]]..brakeDist..[[</div><orange1>]]..brakeS..[[</orange1></div>
+                            <div class="left1">SHIELD<div class="shield2"><svg viewBox="0 0 100 100" fill="none" stroke="]]..shieldColor..[[" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 50 60 C 50 60 58 56 58 50 L 58 43 L 50 40 L 42 43 L 42 50 C 42 56 50 60 50 60 Z"/>
+                            <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 13px; font-weight: 700; stroke-width: 0px; text-anchor: middle;" x="50" y="53.737">]]..shieldIcon..[[</text>
+                            </svg></div><br><div class="shieldtext">]]..f..[[</div><orange1>%</orange1><br>FUEL<div class="fuel1"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <g fill="none" fill-rule="evenodd" transform="matrix(1, 0, 0, 1, -18, -4.5)">
+                            <path d="M68 63c3.038 0 5.5-2.493 5.5-5.567 0-2.05-1.833-5.861-5.5-11.433-3.667 5.572-5.5 9.383-5.5 11.433C62.5 60.507 64.962 63 68 63z" fill="#FFB12C"/>
+                            </g>
+                            </svg></div><br><div class="fueltext">]]..fuel_lvl..[[</div><orange1>%</orange1></div>
+                            <div class="shield1"><?xml version="1.0" encoding="utf-8"?>
+                            <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+                            <defs>
+                            <linearGradient id="AM_gradient" x1="100%" x2="0%">
+                            <stop stop-color="#fc033d" offset="]]..AM_svg..[[" />
+                            <stop stop-color="]]..GHUD_shield_background_color..[[" offset="0" />
+                            </linearGradient>
+                            <linearGradient id="EM_gradient" x1="100%" x2="0%">
+                            <stop stop-color="#fc033d" offset="]]..EM_svg..[[" />
+                            <stop stop-color="]]..GHUD_shield_background_color..[[" offset="0" />
+                            </linearGradient>
+                            <linearGradient id="TH_gradient" x1="100%" x2="0%">
+                            <stop stop-color="#fc033d" offset="]]..TH_svg..[[" />
+                            <stop stop-color="]]..GHUD_shield_background_color..[[" offset="0" />
+                            </linearGradient>
+                            <linearGradient id="KI_gradient" x1="100%" x2="0%">
+                            <stop stop-color="#fc033d" offset="]]..KI_svg..[[" />
+                            <stop stop-color="]]..GHUD_shield_background_color..[[" offset="0" />
+                            </linearGradient>
+                            </defs>
+                            <rect x="145" y="225" width="210" height="50" style="fill: ]]..GHUD_shield_empty_background_layer_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[;" bx:origin="0.5 0.5"/>
+                            <rect x="145" y="225" width="]]..svghp..[[" height="50" style="fill: ]]..GHUD_shield_background_color..[[; stroke: ]]..GHUD_shield_background_color..[[;" bx:origin="0.5 0.5"/>
+                            ]]..damageLine..[[
+                            ]]..ccsLineHit..[[
+                            <rect x="180.2" y="220.2" width="]]..ccshp..[[" height="4.8" style="fill: white; stroke: white; stroke-width:0;"/>
+                            <path style="fill: rgba(0, 0, 0, 0); stroke: ]]..GHUD_shield_stroke_color..[[;" d="M 180.249 220.227 L 319.749 220.175 L 315.834 225 L 184.159 225 L 180.249 220.227 Z"/>
+                            <rect x="180.2" y="275" width="]]..FUEL_svg..[[" height="4.8" style="fill: #FFB12C; stroke: #FFB12C; stroke-width:0;"/>
+                            <path style="fill: rgba(0,0,0,0); stroke: ]]..GHUD_shield_stroke_color..[[;" d="M 180.2 275.052 L 319.7 275 L 315.785 279.825 L 184.11 279.825 L 180.2 275.052 Z" transform="matrix(-1, 0, 0, -1, 499.900004, 554.825024)"/>
+                            <path style="fill: url(#AM_gradient); stroke: ]]..AM_stroke_color..[[; stroke-width: ]]..AMstrokeWidth..[[;" d="M 125 215 L 185 250 L 95 250 L 85 240 L 125 215 Z" transform="matrix(-1, 0, 0, -1, 270.000006, 465.00001)"/>
+                            <path style="fill: url(#TH_gradient); stroke: ]]..TH_stroke_color..[[; stroke-width: ]]..THstrokeWidth..[[;" d="M 315 225 L 325 215 L 415 215 L 355 250 L 315 225 Z"/>
+                            <path style="fill: url(#KI_gradient); stroke: ]]..KI_stroke_color..[[; stroke-width: ]]..KIstrokeWidth..[[;" d="M 355 250 L 415 285 L 325 285 L 315 275 L 355 250 Z"/>
+                            <path style="fill: url(#EM_gradient); stroke: ]]..EM_stroke_color..[[; stroke-width: ]]..EMstrokeWidth..[[;" d="M 85 260 L 95 250 L 185 250 L 125 285 L 85 260 Z" transform="matrix(-1, 0, 0, -1, 270.000006, 535.000011)"/>
+                            <polygon style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linejoin: round; stroke-linecap: round;" points="239 225 244 231 256 231 261 225"></polygon>
+                            <polygon style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linejoin: round; stroke-linecap: round;" points="235 269 240 275 260 275 265 269" transform="matrix(-1, 0, 0, -1, 500, 544)"></polygon>
+                            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 4.5px; font-weight: 700; text-anchor: middle;" transform="matrix(1, 0, 0, 1, -1.542758, -0.533447)"><tspan x="251.796" y="230.112">]]..resCLWN..[[</tspan></text>
+                            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; text-anchor: middle;" x="250.048" y="273.416">]]..shieldStatus..[[</text>
+                            <text style="fill: ]]..GHUD_shield_stroke_color..[[; font-family: Arial, sans-serif; font-weight: bold; font-size: 3.2px; text-anchor: middle;" x="250" y="223.591">CCS</text>
+                            <polygon style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linejoin: round; stroke-linecap: round;" points="235 279.8 240 285.8 260 285.8 265 279.8"></polygon>
+                            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; text-anchor: middle;" x="250.28" y="284.311">]]..avWarp..[[/]]..totalWarp..[[</text>
+                            <path style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linecap: round; stroke-linejoin: round;" d="M 220 279.8 L 225 285.8 L 240 285.8 L 235 279.8 L 220 279.8 Z" transform="matrix(-1, 0, 0, -1, 460, 565.599976)"></path>
+                            <path style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linecap: round; stroke-linejoin: round;" d="M 265 279.8 L 260 285.8 L 275 285.8 L 280 279.8 L 265 279.8 Z" transform="matrix(-1, 0, 0, -1, 540, 565.599976)"></path>
+                            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 3.5px; font-weight: 700; text-anchor: middle;" x="230.218" y="284.182">WARP</text>
+                            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 3.5px; font-weight: 700; text-anchor: middle;" x="269.736" y="284.129">CELLS</text>
+                            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: ]]..GHUD_shield_text_stroke_color..[[; stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -0.542236, -41.161256)"><tspan x="351.543" y="319.558">KI</tspan></text>
+                            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: ]]..GHUD_shield_text_stroke_color..[[; stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -4.542999, -86.161257)"><tspan x="351.543" y="319.558">TH</tspan></text>
+                            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: ]]..GHUD_shield_text_stroke_color..[[; stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -219.543004, -41.161256)"><tspan x="351.543" y="319.558">EM</tspan></text>
+                            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; paint-order: stroke; stroke: ]]..GHUD_shield_text_stroke_color..[[; stroke-width: 1.25px;" transform="matrix(1, 0, 0, 1, -219.543004, -86.161257)"><tspan x="351.543" y="319.558">AM</tspan></text>
+                            <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 20px; font-weight: 700; paint-order: stroke; stroke: ]]..GHUD_shield_text_stroke_color..[[; stroke-width: 1.25px; text-anchor: middle;" x="252" y="257.079">]]..f..[[%</text>
+                            ]]..AM_res..[[
+                            ]]..EM_res..[[
+                            ]]..KI_res..[[
+                            ]]..TH_res..[[
+                            </svg></div>
+                            <div class="pos1">]]..pp1 ..[[</div>
+                            </body>
+                            </html>]]if map==0 and helper==false and helper1==false then system.setScreen(aa..ab)end
         onTimer:
             args: ['tr']
             lua: |
                 transponder.activate()
                 unit.stopTimer('tr')
-        onTimer:
-            args: ['logger']
-            lua: |
-                newcolor = "white"
-                znak = ""
-                newcolor2 = "white"
-                znak2 = ""
-                if speedT>lastspeed then newcolor = "#07e88e" znak = "▲" end
-                if speedT<lastspeed then newcolor = "#fc033d" znak = "▼" end
-                if distT>lastdist then newcolor2 = "#07e88e" znak2 = "▲" end
-                if distT<lastdist then newcolor2 = "#fc033d" znak2 = "▼" end
-                lastspeed = speedT
-                lastdist = distT
-                if #loglist ~= 0 then
-                    if #loglist < 4 then --system print performance
-                    for i = 1, #loglist do
-                        system.print(loglist[1])
-                        table.remove(loglist, 1)
-                    end
-                    else
-                    for i = 1, 4 do
-                        system.print(loglist[1])
-                        table.remove(loglist, 1)
-                    end
-                    end
-                end
         onTimer:
             args: ['marker']
             lua: |
@@ -1615,6 +1590,31 @@ handlers:
                 alarmTimer = true
                 t2=false
                 end
+
+                newcolor = "white"
+                znak = ""
+                newcolor2 = "white"
+                znak2 = ""
+                if speedT>lastspeed then newcolor = "#07e88e" znak = "▲" end
+                if speedT<lastspeed then newcolor = "#fc033d" znak = "▼" end
+                if distT>lastdist then newcolor2 = "#07e88e" znak2 = "▲" end
+                if distT<lastdist then newcolor2 = "#fc033d" znak2 = "▼" end
+                lastspeed = speedT
+                lastdist = distT
+                if #loglist ~= 0 then
+                    if #loglist < 5 then --system print performance
+                    for i = 1, #loglist do
+                        system.print(loglist[1])
+                        table.remove(loglist, 1)
+                    end
+                    else
+                    for i = 1, 5 do
+                        system.print(loglist[1])
+                        table.remove(loglist, 1)
+                    end
+                    end
+                end
+
                 if warpdrive ~= nil then
                 avWarp = warpdrive.getRequiredWarpCells()
                 end
@@ -1913,62 +1913,7 @@ handlers:
     shield:
         onAbsorbed(hitpoints, rawHitpoints):
             lua: |
-                local shield_hp = shield.getShieldHitpoints()
-                if shield_hp < last_shield_hp then
-                local HP = shield_hp/shieldMaxHP * 100
-                local hit = last_shield_hp - shield_hp
-                local damage1 = hit/shieldMaxHP*100
-                damage = maxSHP * (damage1*0.01)
-                svghp = maxSHP * (HP*0.01)
-                last_shield_hp = shield_hp
-                end
-
-                lastShotTime = system.getArkTime()
-                shoteCount = shoteCount + 1
-                local stress = shield.getStressRatioRaw()
-                local resistance = shield.getResistances()
-                local res = getRes(stress, resMAX)
-                AM_stress = stress[1]
-                EM_stress = stress[2]
-                KI_stress = stress[3]
-                TH_stress = stress[4]
-                ccs_SVG()
-
-                if shield.getResistancesCooldown() == 0 and shoteCount >= 5 and GHUD_shield_auto_calibration then
-                
-                if GHUD_shield_calibration_max then
-                    if resistance[1] == res[1] and
-                    resistance[2] == res[2] and
-                    resistance[3] == res[3] and
-                    resistance[4] == res[4]then
-                        --system.print("Максимальный стресс не изменился")
-                    else
-                        if shield.setResistances(res[1],res[2],res[3],res[4]) == 1 then
-                            system.print("Shield power has been set to max stress")
-                            actionRes(res)
-                            system.playSound('shieldNewResists.mp3')
-                        end
-                    end
-                else
-                    local re1 = getResRatioBy2HighestDamage(stress)[1]
-                    local re2 = getResRatioBy2HighestDamage(stress)[2]
-                    local re3 = getResRatioBy2HighestDamage(stress)[3]
-                    local re4 = getResRatioBy2HighestDamage(stress)[4]
-                    if re1 == resistance[1] and
-                    re2 == resistance[2] and
-                    re3 == resistance[3] and
-                    re4 == resistance[4] then
-                        --system.print("2 максимальных стресса не изменились")
-                    else
-                        if shield.setResistances(re1,re2,re3,re4) == 1 then
-                            system.print("Shield power has been split 50/50%")
-                            local re = {re1,re2,re3,re4}
-                            actionRes(re)
-                            system.playSound('shieldNewResists.mp3')
-                        end
-                    end
-                end
-                end
+                local a=shield.getShieldHitpoints()if a<last_shield_hp then local b=a/shieldMaxHP*100;local c=last_shield_hp-a;local d=c/shieldMaxHP*100;damage=maxSHP*d*0.01;svghp=maxSHP*b*0.01;last_shield_hp=a end;lastShotTime=system.getArkTime()shoteCount=shoteCount+1;local e=shield.getStressRatioRaw()AM_stress=e[1]EM_stress=e[2]KI_stress=e[3]TH_stress=e[4]if shield.getResistancesCooldown()==0 and shoteCount>=5 and GHUD_shield_auto_calibration then local f=shield.getResistances()local g=getRes(e,resMAX)if GHUD_shield_calibration_max then if f[1]==g[1]and f[2]==g[2]and f[3]==g[3]and f[4]==g[4]then else if shield.setResistances(g[1],g[2],g[3],g[4])==1 then system.print("Shield power has been set to max stress")actionRes(g)system.playSound('shieldNewResists.mp3')end end else local h=gR2D(e)[1]local i=gR2D(e)[2]local j=gR2D(e)[3]local k=gR2D(e)[4]if h==f[1]and i==f[2]and j==f[3]and k==f[4]then else if shield.setResistances(h,i,j,k)==1 then system.print("Shield power has been split 50/50%")local l={h,i,j,k}actionRes(l)system.playSound('shieldNewResists.mp3')end end end end
         onDown():
             lua: |
                 local shield_hp = shield.getShieldHitpoints()
@@ -2476,13 +2421,13 @@ handlers:
 
                 if downB == true and shield.getResistancesCooldown() == 0 then
                 local resistance = shield.getResistances()
-                local res = {0,resMAX/2,0,resMAX/2}
+                local res = {resMAX/2,resMAX/2,0,0}
                 if resistance[1] ~= res[1] or
                 resistance[2] ~= res[2] or
                 resistance[3] ~= res[3] or
                 resistance[4] ~= res[4] then
-                    if shield.setResistances(0,resMAX/2,0,resMAX/2) == 1 then
-                        system.print("LASER PROFILE 50/50%")
+                    if shield.setResistances(resMAX/2,resMAX/2,0,0) == 1 then
+                        system.print("RAILGUN PROFILE 50/50%")
                         actionRes(res)
                         system.playSound('shieldNewResists.mp3')
                     else
@@ -2559,13 +2504,13 @@ handlers:
 
                 if downB == true and shield.getResistancesCooldown() == 0 then
                 local resistance = shield.getResistances()
-                local res = {resMAX/2,resMAX/2,0,0}
+                local res = {0,resMAX/2,0,resMAX/2}
                 if resistance[1] ~= res[1] or
                 resistance[2] ~= res[2] or
                 resistance[3] ~= res[3] or
                 resistance[4] ~= res[4] then
-                    if shield.setResistances(resMAX/2,resMAX/2,0,0) == 1 then
-                        system.print("RAILGUN PROFILE 50/50%")
+                    if shield.setResistances(0,resMAX/2,0,resMAX/2) == 1 then
+                        system.print("LASER PROFILE 50/50%")
                         actionRes(res)
                         system.playSound('shieldNewResists.mp3')
                     else
@@ -2670,10 +2615,10 @@ handlers:
                         end
                     end
                 else
-                    local re1 = getResRatioBy2HighestDamage(stress)[1]
-                    local re2 = getResRatioBy2HighestDamage(stress)[2]
-                    local re3 = getResRatioBy2HighestDamage(stress)[3]
-                    local re4 = getResRatioBy2HighestDamage(stress)[4]
+                local re1 = gR2D(stress)[1]
+                local re2 = gR2D(stress)[2]
+                local re3 = gR2D(stress)[3]
+                local re4 = gR2D(stress)[4]
                     if re1 == resistance[1] and
                     re2 == resistance[2] and
                     re3 == resistance[3] and
@@ -2731,13 +2676,15 @@ handlers:
         onActionStart:
             args: [option8]
             lua: |
-                    if shield.isActive() == 0 and shield.isVenting() == 0 then
-                    shield.activate()
-                    system.print("SHIELD ONLINE")
-                    else
+                if shield.isActive() == 0 and shield.isVenting() == 0 then
+                shield.activate()
+                system.print("SHIELD ONLINE")
+                else
+                if varcombat == 0 then
                     shield.deactivate()
                     system.print("SHIELD OFFLINE")
-                    end
+                end
+                end
         onActionStart:
             args: [option9]
             lua: |
@@ -2777,277 +2724,4 @@ handlers:
                 shift=false
         onInputText(text):
             lua: |
-                if string.sub((text),1,3) == 'tag' then
-                setTag(text)
-                transponder.deactivate()
-                unit.setTimer('tr',2)
-                end
-
-                if text=="helper" then
-                if bhelper == false then
-                    bhelper = true
-                    system.showHelper(1)
-                else
-                    bhelper = false
-                    system.showHelper(0)
-                end
-                end
-
-                if text == "am" and shield.getResistancesCooldown() == 0 then
-                local resistance = shield.getResistances()
-                local res = {resMAX,0,0,0}
-                if resistance[1] ~= res[1] or
-                resistance[2] ~= res[2] or
-                resistance[3] ~= res[3] or
-                resistance[4] ~= res[4] then
-                    if shield.setResistances(resMAX,0,0,0) == 1 then
-                        system.print("ANTIMATTER POWER 100%")
-                        actionRes(res)
-                        system.playSound('shieldNewResists.mp3')
-                    else
-                        system.print("ERR6")
-                        system.playSound('shieldResistError.mp3')
-                    end
-                else
-                    system.print("ERR7")
-                    system.playSound('shieldResistError.mp3')
-                end
-                end
-
-                if text == "em" and shield.getResistancesCooldown() == 0 then
-                local resistance = shield.getResistances()
-                local res = {0,resMAX,0,0}
-                if resistance[1] ~= res[1] or
-                resistance[2] ~= res[2] or
-                resistance[3] ~= res[3] or
-                resistance[4] ~= res[4] then
-                    if shield.setResistances(0,resMAX,0,0) == 1 then
-                        system.print("ELECTROMAGNETIC POWER 100%")
-                        actionRes(res)
-                        system.playSound('shieldNewResists.mp3')
-                    else
-                        system.print("ERR6")
-                        system.playSound('shieldResistError.mp3')
-                    end
-                else
-                    system.print("ERR7")
-                    system.playSound('shieldResistError.mp3')
-                end
-                end
-
-                if text == "th" and shield.getResistancesCooldown() == 0 then
-                local resistance = shield.getResistances()
-                local res = {0,0,0,resMAX}
-                if resistance[1] ~= res[1] or
-                resistance[2] ~= res[2] or
-                resistance[3] ~= res[3] or
-                resistance[4] ~= res[4] then
-                    if shield.setResistances(0,0,0,resMAX) == 1 then
-                        system.print("THERMIC POWER 100%")
-                        actionRes(res)
-                        system.playSound('shieldNewResists.mp3')
-                    else
-                        system.print("ERR6")
-                        system.playSound('shieldResistError.mp3')
-                    end
-                else
-                    system.print("ERR7")
-                    system.playSound('shieldResistError.mp3')
-                end
-                end
-
-                if text == "ki" and shield.getResistancesCooldown() == 0 then
-                local resistance = shield.getResistances()
-                local res = {0,0,resMAX,0}
-                if resistance[1] ~= res[1] or
-                resistance[2] ~= res[2] or
-                resistance[3] ~= res[3] or
-                resistance[4] ~= res[4] then
-                    if shield.setResistances(0,0,resMAX,0) == 1 then
-                        system.print("KINETIC POWER 100%")
-                        actionRes(res)
-                        system.playSound('shieldNewResists.mp3')
-                    else
-                        system.print("ERR6")
-                        system.playSound('shieldResistError.mp3')
-                    end
-                else
-                    system.print("ERR7")
-                    system.playSound('shieldResistError.mp3')
-                end
-                end
-
-                if text == "c" and shield.getResistancesCooldown() == 0 then
-                local resistance = shield.getResistances()
-                local res = {0,0,resMAX/2,resMAX/2}
-                if resistance[1] ~= res[1] or
-                resistance[2] ~= res[2] or
-                resistance[3] ~= res[3] or
-                resistance[4] ~= res[4] then
-                    if shield.setResistances(0,0,resMAX/2,resMAX/2) == 1 then
-                        system.print("CANNON PROFILE 50/50%")
-                        actionRes(res)
-                        system.playSound('shieldNewResists.mp3')
-                    else
-                        system.print("ERR6")
-                        system.playSound('shieldResistError.mp3')
-                    end
-                else
-                    system.print("ERR7")
-                    system.playSound('shieldResistError.mp3')
-                end
-                end
-
-                if text == "r" and shield.getResistancesCooldown() == 0 then
-                local resistance = shield.getResistances()
-                local res = {resMAX/2,resMAX/2,0,0}
-                if resistance[1] ~= res[1] or
-                resistance[2] ~= res[2] or
-                resistance[3] ~= res[3] or
-                resistance[4] ~= res[4] then
-                    if shield.setResistances(resMAX/2,resMAX/2,0,0) == 1 then
-                        system.print("RAILGUN PROFILE 50/50%")
-                        actionRes(res)
-                        system.playSound('shieldNewResists.mp3')
-                    else
-                        system.print("ERR6")
-                        system.playSound('shieldResistError.mp3')
-                    end
-                else
-                    system.print("ERR7")
-                    system.playSound('shieldResistError.mp3')
-                end
-                end
-
-                if text == "m" and shield.getResistancesCooldown() == 0 then
-                local resistance = shield.getResistances()
-                local res = {resMAX/2,0,resMAX/2,0}
-                if resistance[1] ~= res[1] or
-                resistance[2] ~= res[2] or
-                resistance[3] ~= res[3] or
-                resistance[4] ~= res[4] then
-                    if shield.setResistances(resMAX/2,0,resMAX/2,0) == 1 then
-                        system.print("MISSILE PROFILE 50/50%")
-                        actionRes(res)
-                        system.playSound('shieldNewResists.mp3')
-                    else
-                        system.print("ERR6")
-                        system.playSound('shieldResistError.mp3')
-                    end
-                else
-                    system.print("ERR7")
-                    system.playSound('shieldResistError.mp3')
-                end
-                end
-
-                if text == "u" and shield.getResistancesCooldown() == 0 then
-                local resistance = shield.getResistances()
-                local res = {resMAX/4,resMAX/4,resMAX/4,resMAX/4}
-                if resistance[1] ~= res[1] or
-                resistance[2] ~= res[2] or
-                resistance[3] ~= res[3] or
-                resistance[4] ~= res[4] then
-                    if shield.setResistances(resMAX/4,resMAX/4,resMAX/4,resMAX/4) == 1 then
-                        system.print("UNIVERSAL PROFILE 25/25/25/25%")
-                        actionRes(res)
-                        system.playSound('shieldNewResists.mp3')
-                    else
-                        system.print("ERR6")
-                        system.playSound('shieldResistError.mp3')
-                    end
-                else
-                    system.print("ERR7")
-                    system.playSound('shieldResistError.mp3')
-                end
-                end
-
-                if text == "l" and shield.getResistancesCooldown() == 0 then
-                local resistance = shield.getResistances()
-                local res = {0,resMAX/2,0,resMAX/2}
-                if resistance[1] ~= res[1] or
-                resistance[2] ~= res[2] or
-                resistance[3] ~= res[3] or
-                resistance[4] ~= res[4] then
-                    if shield.setResistances(0,resMAX/2,0,resMAX/2) == 1 then
-                        system.print("LASER PROFILE 50/50%")
-                        actionRes(res)
-                        system.playSound('shieldNewResists.mp3')
-                    else
-                        system.print("ERR6")
-                        system.playSound('shieldResistError.mp3')
-                    end
-                else
-                    system.print("ERR7")
-                    system.playSound('shieldResistError.mp3')
-                end
-                end
-
-                if text =="drop" then
-                local listships = construct.getDockedConstructs()
-                for i=1, #listships do
-                    construct.forceUndock(listships[i])
-                end
-                system.print("All ships were successfully undocked")
-                end
-
-                if string.find (text,'m::pos') then
-                asteroidPOS = text:sub(2)
-                system.print(asteroidPOS)
-                system.print('Calculation...')
-                asteroidcoord = zeroConvertToWorldCoordinates(asteroidPOS)
-                databank_1.setStringValue(15,asteroidPOS)
-                corTime = system.getArkTime() 
-                ck = coroutine.create(closestPipe1)
-                corpos = true
-                end
-
-                local count = #string.gsub(text, "[^f]", "")
-                local f1 = string.sub(text,1,1)
-                if count == 1 and f1 == "f" then
-                mRadar:onTextInput(text)
-                end
-
-                if text == "export" then GEAR(unit,system,text) end
-
-                if text == "clear" then
-                databank_2.clear()
-                GHUD_friendly_IDs = {}
-                newWhitelist = checkWhitelist()
-                whitelist = newWhitelist
-                system.print('Databank whitelist cleared')
-                end
-
-                if text == "addall" then
-                local keys = databank_2.getNbKeys()
-                local keyCount = keys
-                for k,v in pairs(radarIDs) do
-                    keyCount = keyCount + 1
-                    databank_2.setIntValue(keyCount,v)
-                    table.insert(GHUD_friendly_IDs,v)
-                end
-                newWhitelist = checkWhitelist()
-                whitelist = newWhitelist
-                system.print('All targets have been added to the whitelist')
-                end
-
-                if text == "friends" then
-                if GHUD_show_AR_allies_marks == true then
-                GHUD_show_AR_allies_marks = false
-                system.print('AR allies marks deactivated')
-                else
-                GHUD_show_AR_allies_marks = true
-                system.print('AR allies marks activated')
-                end
-                end
-
-                if text == "safe" then
-                if GHUD_safeNotifications == true then
-                    GHUD_safeNotifications = false
-                    system.print('Radar safe zone notifications OFF')
-                else
-                    GHUD_safeNotifications = true
-                    system.print('Radar safe zone notifications ON')
-                end
-                end
-
-                inTEXT(unit,system,text)
+                if string.sub(text,1,3)=='tag'then setTag(text)transponder.deactivate()unit.setTimer('tr',2)end;if text=="helper"then if bhelper==false then bhelper=true;system.showHelper(1)else bhelper=false;system.showHelper(0)end end;if text=="am"and shield.getResistancesCooldown()==0 then local a=shield.getResistances()local b={resMAX,0,0,0}if a[1]~=b[1]or a[2]~=b[2]or a[3]~=b[3]or a[4]~=b[4]then if shield.setResistances(resMAX,0,0,0)==1 then system.print("ANTIMATTER POWER 100%")actionRes(b)system.playSound('shieldNewResists.mp3')else system.print("ERR6")system.playSound('shieldResistError.mp3')end else system.print("ERR7")system.playSound('shieldResistError.mp3')end end;if text=="em"and shield.getResistancesCooldown()==0 then local a=shield.getResistances()local b={0,resMAX,0,0}if a[1]~=b[1]or a[2]~=b[2]or a[3]~=b[3]or a[4]~=b[4]then if shield.setResistances(0,resMAX,0,0)==1 then system.print("ELECTROMAGNETIC POWER 100%")actionRes(b)system.playSound('shieldNewResists.mp3')else system.print("ERR6")system.playSound('shieldResistError.mp3')end else system.print("ERR7")system.playSound('shieldResistError.mp3')end end;if text=="th"and shield.getResistancesCooldown()==0 then local a=shield.getResistances()local b={0,0,0,resMAX}if a[1]~=b[1]or a[2]~=b[2]or a[3]~=b[3]or a[4]~=b[4]then if shield.setResistances(0,0,0,resMAX)==1 then system.print("THERMIC POWER 100%")actionRes(b)system.playSound('shieldNewResists.mp3')else system.print("ERR6")system.playSound('shieldResistError.mp3')end else system.print("ERR7")system.playSound('shieldResistError.mp3')end end;if text=="ki"and shield.getResistancesCooldown()==0 then local a=shield.getResistances()local b={0,0,resMAX,0}if a[1]~=b[1]or a[2]~=b[2]or a[3]~=b[3]or a[4]~=b[4]then if shield.setResistances(0,0,resMAX,0)==1 then system.print("KINETIC POWER 100%")actionRes(b)system.playSound('shieldNewResists.mp3')else system.print("ERR6")system.playSound('shieldResistError.mp3')end else system.print("ERR7")system.playSound('shieldResistError.mp3')end end;if text=="c"and shield.getResistancesCooldown()==0 then local a=shield.getResistances()local b={0,0,resMAX/2,resMAX/2}if a[1]~=b[1]or a[2]~=b[2]or a[3]~=b[3]or a[4]~=b[4]then if shield.setResistances(0,0,resMAX/2,resMAX/2)==1 then system.print("CANNON PROFILE 50/50%")actionRes(b)system.playSound('shieldNewResists.mp3')else system.print("ERR6")system.playSound('shieldResistError.mp3')end else system.print("ERR7")system.playSound('shieldResistError.mp3')end end;if text=="r"and shield.getResistancesCooldown()==0 then local a=shield.getResistances()local b={resMAX/2,resMAX/2,0,0}if a[1]~=b[1]or a[2]~=b[2]or a[3]~=b[3]or a[4]~=b[4]then if shield.setResistances(resMAX/2,resMAX/2,0,0)==1 then system.print("RAILGUN PROFILE 50/50%")actionRes(b)system.playSound('shieldNewResists.mp3')else system.print("ERR6")system.playSound('shieldResistError.mp3')end else system.print("ERR7")system.playSound('shieldResistError.mp3')end end;if text=="m"and shield.getResistancesCooldown()==0 then local a=shield.getResistances()local b={resMAX/2,0,resMAX/2,0}if a[1]~=b[1]or a[2]~=b[2]or a[3]~=b[3]or a[4]~=b[4]then if shield.setResistances(resMAX/2,0,resMAX/2,0)==1 then system.print("MISSILE PROFILE 50/50%")actionRes(b)system.playSound('shieldNewResists.mp3')else system.print("ERR6")system.playSound('shieldResistError.mp3')end else system.print("ERR7")system.playSound('shieldResistError.mp3')end end;if text=="u"and shield.getResistancesCooldown()==0 then local a=shield.getResistances()local b={resMAX/4,resMAX/4,resMAX/4,resMAX/4}if a[1]~=b[1]or a[2]~=b[2]or a[3]~=b[3]or a[4]~=b[4]then if shield.setResistances(resMAX/4,resMAX/4,resMAX/4,resMAX/4)==1 then system.print("UNIVERSAL PROFILE 25/25/25/25%")actionRes(b)system.playSound('shieldNewResists.mp3')else system.print("ERR6")system.playSound('shieldResistError.mp3')end else system.print("ERR7")system.playSound('shieldResistError.mp3')end end;if text=="l"and shield.getResistancesCooldown()==0 then local a=shield.getResistances()local b={0,resMAX/2,0,resMAX/2}if a[1]~=b[1]or a[2]~=b[2]or a[3]~=b[3]or a[4]~=b[4]then if shield.setResistances(0,resMAX/2,0,resMAX/2)==1 then system.print("LASER PROFILE 50/50%")actionRes(b)system.playSound('shieldNewResists.mp3')else system.print("ERR6")system.playSound('shieldResistError.mp3')end else system.print("ERR7")system.playSound('shieldResistError.mp3')end end;if text=="drop"then local c=construct.getDockedConstructs()for d=1,#c do construct.forceUndock(c[d])end;system.print("All ships were successfully undocked")end;if string.find(text,'m::pos')then asteroidPOS=text:sub(2)system.print(asteroidPOS)system.print('Calculation...')asteroidcoord=zeroConvertToWorldCoordinates(asteroidPOS)databank_1.setStringValue(15,asteroidPOS)corTime=system.getArkTime()ck=coroutine.create(closestPipe1)corpos=true end;local e=#string.gsub(text,"[^f]","")local f=string.sub(text,1,1)if e==1 and f=="f"then mRadar:onTextInput(text)end;if text=="export"then GEAR(unit,system,text)end;if text=="clear"then databank_2.clear()GHUD_friendly_IDs={}newWhitelist=checkWhitelist()whitelist=newWhitelist;system.print('Databank whitelist cleared')end;if text=="addall"then local g=databank_2.getNbKeys()local h=g;for i,j in pairs(radarIDs)do h=h+1;databank_2.setIntValue(h,j)table.insert(GHUD_friendly_IDs,j)end;newWhitelist=checkWhitelist()whitelist=newWhitelist;system.print('All targets have been added to the whitelist')end;if text=="friends"then if GHUD_show_AR_allies_marks==true then GHUD_show_AR_allies_marks=false;system.print('AR allies marks deactivated')else GHUD_show_AR_allies_marks=true;system.print('AR allies marks activated')end end;if text=="safe"then if GHUD_safeNotifications==true then GHUD_safeNotifications=false;system.print('Radar safe zone notifications OFF')else GHUD_safeNotifications=true;system.print('Radar safe zone notifications ON')end end;inTEXT(unit,system,text)

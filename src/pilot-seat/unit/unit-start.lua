@@ -1,7 +1,7 @@
 -- GEMINI FOUNDATION
 
 --Pilot seat
-HUD_version = '1.2.0'
+HUD_version = '1.2.1'
 
 --LUA parameters
 GHUD_marker_name = 'Asteroid' --export: Helios map marker name
@@ -43,6 +43,7 @@ GHUD_radar_notifications_border_color = 'black' --export:
 GHUD_radar_notifications_text_color = 'black' --export:
 GHUD_radar_notifications_background_color = 'rgb(255, 177, 44)' --export:
 GHUD_radar_notifications_Y = 10 --export:
+GHUD_print_hits = true --export: LUA chat hits
 GHUD_show_hits = true --export: Show hits animations
 GHUD_show_misses = true --export: Show misses animations
 GHUD_hits_misses_Y = 76 --export:
@@ -279,7 +280,10 @@ AM_stress = stress[1]
 EM_stress = stress[2]
 KI_stress = stress[3]
 TH_stress = stress[4]
-
+AM_last_stress = stress[1]
+EM_last_stress = stress[2]
+TH_last_stress = stress[3]
+KI_last_stress = stress[4]
 ccs_SVG()
 
 function setTag(tag)
@@ -691,7 +695,7 @@ table.sort(idx, function(a, b) return tbl[a] > tbl[b] end)
 return (table.unpack or unpack)(idx)
 end
 
-function getResRatioBy2HighestDamage(stress)
+function gR2D(stress)
 local resRatio = {0,0,0,0}
 local h1, h2 = indexSort(stress)
 if stress[h2] > 0 then
@@ -1240,11 +1244,17 @@ elseif stress[2] >= stress[1] and
             end
          end
       
+         local strd = 'HIT '..ammo..' '..dmg
+
          if GHUD_show_hits == true then
             hitAnimations = hitAnimations + 1
-            local strd = 'HIT '..ammo..' '..dmg
             lastHitTime[hitAnimations] = {damage = strd, time = 0, hitOpacity = 1, anims = hitAnimations}
          end
+      
+         if GHUD_print_hits == true then
+         system.print('HIT '..ammo..' '..dmg)
+         end
+
          if totalDamage[targetId] ~= nil then --target damage calculation concept (DeadRank)
             totalDamage[targetId].damage = totalDamage[targetId].damage + dmg
          else
@@ -3462,9 +3472,9 @@ elseif stress[2] >= stress[1] and
          <br>
          <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt1..[[</bdr> : cannon profile<br>
          <br>
-         <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt2..[[</bdr> : laser profile<br>
+         <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt2..[[</bdr> : railgun profile<br>
          <br>
-         <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt3..[[</bdr> : railgun profile<br>
+         <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt3..[[</bdr> : laser profile<br>
          <br>
          <bdr>]]..downtext..[[</bdr> + <bdr>]]..opt4..[[</bdr> : universal profile<br>
          </div>
@@ -3506,9 +3516,9 @@ elseif stress[2] >= stress[1] and
          <br>
          <luac>c</luac> : cannon profile<br>
          <br>
-         <luac>l</luac> : laser profile<br>
-         <br>
          <luac>r</luac> : railgun profile<br>
+         <br>
+         <luac>l</luac> : laser profile<br>
          <br>
          <luac>m</luac> : missile profile<br>
          </div>
@@ -3540,7 +3550,6 @@ elseif stress[2] >= stress[1] and
          unit.setTimer('hud',0.016)
          unit.setTimer('brake',0.15)
          unit.setTimer('tr',2)
-         unit.setTimer("logger", 0.5)
          unit.setTimer('prealarm',2)
          if warpdrive ~= nil then
             unit.setTimer('warp',35)

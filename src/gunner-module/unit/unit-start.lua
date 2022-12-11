@@ -1,7 +1,7 @@
 -- GEMINI FOUNDATION
 
 --Gunner module
-HUD_version = '1.2.0'
+HUD_version = '1.2.1'
 
 --LUA parameters
 GHUD_marker_name = 'Asteroid' --export: Helios map marker name
@@ -25,6 +25,7 @@ GHUD_radar_notifications_border_color = 'black' --export:
 GHUD_radar_notifications_text_color = 'black' --export:
 GHUD_radar_notifications_background_color = 'rgb(255, 177, 44)' --export:
 GHUD_radar_notifications_Y = 10 --export:
+GHUD_print_hits = true --export: LUA chat hits
 GHUD_show_hits = true --export: Show hits animations
 GHUD_show_misses = true --export: Show misses animations
 GHUD_hits_misses_Y = 76 --export:
@@ -449,11 +450,17 @@ function hitFnc(slotname,dmg,targetId)
       end
    end
 
+   local strd = 'HIT '..ammo..' '..dmg
+
    if GHUD_show_hits == true then
       hitAnimations = hitAnimations + 1
-      local strd = 'HIT '..ammo..' '..dmg
       lastHitTime[hitAnimations] = {damage = strd, time = 0, hitOpacity = 1, anims = hitAnimations}
    end
+
+   if GHUD_print_hits == true then
+   system.print('HIT '..ammo..' '..dmg)
+   end
+
    if totalDamage[targetId] ~= nil then --target damage calculation concept (DeadRank)
       totalDamage[targetId].damage = totalDamage[targetId].damage + dmg
    else
@@ -1205,35 +1212,35 @@ function main()
          i = i + 1
          local size = activeRadar.getConstructCoreSize(v)
          local constructRow = {}
-            if t_radarEnter[v] ~= nil then
-               if activeRadar.hasMatchingTransponder(v) == 0 and not whitelist[v] and size ~= "" and activeRadar.getConstructDistance(v) < 600000 then --do not show far targets during warp and server lag
-                  local name = activeRadar.getConstructName(v)
-                  if activeRadar.isConstructAbandoned(v) == 0 then
-                     local msg = 'NEW TARGET: '..name..' - Size: '..size..' - '..v..'\n '..t_radarEnter[v].pos..''
-                     table.insert(loglist, msg)
-                     if count < 10 then --max 10 notifications
-                        count = count + 1
-                        if target[count] == nil then
-                           target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0}
-                        end
-                        system.playSound('enter.mp3')
+         if t_radarEnter[v] ~= nil then
+            if activeRadar.hasMatchingTransponder(v) == 0 and not whitelist[v] and size ~= "" and activeRadar.getConstructDistance(v) < 600000 then --do not show far targets during warp and server lag
+               local name = activeRadar.getConstructName(v)
+               if activeRadar.isConstructAbandoned(v) == 0 then
+                  local msg = 'NEW TARGET: '..name..' - Size: '..size..' - '..v..'\n '..t_radarEnter[v].pos..''
+                  table.insert(loglist, msg)
+                  if count < 10 then --max 10 notifications
+                     count = count + 1
+                     if target[count] == nil then
+                        target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0}
                      end
-                  else
-                     local pos = activeRadar.getConstructWorldPos(v)
-                     pos = '::pos{0,0,'..pos[1]..','..pos[2]..','..pos[3]..'}'
-                     local msg = 'NEW TARGET (abandoned): '..name..' - Size: '..size..' - '..v..'\n '..pos..''
-                     table.insert(loglist, msg)
-                     if count < 10 then --max 10 notifications
-                        count = count + 1
-                        if target[count] == nil then
-                           target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0}
-                        end
-                     end
-                     system.playSound('sonar.mp3')
+                     system.playSound('enter.mp3')
                   end
+               else
+                  local pos = activeRadar.getConstructWorldPos(v)
+                  pos = '::pos{0,0,'..pos[1]..','..pos[2]..','..pos[3]..'}'
+                  local msg = 'NEW TARGET (abandoned): '..name..' - Size: '..size..' - '..v..'\n '..pos..''
+                  table.insert(loglist, msg)
+                  if count < 10 then --max 10 notifications
+                     count = count + 1
+                     if target[count] == nil then
+                        target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0}
+                     end
+                  end
+                  system.playSound('sonar.mp3')
                end
-               t_radarEnter[v] = nil
             end
+            t_radarEnter[v] = nil
+         end
          if GHUD_show_echoes == true then
             if size ~= "" then
                constructRow.widgetDist = math.ceil(activeRadar.getConstructDistance(v) / 1000 * radarWidgetScale)
@@ -2911,7 +2918,7 @@ function tickVector(unit, system, text)
    main1 = coroutine.create(main)
    main2 = coroutine.create(closestPipe)
    unit.setTimer("hud", 0.016)
-   unit.setTimer("logger", 0.5)
+   unit.setTimer("logger", 2)
 
    if collectgarbages == true then
       unit.setTimer("cleaner",30)
