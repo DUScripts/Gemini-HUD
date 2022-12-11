@@ -44,10 +44,10 @@ Alternative:<br/>
 2) Place them in your `custom` folder in the DU game path (defaults to here on installation: `ProgramData\Dual Universe\Game\data\lua\autoconf\custom`
 3) Update custom scripts in-game or log in if the game is not running
 ### Gunner module:
-Place the transponder and space radar on the construct first, then link the `screen`, `2 databanks`, `weapons` (optional), `space radar` and `atmo radar` (2nd radar is optional) to gunner module, then load the configuration to gunner module.<br/>
+Place the space radar on the construct first, then link the `screen`, `2 databanks`, `weapons` (optional), `space radar` and `atmo radar` (2nd radar is optional) to gunner module, then load the configuration to gunner module.<br/>
 Put the audio folder with sounds here: `Documents\NQ\DualUniverse\` <br/>
 ### Remote controller:
-Link `1 spacefuetank` to remote controller, then load the configuration to remote controller.<br/>
+Place the transponder on the construct, then link `1 spacefuetank` to remote controller, then load the configuration to remote controller.<br/>
 ### Pilot seat:
 Place the transponder and space radar on the construct first, then link the `screen`, `1 spacefuetank`, `2 databanks`, `weapons` (optional), `space radar` and `atmo radar` (2nd radar is optional) to pilot seat, then load the configuration to gunner module.<br/>
 Put the audio folder with sounds here: `Documents\NQ\DualUniverse\` <br/>
