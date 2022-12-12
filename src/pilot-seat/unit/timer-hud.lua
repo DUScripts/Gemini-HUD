@@ -648,7 +648,7 @@ if mybr == true then
                      .targ]]..k..[[ {
                         position: relative;
                         color: ]]..GHUD_radar_notifications_text_color..[[;
-                        top: ]]..GHUD_radar_notifications_Y..[[vh;
+                        top: calc(-]]..GHUD_Y..[[vh + ]]..GHUD_radar_notifications_Y..[[vh + 68px);
                         left: ]]..target[k].left..[[%;
                         opacity: ]]..target[k].opacity..[[;
                         background-color: ]]..GHUD_radar_notifications_background_color..[[;
@@ -899,7 +899,6 @@ if mybr == true then
                ]]..AR_safezone..[[
                ]]..message..[[
                ]]..gunnerHUD..[[
-               ]]..targetsHUD..[[
                ]]..vectorHUD..[[
                ]]..missesHUD..[[
                ]]..hitsHUD..[[
@@ -976,4 +975,4 @@ if mybr == true then
                </body>
                </html>]]
 
-               if map == 0 and helper == false and helper1 == false then system.setScreen(htmlHUD1 .. htmlHUD2) end
+               if map == 0 and helper == false and helper1 == false then system.setScreen(htmlHUD1 .. htmlHUD2 .. targetsHUD) end

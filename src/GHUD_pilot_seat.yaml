@@ -1,4 +1,4 @@
-name: GHUD Pilot seat v1.2.2
+name: GHUD Pilot seat v1.3.0
 
 slots:
     core:
@@ -62,7 +62,7 @@ handlers:
                 -- GEMINI FOUNDATION
 
                 --Pilot seat
-                HUD_version = '1.2.2'
+                HUD_version = '1.3.0'
 
                 --LUA parameters
                 GHUD_marker_name = 'Asteroid' --export: Helios map marker name
@@ -1236,7 +1236,7 @@ handlers:
                                     .targ]]..X..[[ {
                                         position: relative;
                                         color: ]]..GHUD_radar_notifications_text_color..[[;
-                                        top: ]]..GHUD_radar_notifications_Y..[[vh;
+                                        top: calc(-]]..GHUD_Y..[[vh + ]]..GHUD_radar_notifications_Y..[[vh + 68px);
                                         left: ]]..target[X].left..[[%;
                                         opacity: ]]..target[X].opacity..[[;
                                         background-color: ]]..GHUD_radar_notifications_background_color..[[;
@@ -1464,7 +1464,6 @@ handlers:
                             ]]..s..[[
                             ]]..message..[[
                             ]]..gunnerHUD..[[
-                            ]]..a3 ..[[
                             ]]..vectorHUD..[[
                             ]]..a2 ..[[
                             ]]..a1 ..[[
@@ -1538,7 +1537,7 @@ handlers:
                             </svg></div>
                             <div class="pos1">]]..pp1 ..[[</div>
                             </body>
-                            </html>]]if map==0 and helper==false and helper1==false then system.setScreen(aa..ab)end
+                            </html>]]if map==0 and helper==false and helper1==false then system.setScreen(aa..ab..a3)end
         onTimer:
             args: ['tr']
             lua: |

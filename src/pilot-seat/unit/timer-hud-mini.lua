@@ -276,7 +276,7 @@ radarIDs=activeRadar.getConstructIds()idN=#radarIDs;mRadar:onUpdate()if coroutin
                      .targ]]..X..[[ {
                         position: relative;
                         color: ]]..GHUD_radar_notifications_text_color..[[;
-                        top: ]]..GHUD_radar_notifications_Y..[[vh;
+                        top: calc(-]]..GHUD_Y..[[vh + ]]..GHUD_radar_notifications_Y..[[vh + 68px);
                         left: ]]..target[X].left..[[%;
                         opacity: ]]..target[X].opacity..[[;
                         background-color: ]]..GHUD_radar_notifications_background_color..[[;
@@ -504,7 +504,6 @@ radarIDs=activeRadar.getConstructIds()idN=#radarIDs;mRadar:onUpdate()if coroutin
                ]]..s..[[
                ]]..message..[[
                ]]..gunnerHUD..[[
-               ]]..a3 ..[[
                ]]..vectorHUD..[[
                ]]..a2 ..[[
                ]]..a1 ..[[
@@ -578,4 +577,4 @@ radarIDs=activeRadar.getConstructIds()idN=#radarIDs;mRadar:onUpdate()if coroutin
                </svg></div>
                <div class="pos1">]]..pp1 ..[[</div>
                </body>
-               </html>]]if map==0 and helper==false and helper1==false then system.setScreen(aa..ab)end
+               </html>]]if map==0 and helper==false and helper1==false then system.setScreen(aa..ab..a3)end

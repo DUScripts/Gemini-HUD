@@ -1,7 +1,7 @@
 -- GEMINI FOUNDATION
 
 --Remote controller
-HUD_version = '1.2.2'
+HUD_version = '1.3.0'
 
 --LUA parameters
 GHUD_shield_auto_calibration = true --export: AUTO/MANUAL shield mode
