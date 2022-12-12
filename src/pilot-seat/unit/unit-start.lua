@@ -1,7 +1,7 @@
 -- GEMINI FOUNDATION
 
 --Pilot seat
-HUD_version = '1.2.1'
+HUD_version = '1.2.2'
 
 --LUA parameters
 GHUD_marker_name = 'Asteroid' --export: Helios map marker name
@@ -2439,10 +2439,11 @@ elseif stress[2] >= stress[1] and
             --system.showScreen(1)
             unit.setTimer("vectorhud", 0.02)
          else
-            databank_1.clear()
-            blockTime = 0
-            databank_1.setFloatValue(2, blockTime)
-            databank_1.setFloatValue(4, blockTime)
+            --databank_1.clear()
+            databank_1.setStringValue(1, "")
+            databank_1.setFloatValue(2, 0)
+            databank_1.setStringValue(3, "")
+            databank_1.setFloatValue(4, 0)
             pos1 = 0
             pos2 = 0
             lasttime = 0
