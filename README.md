@@ -55,7 +55,7 @@ Put the audio folder with sounds here: `Documents\NQ\DualUniverse\` <br/>
 Link `programming board 1` to manual switch, then copy and paste the `programming-board-1.json` to `programming board 1`<br/>
 Link manual switch to `programming board 2`, then copy and paste the `programming-board-2.json` to `programming board 2`<br/>
 ### Periscope controls:
-Alt + MMB: zoom periscope.<br/>
+`Alt + MMB`: zoom periscope.<br/>
 ### HUD controls:
 Use `G + ←` or `G + →` to call a helpers.<br/>
 I highly recommend you change your game controls: set buttons 1-8 instead of Options 1-8.<br/>
