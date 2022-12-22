@@ -35,18 +35,30 @@ local sp1 = construct.getWorldVelocity()
 local speed = math.floor(vec3(sp1):len() * 3.6)
 local id = activeRadar.getTargetId()
 if id ~= 0 then
+   local mass = activeRadar.getConstructMass(id)
+   local tcolor = 'rgba(0, 191, 255, 0)'
+   if activeRadar.getConstructKind(id) == 5 then
+      tcolor = 'rgb(0, 191, 255)'
+   else
+      tcolor = '#c603fc'
+   end
+   if activeRadar.isConstructAbandoned(id) == 1 then
+      tcolor = '#43494a'
+   end
+   local topSpeed = '??'
    local sdist = ""
    local dist = math.floor(activeRadar.getConstructDistance(id))
    distT = dist
    local name = string.sub((""..activeRadar.getConstructName(id)..""),1,11)
    local size = activeRadar.getConstructCoreSize(id)
-   local speed = 'UNKNOWN'
+   local speed = '??'
    local anchor = 'middle'
    local damage = '0.0'
    if totalDamage[id] ~= nil then --target damage calculation concept
       damage = string.format('%0.1f',totalDamage[id].damage * 0.000001)
    end
    if activeRadar.isConstructIdentified(id) == 1 then
+      topSpeed = math.floor(clamp((50000/3.6-10713*(mass-10000)/(853926+(mass-10000)))*3.6,20000,50000))
       speed = activeRadar.getConstructSpeed(id)
       speed = math.floor(speed * 3.6)
       speedT = speed
@@ -54,16 +66,6 @@ if id ~= 0 then
    end
    local pos1 = shipPos + dist * vec3(construct.getWorldOrientationForward())
    local point1 = library.getPointOnScreen({pos1.x,pos1.y,pos1.z})
-   if dist >= 100000 then
-      dist = string.format('%0.2f', dist/200000)
-      sdist = 'SU'
-   elseif dist >= 1000 and dist < 100000 then
-      dist = string.format('%0.1f', dist/1000)
-      sdist = 'KM'
-   else
-      dist = string.format('%0.0f', dist)
-      sdist = 'M'
-   end
    local sight1 = [[
    .sight1 {
       position: absolute;
@@ -112,14 +114,14 @@ if id ~= 0 then
    </defs>
    <path style="fill: url(#hit_gradient);" d="M 275.231 484.732 C 274.524 488.711 271.058 491.508 267.154 491.508 C 266.675 491.508 266.191 491.465 265.705 491.379 C 185.949 477.179 122.822 414.052 108.621 334.296 C 107.825 329.83 110.802 325.564 115.268 324.769 C 119.729 323.975 124 326.95 124.794 331.416 C 137.793 404.422 195.578 462.207 268.583 475.205 C 273.051 476.001 276.026 480.266 275.231 484.732 Z M 115.268 275.231 C 115.754 275.318 116.239 275.36 116.717 275.36 C 120.621 275.36 124.087 272.563 124.794 268.584 C 137.793 195.578 195.578 137.793 268.583 124.795 C 273.049 124 276.026 119.734 275.23 115.269 C 274.435 110.802 270.166 107.829 265.704 108.622 C 185.948 122.822 122.821 185.949 108.62 265.705 C 107.825 270.171 110.802 274.436 115.268 275.231 Z M 484.732 324.769 C 480.273 323.976 476.001 326.951 475.206 331.416 C 462.207 404.422 404.422 462.208 331.417 475.206 C 326.951 476.001 323.974 480.267 324.77 484.733 C 325.477 488.712 328.942 491.509 332.847 491.509 C 333.326 491.509 333.81 491.466 334.296 491.38 C 414.052 477.18 477.179 414.052 491.38 334.296 C 492.175 329.83 489.198 325.564 484.732 324.769 Z M 431.492 156.892 L 443.109 168.508 C 467.609 195.152 484.78 228.629 491.38 265.703 C 492.176 270.169 489.199 274.435 484.733 275.23 C 480.27 276.026 476.001 273.049 475.207 268.583 C 469.206 234.887 453.664 204.43 431.49 180.126 L 419.873 168.51 C 395.57 146.336 365.113 130.793 331.417 124.793 C 326.951 123.998 323.974 119.732 324.77 115.266 C 325.565 110.8 329.839 107.825 334.296 108.619 C 371.37 115.22 404.848 132.39 431.492 156.892 Z"/>
    <text style="fill: white; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" transform="matrix(1, 0, 0, 1, 45.470986, 456.61146)"><tspan x="254.529" y="60.003">]]..damage..[[M</tspan></text>
-   <text style="fill: #fc033d; font-family: verdana; font-size: 26px; font-style: italic; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" transform="matrix(1, 0, 0, 1, 44.105107, 38.795308)"><tspan x="254.529" y="36.003">]]..name..[[ []]..size..[[]</tspan></text>
+   <text style="fill: ]]..tcolor..[[; font-family: verdana; font-size: 26px; font-style: italic; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" transform="matrix(1, 0, 0, 1, 44.105107, 38.795308)"><tspan x="254.529" y="36.003">]]..name..[[ []]..size..[[]</tspan></text>
    <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 26px; font-style: italic; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: start;" transform="matrix(1, 0, 0, 1, 241.470998, 244.195302)"><tspan x="254.529" y="36.003">KM/H</tspan></text>
    <text style="fill: ]]..newcolor..[[; font-family: verdana; font-size: 26px; font-weight: 700; text-anchor: start;" transform="matrix(1, 0, 0, 1, 241.470998, 244.195302)"><tspan x="337.529" y="36.003">]]..znak..[[</tspan></text>
-   <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 26px; font-style: italic; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: end;" transform="matrix(1, 0, 0, 1, -154.09122, 244.195302)"><tspan x="254.529" y="36.003">]]..sdist..[[</tspan></text>
-   <text style="fill: ]]..newcolor2..[[; font-family: verdana; font-size: 26px; font-weight: 700; text-anchor: end;" transform="matrix(1, 0, 0, 1, -154.09122, 244.195302)"><tspan x="214.729" y="36.003">]]..znak2..[[</tspan></text>
+   <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 26px; font-style: italic; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: end;" transform="matrix(1, 0, 0, 1, -154.09122, 244.195302)"><tspan x="254.529" y="36.003">MAX</tspan></text>
+   <text style="fill: ]]..newcolor2..[[; font-family: verdana; font-size: 26px; font-weight: 700; text-anchor: end;" transform="matrix(1, 0, 0, 1, -154.09122, 244.195302)"><tspan x="214.729" y="36.003"></tspan></text>
    <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 26px; font-style: italic; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" transform="matrix(1, 0, 0, 1, 43.882192, 510.395305)"><tspan x="254.529" y="36.003">DAMAGE</tspan></text>
-   <text style="fill: white; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" transform="matrix(1, 0, 0, 1, 45.470986, 44.611463)"><tspan x="254.529" y="60.003">]].. tostring(id):sub(-3) ..[[</tspan></text>
-   <text style="fill: white; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: end;" y="310.246" x="101.677">]]..dist..[[</text>
+   <text style="fill: white; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" transform="matrix(1, 0, 0, 1, 45.470986, 44.611463)"><tspan x="254.529" y="60.003">]]..tostring(id):sub(-3)..[[</tspan></text>
+   <text style="fill: white; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: end;" y="310.246" x="101.677">]]..topSpeed..[[</text>
    <text style="fill: white; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: ]]..anchor..[[;" y="310.246" x="494">]]..speed..[[</text>
    </svg></div>]]
 else
@@ -510,7 +512,7 @@ for k,v in pairs(target) do
       <style>
       .targ]]..k..[[ {
          position: relative;
-         color: ]]..GHUD_radar_notifications_text_color..[[;
+         color: ]]..target[k].color..[[;
          top: ]]..GHUD_radar_notifications_Y..[[vh;
          left: ]]..target[k].left..[[%;
          opacity: ]]..target[k].opacity..[[;

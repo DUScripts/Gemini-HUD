@@ -1,7 +1,7 @@
 -- GEMINI FOUNDATION
 
 --Gunner module
-HUD_version = '1.4.1'
+HUD_version = '1.4.2'
 
 --LUA parameters
 GHUD_marker_name = 'Asteroid' --export: Helios map marker name
@@ -22,7 +22,6 @@ GHUD_AR_sight_size = 50 --export: AR sight size
 GHUD_AR_sight_color = "rgba(0, 191, 255, 0.7)" --export: AR sight color
 GHUD_radar_notifications_border_radius = true --export:
 GHUD_radar_notifications_border_color = 'black' --export:
-GHUD_radar_notifications_text_color = 'black' --export:
 GHUD_radar_notifications_background_color = 'rgb(255, 177, 44)' --export:
 GHUD_radar_notifications_Y = 10 --export:
 GHUD_print_hits = true --export: LUA chat hits
@@ -75,6 +74,7 @@ end
 
 --vars
 atlas = require("atlas")
+clamp = utils.clamp
 stellarObjects = atlas[0]
 safeWorldPos = vec3({13771471,7435803,-128971})
 activeRadar = radar_1
@@ -364,7 +364,6 @@ function mWeapons:onUpdate()
 
       local ammoName = weaponData:match('"ammoName":"(.-)"')
       local stasisStatus = false
-      local precAmmo = false
       local ammoType1 = ""
       if ammoName:match("Antimatter") then
          ammoType1 = "AM"
@@ -382,7 +381,6 @@ function mWeapons:onUpdate()
       local ammoType2 = ""
       if ammoName:match("Precision") then
          ammoType2 = "Prec"
-         precAmmo = true
       elseif ammoName:match("Heavy") then
          ammoType2 = "Heavy"
       elseif ammoName:match("Agile") then
@@ -392,16 +390,11 @@ function mWeapons:onUpdate()
       end
 
       if stasisStatus == false then
-         if precAmmo == false then
-            local optDist = ''..string.format('%0.1f', tonumber(weaponData:match('"optimalDistance":(.-),'))/1000)..' km ('..string.format('%0.2f', tonumber(weaponData:match('"optimalDistance":(.-),'))/200000)..' su)'
-            weaponData = weaponData:gsub('"helperId":"(.-)","name":"(.-)"', '"helperId":"%1","name":"%2 OPT: '..optDist..' ' .. hitP .. '%%"')
-         else
-            local optDist = ''..string.format('%0.1f', (1.5 * tonumber(weaponData:match('"optimalDistance":(.-),')))/1000)..' km ('..string.format('%0.2f', (1.5 * tonumber(weaponData:match('"optimalDistance":(.-),')))/200000)..' su)'
-            weaponData = weaponData:gsub('"helperId":"(.-)","name":"(.-)"', '"helperId":"%1","name":"%2 OPT: '..optDist..' ' .. hitP .. '%%"')   
-         end
+         local maxDist = ''..string.format('%0.1f', tonumber(weaponData:match('"maxDistance":(.-),'))/1000)..'KM '..string.format('%0.2f', tonumber(weaponData:match('"maxDistance":(.-),'))/200000)..'SU'
+         weaponData = weaponData:gsub('"helperId":"(.-)","name":"(.-)"', '"helperId":"%1","name":"%2 MAX: '..maxDist..' ' .. hitP .. '%%"')
       else
          weaponData = weaponData:gsub('"helperId":"(.-)","name":"(.-)"', '"helperId":"%1","name":"%2 ' .. hitP .. '%%"')
-      end  
+      end
       weaponData = weaponData:gsub('"constructId":"(%d+(%d%d%d))","name":"(.-)"', '"constructId":"%1","name":"%2 - %3"')
       weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. ammoType1 .. ' ' .. ammoType2 .. '"')
 
@@ -1228,13 +1221,18 @@ function main()
          if t_radarEnter[v] ~= nil then
             if activeRadar.hasMatchingTransponder(v) == 0 and not whitelist[v] and size ~= "" and activeRadar.getConstructDistance(v) < 600000 then --do not show far targets during warp and server lag
                local name = activeRadar.getConstructName(v)
+               local typeC = activeRadar.getConstructKind(v)
                if activeRadar.isConstructAbandoned(v) == 0 then
                   local msg = 'NEW TARGET: '..name..' - Size: '..size..' - '..v..'\n '..t_radarEnter[v].pos..''
                   table.insert(loglist, msg)
                   if count < 10 then --max 10 notifications
                      count = count + 1
                      if target[count] == nil then
-                        target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0}
+                        if typeC == 5 then
+                           target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0, color = '#0804d4'}
+                        else
+                           target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0, color = '#a704d4'}
+                        end
                      end
                      system.playSound('enter.mp3')
                   end
@@ -1246,7 +1244,7 @@ function main()
                   if count < 10 then --max 10 notifications
                      count = count + 1
                      if target[count] == nil then
-                        target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0}
+                        target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0, color = 'black'}
                      end
                   end
                   system.playSound('sonar.mp3')
