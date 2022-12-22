@@ -1,7 +1,7 @@
 -- GEMINI FOUNDATION
 
 --Gunner module
-HUD_version = '1.4.0'
+HUD_version = '1.4.1'
 
 --LUA parameters
 GHUD_marker_name = 'Asteroid' --export: Helios map marker name
@@ -350,7 +350,6 @@ function mWeapons:onUpdate()
       local targetConstructID = weaponData:match('"constructId":"(.-)"')
       local hitProbability = weaponData:match('"hitProbability":(.-),')
       local hitP = math.floor(tonumber(hitProbability) * 100)
-      local stasisStatus = false
       local animationChanged = animationTime > oldAnimationTime[weaponDataID]
       oldAnimationTime[weaponDataID] = animationTime
 
@@ -364,7 +363,8 @@ function mWeapons:onUpdate()
       oldHitProbability[weaponDataID] = hitProbability
 
       local ammoName = weaponData:match('"ammoName":"(.-)"')
-
+      local stasisStatus = false
+      local precAmmo = false
       local ammoType1 = ""
       if ammoName:match("Antimatter") then
          ammoType1 = "AM"
@@ -382,6 +382,7 @@ function mWeapons:onUpdate()
       local ammoType2 = ""
       if ammoName:match("Precision") then
          ammoType2 = "Prec"
+         precAmmo = true
       elseif ammoName:match("Heavy") then
          ammoType2 = "Heavy"
       elseif ammoName:match("Agile") then
@@ -391,8 +392,13 @@ function mWeapons:onUpdate()
       end
 
       if stasisStatus == false then
-         local maxDistance = ''..string.format('%0.1f', tonumber(weaponData:match('"maxDistance":(.-),'))/1000)..' km ('..string.format('%0.2f', tonumber(weaponData:match('"maxDistance":(.-),'))/200000)..' su)'
-         weaponData = weaponData:gsub('"helperId":"(.-)","name":"(.-)"', '"helperId":"%1","name":"%2 MAX: '..maxDistance..' ' .. hitP .. '%%"')
+         if precAmmo == false then
+            local optDist = ''..string.format('%0.1f', tonumber(weaponData:match('"optimalDistance":(.-),'))/1000)..' km ('..string.format('%0.2f', tonumber(weaponData:match('"optimalDistance":(.-),'))/200000)..' su)'
+            weaponData = weaponData:gsub('"helperId":"(.-)","name":"(.-)"', '"helperId":"%1","name":"%2 OPT: '..optDist..' ' .. hitP .. '%%"')
+         else
+            local optDist = ''..string.format('%0.1f', (1.5 * tonumber(weaponData:match('"optimalDistance":(.-),')))/1000)..' km ('..string.format('%0.2f', (1.5 * tonumber(weaponData:match('"optimalDistance":(.-),')))/200000)..' su)'
+            weaponData = weaponData:gsub('"helperId":"(.-)","name":"(.-)"', '"helperId":"%1","name":"%2 OPT: '..optDist..' ' .. hitP .. '%%"')   
+         end
       else
          weaponData = weaponData:gsub('"helperId":"(.-)","name":"(.-)"', '"helperId":"%1","name":"%2 ' .. hitP .. '%%"')
       end  
