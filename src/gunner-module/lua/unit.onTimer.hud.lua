@@ -37,12 +37,13 @@ local id = activeRadar.getTargetId()
 if id ~= 0 then
    local mass = activeRadar.getConstructMass(id)
    local tcolor = 'rgba(0, 191, 255, 0)'
-   if activeRadar.getConstructKind(id) == 5 then
+   local typeS = activeRadar.getConstructKind(id)
+   if typeS == 5 then
       tcolor = 'rgb(0, 191, 255)'
    else
       tcolor = '#c603fc'
    end
-   if activeRadar.isConstructAbandoned(id) == 1 then
+   if activeRadar.isConstructAbandoned(id) == 1 and typeS == 5 then
       tcolor = '#43494a'
    end
    local topSpeed = '??'
@@ -57,7 +58,7 @@ if id ~= 0 then
    if totalDamage[id] ~= nil then --target damage calculation concept
       damage = string.format('%0.1f',totalDamage[id].damage * 0.000001)
    end
-   if activeRadar.isConstructIdentified(id) == 1 then
+   if activeRadar.isConstructIdentified(id) == 1 and typeS == 5 then
       topSpeed = math.floor(clamp((50000/3.6-10713*(mass-10000)/(853926+(mass-10000)))*3.6,20000,50000))
       speed = activeRadar.getConstructSpeed(id)
       speed = math.floor(speed * 3.6)
@@ -118,9 +119,9 @@ if id ~= 0 then
    <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 26px; font-style: italic; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: start;" transform="matrix(1, 0, 0, 1, 241.470998, 244.195302)"><tspan x="254.529" y="36.003">KM/H</tspan></text>
    <text style="fill: ]]..newcolor..[[; font-family: verdana; font-size: 26px; font-weight: 700; text-anchor: start;" transform="matrix(1, 0, 0, 1, 241.470998, 244.195302)"><tspan x="337.529" y="36.003">]]..znak..[[</tspan></text>
    <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 26px; font-style: italic; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: end;" transform="matrix(1, 0, 0, 1, -154.09122, 244.195302)"><tspan x="254.529" y="36.003">MAX</tspan></text>
-   <text style="fill: ]]..newcolor2..[[; font-family: verdana; font-size: 26px; font-weight: 700; text-anchor: end;" transform="matrix(1, 0, 0, 1, -154.09122, 244.195302)"><tspan x="214.729" y="36.003"></tspan></text>
    <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 26px; font-style: italic; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" transform="matrix(1, 0, 0, 1, 43.882192, 510.395305)"><tspan x="254.529" y="36.003">DAMAGE</tspan></text>
    <text style="fill: white; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" transform="matrix(1, 0, 0, 1, 45.470986, 44.611463)"><tspan x="254.529" y="60.003">]]..tostring(id):sub(-3)..[[</tspan></text>
+   <text style="fill: ]]..newcolor2..[[; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" transform="matrix(1, 0, 0, 1, 45.470986, 44.611463)"><tspan x="254.529" y="81.21069">]]..znak2..[[</tspan></text>
    <text style="fill: white; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: end;" y="310.246" x="101.677">]]..topSpeed..[[</text>
    <text style="fill: white; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: ]]..anchor..[[;" y="310.246" x="494">]]..speed..[[</text>
    </svg></div>]]

@@ -159,14 +159,14 @@ radarIDs=activeRadar.getConstructIds()idN=#radarIDs;mRadar:onUpdate()if coroutin
                            <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="48.955">]]..M.name[1]..[[</text>
                            <text style="fill: white; font-family: verdana; font-size: 28px; font-weight: 700; text-anchor: middle;" x="125" y="209.955">]]..F..[[</text>
                            <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 28px; font-style: italic; font-weight: 700; text-anchor: middle;" x="125" y="240.424">]]..G..[[</text>
-                           </svg></div>]]end end end;drawonradar(z,y)if szsafe==true then drawonradar(safeWorldPos,'Central SZ')end;if asteroidcoord[1]~=0 then drawonradar(asteroidcoord,""..GHUD_marker_name.."")end;message=message..svgradar..K;message=message.."</svg>"else message=''end;local N=''if weapon_1~=nil then local O=weapon_1.getWidgetData()probil=tonumber(O:match('"hitProbability":(.-),'))end;local P=activeRadar.getTargetId()if P~=0 then local Q=activeRadar.getConstructMass(P)local R='rgba(0, 191, 255, 0)'if activeRadar.getConstructKind(P)==5 then R='rgb(0, 191, 255)'else R='#c603fc'end;if activeRadar.isConstructAbandoned(P)==1 then R='#43494a'end;local S='??'local G=""local F=math.floor(activeRadar.getConstructDistance(P))distT=F;local T=string.sub(""..activeRadar.getConstructName(P).."",1,11)local U=activeRadar.getConstructCoreSize(P)local n='??'local V='middle'local W='0.0'if totalDamage[P]~=nil then W=string.format('%0.1f',totalDamage[P].damage*0.000001)end;if activeRadar.isConstructIdentified(P)==1 then S=math.floor(clamp((50000/3.6-10713*(Q-10000)/(853926+Q-10000))*3.6,20000,50000))n=activeRadar.getConstructSpeed(P)n=math.floor(n*3.6)speedT=n;V='start'end;local X=c+F*vec3(construct.getWorldOrientationForward())local C=library.getPointOnScreen({X.x,X.y,X.z})local Y=[[
+                           </svg></div>]]end end end;drawonradar(z,y)if szsafe==true then drawonradar(safeWorldPos,'Central SZ')end;if asteroidcoord[1]~=0 then drawonradar(asteroidcoord,""..GHUD_marker_name.."")end;message=message..svgradar..K;message=message.."</svg>"else message=''end;local N=''if weapon_1~=nil then local O=weapon_1.getWidgetData()probil=tonumber(O:match('"hitProbability":(.-),'))end;local P=activeRadar.getTargetId()if P~=0 then local Q=activeRadar.getConstructMass(P)local R='rgba(0, 191, 255, 0)'local S=activeRadar.getConstructKind(P)if S==5 then R='rgb(0, 191, 255)'else R='#c603fc'end;if activeRadar.isConstructAbandoned(P)==1 then R='#43494a'end;local T='??'local G=""local F=math.floor(activeRadar.getConstructDistance(P))distT=F;local U=string.sub(""..activeRadar.getConstructName(P).."",1,11)local V=activeRadar.getConstructCoreSize(P)local n='??'local W='middle'local X='0.0'if totalDamage[P]~=nil then X=string.format('%0.1f',totalDamage[P].damage*0.000001)end;if activeRadar.isConstructIdentified(P)==1 then T=math.floor(clamp((50000/3.6-10713*(Q-10000)/(853926+Q-10000))*3.6,20000,50000))n=activeRadar.getConstructSpeed(P)n=math.floor(n*3.6)speedT=n;W='start'end;local Y=c+F*vec3(construct.getWorldOrientationForward())local C=library.getPointOnScreen({Y.x,Y.y,Y.z})local Z=[[
                   .sight1 {
                      position: absolute;
                      opacity: 0;
                      left: 0;
                      top: 0;
                   }
-                  ]]if C[3]>0 then local D=screenWidth*C[1]-a-GHUD_AR_sight_size/2;local E=screenHeight*C[2]-b-GHUD_AR_sight_size/2;Y=[[
+                  ]]if C[3]>0 then local D=screenWidth*C[1]-a-GHUD_AR_sight_size/2;local E=screenHeight*C[2]-b-GHUD_AR_sight_size/2;Z=[[
                      .sight1 {
                         position: absolute;
                         width: ]]..GHUD_AR_sight_size..[[px;
@@ -175,7 +175,7 @@ radarIDs=activeRadar.getConstructIds()idN=#radarIDs;mRadar:onUpdate()if coroutin
                         top: ]]..E..[[px;
                      }]]end;N=[[
                   <style>
-                  ]]..Y..[[
+                  ]]..Z..[[
                   .sight2 {
                      position: absolute;
                      width: 400px;
@@ -200,17 +200,17 @@ radarIDs=activeRadar.getConstructIds()idN=#radarIDs;mRadar:onUpdate()if coroutin
                   </linearGradient>
                   </defs>
                   <path style="fill: url(#hit_gradient);" d="M 275.231 484.732 C 274.524 488.711 271.058 491.508 267.154 491.508 C 266.675 491.508 266.191 491.465 265.705 491.379 C 185.949 477.179 122.822 414.052 108.621 334.296 C 107.825 329.83 110.802 325.564 115.268 324.769 C 119.729 323.975 124 326.95 124.794 331.416 C 137.793 404.422 195.578 462.207 268.583 475.205 C 273.051 476.001 276.026 480.266 275.231 484.732 Z M 115.268 275.231 C 115.754 275.318 116.239 275.36 116.717 275.36 C 120.621 275.36 124.087 272.563 124.794 268.584 C 137.793 195.578 195.578 137.793 268.583 124.795 C 273.049 124 276.026 119.734 275.23 115.269 C 274.435 110.802 270.166 107.829 265.704 108.622 C 185.948 122.822 122.821 185.949 108.62 265.705 C 107.825 270.171 110.802 274.436 115.268 275.231 Z M 484.732 324.769 C 480.273 323.976 476.001 326.951 475.206 331.416 C 462.207 404.422 404.422 462.208 331.417 475.206 C 326.951 476.001 323.974 480.267 324.77 484.733 C 325.477 488.712 328.942 491.509 332.847 491.509 C 333.326 491.509 333.81 491.466 334.296 491.38 C 414.052 477.18 477.179 414.052 491.38 334.296 C 492.175 329.83 489.198 325.564 484.732 324.769 Z M 431.492 156.892 L 443.109 168.508 C 467.609 195.152 484.78 228.629 491.38 265.703 C 492.176 270.169 489.199 274.435 484.733 275.23 C 480.27 276.026 476.001 273.049 475.207 268.583 C 469.206 234.887 453.664 204.43 431.49 180.126 L 419.873 168.51 C 395.57 146.336 365.113 130.793 331.417 124.793 C 326.951 123.998 323.974 119.732 324.77 115.266 C 325.565 110.8 329.839 107.825 334.296 108.619 C 371.37 115.22 404.848 132.39 431.492 156.892 Z"/>
-                  <text style="fill: white; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" transform="matrix(1, 0, 0, 1, 45.470986, 456.61146)"><tspan x="254.529" y="60.003">]]..W..[[M</tspan></text>
-                  <text style="fill: ]]..R..[[; font-family: verdana; font-size: 26px; font-style: italic; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" transform="matrix(1, 0, 0, 1, 44.105107, 38.795308)"><tspan x="254.529" y="36.003">]]..T..[[ []]..U..[[]</tspan></text>
+                  <text style="fill: white; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" transform="matrix(1, 0, 0, 1, 45.470986, 456.61146)"><tspan x="254.529" y="60.003">]]..X..[[M</tspan></text>
+                  <text style="fill: ]]..R..[[; font-family: verdana; font-size: 26px; font-style: italic; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" transform="matrix(1, 0, 0, 1, 44.105107, 38.795308)"><tspan x="254.529" y="36.003">]]..U..[[ []]..V..[[]</tspan></text>
                   <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 26px; font-style: italic; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: start;" transform="matrix(1, 0, 0, 1, 241.470998, 244.195302)"><tspan x="254.529" y="36.003">KM/H</tspan></text>
                   <text style="fill: ]]..newcolor..[[; font-family: verdana; font-size: 26px; font-weight: 700; text-anchor: start;" transform="matrix(1, 0, 0, 1, 241.470998, 244.195302)"><tspan x="337.529" y="36.003">]]..znak..[[</tspan></text>
                   <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 26px; font-style: italic; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: end;" transform="matrix(1, 0, 0, 1, -154.09122, 244.195302)"><tspan x="254.529" y="36.003">MAX</tspan></text>
-                  <text style="fill: ]]..newcolor2 ..[[; font-family: verdana; font-size: 26px; font-weight: 700; text-anchor: end;" transform="matrix(1, 0, 0, 1, -154.09122, 244.195302)"><tspan x="214.729" y="36.003"></tspan></text>
                   <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 26px; font-style: italic; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" transform="matrix(1, 0, 0, 1, 43.882192, 510.395305)"><tspan x="254.529" y="36.003">DAMAGE</tspan></text>
                   <text style="fill: white; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" transform="matrix(1, 0, 0, 1, 45.470986, 44.611463)"><tspan x="254.529" y="60.003">]]..tostring(P):sub(-3)..[[</tspan></text>
-                  <text style="fill: white; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: end;" y="310.246" x="101.677">]]..S..[[</text>
-                  <text style="fill: white; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: ]]..V..[[;" y="310.246" x="494">]]..n..[[</text>
-                  </svg></div>]]else local X=c+400000*vec3(construct.getWorldOrientationForward())local C=library.getPointOnScreen({X.x,X.y,X.z})if C[3]>0 then local D=screenWidth*C[1]-a-GHUD_AR_sight_size/2;local E=screenHeight*C[2]-b-GHUD_AR_sight_size/2;N=[[
+                  <text style="fill: ]]..newcolor2 ..[[; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" transform="matrix(1, 0, 0, 1, 45.470986, 44.611463)"><tspan x="254.529" y="81.21069">]]..znak2 ..[[</tspan></text>
+                  <text style="fill: white; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: end;" y="310.246" x="101.677">]]..T..[[</text>
+                  <text style="fill: white; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: ]]..W..[[;" y="310.246" x="494">]]..n..[[</text>
+                  </svg></div>]]else local Y=c+400000*vec3(construct.getWorldOrientationForward())local C=library.getPointOnScreen({Y.x,Y.y,Y.z})if C[3]>0 then local D=screenWidth*C[1]-a-GHUD_AR_sight_size/2;local E=screenHeight*C[2]-b-GHUD_AR_sight_size/2;N=[[
                      <style>
                      .sight1 {
                         position: absolute;
@@ -224,9 +224,9 @@ radarIDs=activeRadar.getConstructIds()idN=#radarIDs;mRadar:onUpdate()if coroutin
                      <?xml version="1.0" encoding="utf-8"?>
                      <svg viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xmlns="http://www.w3.org/2000/svg">
                      <path style="fill: ]]..GHUD_AR_sight_color..[[;" d="M 231.231 440.732 C 230.524 444.711 227.058 447.508 223.154 447.508 C 222.675 447.508 222.191 447.465 221.705 447.379 C 141.949 433.179 78.822 370.052 64.621 290.296 C 63.825 285.83 66.802 281.564 71.268 280.769 C 75.729 279.975 80 282.95 80.794 287.416 C 93.793 360.422 151.578 418.207 224.583 431.205 C 229.051 432.001 232.026 436.266 231.231 440.732 Z M 71.268 231.231 C 71.754 231.318 72.239 231.36 72.717 231.36 C 76.621 231.36 80.087 228.563 80.794 224.584 C 93.793 151.578 151.578 93.793 224.583 80.795 C 229.049 80 232.026 75.734 231.23 71.269 C 230.435 66.802 226.166 63.829 221.704 64.622 C 141.948 78.822 78.821 141.949 64.62 221.705 C 63.825 226.171 66.802 230.436 71.268 231.231 Z M 440.732 280.769 C 436.273 279.976 432.001 282.951 431.206 287.416 C 418.207 360.422 360.422 418.208 287.417 431.206 C 282.951 432.001 279.974 436.267 280.77 440.733 C 281.477 444.712 284.942 447.509 288.847 447.509 C 289.326 447.509 289.81 447.466 290.296 447.38 C 370.052 433.18 433.179 370.052 447.38 290.296 C 448.175 285.83 445.198 281.564 440.732 280.769 Z M 387.492 112.892 L 399.109 124.508 C 423.609 151.152 440.78 184.629 447.38 221.703 C 448.176 226.169 445.199 230.435 440.733 231.23 C 436.27 232.026 432.001 229.049 431.207 224.583 C 425.206 190.887 409.664 160.43 387.49 136.126 L 375.873 124.51 C 351.57 102.336 321.113 86.793 287.417 80.793 C 282.951 79.998 279.974 75.732 280.77 71.266 C 281.565 66.8 285.839 63.825 290.296 64.619 C 327.37 71.22 360.848 88.39 387.492 112.892 Z" transform="matrix(0.707107, 0.707107, -0.707107, 0.707107, 255.999945, -106.038815)"></path>
-                     </svg></div>]]end end;local Z=''if GHUD_show_AR_allies_marks==true then for _,a0 in pairs(radarIDs)do if activeRadar.hasMatchingTransponder(a0)==1 then local a1=activeRadar.getConstructWorldPos(a0)local a2=''if friendsData[a0]~=nil then a2=friendsData[a0].tag end;local a3=library.getPointOnScreen({a1[1],a1[2],a1[3]})if a3[3]>0 then local w=screenWidth*a3[1]-a-GHUD_AR_allies_border_size/2;local x=screenHeight*a3[2]-b-GHUD_AR_allies_border_size/2;Z=Z..[[
+                     </svg></div>]]end end;local _=''if GHUD_show_AR_allies_marks==true then for a0,a1 in pairs(radarIDs)do if activeRadar.hasMatchingTransponder(a1)==1 then local a2=activeRadar.getConstructWorldPos(a1)local a3=''if friendsData[a1]~=nil then a3=friendsData[a1].tag end;local a4=library.getPointOnScreen({a2[1],a2[2],a2[3]})if a4[3]>0 then local w=screenWidth*a4[1]-a-GHUD_AR_allies_border_size/2;local x=screenHeight*a4[2]-b-GHUD_AR_allies_border_size/2;_=_..[[
                         <style>     
-                        .id]]..a0 ..[[ {
+                        .id]]..a1 ..[[ {
                            position: absolute;
                            width: ]]..GHUD_AR_allies_border_size..[[px;
                            height: ]]..GHUD_AR_allies_border_size..[[px;
@@ -234,16 +234,16 @@ radarIDs=activeRadar.getConstructIds()idN=#radarIDs;mRadar:onUpdate()if coroutin
                            top: ]]..x..[[px;
                         }
                         </style>
-                        <div class="id]]..a0 ..[["><?xml version="1.0" encoding="utf-8"?>
+                        <div class="id]]..a1 ..[["><?xml version="1.0" encoding="utf-8"?>
                         <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
                         <rect x="235" y="235" width="30" height="30" style="fill: rgba(0,0,0,0); stroke: ]]..GHUD_AR_allies_border_color..[[; stroke-width: 2"/>
-                        <text style="fill: ]]..GHUD_AR_allies_font_color..[[; font-family: Arial, sans-serif; font-size: 28px; font-weight: 700; text-anchor: middle;" transform="matrix(0.609174, 0, 0, 0.609176, 250.000005, 225)">]]..tostring(a0):sub(-3)..[[</text>
-                        <text style="fill: ]]..GHUD_AR_allies_font_color..[[; font-family: Arial, sans-serif; font-size: 28px; font-weight: 700; text-anchor: middle;" transform="matrix(0.609174, 0, 0, 0.609176, 250.000005, 210)">]]..a2 ..[[</text>
-                        </svg></div>]]end end end end;local a4=''local a5=''local a6=''if GHUD_show_hits==true then for _,a0 in pairs(lastHitTime)do if lastHitTime[_]~=nil then lastHitTime[_].time=lastHitTime[_].time+0.025;lastHitTime[_].hitOpacity=lastHitTime[_].hitOpacity-0.015;local a7=GHUD_hits_misses_Y-lastHitTime[_].time*3.25;local a8=GHUD_hit_X+lastHitTime[_].time*2;if lastHitTime[_].hitOpacity<=0 then lastHitTime[_].hitOpacity=0 end;local a9=[[
+                        <text style="fill: ]]..GHUD_AR_allies_font_color..[[; font-family: Arial, sans-serif; font-size: 28px; font-weight: 700; text-anchor: middle;" transform="matrix(0.609174, 0, 0, 0.609176, 250.000005, 225)">]]..tostring(a1):sub(-3)..[[</text>
+                        <text style="fill: ]]..GHUD_AR_allies_font_color..[[; font-family: Arial, sans-serif; font-size: 28px; font-weight: 700; text-anchor: middle;" transform="matrix(0.609174, 0, 0, 0.609176, 250.000005, 210)">]]..a3 ..[[</text>
+                        </svg></div>]]end end end end;local a5=''local a6=''local a7=''if GHUD_show_hits==true then for a0,a1 in pairs(lastHitTime)do if lastHitTime[a0]~=nil then lastHitTime[a0].time=lastHitTime[a0].time+0.025;lastHitTime[a0].hitOpacity=lastHitTime[a0].hitOpacity-0.015;local a8=GHUD_hits_misses_Y-lastHitTime[a0].time*3.25;local a9=GHUD_hit_X+lastHitTime[a0].time*2;if lastHitTime[a0].hitOpacity<=0 then lastHitTime[a0].hitOpacity=0 end;local aa=[[
                         <style>
-                        .hit]].._..[[ {
-                           top: ]]..a7 ..[[vh;
-                           left: ]]..a8 ..[[%;
+                        .hit]]..a0 ..[[ {
+                           top: ]]..a8 ..[[vh;
+                           left: ]]..a9 ..[[%;
                            position: absolute;
                            text-alight: center;
                            font-size: 40px;
@@ -251,15 +251,15 @@ radarIDs=activeRadar.getConstructIds()idN=#radarIDs;mRadar:onUpdate()if coroutin
                            font-style: normal;
                            font-weight: bold;
                            color: #FFB12C;
-                           opacity: ]]..lastHitTime[_].hitOpacity..[[;
+                           opacity: ]]..lastHitTime[a0].hitOpacity..[[;
                            transform: translate(-50%, -50%);
                         }
                         </style>
-                        <div class="hit]].._..[[">]]..lastHitTime[_].damage..[[</div>]]hits[_]={html=a9}if lastHitTime[_].time>=2 then hits[_]={html=''}if lastHitTime[_].anims==hitAnimations then hits[_]=nil;hits={}hitAnimations=0;lastHitTime={}end end end end end;if GHUD_show_misses==true then for _,a0 in pairs(lastMissTime)do if lastMissTime[_]~=nil then lastMissTime[_].time=lastMissTime[_].time+0.025;lastMissTime[_].missOpacity=lastMissTime[_].missOpacity-0.015;local a7=GHUD_hits_misses_Y-lastMissTime[_].time*3.25;local aa=GHUD_miss_X-lastMissTime[_].time*2;if lastMissTime[_].missOpacity<=0 then lastMissTime[_].missOpacity=0 end;local ab=[[
+                        <div class="hit]]..a0 ..[[">]]..lastHitTime[a0].damage..[[</div>]]hits[a0]={html=aa}if lastHitTime[a0].time>=2 then hits[a0]={html=''}if lastHitTime[a0].anims==hitAnimations then hits[a0]=nil;hits={}hitAnimations=0;lastHitTime={}end end end end end;if GHUD_show_misses==true then for a0,a1 in pairs(lastMissTime)do if lastMissTime[a0]~=nil then lastMissTime[a0].time=lastMissTime[a0].time+0.025;lastMissTime[a0].missOpacity=lastMissTime[a0].missOpacity-0.015;local a8=GHUD_hits_misses_Y-lastMissTime[a0].time*3.25;local ab=GHUD_miss_X-lastMissTime[a0].time*2;if lastMissTime[a0].missOpacity<=0 then lastMissTime[a0].missOpacity=0 end;local ac=[[
                         <style>
-                        .miss]].._..[[ {
-                           top: ]]..a7 ..[[vh;
-                           left: ]]..aa..[[%;
+                        .miss]]..a0 ..[[ {
+                           top: ]]..a8 ..[[vh;
+                           left: ]]..ab..[[%;
                            position: absolute;
                            text-alight: center;
                            font-size: 40px;
@@ -267,18 +267,18 @@ radarIDs=activeRadar.getConstructIds()idN=#radarIDs;mRadar:onUpdate()if coroutin
                            font-style: normal;
                            font-weight: bold;
                            color: #fc033d;
-                           opacity: ]]..lastMissTime[_].missOpacity..[[;
+                           opacity: ]]..lastMissTime[a0].missOpacity..[[;
                            transform: translate(-50%, -50%);
                         }
                         </style>
-                        <div class="miss]].._..[[">MISS</div>]]misses[_]={html=ab}if lastMissTime[_].time>=2 then misses[_]={html=''}if lastMissTime[_].anims==missAnimations then misses[_]=nil;misses={}missAnimations=0;lastMissTime={}end end end end end;if GHUD_show_hits==true then for _,a0 in pairs(hits)do if hits[_]~=nil then a4=a4 ..hits[_].html end end end;if GHUD_show_misses==true then for _,a0 in pairs(misses)do if misses[_]~=nil then a5=a5 ..misses[_].html end end end;for _,a0 in pairs(target)do if target[_]~=nil then if target[_].left>85 and target[_].one==true then target[_].left=target[_].left-0.3 end;if target[_].left<=85 then target[_].left=85;target[_].one=false end;local ac=[[
+                        <div class="miss]]..a0 ..[[">MISS</div>]]misses[a0]={html=ac}if lastMissTime[a0].time>=2 then misses[a0]={html=''}if lastMissTime[a0].anims==missAnimations then misses[a0]=nil;misses={}missAnimations=0;lastMissTime={}end end end end end;if GHUD_show_hits==true then for a0,a1 in pairs(hits)do if hits[a0]~=nil then a5=a5 ..hits[a0].html end end end;if GHUD_show_misses==true then for a0,a1 in pairs(misses)do if misses[a0]~=nil then a6=a6 ..misses[a0].html end end end;for a0,a1 in pairs(target)do if target[a0]~=nil then if target[a0].left>85 and target[a0].one==true then target[a0].left=target[a0].left-0.3 end;if target[a0].left<=85 then target[a0].left=85;target[a0].one=false end;local ad=[[
                      <style>
-                     .targ]].._..[[ {
+                     .targ]]..a0 ..[[ {
                         position: relative;
-                        color: ]]..target[_].color..[[;
+                        color: ]]..target[a0].color..[[;
                         top: calc(-]]..GHUD_Y..[[vh + ]]..GHUD_radar_notifications_Y..[[vh + 68px);
-                        left: ]]..target[_].left..[[%;
-                        opacity: ]]..target[_].opacity..[[;
+                        left: ]]..target[a0].left..[[%;
+                        opacity: ]]..target[a0].opacity..[[;
                         background-color: ]]..GHUD_radar_notifications_background_color..[[;
                         border: 2px solid ]]..GHUD_radar_notifications_border_color..[[;
                         border-radius: ]]..GHUD_border_radius..[[;
@@ -289,7 +289,7 @@ radarIDs=activeRadar.getConstructIds()idN=#radarIDs;mRadar:onUpdate()if coroutin
                         text-align: left;
                      }
                      </style>
-                     <div class="targ]].._..[[">[]]..target[_].size1 ..[[] ]]..target[_].id..[[ ]]..target[_].name1 ..[[</div>]]targets[_]={html=ac}if target[_].one==false then target[_].delay=target[_].delay+1;if target[_].delay>=100 then target[_].opacity=target[_].opacity-0.01;if target[_].opacity<=0 and target[_].cnt==count then target[_]=nil;target={}targets={}count=0 end end end end end;for _,a0 in pairs(targets)do if targets[_]~=nil then a6=a6 ..targets[_].html end end;local ad=[[
+                     <div class="targ]]..a0 ..[[">[]]..target[a0].size1 ..[[] ]]..target[a0].id..[[ ]]..target[a0].name1 ..[[</div>]]targets[a0]={html=ad}if target[a0].one==false then target[a0].delay=target[a0].delay+1;if target[a0].delay>=100 then target[a0].opacity=target[a0].opacity-0.01;if target[a0].opacity<=0 and target[a0].cnt==count then target[a0]=nil;target={}targets={}count=0 end end end end end;for a0,a1 in pairs(targets)do if targets[a0]~=nil then a7=a7 ..targets[a0].html end end;local ae=[[
                <html>
                <style>
                html,body {
@@ -497,7 +497,7 @@ radarIDs=activeRadar.getConstructIds()idN=#radarIDs;mRadar:onUpdate()if coroutin
                </style>
                <body>
                ]]..t..[[
-               ]]..Z..[[
+               ]].._..[[
                ]]..q..[[
                ]]..p..[[
                ]]..r..[[
@@ -505,11 +505,11 @@ radarIDs=activeRadar.getConstructIds()idN=#radarIDs;mRadar:onUpdate()if coroutin
                ]]..message..[[
                ]]..gunnerHUD..[[
                ]]..vectorHUD..[[
+               ]]..a6 ..[[
                ]]..a5 ..[[
-               ]]..a4 ..[[
                ]]..N..[[
                ]]..j..[[
-               ]]..i..[[]]local ae=[[
+               ]]..i..[[]]local af=[[
                <div class="safez">]]..safetext..[[</div>
                <div class="pipe">]]..pD()..[[</div>
                <div class="center1"></div>
@@ -577,4 +577,4 @@ radarIDs=activeRadar.getConstructIds()idN=#radarIDs;mRadar:onUpdate()if coroutin
                </svg></div>
                <div class="pos1">]]..pp1 ..[[</div>
                </body>
-               </html>]]if map==0 and helper==false and helper1==false then system.setScreen(ad..ae..a6)end
+               </html>]]if map==0 and helper==false and helper1==false then system.setScreen(ae..af..a7)end

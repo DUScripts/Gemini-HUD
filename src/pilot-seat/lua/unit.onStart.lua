@@ -1,7 +1,7 @@
 -- GEMINI FOUNDATION
 
 --Pilot seat
-HUD_version = '1.4.2'
+HUD_version = '1.4.3'
 
 --LUA parameters
 GHUD_marker_name = 'Asteroid' --export: Helios map marker name
@@ -41,7 +41,7 @@ GHUD_AR_sight_color = "rgba(0, 191, 255, 0.7)" --export: AR sight color
 GHUD_radar_notifications_border_radius = true --export:
 GHUD_radar_notifications_border_color = 'black' --export:
 GHUD_radar_notifications_background_color = 'rgb(255, 177, 44)' --export:
-GHUD_radar_notifications_Y = 10 --export:
+GHUD_radar_notifications_Y = 9 --export:
 GHUD_print_hits = true --export: LUA chat hits
 GHUD_show_hits = false --export: Show hits animations
 GHUD_show_misses = false --export: Show misses animations
@@ -1539,7 +1539,6 @@ elseif stress[2] >= stress[1] and
                ammoType1 = "TH"
             elseif ammoName:match("Stasis") then
                ammoType1 = "Stasis"
-               stasisStatus = true
             end
       
             local ammoType2 = ""
@@ -1553,11 +1552,23 @@ elseif stress[2] >= stress[1] and
                ammoType2 = "Def"
             end
       
-            if stasisStatus == false then
-               local maxDist = ''..string.format('%0.1f', tonumber(weaponData:match('"maxDistance":(.-),'))/1000)..'KM '..string.format('%0.2f', tonumber(weaponData:match('"maxDistance":(.-),'))/200000)..'SU'
-               weaponData = weaponData:gsub('"helperId":"(.-)","name":"(.-)"', '"helperId":"%1","name":"%2 MAX: '..maxDist..' ' .. hitP .. '%%"')
+            if string.find(weaponData,'Stasis') then
+               weaponData = weaponData:gsub('"helperId":"(.-)","name":"(.-)"', '"helperId":"%1","name":"%2 - ' .. hitP .. '%%"')
             else
-               weaponData = weaponData:gsub('"helperId":"(.-)","name":"(.-)"', '"helperId":"%1","name":"%2 ' .. hitP .. '%%"')
+               local maxDist = tonumber(weaponData:match('"maxDistance":(.-),'))
+               local optDist = tonumber(weaponData:match('"optimalDistance":(.-),'))
+               if maxDist >= 100000 then 
+                  maxDist = string.format('%0.2f', maxDist/200000)..'SU'
+               else
+                  maxDist = string.format('%0.2f', maxDist/1000)..'KM'
+               end
+         
+               if optDist >= 100000 then 
+                  optDist = string.format('%0.2f', optDist/200000)..'SU'
+               else
+                  optDist = string.format('%0.2f', optDist/1000)..'KM'
+               end
+               weaponData = weaponData:gsub('"helperId":"(.-)","name":"(.-)"', '"helperId":"%1","name":"%2 DIST: '..optDist..' - '..maxDist..' - ' .. hitP .. '%%"')
             end
             weaponData = weaponData:gsub('"constructId":"(%d+(%d%d%d))","name":"(.-)"', '"constructId":"%1","name":"%2 - %3"')
             weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. ammoType1 .. ' ' .. ammoType2 .. '"')
@@ -1678,9 +1689,9 @@ elseif stress[2] >= stress[1] and
                               count = count + 1
                               if target[count] == nil then
                                  if typeC == 5 then
-                                    target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0, color = '#0804d4'}
+                                    target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0, color = '#0258ba'}
                                  else
-                                    target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0, color = '#a704d4'}
+                                    target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0, color = '#9202ba'}
                                  end
                               end
                               system.playSound('enter.mp3')
