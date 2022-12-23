@@ -1,7 +1,7 @@
 -- GEMINI FOUNDATION
 
 --Pilot seat
-HUD_version = '1.4.3'
+HUD_version = '1.4.4'
 
 --LUA parameters
 GHUD_marker_name = 'Asteroid' --export: Helios map marker name
@@ -41,7 +41,7 @@ GHUD_AR_sight_color = "rgba(0, 191, 255, 0.7)" --export: AR sight color
 GHUD_radar_notifications_border_radius = true --export:
 GHUD_radar_notifications_border_color = 'black' --export:
 GHUD_radar_notifications_background_color = 'rgb(255, 177, 44)' --export:
-GHUD_radar_notifications_Y = 9 --export:
+GHUD_radar_notifications_Y = 10 --export:
 GHUD_print_hits = true --export: LUA chat hits
 GHUD_show_hits = false --export: Show hits animations
 GHUD_show_misses = false --export: Show misses animations
@@ -1543,7 +1543,7 @@ elseif stress[2] >= stress[1] and
       
             local ammoType2 = ""
             if ammoName:match("Precision") then
-               ammoType2 = "Prec"
+               ammoType2 = "Precision"
             elseif ammoName:match("Heavy") then
                ammoType2 = "Heavy"
             elseif ammoName:match("Agile") then
@@ -1560,15 +1560,15 @@ elseif stress[2] >= stress[1] and
                if maxDist >= 100000 then 
                   maxDist = string.format('%0.2f', maxDist/200000)..'SU'
                else
-                  maxDist = string.format('%0.2f', maxDist/1000)..'KM'
+                  maxDist = string.format('%0.1f', maxDist/1000)..'KM'
                end
          
                if optDist >= 100000 then 
                   optDist = string.format('%0.2f', optDist/200000)..'SU'
                else
-                  optDist = string.format('%0.2f', optDist/1000)..'KM'
+                  optDist = string.format('%0.1f', optDist/1000)..'KM'
                end
-               weaponData = weaponData:gsub('"helperId":"(.-)","name":"(.-)"', '"helperId":"%1","name":"%2 DIST: '..optDist..' - '..maxDist..' - ' .. hitP .. '%%"')
+               weaponData = weaponData:gsub('"helperId":"(.-)","name":"(.-)"', '"helperId":"%1","name":"%2 '..optDist..' - '..maxDist..' - ' .. hitP .. '%%"')
             end
             weaponData = weaponData:gsub('"constructId":"(%d+(%d%d%d))","name":"(.-)"', '"constructId":"%1","name":"%2 - %3"')
             weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. ammoType1 .. ' ' .. ammoType2 .. '"')
