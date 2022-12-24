@@ -88,6 +88,11 @@ if weapon_1 ~= nil then
       end
    end
 end
+
+if wslot_1 ~= nil and GHUD_hit_chance_2_weapons == false then
+   GHUD_selected_target_Y = GHUD_selected_target_Y + 3.5
+end
+
 --vars
 atlas = require("atlas")
 clamp = utils.clamp
