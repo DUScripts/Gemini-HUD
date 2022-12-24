@@ -34,6 +34,7 @@ Alternative:<br/>
 - Closest pipe waypoint<br/>
 - Waypoint to custom pipe closest distance<br/>
 ![HUD1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/1.png)<br/>
+![image](https://user-images.githubusercontent.com/104208203/209449684-5749201e-5434-4090-8f00-ffa2ee4d3fa1.png)
 ![HUD2](https://github.com/Crusader93/Gemini-HUD/blob/master/images/2.png)<br/>
 ![HUD3](https://github.com/Crusader93/Gemini-HUD/blob/master/images/33.png)<br/>
 ![HUD4](https://github.com/Crusader93/Gemini-HUD/blob/master/images/cp2.png)<br/>
