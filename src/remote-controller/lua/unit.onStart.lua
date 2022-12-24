@@ -1,13 +1,13 @@
 -- GEMINI FOUNDATION
 
 --Remote controller
-HUD_version = '1.4.4'
+HUD_version = '1.4.5'
 
 --LUA parameters
 GHUD_shield_auto_calibration = true --export: AUTO/MANUAL shield mode
 GHUD_shield_calibration_max = true --export: MAX or 50/50 shield mode
-GHUD_shield_panel_size = 1300 --export:
-GHUD_shield_panel_Y = 87 --export:
+GHUD_shield_panel_size = 68 --export:
+GHUD_shield_panel_Y = 88 --export:
 GHUD_active_resists_border_color = '#07e88e' --export:
 GHUD_shield_panel_opacity = 1 --export:
 GHUD_shield_background_color = '#142027' --export:
@@ -16,8 +16,8 @@ GHUD_shield_empty_background_layer_color = 'rgba(0,0,0,0)' --export:
 GHUD_shield_stroke_color = 'rgb(0, 191, 255)' --export:
 GHUD_shield_text_color = 'rgb(255, 252, 252)' --export:
 GHUD_shield_text_stroke_color = 'rgb(0, 0, 0)' --export:
-GHUD_right_block_X = 65 --export:
-GHUD_left_block_X = 65 --export:
+GHUD_right_block_X = 65.5 --export:
+GHUD_left_block_X = 65.5 --export:
 GHUD_background_color = '#142027' --export:
 GHUD_Y = 50 --export:
 GHUD_shield_warning_message_Y = 20 --export: Shield low HP warning message

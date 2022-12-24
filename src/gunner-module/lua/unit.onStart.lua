@@ -1,7 +1,7 @@
 -- GEMINI FOUNDATION
 
 --Gunner module
-HUD_version = '1.4.4'
+HUD_version = '1.4.5'
 
 --LUA parameters
 GHUD_marker_name = 'Asteroid' --export: Helios map marker name
@@ -10,6 +10,11 @@ GHUD_departure_planet = 'Alioth' --export: Departure name planet
 GHUD_destination_planet = 'Jago' --export: Destination name planet
 GHUD_radarWidget_on_top = false --export: Radar widget position
 GHUD_weapon_panels = 3 --export: Set 3 or 2
+GHUD_selected_target_Y = 83 --export:
+GHUD_selected_target_panel_size = 35 --export:
+GHUD_hit_chance_2_weapons = false --export: Show 2 hit chance panels
+GHUD_1_chance_weapon_slot = 1 --export: weapon_1 = 1
+GHUD_2_chance_weapon_slot = 2 --export: weapon_2 = 2
 GHUD_export_mode = false --export: Target Vector export mode
 targetSpeed = 29999 --export: Target Vector speed
 GHUD_background_color = "#142027" --export: Background HUD color
@@ -17,7 +22,7 @@ GHUD_flight_indicator_size = 25 --export:
 GHUD_flight_indicator_color = 'rgb(198, 3, 252)' --export:
 GHUD_pipe_text_color = '#FFFFFF' --export:
 GHUD_pipe_Y = 0 --export:
-GHUD_pipe_X = 17.5 --export:
+GHUD_pipe_X = 22 --export:
 GHUD_AR_sight_size = 50 --export: AR sight size
 GHUD_AR_sight_color = "rgba(0, 191, 255, 0.7)" --export: AR sight color
 GHUD_radar_notifications_border_radius = true --export:
@@ -25,9 +30,9 @@ GHUD_radar_notifications_border_color = 'black' --export:
 GHUD_radar_notifications_background_color = 'rgb(255, 177, 44)' --export:
 GHUD_radar_notifications_Y = 10 --export:
 GHUD_print_hits = true --export: LUA chat hits
-GHUD_show_hits = false --export: Show hits animations
-GHUD_show_misses = false --export: Show misses animations
-GHUD_hits_misses_Y = 76 --export:
+GHUD_show_hits = true --export: Show hits animations
+GHUD_show_misses = true --export: Show misses animations
+GHUD_hits_misses_Y = 55 --export:
 GHUD_hit_X = 56.5 --export:
 GHUD_miss_X = 47.5 --export:
 GHUD_allies_count = 5 --export: Max count of displayed allies. Selected ally will always be displayed
@@ -51,6 +56,21 @@ GHUD_allies_Y = 0 --export: set to 0 if playing in fullscreen mode
 GHUD_windowed_mode = false --export: adds 2 to height GHUD_allies_Y
 collectgarbages = false --export: experimental
 --GHUD_radar_notifications_mac_os_style = false
+
+wslot_1 = nil
+wslot_2 = nil
+if weapon_1 ~= nil then
+   for i = 1, weapon_size do
+      if i == GHUD_1_chance_weapon_slot then
+         GHUD_1_chance_weapon_slot = weapon[i].getName()
+         wslot_1 = weapon[i]
+      end
+      if i == GHUD_2_chance_weapon_slot then
+         GHUD_2_chance_weapon_slot = weapon[i].getName()
+         wslot_2 = weapon[i]
+      end
+   end
+end
 
 if GHUD_radar_notifications_border_radius == true then
    GHUD_border_radius = '15px'
@@ -130,7 +150,8 @@ speedT = 0
 lastspeed = 0
 distT = 0 
 lastdist = 0
-probil = 0
+pr1 = 0
+pr2 = 0
 playerName = system.getPlayerName(player.getId())
 warpScan = 0 --for 3D map
 t_radarEnter = {}
