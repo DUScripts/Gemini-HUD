@@ -64,6 +64,15 @@ In auto mode, the shield is calibrated after the first 5 hits on you. If you hav
 The 50/50 mode splits the pool of available shield power between the two strongest damage types.<br/>
 By default, the MAX mode is enabled - the shield power will be used for the strongest type of damage.<br/>
 In manual mode, the shield also makes calculations. You can agree with the system in manual mode and apply the new shield resistances by pressing 'option-6'
+### Hit chance panels:
+
+`GHUD_hit_chance_2_weapons` - disabled by default, allows displaying hit chance for secondary weapons.
+To do this, you first need to configure the `GHUD_2_chance_weapon_slot`:
+```
+Example:
+GHUD_1_chance_weapon_slot = 1 (hit chance for weapon_1 slot)
+GHUD_2_chance_weapon_slot = 5 (secondary hit chance for weapon_5 slot)
+```
 ## Many thanks to:<br/>
  - W1zard for weapon and radar widgets<br/>
  - tiramon for closest pipe functions<br/>
