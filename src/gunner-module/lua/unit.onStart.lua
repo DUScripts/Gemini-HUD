@@ -1,7 +1,7 @@
 -- GEMINI FOUNDATION
 
 --Gunner module
-HUD_version = '1.4.5'
+HUD_version = '1.4.6'
 
 --LUA parameters
 GHUD_marker_name = 'Asteroid' --export: Helios map marker name
@@ -10,7 +10,7 @@ GHUD_departure_planet = 'Alioth' --export: Departure name planet
 GHUD_destination_planet = 'Jago' --export: Destination name planet
 GHUD_radarWidget_on_top = false --export: Radar widget position
 GHUD_weapon_panels = 3 --export: Set 3 or 2
-GHUD_selected_target_Y = 83 --export:
+GHUD_selected_target_Y = 82.2 --export:
 GHUD_selected_target_panel_size = 35 --export:
 GHUD_hit_chance_2_weapons = false --export: Show 2 hit chance panels
 GHUD_1_chance_weapon_slot = 1 --export: weapon_1 = 1
@@ -73,7 +73,7 @@ if weapon_1 ~= nil then
 end
 
 if wslot_1 ~= nil and GHUD_hit_chance_2_weapons == false then
-   GHUD_selected_target_Y = GHUD_selected_target_Y + 3.5
+   GHUD_selected_target_Y = GHUD_selected_target_Y + 3.8
 end
 
 if GHUD_radar_notifications_border_radius == true then
@@ -1280,7 +1280,7 @@ function main()
                   if count < 10 then --max 10 notifications
                      count = count + 1
                      if target[count] == nil then
-                        target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0, color = 'black'}
+                        target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0, color = 'rgba(255, 255, 255, 0.25)'}
                      end
                   end
                   system.playSound('sonar.mp3')

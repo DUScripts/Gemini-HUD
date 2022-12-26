@@ -1,7 +1,7 @@
 -- GEMINI FOUNDATION
 
 --Pilot seat
-HUD_version = '1.4.5'
+HUD_version = '1.4.6'
 
 --LUA parameters
 GHUD_marker_name = 'Asteroid' --export: Helios map marker name
@@ -10,8 +10,8 @@ GHUD_shield_auto_calibration = true --export: AUTO/MANUAL shield mode
 GHUD_shield_calibration_max = true --export: MAX or 50/50 shield mode
 GHUD_departure_planet = 'Alioth' --export: Departure name planet
 GHUD_destination_planet = 'Jago' --export: Destination name planet
-GHUD_shield_panel_size = 68 --export:
-GHUD_shield_panel_Y = 88 --export:
+GHUD_shield_panel_size = 70 --export:
+GHUD_shield_panel_Y = 87.5 --export:
 GHUD_active_resists_border_color = '#07e88e' --export:
 GHUD_shield_panel_opacity = 1 --export:
 GHUD_shield_background_color = '#142027' --export:
@@ -22,18 +22,18 @@ GHUD_shield_text_color = 'rgb(255, 252, 252)' --export:
 GHUD_shield_text_stroke_color = 'rgb(0, 0, 0)' --export:
 GHUD_flight_indicator_size = 25 --export:
 GHUD_flight_indicator_color = 'rgb(198, 3, 252)' --export:
-GHUD_right_block_X = 65.5 --export:
-GHUD_left_block_X = 65.5 --export:
+GHUD_right_block_X = 65 --export:
+GHUD_left_block_X = 65 --export:
 GHUD_background_color = '#142027' --export:
 GHUD_pipe_text_color = '#FFFFFF' --export:
 GHUD_pipe_Y = 0 --export:
 GHUD_pipe_X = 22 --export:
-GHUD_Y = 50 --export:
+GHUD_Y = 48.5 --export:
 GHUD_shield_warning_message_Y = 20 --export: Shield low HP warning message
 GHUD_brake_Y = 1 -- export: Brake indicator
 GHUD_radarWidget_on_top = false --export: Radar widget position
 GHUD_weapon_panels = 3 --export: Set 3 or 2
-GHUD_selected_target_Y = 83 --export:
+GHUD_selected_target_Y = 82.2 --export:
 GHUD_selected_target_panel_size = 35 --export:
 GHUD_hit_chance_2_weapons = false --export: Show 2 hit chance panels
 GHUD_1_chance_weapon_slot = 1 --export: weapon_1 = 1
@@ -90,7 +90,7 @@ if weapon_1 ~= nil then
 end
 
 if wslot_1 ~= nil and GHUD_hit_chance_2_weapons == false then
-   GHUD_selected_target_Y = GHUD_selected_target_Y + 3.5
+   GHUD_selected_target_Y = GHUD_selected_target_Y + 3.8
 end
 
 --vars
@@ -1729,7 +1729,7 @@ elseif stress[2] >= stress[1] and
                            if count < 10 then --max 10 notifications
                               count = count + 1
                               if target[count] == nil then
-                                 target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0, color = 'black'}
+                                 target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0, color = 'rgba(255, 255, 255, 0.25)'}
                               end
                            end
                            system.playSound('sonar.mp3')
