@@ -1729,7 +1729,7 @@ elseif stress[2] >= stress[1] and
                            if count < 10 then --max 10 notifications
                               count = count + 1
                               if target[count] == nil then
-                                 target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0, color = 'rgba(255, 255, 255, 0.25)'}
+                                 target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0, color = 'black'}
                               end
                            end
                            system.playSound('sonar.mp3')
