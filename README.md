@@ -29,7 +29,7 @@ GHUD is the rebirth of the CFCS HUD (Custom Fire Control System)
 - Transponder tag can be set via lua chat<br/>
 - Closest pipe waypoint<br/>
 - Waypoint to custom pipe closest distance<br/>
-![3](https://user-images.githubusercontent.com/104208203/209556818-d031170c-7614-431b-9672-b84200fe67a4.png)
+![5](https://user-images.githubusercontent.com/104208203/209559546-bb9b88f3-af4c-4692-8462-b1744e17d52d.png)
 ![HUD1](https://github.com/Crusader93/Gemini-HUD/blob/master/images/1.png)<br/>
 ![HUD2](https://github.com/Crusader93/Gemini-HUD/blob/master/images/2.png)<br/>
 ![HUD3](https://github.com/Crusader93/Gemini-HUD/blob/master/images/33.png)<br/>
