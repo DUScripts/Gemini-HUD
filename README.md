@@ -6,6 +6,8 @@ GHUD is the rebirth of the CFCS HUD (Custom Fire Control System)
 ### Donate:<br/>
 - ERC20/BEP20: 0x90b865B1e05950826D521B4a0F95597d80b23180<br/>
 - BTC: 18HJbJBNeWs4ZZPYQ1hpjYt3BLb8VoiwXA<br/>
+
+### GHUD in action https://www.youtube.com/watch?v=p6ELOF_2JUk
 ## Features:
 - Animated shield panel<br/>
 - Animated radar contact notifications<br/>
