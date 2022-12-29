@@ -1,7 +1,7 @@
 -- GEMINI FOUNDATION
 
 --Pilot seat
-HUD_version = '1.4.6'
+HUD_version = '1.4.7'
 
 --LUA parameters
 GHUD_marker_name = 'Asteroid' --export: Helios map marker name
@@ -10,7 +10,7 @@ GHUD_shield_auto_calibration = true --export: AUTO/MANUAL shield mode
 GHUD_shield_calibration_max = true --export: MAX or 50/50 shield mode
 GHUD_departure_planet = 'Alioth' --export: Departure name planet
 GHUD_destination_planet = 'Jago' --export: Destination name planet
-GHUD_shield_panel_size = 70 --export:
+GHUD_shield_panel_size = 95 --export:
 GHUD_shield_panel_Y = 87.5 --export:
 GHUD_active_resists_border_color = '#07e88e' --export:
 GHUD_shield_panel_opacity = 1 --export:
@@ -24,7 +24,6 @@ GHUD_flight_indicator_size = 25 --export:
 GHUD_flight_indicator_color = 'rgb(198, 3, 252)' --export:
 GHUD_right_block_X = 65 --export:
 GHUD_left_block_X = 65 --export:
-GHUD_background_color = '#142027' --export:
 GHUD_pipe_text_color = '#FFFFFF' --export:
 GHUD_pipe_Y = 0 --export:
 GHUD_pipe_X = 22 --export:
@@ -33,8 +32,8 @@ GHUD_shield_warning_message_Y = 20 --export: Shield low HP warning message
 GHUD_brake_Y = 1 -- export: Brake indicator
 GHUD_radarWidget_on_top = false --export: Radar widget position
 GHUD_weapon_panels = 3 --export: Set 3 or 2
-GHUD_selected_target_Y = 82.2 --export:
-GHUD_selected_target_panel_size = 35 --export:
+GHUD_selected_target_panel_size = 50 --export:
+GHUD_selected_target_Y = 71.8 --export:
 GHUD_hit_chance_2_weapons = false --export: Show 2 hit chance panels
 GHUD_1_chance_weapon_slot = 1 --export: weapon_1 = 1
 GHUD_2_chance_weapon_slot = 2 --export: weapon_2 = 2
@@ -90,7 +89,7 @@ if weapon_1 ~= nil then
 end
 
 if wslot_1 ~= nil and GHUD_hit_chance_2_weapons == false then
-   GHUD_selected_target_Y = GHUD_selected_target_Y + 3.8
+   GHUD_selected_target_Y = GHUD_selected_target_Y + 3.7
 end
 
 --vars
@@ -438,134 +437,134 @@ closestPlanet = stellarObjects[1]
 closestPlanetT = stellarObjects[1]
 
 function closestPipe()
-   while true do
-      local smallestDistance = nil
-      local nearestPlanet = nil
-      local i = 0
-      local pos = vec3(construct.getWorldPosition())
-      for obj in pairs(stellarObjects) do
-         i = i + 1
-         if stellarObjects[obj].type[1] ~= 'Asteroid' then
-            local planetCenter = vec3(stellarObjects[obj].center)
-            local distance = vec3(pos - planetCenter):len()
-   
-            if (smallestDistance == nil or distance < smallestDistance) then
-               smallestDistance = distance
-               nearestPlanet = obj
-            end
-         end
-         if i > 30 then
-            i = 0
-            coroutine.yield()
-         end
-      end
-      i = 0
-      closestPlanet = stellarObjects[nearestPlanet]
-      nearestPipeDistance = nil
-      --nearestAliothPipeDistance= nil
-      for obj in pairs(stellarObjects) do
-         i = i + 1
-         if (stellarObjects[obj].type[1] == 'Planet' or stellarObjects[obj].isSanctuary == true) then
-            for obj2 in pairs(stellarObjects) do
-               if (obj2 > obj and (stellarObjects[obj2].type[1] == 'Planet' or stellarObjects[obj2].isSanctuary == true)) then
-                  pipeDistance = calcDistanceStellar(stellarObjects[obj], stellarObjects[obj2], pos)
-                  if nearestPipeDistance == nil or pipeDistance < nearestPipeDistance then
-                     nearestPipeDistance = pipeDistance;
-                     sortestPipeKeyId = obj;
-                     sortestPipeKey2Id = obj2;
-                  end
-               end
-            end
-         end
-         if i > 30 then
-            i = 0
-            coroutine.yield()
-         end
-      end
-      if pos:dist(vec3(stellarObjects[sortestPipeKeyId].center)) < pos:dist(vec3(stellarObjects[sortestPipeKey2Id].center)) then
-         closestPipeData = stellarObjects[sortestPipeKeyId].name[1] .. " - " .. stellarObjects[sortestPipeKey2Id].name[1]
-         else
-         closestPipeData = stellarObjects[sortestPipeKey2Id].name[1] .. " - " .. stellarObjects[sortestPipeKeyId].name[1]
-      end
-   end
-   end
-   
-   corpos = false
-   corTime = 0
+while true do
+   local smallestDistance = nil
+   local nearestPlanet = nil
+   local i = 0
+   local pos = vec3(construct.getWorldPosition())
+   for obj in pairs(stellarObjects) do
+      i = i + 1
+      if stellarObjects[obj].type[1] ~= 'Asteroid' then
+         local planetCenter = vec3(stellarObjects[obj].center)
+         local distance = vec3(pos - planetCenter):len()
 
-   function closestPipe1(pos)
-      while true do
-         local smallestDistance1 = nil
-         local nearestPlanet1 = nil
-         local i = 0
-         for obj in pairs(stellarObjects) do
-            i = i + 1
-            if stellarObjects[obj].type[1] ~= 'Asteroid' then
-               local planetCenter = vec3(stellarObjects[obj].center)
-               local distance = vec3(pos - planetCenter):len()
-   
-               if (smallestDistance1 == nil or distance < smallestDistance1) then
-                  smallestDistance1 = distance
-                  nearestPlanet1 = obj
-               end
-            end
-            if i > 5 then
-               i = 0
-               coroutine.yield()
-            end
-         end
-         i = 0
-         closestPlanetT = stellarObjects[nearestPlanet1]
-         local nearestPipeDistance1 = nil
-         --local nearestAliothPipeDistance1= nil
-         for obj in pairs(stellarObjects) do
-            i = i + 1
-            if stellarObjects[obj].type[1] ~= 'Asteroid' then
-               for obj2 in pairs(stellarObjects) do
-                  if (obj2 > obj) and stellarObjects[obj2].type[1] ~= 'Asteroid' then
-                     pipeDistance1 = calcDistanceStellar(stellarObjects[obj], stellarObjects[obj2], pos)
-                     if nearestPipeDistance1 == nil or pipeDistance1 < nearestPipeDistance1 then
-                        nearestPipeDistance1 = pipeDistance1;
-                        sortestPipeKeyId1 = obj;
-                        sortestPipeKey2Id1 = obj2;
-                     end
-                  end
-               end
-            end
-            if i > 5 then
-               i = 0
-               coroutine.yield()
-            end
-         end
-         distCP = vec3(pos):dist(vec3(closestPlanetT.center))
-         if distCP > 100000 then
-            distCP = ''..string.format('%0.2f', distCP/200000)..' su'
-         elseif distCP > 1000 and distCP < 100000 then
-            distCP = ''..string.format('%0.1f', distCP/1000)..' km'
-         else
-            distCP = ''..string.format('%0.0f', distCP)..' m'
-         end
-         distS1 = ''
-         if nearestPipeDistance1 >= 100000 then
-            distS1 = ''..string.format('%0.2f', nearestPipeDistance1/200000)..' su'
-         elseif nearestPipeDistance1 >= 1000 and nearestPipeDistance1 < 100000 then
-            distS1 = ''..string.format('%0.1f', nearestPipeDistance1/1000)..' km'
-         else
-            distS1 = ''..string.format('%0.0f', nearestPipeDistance1)..' m'
-         end
-         if vec3(pos):dist(vec3(stellarObjects[sortestPipeKeyId1].center)) < vec3(pos):dist(vec3(stellarObjects[sortestPipeKey2Id1].center)) then
-            closestpip = stellarObjects[sortestPipeKeyId1].name[1] .. " - " .. stellarObjects[sortestPipeKey2Id1].name[1]
-         else
-            closestpip = stellarObjects[sortestPipeKey2Id1].name[1] .. " - " .. stellarObjects[sortestPipeKeyId1].name[1]
-         end
-         if system.getArkTime() - corTime > 4 then
-            corpos = false
-            system.print('Closest planet: '..closestPlanetT.name[1]..' - '..distCP)
-            system.print('Closest pipe: '..closestpip..' - '..distS1)
-            system.print(safeZone1(asteroidcoord))
+         if (smallestDistance == nil or distance < smallestDistance) then
+            smallestDistance = distance
+            nearestPlanet = obj
          end
       end
+      if i > 30 then
+         i = 0
+         coroutine.yield()
+      end
    end
+   i = 0
+   closestPlanet = stellarObjects[nearestPlanet]
+   nearestPipeDistance = nil
+   --nearestAliothPipeDistance= nil
+   for obj in pairs(stellarObjects) do
+      i = i + 1
+      if (stellarObjects[obj].type[1] == 'Planet' or stellarObjects[obj].isSanctuary == true) then
+         for obj2 in pairs(stellarObjects) do
+            if (obj2 > obj and (stellarObjects[obj2].type[1] == 'Planet' or stellarObjects[obj2].isSanctuary == true)) then
+               pipeDistance = calcDistanceStellar(stellarObjects[obj], stellarObjects[obj2], pos)
+               if nearestPipeDistance == nil or pipeDistance < nearestPipeDistance then
+                  nearestPipeDistance = pipeDistance;
+                  sortestPipeKeyId = obj;
+                  sortestPipeKey2Id = obj2;
+               end
+            end
+         end
+      end
+      if i > 30 then
+         i = 0
+         coroutine.yield()
+      end
+   end
+   if pos:dist(vec3(stellarObjects[sortestPipeKeyId].center)) < pos:dist(vec3(stellarObjects[sortestPipeKey2Id].center)) then
+      closestPipeData = stellarObjects[sortestPipeKeyId].name[1] .. " - " .. stellarObjects[sortestPipeKey2Id].name[1]
+   else
+      closestPipeData = stellarObjects[sortestPipeKey2Id].name[1] .. " - " .. stellarObjects[sortestPipeKeyId].name[1]
+   end
+end
+end
+
+corpos = false
+corTime = 0
+
+function closestPipe1(pos)
+while true do
+   local smallestDistance1 = nil
+   local nearestPlanet1 = nil
+   local i = 0
+   for obj in pairs(stellarObjects) do
+      i = i + 1
+      if stellarObjects[obj].type[1] ~= 'Asteroid' then
+         local planetCenter = vec3(stellarObjects[obj].center)
+         local distance = vec3(pos - planetCenter):len()
+
+         if (smallestDistance1 == nil or distance < smallestDistance1) then
+            smallestDistance1 = distance
+            nearestPlanet1 = obj
+         end
+      end
+      if i > 5 then
+         i = 0
+         coroutine.yield()
+      end
+   end
+   i = 0
+   closestPlanetT = stellarObjects[nearestPlanet1]
+   local nearestPipeDistance1 = nil
+   --local nearestAliothPipeDistance1= nil
+   for obj in pairs(stellarObjects) do
+      i = i + 1
+      if stellarObjects[obj].type[1] ~= 'Asteroid' then
+         for obj2 in pairs(stellarObjects) do
+            if (obj2 > obj) and stellarObjects[obj2].type[1] ~= 'Asteroid' then
+               pipeDistance1 = calcDistanceStellar(stellarObjects[obj], stellarObjects[obj2], pos)
+               if nearestPipeDistance1 == nil or pipeDistance1 < nearestPipeDistance1 then
+                  nearestPipeDistance1 = pipeDistance1;
+                  sortestPipeKeyId1 = obj;
+                  sortestPipeKey2Id1 = obj2;
+               end
+            end
+         end
+      end
+      if i > 5 then
+         i = 0
+         coroutine.yield()
+      end
+   end
+   distCP = vec3(pos):dist(vec3(closestPlanetT.center))
+   if distCP > 100000 then
+      distCP = ''..string.format('%0.2f', distCP/200000)..' su'
+   elseif distCP > 1000 and distCP < 100000 then
+      distCP = ''..string.format('%0.1f', distCP/1000)..' km'
+   else
+      distCP = ''..string.format('%0.0f', distCP)..' m'
+   end
+   distS1 = ''
+   if nearestPipeDistance1 >= 100000 then
+      distS1 = ''..string.format('%0.2f', nearestPipeDistance1/200000)..' su'
+   elseif nearestPipeDistance1 >= 1000 and nearestPipeDistance1 < 100000 then
+      distS1 = ''..string.format('%0.1f', nearestPipeDistance1/1000)..' km'
+   else
+      distS1 = ''..string.format('%0.0f', nearestPipeDistance1)..' m'
+   end
+   if vec3(pos):dist(vec3(stellarObjects[sortestPipeKeyId1].center)) < vec3(pos):dist(vec3(stellarObjects[sortestPipeKey2Id1].center)) then
+      closestpip = stellarObjects[sortestPipeKeyId1].name[1] .. " - " .. stellarObjects[sortestPipeKey2Id1].name[1]
+   else
+      closestpip = stellarObjects[sortestPipeKey2Id1].name[1] .. " - " .. stellarObjects[sortestPipeKeyId1].name[1]
+   end
+   if system.getArkTime() - corTime > 4 then
+      corpos = false
+      system.print('Closest planet: '..closestPlanetT.name[1]..' - '..distCP)
+      system.print('Closest pipe: '..closestpip..' - '..distS1)
+      system.print(safeZone1(asteroidcoord))
+   end
+end
+end
 
 function safeZone1(pos)
 local WorldPos = pos
@@ -1260,23 +1259,23 @@ elseif stress[2] >= stress[1] and
                ammo = "TH"
             end
          end
-      
+
          if ammo ~= '' then lastAmmo[slotname] = {ammoName = ammo} end
          if ammo == '' then
             if lastAmmo[slotname] ~= nil then
                ammo = lastAmmo[slotname].ammoName
             end
          end
-      
+
          local strd = 'HIT '..ammo..' '..dmg
 
          if GHUD_show_hits == true then
             hitAnimations = hitAnimations + 1
             lastHitTime[hitAnimations] = {damage = strd, time = 0, hitOpacity = 1, anims = hitAnimations}
          end
-      
+
          if GHUD_print_hits == true then
-         system.print('HIT '..ammo..' '..dmg)
+            system.print('HIT '..ammo..' '..dmg)
          end
 
          if totalDamage[targetId] ~= nil then --target damage calculation concept (DeadRank)
@@ -1318,7 +1317,7 @@ elseif stress[2] >= stress[1] and
       newcolor2 = "white"
       speedT = 0
       lastspeed = 0
-      distT = 0 
+      distT = 0
       lastdist = 0
       pr1 = 0
       pr2 = 0
@@ -1346,25 +1345,25 @@ elseif stress[2] >= stress[1] and
       local scID = construct.getId()
       system.print(''..shipName..': '..scID..'')
       conID = tostring(scID):sub(-3)
-      
+
       GHUD_friendly_IDs = {}
-      
+
       local dbkeys = databank_2.getNbKeys()
-      
+
       if dbkeys > 0 then
          for i = 1, dbkeys do
             table.insert(GHUD_friendly_IDs,databank_2.getIntValue(i))
          end
          system.print('Databank whitelist loaded')
       end
-      
+
       function checkWhitelist()
          local whitelist = GHUD_friendly_IDs
          local set = {}
          for _, l in ipairs(whitelist) do set[l] = true end
          return set
       end
-      
+
       function table.contains(table, element)
          for _, value in pairs(table) do
             if value == element then
@@ -1373,45 +1372,45 @@ elseif stress[2] >= stress[1] and
          end
          return false
       end
-      
+
       whitelist = checkWhitelist() --load IDs
       local pauseAfter = 100 --radar widget coroutine
-      
+
       radarWidgetScale = 2
       radarWidgetScaleDisplay = '<div class="measures"><span>0 SU</span><span>1 SU</span><span>2 SU</span></div>'
-      
+
       --radar widget
       function defaultRadar()
          sizeState = 6
          defaultSize = 'ALL'
          if mRadar.friendlyMode == true then mRadar.friendlyMode = false end
       end
-      
+
       function mRadar:createWidget()
          self.dataID = self.system.createData(activeRadar.getWidgetData())
          radarPanel = self.system.createWidgetPanel('')
          radarWidget = self.system.createWidget(radarPanel, activeRadar.getWidgetType())
          self.system.addDataToWidget(self.dataID, radarWidget)
       end
-      
+
       function mRadar:createWidgetNew()
          self.dataID = self.system.createData(activeRadar.getWidgetData())
          radarWidget = self.system.createWidget(radarPanel, activeRadar.getWidgetType())
          self.system.addDataToWidget(self.dataID, radarWidget)
       end
-      
+
       function mRadar:deleteWidget()
          self.system.destroyData(self.dataID)
          self.system.destroyWidget(radarWidget)
       end
-      
+
       function mRadar:updateLoop()
          while true do
             self:updateStep()
             coroutine.yield()
          end
       end
-      
+
       function mRadar:updateStep()
          local resultList = {}
          local data = activeRadar.getWidgetData()
@@ -1457,19 +1456,19 @@ elseif stress[2] >= stress[1] and
          data = '{"constructsList":[' .. table.concat(resultList, ",") .. "]," .. postData --completed json radar data
          self.system.updateData(self.dataID, data)
       end
-      
+
       function mRadar:onUpdate()
          coroutine.resume(self.updaterCoroutine)
       end
-      
+
       function mRadar:clearIDFilter()
          self.idFilter = {}
       end
-      
+
       function mRadar:addIDFilter(id)
          self.idFilter[id] = true
       end
-      
+
       --pvp focus mode
       function mRadar:onTextInput(text)
          self:clearIDFilter()
@@ -1484,11 +1483,11 @@ elseif stress[2] >= stress[1] and
             self:addIDFilter(tonumber(id))
          end
       end
-      
+
       function mRadar:toggleFriendlyMode()
          self.friendlyMode = not self.friendlyMode
       end
-      
+
       function mRadar:new(sys)
          local mRadar = {}
          setmetatable(mRadar, self)
@@ -1504,7 +1503,7 @@ elseif stress[2] >= stress[1] and
          self.updaterCoroutine = coroutine.create(function() self:updateLoop() end)
          return self
       end
-      
+
       --weapon widgets
       local oldAnimationTime = {}
       local oldWeaponStatus = {}
@@ -1512,7 +1511,7 @@ elseif stress[2] >= stress[1] and
       local OldoutOfZone = {}
       local oldTargetConstruct = {}
       local oldHitProbability = {}
-      
+
       function mWeapons:createWidgets()
          if not (type(self.weapons) == 'table' and #self.weapons > 0) then
             return
@@ -1528,7 +1527,7 @@ elseif stress[2] >= stress[1] and
             self.system.addDataToWidget(weaponDataID, self.system.createWidget(widgetPanelID, weap.getWidgetType()))
          end
       end
-      
+
       function mWeapons:onUpdate()
          for weaponDataID, weap in pairs(self.weaponData) do
             local weaponData = weap.getWidgetData()
@@ -1541,7 +1540,7 @@ elseif stress[2] >= stress[1] and
             local hitP = math.floor(tonumber(hitProbability) * 100)
             local animationChanged = animationTime > oldAnimationTime[weaponDataID]
             oldAnimationTime[weaponDataID] = animationTime
-      
+
             if weaponStatus == oldWeaponStatus[weaponDataID] and oldTargetConstruct[weaponDataID] == targetConstructID and oldFireReady[weaponDataID] == fireReady and OldoutOfZone[weaponDataID] == outOfZone and oldHitProbability[weaponDataID] == hitProbability and not animationChanged then
                goto continue
             end
@@ -1550,7 +1549,7 @@ elseif stress[2] >= stress[1] and
             OldoutOfZone[weaponDataID] = outOfZone
             oldTargetConstruct[weaponDataID] = targetConstructID
             oldHitProbability[weaponDataID] = hitProbability
-      
+
             local ammoName = weaponData:match('"ammoName":"(.-)"')
             local stasisStatus = false
             local ammoType1 = ""
@@ -1565,7 +1564,7 @@ elseif stress[2] >= stress[1] and
             elseif ammoName:match("Stasis") then
                ammoType1 = "Stasis"
             end
-      
+
             local ammoType2 = ""
             if ammoName:match("Precision") then
                ammoType2 = "Precision"
@@ -1576,19 +1575,19 @@ elseif stress[2] >= stress[1] and
             elseif ammoName:match("Defense") then
                ammoType2 = "Def"
             end
-      
+
             if string.find(weaponData,'Stasis') then
                weaponData = weaponData:gsub('"helperId":"(.-)","name":"(.-)"', '"helperId":"%1","name":"%2 - ' .. hitP .. '%%"')
             else
                local maxDist = tonumber(weaponData:match('"maxDistance":(.-),'))
                local optDist = tonumber(weaponData:match('"optimalDistance":(.-),'))
-               if maxDist >= 100000 then 
+               if maxDist >= 100000 then
                   maxDist = string.format('%0.2f', maxDist/200000)..'SU'
                else
                   maxDist = string.format('%0.1f', maxDist/1000)..'KM'
                end
-         
-               if optDist >= 100000 then 
+
+               if optDist >= 100000 then
                   optDist = string.format('%0.2f', optDist/200000)..'SU'
                else
                   optDist = string.format('%0.1f', optDist/1000)..'KM'
@@ -1597,15 +1596,15 @@ elseif stress[2] >= stress[1] and
             end
             weaponData = weaponData:gsub('"constructId":"(%d+(%d%d%d))","name":"(.-)"', '"constructId":"%1","name":"%2 - %3"')
             weaponData = weaponData:gsub('"ammoName":"(.-)"', '"ammoName":"' .. ammoType1 .. ' ' .. ammoType2 .. '"')
-      
+
             if self.system.updateData(weaponDataID, weaponData) ~= 1 then
                self.system.print('update error')
             end
-      
+
             ::continue::
          end
       end
-      
+
       function mWeapons:new(sys, weapons, weaponsPerPanel)
          local mWeapons = {}
          setmetatable(mWeapons, self)
@@ -1616,43 +1615,43 @@ elseif stress[2] >= stress[1] and
          self:createWidgets()
          return self
       end
-      
+
       --debug coroutine
       function coroutine.xpcall(co)
          local output = {coroutine.resume(co)}
          if output[1] == false then
             local tb = traceback(co)
-      
+
             local message = tb:gsub('"%-%- |STDERROR%-EVENTHANDLER[^"]*"', 'chunk')
             system.print(message)
-      
+
             message = output[2]:gsub('"%-%- |STDERROR%-EVENTHANDLER[^"]*"', 'chunk')
             system.print(message)
             return false, output[2], tb
          end
          return table.unpack(output)
       end
-      
+
       function ConvertLocalToWorld(x,y,z)
          local xOffset = x * vec3(construct.getWorldRight())
          local yOffset = y * vec3(construct.getWorldForward())
          local zOffset = z * vec3(construct.getWorldUp())
-      
+
          return xOffset + yOffset + zOffset + vec3(construct.getWorldPosition())
       end
-      
+
       if GHUD_radarWidget_on_top == true then
          mRadar = mRadar:new(system) --radar widget
          if weapon_1 ~= nil then
-         mWeapons = mWeapons:new(system, weapon, GHUD_weapon_panels) --weapon widgets
-      end
+            mWeapons = mWeapons:new(system, weapon, GHUD_weapon_panels) --weapon widgets
+         end
       else
          if weapon_1 ~= nil then
-         mWeapons = mWeapons:new(system, weapon, GHUD_weapon_panels)
-      end
+            mWeapons = mWeapons:new(system, weapon, GHUD_weapon_panels)
+         end
          mRadar = mRadar:new(system)
       end
-      
+
       --main gunner function
       function main()
          while true do
@@ -1704,39 +1703,39 @@ elseif stress[2] >= stress[1] and
                i = i + 1
                local size = activeRadar.getConstructCoreSize(v)
                local constructRow = {}
-                  if t_radarEnter[v] ~= nil then
-                     if activeRadar.hasMatchingTransponder(v) == 0 and not whitelist[v] and size ~= "" and activeRadar.getConstructDistance(v) < 600000 then --do not show far targets during warp and server lag
-                        local name = activeRadar.getConstructName(v)
-                        local typeC = activeRadar.getConstructKind(v)
-                        if activeRadar.isConstructAbandoned(v) == 0 then
-                           local msg = 'NEW TARGET: '..name..' - Size: '..size..' - '..v..'\n '..t_radarEnter[v].pos..''
-                           if count < 10 then --max 10 notifications
-                              count = count + 1
-                              if target[count] == nil then
-                                 if typeC == 5 then
-                                    target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0, color = '#0258ba'}
-                                 else
-                                    target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0, color = '#9202ba'}
-                                 end
-                              end
-                              system.playSound('enter.mp3')
-                           end
-                        else
-                           local pos = activeRadar.getConstructWorldPos(v)
-                           pos = '::pos{0,0,'..pos[1]..','..pos[2]..','..pos[3]..'}'
-                           local msg = 'NEW TARGET (abandoned): '..name..' - Size: '..size..' - '..v..'\n '..pos..''
-                           table.insert(loglist, msg)
-                           if count < 10 then --max 10 notifications
-                              count = count + 1
-                              if target[count] == nil then
-                                 target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0, color = 'black'}
+               if t_radarEnter[v] ~= nil then
+                  if activeRadar.hasMatchingTransponder(v) == 0 and not whitelist[v] and size ~= "" and activeRadar.getConstructDistance(v) < 600000 then --do not show far targets during warp and server lag
+                     local name = activeRadar.getConstructName(v)
+                     local typeC = activeRadar.getConstructKind(v)
+                     if activeRadar.isConstructAbandoned(v) == 0 then
+                        local msg = 'NEW TARGET: '..name..' - Size: '..size..' - '..v..'\n '..t_radarEnter[v].pos..''
+                        if count < 10 then --max 10 notifications
+                           count = count + 1
+                           if target[count] == nil then
+                              if typeC == 5 then
+                                 target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0, color = '#0258ba'}
+                              else
+                                 target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0, color = '#9202ba'}
                               end
                            end
-                           system.playSound('sonar.mp3')
+                           system.playSound('enter.mp3')
                         end
+                     else
+                        local pos = activeRadar.getConstructWorldPos(v)
+                        pos = '::pos{0,0,'..pos[1]..','..pos[2]..','..pos[3]..'}'
+                        local msg = 'NEW TARGET (abandoned): '..name..' - Size: '..size..' - '..v..'\n '..pos..''
+                        table.insert(loglist, msg)
+                        if count < 10 then --max 10 notifications
+                           count = count + 1
+                           if target[count] == nil then
+                              target[count] = {left = 100, opacity = 1, cnt = count, name1 = name, size1 = size, id = tostring(v):sub(-3), one = true, check = true, delay = 0, color = 'black'}
+                           end
+                        end
+                        system.playSound('sonar.mp3')
                      end
-                     t_radarEnter[v] = nil
                   end
+                  t_radarEnter[v] = nil
+               end
                if GHUD_show_echoes == true then
                   if size ~= "" then
                      constructRow.widgetDist = math.ceil(activeRadar.getConstructDistance(v) / 1000 * radarWidgetScale)
@@ -1747,8 +1746,8 @@ elseif stress[2] >= stress[1] and
                   if activeRadar.hasMatchingTransponder(v) == 1 or whitelist[v] then
                      local name = activeRadar.getConstructName(v)
                      local dist = math.floor(activeRadar.getConstructDistance(v))
-                        local ownerTag = ''
-                        if activeRadar.hasMatchingTransponder(v) == 1 then   
+                     local ownerTag = ''
+                     if activeRadar.hasMatchingTransponder(v) == 1 then
                         local owner = activeRadar.getConstructOwnerEntity(v)
                         if owner['isOrganization'] then
                            ownerTag = system.getOrganization(owner['id']).tag
@@ -1828,7 +1827,7 @@ elseif stress[2] >= stress[1] and
                      </div>]]
                   end
                else
-      
+
                   if GHUD_show_echoes == true then
                      if size ~= "" then
                         if activeRadar.getConstructKind(v) == 5 then
@@ -2000,9 +1999,9 @@ elseif stress[2] >= stress[1] and
             else
                radarWidget = ''
             end
-      
+
             hudver = hudvers .. [[<div class="hudversion">GHUD v]]..HUD_version..[[</div>]]
-      
+
             if GHUD_show_echoes == true then
                if GHUD_show_allies == true then
                   --system.setScreen(htmltext .. target1 .. locks .. hudver .. radarWidget ..statusSVG)
@@ -2011,9 +2010,9 @@ elseif stress[2] >= stress[1] and
                   --system.setScreen(target1 .. locks .. hudver .. radarWidget ..statusSVG)
                   gunnerHUD = target1 .. locks .. hudver .. radarWidget ..statusSVG
                end
-      
+
             else
-      
+
                if GHUD_show_allies == true then
                   --system.setScreen(htmltext .. target1 .. locks .. hudver ..statusSVG)
                   gunnerHUD = htmltext .. target1 .. locks .. hudver ..statusSVG
@@ -2025,7 +2024,7 @@ elseif stress[2] >= stress[1] and
             coroutine.yield()
          end
       end
-      
+
       --HUD design
       lockhtml = [[<style>
       .table {
@@ -2143,7 +2142,7 @@ elseif stress[2] >= stress[1] and
          padding-bottom: 0.5px;
          border-radius: 5px;
          border: 2px solid white;
-       }
+      }
       .table-row3 {
          display: table-row;
          float: left;
@@ -2176,7 +2175,7 @@ elseif stress[2] >= stress[1] and
          letter-spacing: 0.5px;
          font-size: 1.2em;
       }</style>]]
-      
+
       htmlRadar = [[
       <style>
       .radar-widget {
@@ -2254,7 +2253,7 @@ elseif stress[2] >= stress[1] and
          background: #ff3a56;
       }
       </style>]]
-      
+
       --interception concept, be careful
       --Dear programmer:
       --When I wrote this code, only God and I know how the next code works, don't try to edit it!

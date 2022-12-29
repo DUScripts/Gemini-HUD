@@ -371,7 +371,7 @@ if mybr == true then
                   drawonradar(safeVector,safeStatus)
                   if szsafe == true then
                      drawonradar(safeWorldPos,'Central SZ')
-                     end
+                  end
                   if asteroidcoord[1] ~= 0 then
                      drawonradar(asteroidcoord,""..GHUD_marker_name.."")
                   end
@@ -389,7 +389,7 @@ if mybr == true then
                   local wdata1 = wslot_1.getWidgetData()
                   pr1 = tonumber(wdata1:match('"hitProbability":(.-),'))math.floor(pr1*100)
                end
-                  if wslot_2 ~= nil then
+               if wslot_2 ~= nil then
                   local wdata2 = wslot_2.getWidgetData()
                   pr2 = tonumber(wdata2:match('"hitProbability":(.-),'))
                end
@@ -420,13 +420,11 @@ if mybr == true then
                   end
                   if activeRadar.isConstructIdentified(id) == 1 then
                      if typeS == 5 then
-                     topSpeed = math.floor(clamp((50000/3.6-10713*(mass-10000)/(853926+(mass-10000)))*3.6,20000,50000))
-                     topSpeed = topSpeed .. ' KM/H'
+                        topSpeed = math.floor(clamp((50000/3.6-10713*(mass-10000)/(853926+(mass-10000)))*3.6,20000,50000))
                      end
                      speed = activeRadar.getConstructSpeed(id)
                      speed = math.floor(speed * 3.6)
                      speedT = speed
-                     speed = speed .. ' KM/H'
                   end
                   local pos1 = sPos + dist * vec3(construct.getWorldOrientationForward())
                   local point1 = library.getPointOnScreen({pos1.x,pos1.y,pos1.z})
@@ -475,10 +473,9 @@ if mybr == true then
                   ]]..sight1..[[
                   .sight2 {
                      position: absolute;
-                     width: ]]..GHUD_selected_target_panel_size..[[em;
-                     height: ]]..GHUD_selected_target_panel_size..[[em;
+                     width: ]]..GHUD_selected_target_panel_size..[[vh;
                      left: 50%;
-                     top: ]]..GHUD_selected_target_Y..[[%;
+                     top: ]]..GHUD_selected_target_Y..[[vh;
                      transform: translate(-50%, -50%);
                   }
                   </style>
@@ -501,26 +498,26 @@ if mybr == true then
                   </defs>
                   <text style="fill: white; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" x="195.471" y="203.183"><tspan x="450" y="263.186" style="font-size: 26px; word-spacing: 0px;">]]..damage..[[ M</tspan></text>
                   <text style="fill: ]]..tcolor..[[; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: end;" x="284.824" y="184.186">[]]..size..[[] ]]..tostring(id):sub(-3)..[[ ]]..name..[[</text>
-                  <text style="fill: #FFB12C; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" x="450" y="141.186">SPEED</text>
+                  <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" x="450" y="141.186">SPEED</text>
                   <text style="fill: ]]..newcolor..[[; font-family: verdana; font-size: 26px; font-weight: 700; text-anchor: middle;" x="175.339" y="105.183"><tspan x="512.868" y="141.186" style="font-size: 26px; word-spacing: 0px;">]]..znak..[[</tspan></text>
-                  <text style="fill: #FFB12C; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px;" x="670" y="224.186">MAX SPEED</text>
-                  <text style="fill: #FFB12C; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" x="174.41" y="224.186">DPS (WIP)</text>
+                  <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px;" x="668" y="224.186">MAX SPEED</text>
+                  <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" x="174.41" y="224.186">DPS (WIP)</text>
                   <text style="fill: white; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" x="752.841" y="263.186">]]..topSpeed..[[</text>
-                  <text style="fill: white; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" y="184.138" x="450">]]..speed..[[</text>
+                  <text style="fill: white; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" y="184.186" x="450">]]..speed..[[</text>
                   <line style="fill: rgba(255, 255, 255, 0.25); stroke: rgba(255, 255, 255, 0.25); stroke-width: 5px; stroke-linecap: round;" x1="300" y1="115" x2="300" y2="275"></line>
                   <line style="fill: rgba(255, 255, 255, 0.25); stroke: rgba(255, 255, 255, 0.25); stroke-width: 5px; stroke-linecap: round;" x1="600" y1="115" x2="600" y2="275"></line>
                   <line style="fill: rgba(255, 255, 255, 0.25); stroke: rgba(255, 255, 255, 0.25); stroke-width: 5px; stroke-linecap: round;" x1="450" y1="-270" x2="450" y2="580" transform="matrix(0.000001, 1, -1, 0.000001, 604.99955, -295.000155)"></line>
-                  <text style="fill: #FFB12C; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: end;" x="227.808" y="141.186">TARGET</text>
+                  <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: end;" x="227.808" y="141.186">TARGET</text>
                   <line style="fill: rgba(255, 255, 255, 0.25); stroke: rgba(255, 255, 255, 0.25); stroke-width: 5px; stroke-linecap: round;" x1="450" y1="-230" x2="450" y2="620" transform="matrix(0.000001, 1, -1, 0.000001, 644.99955, -255.000195)"></line>
-                  <text style="fill: #FFB12C; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px;" x="670" y="141.186">DISTANCE</text>
+                  <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px;" x="670" y="141.186">DISTANCE</text>
                   <text style="fill: ]]..newcolor2..[[; font-family: verdana; font-size: 26px; font-weight: 700; text-anchor: start;" x="465.532" y="106.864" transform="matrix(1, 0, 0, 1, 20.938997, -1.681)"><tspan x="803.061" y="142.867" style="font-size: 26px; word-spacing: 0px;">]]..znak2..[[<tspan x="803.0609741210938" dy="1em">​</tspan></tspan></text>
                   <line style="fill: rgba(255, 255, 255, 0.25); stroke: rgba(255, 255, 255, 0.25); stroke-width: 5px; stroke-linecap: round;" x1="450" y1="-190" x2="450" y2="660" transform="matrix(0.000001, 1, -1, 0.000001, 684.99955, -215.000235)"></line>
                   <text style="fill: white; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" y="184.186" x="751.656">]]..dist..[[ ]]..sdist..[[</text>
-                  <text style="fill: #FFB12C; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" x="450" y="224.186">DAMAGE</text>
+                  <text style="fill: rgb(0, 191, 255); font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" x="450" y="224.186">DAMAGE</text>
                   <text style="fill: white; font-family: verdana; font-size: 26px; font-weight: 700; paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 2px; text-anchor: middle;" y="263.186" x="171.092">OUT - INC</text>
                   ]]..wsight1..[[
                   ]]..wsight2..[[
-                </svg></div>]]
+                  </svg></div>]]
                else
                   local pos1 = sPos + 400000 * vec3(construct.getWorldOrientationForward())
                   local point1 = library.getPointOnScreen({pos1.x,pos1.y,pos1.z})
@@ -549,36 +546,36 @@ if mybr == true then
 
                local AR_allies = ''
                if GHUD_show_AR_allies_marks == true then
-               for k,v in pairs(radarIDs) do --AR marks
-                  if activeRadar.hasMatchingTransponder(v) == 1 then
-                     local pos = activeRadar.getConstructWorldPos(v)
-                     local fID = ''
-                     if friendsData[v] ~= nil then
-                        fID = friendsData[v].tag
-                     end
-                     local point = library.getPointOnScreen({pos[1],pos[2],pos[3]})
-                     if point[3] > 0 then --visible zone
-                        local x = (screenWidth*point[1]) - dx - GHUD_AR_allies_border_size/2
-                        local y = (screenHeight*point[2]) - dy - GHUD_AR_allies_border_size/2
-                        AR_allies = AR_allies .. [[
-                        <style>     
-                        .id]]..v..[[ {
-                           position: absolute;
-                           width: ]]..GHUD_AR_allies_border_size..[[px;
-                           height: ]]..GHUD_AR_allies_border_size..[[px;
-                           left: ]]..x..[[px;
-                           top: ]]..y..[[px;
-                        }
-                        </style>
-                        <div class="id]]..v..[["><?xml version="1.0" encoding="utf-8"?>
-                        <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="235" y="235" width="30" height="30" style="fill: rgba(0,0,0,0); stroke: ]]..GHUD_AR_allies_border_color..[[; stroke-width: 2"/>
-                        <text style="fill: ]]..GHUD_AR_allies_font_color..[[; font-family: Arial, sans-serif; font-size: 28px; font-weight: 700; text-anchor: middle;" transform="matrix(0.609174, 0, 0, 0.609176, 250.000005, 225)">]].. tostring(v):sub(-3) .. [[</text>
-                        <text style="fill: ]]..GHUD_AR_allies_font_color..[[; font-family: Arial, sans-serif; font-size: 28px; font-weight: 700; text-anchor: middle;" transform="matrix(0.609174, 0, 0, 0.609176, 250.000005, 210)">]]..fID..[[</text>
-                        </svg></div>]]
+                  for k,v in pairs(radarIDs) do --AR marks
+                     if activeRadar.hasMatchingTransponder(v) == 1 then
+                        local pos = activeRadar.getConstructWorldPos(v)
+                        local fID = ''
+                        if friendsData[v] ~= nil then
+                           fID = friendsData[v].tag
+                        end
+                        local point = library.getPointOnScreen({pos[1],pos[2],pos[3]})
+                        if point[3] > 0 then --visible zone
+                           local x = (screenWidth*point[1]) - dx - GHUD_AR_allies_border_size/2
+                           local y = (screenHeight*point[2]) - dy - GHUD_AR_allies_border_size/2
+                           AR_allies = AR_allies .. [[
+                           <style>
+                           .id]]..v..[[ {
+                              position: absolute;
+                              width: ]]..GHUD_AR_allies_border_size..[[px;
+                              height: ]]..GHUD_AR_allies_border_size..[[px;
+                              left: ]]..x..[[px;
+                              top: ]]..y..[[px;
+                           }
+                           </style>
+                           <div class="id]]..v..[["><?xml version="1.0" encoding="utf-8"?>
+                           <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+                           <rect x="235" y="235" width="30" height="30" style="fill: rgba(0,0,0,0); stroke: ]]..GHUD_AR_allies_border_color..[[; stroke-width: 2"/>
+                           <text style="fill: ]]..GHUD_AR_allies_font_color..[[; font-family: Arial, sans-serif; font-size: 28px; font-weight: 700; text-anchor: middle;" transform="matrix(0.609174, 0, 0, 0.609176, 250.000005, 229)">]].. tostring(v):sub(-3) .. [[</text>
+                           <text style="fill: ]]..GHUD_AR_allies_font_color..[[; font-family: Arial, sans-serif; font-size: 28px; font-weight: 700; text-anchor: middle;" transform="matrix(0.609174, 0, 0, 0.609176, 250.000005, 214)">]]..fID..[[</text>
+                           </svg></div>]]
+                        end
                      end
                   end
-               end
                end
 
                --hit/miss animations, radar contacts animations
@@ -872,22 +869,6 @@ if mybr == true then
                orange1 {
                   color: #FFB12C;
                }
-               .sight1 {
-                  position: absolute;
-                  width: 200px;
-                  height: 200px;
-                  left: 50%;
-                  top: 50%;
-                  transform: translate(-50%, -50%);
-               }
-               .sight2 {
-                  position: absolute;
-                  width: 400px;
-                  height: 400px;
-                  left: 50%;
-                  top: 50%;
-                  transform: translate(-50%, -50%);
-               }
                .safez {
                   width: auto;
                   padding-top: 1px;
@@ -995,7 +976,7 @@ if mybr == true then
                <path style="fill: url(#EM_gradient); stroke: ]]..EM_stroke_color..[[; stroke-width: ]]..EMstrokeWidth..[[;" d="M 85 260 L 95 250 L 185 250 L 125 285 L 85 260 Z" transform="matrix(-1, 0, 0, -1, 270.000006, 535.000011)"/>
                <polygon style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linejoin: round; stroke-linecap: round;" points="239 225 244 231 256 231 261 225"></polygon>
                <polygon style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linejoin: round; stroke-linecap: round;" points="235 269 240 275 260 275 265 269" transform="matrix(-1, 0, 0, -1, 500, 544)"></polygon>
-               <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 4.5px; font-weight: 700; text-anchor: middle;" transform="matrix(1, 0, 0, 1, -1.542758, -0.533447)"><tspan x="251.796" y="230.112">]]..resCLWN..[[</tspan></text>
+               <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 4.5px; font-weight: 700; text-anchor: middle;" transform="matrix(1, 0, 0, 1, -1.542758, -0.533447)"><tspan x="251.796" y="230.312">]]..resCLWN..[[</tspan></text>
                <text style="fill: ]]..GHUD_shield_text_color..[[; font-family: Arial, sans-serif; font-size: 4px; font-weight: 700; text-anchor: middle;" x="250.048" y="273.416">]]..shieldStatus..[[</text>
                <text style="fill: ]]..GHUD_shield_stroke_color..[[; font-family: Arial, sans-serif; font-weight: bold; font-size: 3.2px; text-anchor: middle;" x="250" y="223.591">CCS</text>
                <polygon style="fill: ]]..GHUD_shield_background2_color..[[; stroke: ]]..GHUD_shield_stroke_color..[[; stroke-linejoin: round; stroke-linecap: round;" points="235 279.8 240 285.8 260 285.8 265 279.8"></polygon>
