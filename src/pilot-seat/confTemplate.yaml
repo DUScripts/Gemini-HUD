@@ -1,4 +1,4 @@
-name: GHUD Pilot seat v1.4.7
+name: GHUD Pilot seat v1.4.8
 
 slots:
     core:
@@ -574,19 +574,19 @@ handlers:
         onActionStart:
             args: [option1]
             lua: |
-{{system.onActionStart.option1.lua}}
+{{system.onActionStart.option1.minified.lua}}
         onActionStart:
             args: [option2]
             lua: |
-{{system.onActionStart.option2.lua}}
+{{system.onActionStart.option2.minified.lua}}
         onActionStart:
             args: [option3]
             lua: |
-{{system.onActionStart.option3.lua}}
+{{system.onActionStart.option3.minified.lua}}
         onActionStart:
             args: [option4]
             lua: |
-{{system.onActionStart.option4.lua}}
+{{system.onActionStart.option4.minified.lua}}
         onActionLoop:
             args: [option5]
             lua: |
@@ -598,7 +598,7 @@ handlers:
         onActionStart:
             args: [option6]
             lua: |
-{{system.onActionStart.option6.lua}}
+{{system.onActionStart.option6.minified.lua}}
         onActionStart:
             args: [option7]
             lua: |
