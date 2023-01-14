@@ -1,7 +1,7 @@
 -- GEMINI FOUNDATION
 
 --Gunner module
-HUD_version = '1.4.8'
+HUD_version = '1.4.9'
 
 --LUA parameters
 GHUD_marker_name = 'Asteroid' --export: Helios map marker name

@@ -16,21 +16,8 @@ else
    end
 end
 
-if GHUD_shield_auto_calibration == true
-then
-   if GHUD_shield_calibration_max then
-      shieldText = "MAX - SHIELD"
-      shieldIcon = "A"
-   else
-      shieldText = "50/50 - SHIELD"
-      shieldIcon = "A"
-   end
+if GHUD_shield_auto_calibration == true then
+   shieldIcon = "A"
 else
-   if GHUD_shield_calibration_max then
-      shieldText = "MAX - SHIELD"
-      shieldIcon = "M"
-   else
-      shieldText = "50/50 - SHIELD"
-      shieldIcon = "M"
-   end
+   shieldIcon = "M"
 end
