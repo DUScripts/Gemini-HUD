@@ -20,6 +20,7 @@ GHUD is the rebirth of the CFCS HUD (Custom Fire Control System)
 - Target Vector feature<br/>
 - Closest pipe UI<br/>
 - Closest pvp/safe zone UI<br/>
+- 3 danger levels, red - you are in the pipe, orange - 1su to the nearest pipe, green - more than 1su to the nearest pipe)<br/>
 - Helios system rotating space map<br/>
 - 2D planetary periscope<br/>
 - Waypoint info (lua chat: closest pipe, distance to safe zone)<br/>
